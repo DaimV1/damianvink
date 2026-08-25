@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wat ik weet — Damian Vink</title>
+<meta name="description" content="Wat ik weet: engineering toolkit met tools en naslag voor ontwerpwerk.">
+<link rel="canonical" href="https://damianvink.nl/weet/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Damian Vink">
+<meta property="og:locale" content="nl_NL">
+<meta property="og:url" content="https://damianvink.nl/weet/">
+<meta property="og:title" content="Wat ik weet — Damian Vink">
+<meta property="og:description" content="Engineering toolkit: tools en naslag voor ontwerpwerk.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>(function(){var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);})();</script>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="grid-bg" aria-hidden="true"></div>
+  <div class="block block--blue" aria-hidden="true"></div>
+  <header>
+    <a class="mark" href="/"><strong>Damian Vink</strong> — damianvink.nl</a>
+    <div class="header-actions">
+      <nav class="site-nav" aria-label="Hoofdmenu">
+        <a href="/#over-mij">Wie ik ben</a>
+        <a href="/#werk">Wat ik doe</a>
+        <a href="/weet/" aria-current="page">Wat ik weet</a>
+        <a href="/#contact">Contact</a>
+      </nav>
+      <button class="theme-toggle" type="button" aria-label="Wissel licht/donker thema" title="Thema wisselen">
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 14.3A9 9 0 1 1 9.7 3a7 7 0 0 0 11.3 11.3z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </button>
+    </div>
+  </header>
+  <main>
+    <nav class="breadcrumb" aria-label="Broodkruimel">
+      <a href="/">Home</a>
+      <span aria-hidden="true">/</span>
+      <span>Wat ik weet</span>
+    </nav>
+    <p class="eyebrow eyebrow--muted">Wat ik weet</p>
+    <h1 class="display-title">Wat ik <span class="last">weet.</span></h1>
+    <p class="lede">
+      Een verzameling tools die ik tijdens ontwerp- en uitwerkingsfasen
+      consequent gebruik.
+    </p>
+    <article class="knowledge-category">
+      <div class="knowledge-category__header">
+        <span class="num">01</span>
+        <div>
+          <h3>Engineering toolkit</h3>
+          <p>
+            Passingen, spiebaantoleranties, kanten, moersleutelwijdtes
+            en ISO-veiligheidsafstanden — naslag met bronnen.
+          </p>
+        </div>
+      </div>
+      <a class="knowledge-link" href="/weet/toolkit/">
+        <span><strong>Open de toolkit</strong><small>Werktuigbouwkunde · Machinebouw</small></span>
+        <span aria-hidden="true">→</span>
+      </a>
+    </article>
+  </main>
+  <footer>
+    <span class="contact">Contact: <a href="mailto:damianvink@live.nl">damianvink@live.nl</a></span>
+    <span class="copy">© <span id="year"></span> Damian Vink</span>
+  </footer>
+  <script>document.getElementById("year").textContent=new Date().getFullYear();</script>
+  <script>
+  (function(){
+    var root=document.documentElement;
+    var stored=localStorage.getItem("theme");
+    if(stored==="light"||stored==="dark") root.setAttribute("data-theme",stored);
+    document.addEventListener("DOMContentLoaded",function(){
+      var btn=document.querySelector(".theme-toggle");
+      if(!btn) return;
+      btn.addEventListener("click",function(){
+        var current=root.getAttribute("data-theme");
+        if(!current) current=window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";
+        root.setAttribute("data-theme", current==="dark"?"light":"dark");
+        localStorage.setItem("theme", current==="dark"?"light":"dark");
+      });
+    });
+  })();
+  </script>
+</body>
+</html>

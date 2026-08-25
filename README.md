@@ -1,15 +1,14 @@
 # damianvink.nl
 
-Persoonlijke site van Damian Vink — Project Engineer werktuigbouwkunde & machinebouw.
+Persoonlijke site van Damian Vink.
 
 ## Structuur
 
-- `/` — homepage (scroll: over mij, werk, kennis, contact)
-- `/kennis/` — hub
-- `/kennis/engineering/` — engineering
-- `/kennis/engineering/toolkit/` — toolkit (passingen, spiebanen, kanten, …)
-- `/kennis/marathon/` — marathonlogboek (in opbouw)
+- `/` — Home (Wie ik ben · Wat ik doe · Wat ik weet)
+- `/over-mij` — Wie ik ben + CV
+- `/doe/marathon/` — Marathon-dashboard (Strava)
+- `/doe/projecten/` — Projecten
+- `/weet/` — Wat ik weet
+- `/weet/toolkit/` — Engineering toolkit
 
-Sticky navigatie, dark mode, page transitions (View Transitions API), scroll-reveal.
-
-Contact: damianvink@live.nl
+Oude `/kennis/`-paden verwijzen door naar `/weet/`.
