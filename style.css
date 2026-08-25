@@ -184,12 +184,25 @@ footer {
    ========================================================= */
 
 header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 36px 64px 0;
+  padding: 22px 64px;
   gap: 24px;
   flex-wrap: wrap;
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid transparent;
+  transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+header.is-scrolled {
+  border-bottom-color: var(--line);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
 .mark {
@@ -314,6 +327,10 @@ main {
 
 .hero {
   margin-bottom: 48px;
+}
+
+main > section + section:not(.knowledge) {
+  margin-top: 100px;
 }
 
 .eyebrow {
@@ -914,12 +931,14 @@ footer {
   margin-bottom: 14px;
 }
 
-.cv-section > h2 {
+.cv-section > h2,
+.cv-section > h3 {
   font-size: clamp(28px, 4vw, 42px);
   margin: 0 0 18px;
 }
 
-.cv-section > h2 .last {
+.cv-section > h2 .last,
+.cv-section > h3 .last {
   color: var(--blue);
 }
 
@@ -998,6 +1017,10 @@ footer {
   }
 
   .knowledge {
+    margin-top: 72px;
+  }
+
+  main > section + section:not(.knowledge) {
     margin-top: 72px;
   }
 
@@ -1156,11 +1179,6 @@ footer {
   border-radius: 0;
 }
 
-header {
-  border-bottom: 1px solid transparent;
-  padding-bottom: 8px;
-}
-
 main {
   padding-top: 40px;
 }
@@ -1228,4 +1246,80 @@ main {
 :focus-visible {
   outline: 2px solid var(--blue);
   outline-offset: 3px;
+}
+
+/* =========================================================
+   PAGE TRANSITIONS (native View Transitions API)
+   Slick fade/slide between full page navigations. Progressive
+   enhancement — browsers without support just navigate normally.
+   ========================================================= */
+
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root) {
+  animation: page-out 0.32s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+::view-transition-new(root) {
+  animation: page-in 0.38s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes page-out {
+  to {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.99);
+  }
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.99);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
+
+/* =========================================================
+   SCROLL REVEAL
+   Sections/cards fade + rise into place as they enter view.
+   JS toggles .is-visible via IntersectionObserver; without JS
+   or with reduced motion, content is visible by default.
+   ========================================================= */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-stagger.is-visible > * {
+  transition-delay: calc(var(--reveal-i, 0) * 0.08s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Anchor targets shouldn't sit under the sticky header */
+main [id] {
+  scroll-margin-top: 96px;
 }

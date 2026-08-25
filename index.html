@@ -58,6 +58,8 @@
   <div class="block block--blue" aria-hidden="true"></div>
   <div class="block block--yellow" aria-hidden="true"></div>
 
+  <noscript><style>.reveal{opacity:1 !important;transform:none !important;}</style></noscript>
+
 
   <!-- HEADER -->
 
@@ -70,19 +72,19 @@
     <div class="header-actions">
 <nav class="site-nav" aria-label="Hoofdmenu">
 
-      <a href="/over-mij">
+      <a href="/#over-mij">
         Over mij
       </a>
 
-      <a href="/werk">
+      <a href="/#werk">
         Werk
       </a>
 
-      <a href="/kennis">
+      <a href="/#kennis">
         Kennis
       </a>
 
-      <a href="/contact">
+      <a href="/#contact">
         Contact
       </a>
 
@@ -128,117 +130,108 @@
     </section>
 
 
-    <!-- MAIN SECTIONS -->
+    <!-- OVER MIJ -->
 
-    <section aria-labelledby="site-sections-title">
+    <section id="over-mij" class="reveal" aria-labelledby="over-mij-title">
 
-      <h2 id="site-sections-title" class="visually-hidden">
-        Onderdelen van de website
+      <p class="eyebrow">01 — Over mij</p>
+
+      <h2 id="over-mij-title">
+        Wie ik <span class="last">ben.</span>
       </h2>
 
+      <div class="body-text">
 
-      <div class="pages" role="list">
+        <p>
+          Ik ben Damian Vink, Project Engineer met een achtergrond in
+          werktuigbouwkunde en machinebouw. Ik houd ervan om technische
+          vraagstukken te vertalen naar praktische, goed doordachte oplossingen.
+        </p>
 
+        <p>
+          In mijn werk combineer ik technisch ontwerp met projectverantwoordelijkheid.
+          Daarbij ben ik graag betrokken bij het hele proces: van het eerste idee
+          en ontwerp tot de technische uitwerking en realisatie.
+        </p>
 
-        <!-- OVER MIJ -->
+        <p>
+          Naast mijn werk gebruik ik deze website om projecten, technische kennis
+          en onderwerpen die mij interesseren te verzamelen en te delen.
+        </p>
 
-        <a
-          class="page-item"
-          role="listitem"
-          href="/over-mij"
-        >
+      </div>
 
-          <span class="num">
-            01
-          </span>
+      <!-- CV -->
+      <div class="cv-section" aria-labelledby="cv-title">
 
-          <span class="name">
-            Over mij
-          </span>
+        <p class="eyebrow">02 — Curriculum Vitae</p>
 
-          <span class="teaser">
-            Wie ik ben en wat ik doe
-          </span>
+        <h3 id="cv-title">
+          Mijn <span class="last">CV.</span>
+        </h3>
 
-        </a>
+        <div class="body-text">
+          <p>
+            Benieuwd naar mijn opleiding, werkervaring en technische achtergrond?
+            In mijn CV vind je een overzicht van mijn ervaring als werktuigbouwkundig
+            engineer en mijn ontwikkeling richting project engineering.
+          </p>
+        </div>
 
+        <div class="cv-buttons">
 
-        <!-- WERK -->
+          <a
+            href="/cv.pdf"
+            target="_blank"
+            rel="noopener"
+            class="cv-button"
+          >
+            Bekijk mijn CV
+          </a>
 
-        <a
-          class="page-item"
-          role="listitem"
-          href="/werk"
-        >
+          <a
+            href="/cv.pdf"
+            download
+            class="cv-button secondary"
+          >
+            Download CV
+          </a>
 
-          <span class="num">
-            02
-          </span>
-
-          <span class="name">
-            Werk
-          </span>
-
-          <span class="teaser">
-            Mijn werk als Project Engineer
-          </span>
-
-        </a>
-
-
-        <!-- KENNIS -->
-
-        <a
-          class="page-item"
-          role="listitem"
-          href="/kennis"
-        >
-
-          <span class="num">
-            03
-          </span>
-
-          <span class="name">
-            Kennis
-          </span>
-
-          <span class="teaser">
-            Engineering, hardlopen & interesses
-          </span>
-
-        </a>
-
-
-        <!-- CONTACT -->
-
-        <a
-          class="page-item"
-          role="listitem"
-          href="/contact"
-        >
-
-          <span class="num">
-            04
-          </span>
-
-          <span class="name">
-            Contact
-          </span>
-
-          <span class="teaser">
-            Neem contact op
-          </span>
-
-        </a>
-
+        </div>
 
       </div>
 
     </section>
 
-    <section class="knowledge" aria-labelledby="knowledge-title">
-      <p class="eyebrow">Kennis</p>
-      <h2 id="knowledge-title">Waar ik nu <span class="last">aan werk.</span></h2>
+
+    <!-- WERK -->
+
+    <section id="werk" class="reveal" aria-labelledby="werk-title">
+
+      <p class="eyebrow">03 — Werk</p>
+
+      <h2 id="werk-title">Wat ik <span class="last">maak.</span></h2>
+
+      <p class="lede">
+        Selectie van projecten en werkzaamheden als project engineer in de
+        machinebouw. Deze sectie wordt aangevuld met concrete cases.
+      </p>
+
+      <div class="work-grid" role="list" aria-label="Projecten">
+        <div class="work-card" role="listitem">Project 1<br>— vervang dit door je eigen werk</div>
+        <div class="work-card" role="listitem">Project 2<br>— vervang dit door je eigen werk</div>
+        <div class="work-card" role="listitem">Project 3<br>— vervang dit door je eigen werk</div>
+        <div class="work-card" role="listitem">Project 4<br>— vervang dit door je eigen werk</div>
+      </div>
+
+    </section>
+
+
+    <!-- KENNIS -->
+
+    <section id="kennis" class="knowledge reveal" aria-labelledby="knowledge-title">
+      <p class="eyebrow">04 — Kennis</p>
+      <h2 id="knowledge-title">Wat ik <span class="last">weet.</span></h2>
       <p class="section-intro">
         Twee concrete sporen op deze site: een engineering toolkit voor
         dagelijks ontwerpwerk, en een persoonlijk marathonlogboek.
@@ -277,9 +270,38 @@
           <span aria-hidden="true">→</span>
         </a>
       </article>
+
+      <p class="section-intro">
+        <a class="knowledge-link" href="/kennis/">
+          <span><strong>Alles wat ik weet</strong><small>Volledig overzicht van de kennissectie</small></span>
+          <span aria-hidden="true">→</span>
+        </a>
+      </p>
     </section>
 
-  
+
+    <!-- CONTACT -->
+
+    <section id="contact" class="reveal" aria-labelledby="contact-title">
+
+      <p class="eyebrow">05 — Contact</p>
+
+      <h2 id="contact-title">Contact.</h2>
+
+      <p class="lede">
+        Voor vragen over engineering, samenwerkingen of deze website:
+        stuur een e-mail.
+      </p>
+
+      <div class="contact-block">
+        <div class="contact-row">
+          <span class="label">E-mail</span>
+          <a href="mailto:damianvink@live.nl">damianvink@live.nl</a>
+        </div>
+      </div>
+
+    </section>
+
 </main>
 
 
@@ -342,6 +364,32 @@
         });
       });
     })();
+  </script>
+
+  <script>
+  (function(){
+    var header = document.querySelector("header");
+    if (header) {
+      var onScroll = function(){ header.classList.toggle("is-scrolled", window.scrollY > 8); };
+      onScroll();
+      window.addEventListener("scroll", onScroll, { passive: true });
+    }
+    var els = document.querySelectorAll(".reveal");
+    if (!els.length) return;
+    if (!("IntersectionObserver" in window)) {
+      els.forEach(function(el){ el.classList.add("is-visible"); });
+      return;
+    }
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -60px 0px" });
+    els.forEach(function(el){ io.observe(el); });
+  })();
   </script>
 
 </body>
