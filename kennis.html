@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="/style.css">
 <link rel="sitemap" type="application/xml" href="/sitemap.xml">
 
 <!-- Google Analytics -->
@@ -145,18 +145,16 @@
 
     <section class="knowledge-category">
 
-      <button
-        class="knowledge-category__header knowledge-category__toggle"
-        type="button"
-        aria-expanded="false"
-        aria-controls="engineering-content"
-      >
+      <div class="knowledge-category__header engineering-header">
 
         <span class="num">
           01
         </span>
 
-        <div>
+        <a
+          class="engineering-title"
+          href="/kennis/engineering"
+        >
 
           <h3>
             Engineering
@@ -168,17 +166,29 @@
             technische vraagstukken.
           </p>
 
-        </div>
+        </a>
 
-        <span
-          class="knowledge-category__arrow"
-          aria-hidden="true"
+
+        <!-- UITKLAPPEN -->
+
+        <button
+          class="engineering-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="engineering-content"
+          aria-label="Toon engineering onderdelen"
         >
-          ↓
-        </span>
 
-      </button>
+          <span aria-hidden="true">
+            ↓
+          </span>
 
+        </button>
+
+      </div>
+
+
+      <!-- ENGINEERING SUBPAGINA'S -->
 
       <div
         id="engineering-content"
@@ -499,11 +509,11 @@
 
 
     /* =====================================================
-       ENGINEERING UITKLAPMENU
+       ENGINEERING UITKLAPPEN
        ===================================================== */
 
     const engineeringToggle =
-      document.querySelector('.knowledge-category__toggle');
+      document.querySelector('.engineering-toggle');
 
     const engineeringContent =
       document.getElementById('engineering-content');
@@ -518,6 +528,14 @@
       engineeringToggle.setAttribute(
         'aria-expanded',
         String(!isOpen)
+      );
+
+
+      engineeringToggle.setAttribute(
+        'aria-label',
+        isOpen
+          ? 'Toon engineering onderdelen'
+          : 'Verberg engineering onderdelen'
       );
 
 
