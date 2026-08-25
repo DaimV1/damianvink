@@ -1,12 +1,145 @@
 {
   "source": "Strava export",
-  "updated": null,
+  "updated": "2026-08-25",
+  "scope": "Hardloopsessies",
   "totals": {
-    "distance_km": null,
-    "activities": null,
-    "moving_time_h": null,
-    "elevation_m": null
+    "distance_km": 1091.5,
+    "activities": 159,
+    "moving_time_h": 110.0,
+    "elevation_m": 4554
   },
-  "weekly": [],
-  "recent": []
+  "weekly": [
+    {
+      "label": "W28",
+      "km": 35.1,
+      "start": "2026-07-06"
+    },
+    {
+      "label": "W29",
+      "km": 22.8,
+      "start": "2026-07-13"
+    },
+    {
+      "label": "W30",
+      "km": 20.6,
+      "start": "2026-07-20"
+    },
+    {
+      "label": "W31",
+      "km": 36.1,
+      "start": "2026-07-27"
+    },
+    {
+      "label": "W32",
+      "km": 13.0,
+      "start": "2026-08-03"
+    },
+    {
+      "label": "W33",
+      "km": 31.2,
+      "start": "2026-08-10"
+    },
+    {
+      "label": "W34",
+      "km": 31.9,
+      "start": "2026-08-17"
+    },
+    {
+      "label": "Nu",
+      "km": 10.1,
+      "start": "2026-08-24"
+    }
+  ],
+  "recent": [
+    {
+      "date": "25-08-2026",
+      "type": "Tempo 6km",
+      "km": 10.1,
+      "time": "55 min"
+    },
+    {
+      "date": "22-08-2026",
+      "type": "17km Long Run",
+      "km": 17.3,
+      "time": "1:47"
+    },
+    {
+      "date": "20-08-2026",
+      "type": "5km Easy Run",
+      "km": 8.0,
+      "time": "48 min"
+    },
+    {
+      "date": "18-08-2026",
+      "type": "Progressive Run",
+      "km": 6.6,
+      "time": "31 min"
+    },
+    {
+      "date": "15-08-2026",
+      "type": "Half Marathon Progressive Long Run",
+      "km": 21.1,
+      "time": "1:54"
+    },
+    {
+      "date": "11-08-2026",
+      "type": "400s into 200s",
+      "km": 10.1,
+      "time": "57 min"
+    },
+    {
+      "date": "06-08-2026",
+      "type": "7km Easy Run",
+      "km": 5.0,
+      "time": "32 min"
+    },
+    {
+      "date": "04-08-2026",
+      "type": "Tempo 2-1-1",
+      "km": 8.0,
+      "time": "43 min"
+    },
+    {
+      "date": "01-08-2026",
+      "type": "17km Hotspot Long Run",
+      "km": 18.4,
+      "time": "1:45"
+    },
+    {
+      "date": "30-07-2026",
+      "type": "7km Easy Run",
+      "km": 7.1,
+      "time": "48 min"
+    },
+    {
+      "date": "29-07-2026",
+      "type": "Hyrox sessie 2",
+      "km": 3.0,
+      "time": "37 min"
+    },
+    {
+      "date": "28-07-2026",
+      "type": "On Off Ks",
+      "km": 7.5,
+      "time": "41 min"
+    },
+    {
+      "date": "25-07-2026",
+      "type": "5km Time Trial",
+      "km": 6.2,
+      "time": "29 min"
+    },
+    {
+      "date": "23-07-2026",
+      "type": "9km Long Run",
+      "km": 9.1,
+      "time": "50 min"
+    },
+    {
+      "date": "21-07-2026",
+      "type": "5km Easy Run",
+      "km": 5.4,
+      "time": "33 min"
+    }
+  ]
 }
