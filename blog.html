@@ -1,15 +1,23 @@
+```html
 <!DOCTYPE html>
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Blog — Damian Vink</title>
-<meta name="description" content="Blog van Damian Vink.">
+
+<title>Knowledge — Damian Vink | Werktuigbouwkunde & Hardlopen</title>
+
+<meta name="description" content="Praktische kennis van Damian Vink over werktuigbouwkunde, machinebouw, mechanisch ontwerp, engineering en hardlopen.">
+
+<link rel="canonical" href="https://damianvink.nl/blog.html">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
 <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
   <div class="grid-bg" aria-hidden="true"></div>
@@ -17,49 +25,197 @@
   <div class="block block--blue" aria-hidden="true"></div>
   <div class="block block--yellow" aria-hidden="true"></div>
 
+
   <header>
-    <a class="mark" href="index.html"><strong>Damian Vink</strong> — damianvink.nl</a>
+
+    <a class="mark" href="index.html">
+      <strong>Damian Vink</strong> — damianvink.nl
+    </a>
+
     <nav class="site-nav" aria-label="Hoofdmenu">
       <a href="over-mij.html">Over mij</a>
       <a href="werk.html">Werk</a>
-      <a href="blog.html" aria-current="page">Blog</a>
+      <a href="blog.html" aria-current="page">Knowledge</a>
       <a href="contact.html">Contact</a>
     </nav>
+
   </header>
 
+
   <main>
-    <p class="eyebrow">03 — Blog</p>
-    <h1>Wat ik <span class="last">schrijf.</span></h1>
-    <p class="lede">Aantekeningen over marathontraining: schema's, voeding, blessurepreventie en de rest van wat erbij komt kijken.</p>
 
-    <div class="blog-list" role="list" aria-label="Artikelen">
-      <a class="blog-card" role="listitem" href="marathon-trainingsschema-beginners.html">
-        <span class="blog-card-left">
-          <span class="blog-card-title">Marathon trainingsschema voor beginners: 16 weken zonder blessures</span>
-          <span class="blog-card-excerpt">Hoe je van je eerste kilometers naar de finish van je eerste marathon bouwt, zonder halverwege geblesseerd te raken.</span>
-        </span>
-        <span class="blog-card-date">Artikel 1</span>
-      </a>
-      <a class="blog-card" role="listitem" href="marathon-voeding-en-vocht.html">
-        <span class="blog-card-left">
-          <span class="blog-card-title">Wat eet en drink je tijdens een marathon?</span>
-          <span class="blog-card-excerpt">Praktische richtlijnen voor voeding en vocht vóór, tijdens en na de wedstrijd — en waarom je dit nooit voor het eerst op wedstrijddag moet proberen.</span>
-        </span>
-        <span class="blog-card-date">Artikel 2</span>
-      </a>
-    </div>
+    <p class="eyebrow">03 — Knowledge</p>
 
-    <p class="more-soon">Meer artikelen volgen binnenkort.</p>
+    <h1>
+      Wat ik <span class="last">weet.</span>
+    </h1>
+
+    <p class="lede">
+      Praktische kennis, ervaringen en lessen uit twee gebieden die mij
+      interesseren: werktuigbouwkunde en hardlopen.
+    </p>
+
+
+    <!-- ENGINEERING -->
+
+    <section class="knowledge-category" aria-labelledby="engineering-title">
+
+      <div class="knowledge-category__header">
+
+        <span class="num">01</span>
+
+        <div>
+
+          <h2 id="engineering-title">
+            Engineering
+          </h2>
+
+          <p>
+            Werktuigbouwkunde, machinebouw en praktisch ontwerpen.
+            Ik deel kennis over materialen, toleranties, berekeningen,
+            constructies, mechanismen en technische ontwerpkeuzes.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="blog-list" role="list" aria-label="Engineering artikelen">
+
+        <div class="empty-state" role="listitem">
+
+          <p class="title">
+            Engineeringartikelen komen eraan.
+          </p>
+
+          <p>
+            Ik bouw een verzameling praktische artikelen op over
+            werktuigbouwkunde en machinebouw. Denk aan materiaalkennis,
+            toleranties, berekeningen, constructie en ontwerpkeuzes uit
+            de praktijk.
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- HARDLOPEN -->
+
+    <section class="knowledge-category" aria-labelledby="running-title">
+
+      <div class="knowledge-category__header">
+
+        <span class="num">02</span>
+
+        <div>
+
+          <h2 id="running-title">
+            Hardlopen
+          </h2>
+
+          <p>
+            Marathontraining, voeding, hydratatie en de lessen die ik
+            leer tijdens het trainen voor lange afstanden.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="blog-list" role="list" aria-label="Artikelen over hardlopen">
+
+
+        <a
+          class="blog-card"
+          role="listitem"
+          href="marathon-trainingsschema-beginners.html"
+        >
+
+          <span class="blog-card-left">
+
+            <span class="blog-card-title">
+              Marathon trainingsschema voor beginners: 16 weken zonder blessures
+            </span>
+
+            <span class="blog-card-excerpt">
+              Hoe je van je eerste kilometers naar de finish van je eerste
+              marathon bouwt, zonder halverwege geblesseerd te raken.
+            </span>
+
+          </span>
+
+          <span class="blog-card-date">
+            Hardlopen · 01
+          </span>
+
+        </a>
+
+
+        <a
+          class="blog-card"
+          role="listitem"
+          href="marathon-voeding-en-vocht.html"
+        >
+
+          <span class="blog-card-left">
+
+            <span class="blog-card-title">
+              Wat eet en drink je tijdens een marathon?
+            </span>
+
+            <span class="blog-card-excerpt">
+              Praktische richtlijnen voor voeding en vocht vóór, tijdens
+              en na de wedstrijd — en waarom je dit nooit voor het eerst
+              op wedstrijddag moet proberen.
+            </span>
+
+          </span>
+
+          <span class="blog-card-date">
+            Hardlopen · 02
+          </span>
+
+        </a>
+
+
+      </div>
+
+    </section>
+
+
+    <p class="more-soon">
+      Meer kennis en artikelen volgen binnenkort.
+    </p>
+
   </main>
 
+
   <footer>
-    <span class="contact">Vragen of ideeën? <a href="mailto:hallo@damianvink.nl">hallo@damianvink.nl</a></span>
-    <span class="copy">© <span id="year"></span> Damian Vink</span>
+
+    <span class="contact">
+      Vragen of ideeën?
+      <a href="mailto:hallo@damianvink.nl">
+        hallo@damianvink.nl
+      </a>
+    </span>
+
+    <span class="copy">
+      © <span id="year"></span> Damian Vink
+    </span>
+
   </footer>
 
+
   <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
+    document.getElementById('year').textContent =
+      new Date().getFullYear();
   </script>
 
 </body>
 </html>
+```
