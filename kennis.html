@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -146,7 +145,12 @@
 
     <section class="knowledge-category">
 
-      <div class="knowledge-category__header">
+      <button
+        class="knowledge-category__header knowledge-category__toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="engineering-content"
+      >
 
         <span class="num">
           01
@@ -166,89 +170,104 @@
 
         </div>
 
-      </div>
-
-
-      <div class="knowledge-articles">
-
-
-        <!-- TOOLS -->
-
-        <a
-          class="knowledge-link"
-          href="/kennis/engineering/tools"
+        <span
+          class="knowledge-category__arrow"
+          aria-hidden="true"
         >
+          ↓
+        </span>
 
-          <span>
-
-            <strong>
-              Tools & naslag
-            </strong>
-
-            <small>
-              Tabellen · Formules · Technische gegevens
-            </small>
-
-          </span>
-
-          <span aria-hidden="true">
-            →
-          </span>
-
-        </a>
+      </button>
 
 
-        <!-- ONTWIKKELINGEN -->
+      <div
+        id="engineering-content"
+        class="knowledge-category__content"
+        hidden
+      >
 
-        <a
-          class="knowledge-link"
-          href="/kennis/engineering/ontwikkelingen"
-        >
-
-          <span>
-
-            <strong>
-              Ontwikkelingen
-            </strong>
-
-            <small>
-              Projecten · Technologie · Nieuws · Innovatie
-            </small>
-
-          </span>
-
-          <span aria-hidden="true">
-            →
-          </span>
-
-        </a>
+        <div class="knowledge-articles">
 
 
-        <!-- ARTIKELEN -->
+          <!-- TOOLS -->
 
-        <a
-          class="knowledge-link"
-          href="/kennis/engineering/artikelen"
-        >
+          <a
+            class="knowledge-link"
+            href="/kennis/engineering/tools"
+          >
 
-          <span>
+            <span>
 
-            <strong>
-              Artikelen
-            </strong>
+              <strong>
+                Tools & naslag
+              </strong>
 
-            <small>
-              Materialen · Ontwerp · Machinebouw · Engineering
-            </small>
+              <small>
+                Tabellen · Formules · Technische gegevens
+              </small>
 
-          </span>
+            </span>
 
-          <span aria-hidden="true">
-            →
-          </span>
+            <span aria-hidden="true">
+              →
+            </span>
 
-        </a>
+          </a>
 
+
+          <!-- ONTWIKKELINGEN -->
+
+          <a
+            class="knowledge-link"
+            href="/kennis/engineering/ontwikkelingen"
+          >
+
+            <span>
+
+              <strong>
+                Ontwikkelingen
+              </strong>
+
+              <small>
+                Projecten · Technologie · Nieuws · Innovatie
+              </small>
+
+            </span>
+
+            <span aria-hidden="true">
+              →
+            </span>
+
+          </a>
+
+
+          <!-- ARTIKELEN -->
+
+          <a
+            class="knowledge-link"
+            href="/kennis/engineering/artikelen"
+          >
+
+            <span>
+
+              <strong>
+                Artikelen
+              </strong>
+
+              <small>
+                Materialen · Ontwerp · Machinebouw · Engineering
+              </small>
+
+            </span>
+
+            <span aria-hidden="true">
+              →
+            </span>
+
+          </a>
+
+
+        </div>
 
       </div>
 
@@ -469,13 +488,44 @@
   </footer>
 
 
+  <!-- =====================================================
+       JAVASCRIPT
+       ===================================================== -->
+
   <script>
 
     document.getElementById('year').textContent =
       new Date().getFullYear();
 
+
+    /* =====================================================
+       ENGINEERING UITKLAPMENU
+       ===================================================== */
+
+    const engineeringToggle =
+      document.querySelector('.knowledge-category__toggle');
+
+    const engineeringContent =
+      document.getElementById('engineering-content');
+
+
+    engineeringToggle.addEventListener('click', function () {
+
+      const isOpen =
+        engineeringToggle.getAttribute('aria-expanded') === 'true';
+
+
+      engineeringToggle.setAttribute(
+        'aria-expanded',
+        String(!isOpen)
+      );
+
+
+      engineeringContent.hidden = isOpen;
+
+    });
+
   </script>
 
 </body>
 </html>
-```
