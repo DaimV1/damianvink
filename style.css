@@ -1691,3 +1691,78 @@ h1.display-title {
   color: var(--grey);
   margin: 28px 0 0;
 }
+
+/* Fit tables */
+.fit-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 28px;
+  font-size: 14px;
+}
+.swatch {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  margin-right: 8px;
+  vertical-align: -2px;
+}
+.table-scroll {
+  overflow-x: auto;
+  margin: 8px 0 36px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.fit-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 13px;
+  white-space: nowrap;
+}
+.fit-table th,
+.fit-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  text-align: center;
+}
+.fit-table th:first-child,
+.fit-table td:first-child {
+  text-align: left;
+  font-weight: 500;
+}
+.fit-table thead th {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  background: var(--paper-elevated);
+}
+.fit-los, .swatch.fit-los { background: rgba(46, 160, 110, 0.22); }
+.fit-overgang, .swatch.fit-overgang { background: rgba(210, 160, 40, 0.24); }
+.fit-vast, .swatch.fit-vast { background: rgba(210, 80, 60, 0.22); }
+.fit-table td.fit-los { background: rgba(46, 160, 110, 0.18); }
+.fit-table td.fit-overgang { background: rgba(210, 160, 40, 0.18); }
+.fit-table td.fit-vast { background: rgba(210, 80, 60, 0.18); }
+.fit-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 12px 0 28px;
+}
+.fit-card {
+  border-radius: 8px;
+  padding: 16px;
+  border: 1px solid var(--line);
+}
+.fit-card h3 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 16px;
+  margin: 0 0 8px;
+}
+.fit-card p { margin: 0; font-size: 14px; line-height: 1.5; }
+@media (max-width: 800px) {
+  .fit-cards { grid-template-columns: 1fr; }
+}
