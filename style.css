@@ -128,32 +128,20 @@ img {
 }
 
 .block--red {
-  width: 64px;
-  height: 128px;
-  background: var(--red);
-  top: 64px;
-  right: 128px;
-  opacity: 0.9;
+  display: none;
 }
 
 .block--blue {
-  width: 128px;
-  height: 64px;
+  width: 96px;
+  height: 48px;
   background: var(--blue);
   bottom: 0;
-  left: 64px;
-  opacity: 0.9;
+  left: 48px;
+  opacity: 0.35;
 }
 
 .block--yellow {
-  width: 64px;
-  height: 64px;
-  background: var(--yellow);
-  bottom: 192px;
-  right: 0;
-  animation: pulse 5s ease-in-out infinite;
-  transform-origin: center;
-  opacity: 0.95;
+  display: none;
 }
 
 @keyframes pulse {
@@ -247,7 +235,7 @@ nav.site-nav a:hover {
 
 nav.site-nav a[aria-current="page"] {
   color: var(--ink);
-  border-bottom-color: var(--red);
+  border-bottom-color: var(--blue);
 }
 
 nav.site-nav a:focus-visible,
@@ -338,8 +326,12 @@ main > section + section:not(.knowledge) {
   font-size: 13px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--red);
+  color: var(--grey);
   margin: 0 0 20px;
+}
+
+.eyebrow--muted {
+  color: var(--grey);
 }
 
 h1 {
@@ -1335,4 +1327,91 @@ main > .eyebrow:first-child {
 /* Anchor targets shouldn't sit under the sticky header */
 main [id] {
   scroll-margin-top: 96px;
+}
+
+
+/* =========================================================
+   DISPLAY TITLES (Wie ik ben / Wat ik doe / Wat ik weet)
+   Same visual weight as the hero name.
+   ========================================================= */
+
+.display-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: clamp(36px, 6.5vw, 72px);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  margin: 0 0 28px;
+  color: var(--ink);
+}
+
+.display-title .last {
+  color: var(--blue);
+}
+
+h1.display-title {
+  margin-bottom: 32px;
+}
+
+.page-section {
+  padding-top: 56px;
+  padding-bottom: 24px;
+  border-top: 1px solid var(--line);
+  margin-top: 48px;
+}
+
+.page-section:first-of-type,
+.hero + .page-section {
+  border-top: none;
+  margin-top: 32px;
+}
+
+.section-cta {
+  margin: 28px 0 0;
+}
+
+.text-link {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 600;
+  font-size: 17px;
+  text-decoration: none;
+  color: var(--ink);
+  border-bottom: 1px solid var(--line-strong);
+  padding-bottom: 2px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.text-link:hover {
+  color: var(--blue);
+  border-bottom-color: var(--blue);
+}
+
+.work-card-sub {
+  opacity: 0.7;
+  font-size: 11px;
+}
+
+/* CV only subtle on dedicated page */
+.cv-section--subtle {
+  margin-top: 64px;
+  padding-top: 32px;
+  border-top: 1px solid var(--line);
+  max-width: 520px;
+}
+
+.cv-heading {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 600;
+  font-size: 22px;
+  margin: 0 0 12px;
+  letter-spacing: -0.01em;
+}
+
+.cv-section--subtle .cv-button {
+  margin-top: 8px;
+}
+
+/* Callouts: blue accent instead of orange/red */
+.callout {
+  border-left-color: var(--blue);
 }
