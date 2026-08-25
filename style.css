@@ -1766,3 +1766,5 @@ h1.display-title {
 @media (max-width: 800px) {
   .fit-cards { grid-template-columns: 1fr; }
 }
+
+.link-list { display: flex; flex-direction: column; gap: 8px; margin: 8px 0 32px; }
