@@ -1,15 +1,23 @@
+```html
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Damian Vink</title>
-<meta name="description" content="Persoonlijke website van Damian Vink.">
+
+<title>Damian Vink | Project Engineer & Mechanical Engineering</title>
+
+<meta name="description" content="Damian Vink is a Project Engineer and Mechanical Engineer sharing knowledge about mechanical engineering, machine construction, design and running.">
+
+<link rel="canonical" href="https://damianvink.nl/">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
 <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
   <div class="grid-bg" aria-hidden="true"></div>
@@ -18,50 +26,169 @@
   <div class="block block--yellow" aria-hidden="true"></div>
 
   <header>
-    <a class="mark" href="index.html"><strong>Damian Vink</strong> — damianvink.nl</a>
+    <a class="mark" href="index.html">
+      <strong>Damian Vink</strong> — damianvink.nl
+    </a>
+
     <nav class="site-nav" aria-label="Hoofdmenu">
       <a href="over-mij.html">Over mij</a>
       <a href="werk.html">Werk</a>
-      <a href="blog.html">Blog</a>
+      <a href="blog.html">Knowledge</a>
       <a href="contact.html">Contact</a>
     </nav>
   </header>
 
   <main>
-    <p class="eyebrow">Persoonlijke website</p>
-    <h1>Damian <span class="last">Vink.</span></h1>
-    <p class="lede">
-      <span class="placeholder">Vul hier in een paar zinnen aan wie je bent en wat bezoekers op deze site kunnen verwachten.</span>
-    </p>
 
-    <div class="pages" role="list" aria-label="Onderdelen van de site">
-      <a class="page-item" role="listitem" href="over-mij.html">
-        <span class="num">01</span>
-        <span class="name">Over mij</span>
-        <span class="teaser">Wie ik ben</span>
-      </a>
-      <a class="page-item" role="listitem" href="werk.html">
-        <span class="num">02</span>
-        <span class="name">Werk</span>
-        <span class="teaser">Wat ik maak</span>
-      </a>
-      <a class="page-item" role="listitem" href="blog.html">
-        <span class="num">03</span>
-        <span class="name">Blog</span>
-        <span class="teaser">Wat ik schrijf</span>
-      </a>
-      <a class="page-item" role="listitem" href="contact.html">
-        <span class="num">04</span>
-        <span class="name">Contact</span>
-        <span class="teaser">Even mailen</span>
-      </a>
-    </div>
+    <!-- HERO -->
+    <section class="hero" aria-labelledby="hero-title">
+
+      <p class="eyebrow">Project Engineer · Mechanical Engineering</p>
+
+      <h1 id="hero-title">
+        Damian <span class="last">Vink.</span>
+      </h1>
+
+      <p class="lede">
+        Project Engineer and mechanical engineer with a passion for
+        machine construction, engineering design and practical problem solving.
+        I use this website to share my work, engineering knowledge and experiences.
+      </p>
+
+    </section>
+
+
+    <!-- MAIN SECTIONS -->
+    <section aria-labelledby="site-sections-title">
+
+      <h2 id="site-sections-title" class="visually-hidden">
+        Website sections
+      </h2>
+
+      <div class="pages" role="list">
+
+        <a class="page-item" role="listitem" href="over-mij.html">
+          <span class="num">01</span>
+          <span class="name">Over mij</span>
+          <span class="teaser">Wie ik ben</span>
+        </a>
+
+        <a class="page-item" role="listitem" href="werk.html">
+          <span class="num">02</span>
+          <span class="name">Werk</span>
+          <span class="teaser">Mijn werk als engineer</span>
+        </a>
+
+        <a class="page-item" role="listitem" href="blog.html">
+          <span class="num">03</span>
+          <span class="name">Knowledge</span>
+          <span class="teaser">Engineering & running</span>
+        </a>
+
+        <a class="page-item" role="listitem" href="contact.html">
+          <span class="num">04</span>
+          <span class="name">Contact</span>
+          <span class="teaser">Even mailen</span>
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- KNOWLEDGE -->
+    <section class="knowledge" aria-labelledby="knowledge-title">
+
+      <p class="eyebrow">Knowledge</p>
+
+      <h2 id="knowledge-title">
+        Engineering, running & things I learn along the way.
+      </h2>
+
+      <p class="section-intro">
+        I share practical knowledge and experiences from two areas that
+        interest me: mechanical engineering and running.
+      </p>
+
+
+      <!-- ENGINEERING -->
+      <article class="knowledge-category">
+
+        <div class="knowledge-category__header">
+          <span class="num">01</span>
+
+          <div>
+            <h3>Engineering</h3>
+
+            <p>
+              Mechanical engineering, machine construction, design,
+              materials, tolerances and practical engineering problems.
+            </p>
+          </div>
+        </div>
+
+        <a class="knowledge-link" href="blog.html">
+          Explore engineering knowledge
+          <span aria-hidden="true">→</span>
+        </a>
+
+      </article>
+
+
+      <!-- RUNNING -->
+      <article class="knowledge-category">
+
+        <div class="knowledge-category__header">
+          <span class="num">02</span>
+
+          <div>
+            <h3>Running</h3>
+
+            <p>
+              My experiences with running, marathon preparation,
+              training and everything I learn along the way.
+            </p>
+          </div>
+        </div>
+
+        <div class="knowledge-articles">
+
+          <a class="knowledge-link" href="marathon-trainingsschema-beginners.html">
+            <span>
+              <strong>Marathon training schedule for beginners</strong>
+              <small>Running · Training</small>
+            </span>
+            <span aria-hidden="true">→</span>
+          </a>
+
+          <a class="knowledge-link" href="marathon-voeding-en-vocht.html">
+            <span>
+              <strong>Marathon nutrition and hydration</strong>
+              <small>Running · Nutrition</small>
+            </span>
+            <span aria-hidden="true">→</span>
+          </a>
+
+        </div>
+
+      </article>
+
+    </section>
+
   </main>
 
+
   <footer>
-    <span class="contact">Vragen of ideeën? <a href="mailto:hallo@damianvink.nl">hallo@damianvink.nl</a></span>
-    <span class="copy">© <span id="year"></span> Damian Vink</span>
+    <span class="contact">
+      Vragen of ideeën?
+      <a href="mailto:hallo@damianvink.nl">hallo@damianvink.nl</a>
+    </span>
+
+    <span class="copy">
+      © <span id="year"></span> Damian Vink
+    </span>
   </footer>
+
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
@@ -69,3 +196,4 @@
 
 </body>
 </html>
+```
