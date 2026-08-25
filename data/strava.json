@@ -1,0 +1,12 @@
+{
+  "source": "Strava export",
+  "updated": null,
+  "totals": {
+    "distance_km": null,
+    "activities": null,
+    "moving_time_h": null,
+    "elevation_m": null
+  },
+  "weekly": [],
+  "recent": []
+}
