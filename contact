@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+<html lang="nl"><head>
+<meta charset="UTF-8">
+<meta http-equiv="refresh" content="0;url=/#contact">
+<link rel="canonical" href="https://damianvink.nl/#contact">
+<title>Doorverwijzing</title>
+<script>location.replace("/#contact");</script>
+</head><body><p><a href="/#contact">Verder</a></p></body></html>
