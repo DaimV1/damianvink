@@ -727,5 +727,52 @@ footer{
     height:36px;
     bottom:120px;
   }
+  /* ---- comparison table ---- */
+
+.comparison-table{
+  max-width:680px;
+  overflow-x:auto;
+  margin:8px 0 12px;
+}
+
+.comparison-table table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:14px;
+  line-height:1.5;
+}
+
+.comparison-table th,
+.comparison-table td{
+  text-align:left;
+  vertical-align:top;
+  padding:14px 12px;
+  border-bottom:1px solid var(--line);
+}
+
+.comparison-table th{
+  font-family:'Space Grotesk',sans-serif;
+  font-weight:600;
+  color:var(--ink);
+}
+
+.comparison-table td{
+  color:#3A3B41;
+}
+
+.comparison-table th:first-child,
+.comparison-table td:first-child{
+  width:28%;
+  font-weight:500;
+  color:var(--ink);
+}
+
+.table-note{
+  font-size:12px;
+  line-height:1.6;
+  color:var(--grey);
+  max-width:680px;
+  margin:0 0 20px;
+}
 }
 ```
