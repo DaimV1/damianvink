@@ -4,19 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Marathon — Damian Vink</title>
-<meta name="description" content="Trainingsdashboard op basis van Strava-exportdata. Persoonlijke marathonvoorbereiding van Damian Vink.">
+<meta name="description" content="Trainingsdashboard: totalen en EDP Porto Marathon-plan vanaf 3 juni 2026, op basis van Strava-export.">
 <link rel="canonical" href="https://damianvink.nl/doe/marathon/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Damian Vink">
 <meta property="og:locale" content="nl_NL">
 <meta property="og:url" content="https://damianvink.nl/doe/marathon/">
 <meta property="og:title" content="Marathon — Damian Vink">
-<meta property="og:description" content="Trainingsdashboard op basis van Strava-exportdata. Persoonlijke marathonvoorbereiding van Damian Vink.">
+<meta property="og:description" content="Trainingsdashboard: totalen en EDP Porto Marathon-plan vanaf 3 juni 2026.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script>(function(){var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);})();</script>
-
 <link rel="stylesheet" href="/style.css">
 <link rel="sitemap" type="application/xml" href="/sitemap.xml">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-C0F8CBQPT0"></script>
@@ -54,166 +53,221 @@
     <p class="eyebrow eyebrow--muted">Wat ik doe</p>
     <h1 class="display-title">Mara<span class="last">thon.</span></h1>
     <p class="lede">
-      Ik train voor een marathon. Dit dashboard toont mijn eigen
-      trainingsdata uit een Strava-export — geen generiek schema,
-      maar het traject zoals het loopt.
+      Trainingsdata uit Strava. Eerst het totaalbeeld van alle hardloopsessies,
+      daaronder het trainingsblok richting de <strong>EDP Porto Marathon</strong>
+      (runs vanaf 3 juni 2026).
     </p>
 
-    <section class="dash" aria-label="Trainingscijfers">
-      <div class="dash-kpis">
+    <!-- 1. TOTAL OVERVIEW -->
+    <section class="dash-panel reveal" aria-labelledby="total-title">
+      <h2 id="total-title" class="dash-heading">Totaaloverzicht</h2>
+      <p class="dash-note">Alle hardloopsessies in Strava (april 2023 – heden).</p>
+      <div class="dash-kpis" id="kpis-all">
         <article class="kpi">
           <span class="kpi-label">Afstand</span>
-          <span class="kpi-value" data-strava="distance_km">—</span>
+          <span class="kpi-value" data-all="distance_km">—</span>
           <span class="kpi-unit">km</span>
         </article>
         <article class="kpi">
           <span class="kpi-label">Activiteiten</span>
-          <span class="kpi-value" data-strava="activities">—</span>
+          <span class="kpi-value" data-all="activities">—</span>
           <span class="kpi-unit">stuks</span>
         </article>
         <article class="kpi">
           <span class="kpi-label">Tijd in beweging</span>
-          <span class="kpi-value" data-strava="moving_time_h">—</span>
+          <span class="kpi-value" data-all="moving_time_h">—</span>
           <span class="kpi-unit">uur</span>
         </article>
         <article class="kpi">
           <span class="kpi-label">Hoogtemeters</span>
-          <span class="kpi-value" data-strava="elevation_m">—</span>
+          <span class="kpi-value" data-all="elevation_m">—</span>
           <span class="kpi-unit">m</span>
         </article>
       </div>
+    </section>
 
-      <div class="dash-panel">
-        <h2 class="dash-heading">Weekvolume</h2>
-        <p class="dash-note" id="strava-status">
-          Dashboard staat klaar. Zodra de Strava-export is verwerkt
-          verschijnen hier weekkilometers en recente trainingen.
-        </p>
-        <div class="week-bars" id="week-bars" aria-hidden="true">
-          <div class="week-bar" style="--h:18%"><span>W−7</span></div>
-          <div class="week-bar" style="--h:28%"><span>W−6</span></div>
-          <div class="week-bar" style="--h:22%"><span>W−5</span></div>
-          <div class="week-bar" style="--h:40%"><span>W−4</span></div>
-          <div class="week-bar" style="--h:36%"><span>W−3</span></div>
-          <div class="week-bar" style="--h:52%"><span>W−2</span></div>
-          <div class="week-bar" style="--h:48%"><span>W−1</span></div>
-          <div class="week-bar is-now" style="--h:8%"><span>Nu</span></div>
-        </div>
-        <p class="table-note">Grijze staven zijn een voorbeeldopbouw tot de echte data erin staat.</p>
+    <!-- 2. PORTO PLAN -->
+    <section class="dash-panel reveal" aria-labelledby="plan-title">
+      <h2 id="plan-title" class="dash-heading">Trainingsblok · EDP Porto Marathon</h2>
+      <p class="dash-note" id="plan-note">
+        Hardloopsessies vanaf 3 juni 2026. Weekvolume en cumulatieve kilometers
+        uit de Strava-export.
+      </p>
+
+      <div class="dash-kpis" id="kpis-plan">
+        <article class="kpi">
+          <span class="kpi-label">Afstand plan</span>
+          <span class="kpi-value" data-plan="distance_km">—</span>
+          <span class="kpi-unit">km</span>
+        </article>
+        <article class="kpi">
+          <span class="kpi-label">Runs</span>
+          <span class="kpi-value" data-plan="activities">—</span>
+          <span class="kpi-unit">stuks</span>
+        </article>
+        <article class="kpi">
+          <span class="kpi-label">Tijd in beweging</span>
+          <span class="kpi-value" data-plan="moving_time_h">—</span>
+          <span class="kpi-unit">uur</span>
+        </article>
+        <article class="kpi">
+          <span class="kpi-label">Gem. tempo</span>
+          <span class="kpi-value" id="avg-pace">—</span>
+          <span class="kpi-unit">min/km</span>
+        </article>
       </div>
 
-      <div class="dash-panel">
-        <h2 class="dash-heading">Recente trainingen</h2>
-        <div class="empty-state">
-          <p class="title">Nog geen export geladen</p>
-          <p>
-            Plaats een verwerkte Strava-export in
-            <code>data/strava.json</code>. Het dashboard leest afstand,
-            duur, activiteiten en weekvolume automatisch in.
-          </p>
-        </div>
-        <table class="dash-table" id="recent-table" hidden>
-          <thead>
-            <tr><th>Datum</th><th>Type</th><th>Afstand</th><th>Tijd</th></tr>
-          </thead>
-          <tbody></tbody>
-        </table>
+      <h3 class="dash-sub">Weekvolume (km)</h3>
+      <div class="week-bars week-bars--wide" id="week-bars" role="img" aria-label="Weekkilometers in het trainingsblok"></div>
+      <p class="table-note" id="week-caption"></p>
+
+      <h3 class="dash-sub">Cumulatieve kilometers</h3>
+      <div class="chart-wrap">
+        <svg id="cum-chart" class="cum-chart" viewBox="0 0 640 220" preserveAspectRatio="none" role="img" aria-label="Cumulatieve kilometers sinds start plan"></svg>
       </div>
+      <p class="table-note" id="cum-caption"></p>
+    </section>
+
+    <section class="dash-panel reveal" aria-labelledby="recent-title">
+      <h2 id="recent-title" class="dash-heading">Recente trainingen in het plan</h2>
+      <table class="dash-table" id="recent-table">
+        <thead>
+          <tr><th>Datum</th><th>Training</th><th>Afstand</th><th>Tijd</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <p class="empty-state" id="recent-empty" hidden>
+        <span class="title">Geen data geladen</span>
+      </p>
     </section>
   </main>
+
   <footer>
     <span class="contact">Contact: <a href="mailto:damianvink@live.nl">damianvink@live.nl</a></span>
     <span class="copy">© <span id="year"></span> Damian Vink</span>
   </footer>
-
-<script>document.getElementById("year").textContent=new Date().getFullYear();</script>
-<script>
-(function(){
-  var root=document.documentElement;
-  var stored=localStorage.getItem("theme");
-  if(stored==="light"||stored==="dark") root.setAttribute("data-theme",stored);
-  function apply(theme){root.setAttribute("data-theme",theme);localStorage.setItem("theme",theme);}
-  document.addEventListener("DOMContentLoaded",function(){
-    var btn=document.querySelector(".theme-toggle");
-    if(!btn) return;
-    btn.addEventListener("click",function(){
-      var current=root.getAttribute("data-theme");
-      if(!current) current=window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";
-      apply(current==="dark"?"light":"dark");
+  <script>document.getElementById("year").textContent=new Date().getFullYear();</script>
+  <script>
+  (function(){
+    var root=document.documentElement;
+    var stored=localStorage.getItem("theme");
+    if(stored==="light"||stored==="dark") root.setAttribute("data-theme",stored);
+    function apply(theme){root.setAttribute("data-theme",theme);localStorage.setItem("theme",theme);}
+    document.addEventListener("DOMContentLoaded",function(){
+      var btn=document.querySelector(".theme-toggle");
+      if(btn) btn.addEventListener("click",function(){
+        var current=root.getAttribute("data-theme");
+        if(!current) current=window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";
+        apply(current==="dark"?"light":"dark");
+      });
+      var header=document.querySelector("header");
+      if(header){
+        var onScroll=function(){header.classList.toggle("is-scrolled",window.scrollY>8);};
+        onScroll();
+        window.addEventListener("scroll",onScroll,{passive:true});
+      }
     });
-    var header=document.querySelector("header");
-    if(header){
-      var onScroll=function(){header.classList.toggle("is-scrolled",window.scrollY>8);};
-      onScroll();
-      window.addEventListener("scroll",onScroll,{passive:true});
-    }
-    var els=document.querySelectorAll(".reveal");
-    if(!els.length) return;
-    if(!("IntersectionObserver" in window)){els.forEach(function(el){el.classList.add("is-visible");});return;}
-    var io=new IntersectionObserver(function(entries){
-      entries.forEach(function(entry){
-        if(entry.isIntersecting){entry.target.classList.add("is-visible");io.unobserve(entry.target);}
-      });
-    },{threshold:0.12,rootMargin:"0px 0px -40px 0px"});
-    els.forEach(function(el){io.observe(el);});
-  });
-})();
-</script>
-
-<script>
-(function(){
-  fetch("/data/strava.json")
-    .then(function(r){ return r.ok ? r.json() : null; })
-    .then(function(data){
-      if(!data || !data.totals) return;
-      var t = data.totals;
-      var map = {
-        distance_km: t.distance_km,
-        activities: t.activities,
-        moving_time_h: t.moving_time_h,
-        elevation_m: t.elevation_m
-      };
-      var has = false;
+  })();
+  </script>
+  <script>
+  (function(){
+    function fill(map, attr){
       Object.keys(map).forEach(function(k){
-        if(map[k] !== null && map[k] !== undefined){
-          has = true;
-          var el = document.querySelector('[data-strava="'+k+'"]');
-          if(el) el.textContent = map[k];
-        }
+        if(map[k] === null || map[k] === undefined) return;
+        var el = document.querySelector('['+attr+'="'+k+'"]');
+        if(el) el.textContent = map[k];
       });
-      if(has){
-        var st = document.getElementById("strava-status");
-        if(st) st.textContent = data.updated
-          ? "Laatst bijgewerkt: " + data.updated + " · bron: Strava-export"
-          : "Bron: Strava-export";
+    }
+
+    function renderWeeks(weekly){
+      var wrap = document.getElementById("week-bars");
+      if(!wrap || !weekly || !weekly.length) return;
+      wrap.innerHTML = "";
+      var max = Math.max.apply(null, weekly.map(function(w){ return w.km || 0; })) || 1;
+      weekly.forEach(function(w, i){
+        var d = document.createElement("div");
+        d.className = "week-bar" + (i === weekly.length - 1 ? " is-now" : "");
+        var pct = Math.max(4, Math.round((w.km || 0) / max * 100));
+        d.style.setProperty("--h", pct + "%");
+        d.title = (w.label || "") + ": " + (w.km || 0) + " km";
+        d.innerHTML = "<span class="wb-val">" + (w.km || 0) + "</span><span class="wb-lab">" + (w.label || "") + "</span>";
+        wrap.appendChild(d);
+      });
+      var cap = document.getElementById("week-caption");
+      if(cap){
+        var total = weekly.reduce(function(s,w){ return s + (w.km||0); }, 0);
+        cap.textContent = weekly.length + " weken · " + Math.round(total * 10) / 10 + " km in het plan";
       }
-      if(data.weekly && data.weekly.length){
-        var wrap = document.getElementById("week-bars");
-        wrap.innerHTML = "";
-        var max = Math.max.apply(null, data.weekly.map(function(w){ return w.km || 0; })) || 1;
-        data.weekly.forEach(function(w, i){
-          var d = document.createElement("div");
-          d.className = "week-bar" + (i === data.weekly.length-1 ? " is-now" : "");
-          d.style.setProperty("--h", Math.round((w.km||0)/max*100) + "%");
-          d.innerHTML = "<span>" + (w.label || "") + "</span>";
-          wrap.appendChild(d);
-        });
+    }
+
+    function renderCum(points){
+      var svg = document.getElementById("cum-chart");
+      if(!svg || !points || points.length < 2) return;
+      var W = 640, H = 220, pad = {t:16, r:12, b:28, l:40};
+      var iw = W - pad.l - pad.r, ih = H - pad.t - pad.b;
+      var maxY = Math.max.apply(null, points.map(function(p){ return p.km; })) || 1;
+      function x(i){ return pad.l + (i / (points.length - 1)) * iw; }
+      function y(v){ return pad.t + ih - (v / maxY) * ih; }
+
+      var line = [];
+      var area = ["M "+x(0)+" "+y(0)];
+      points.forEach(function(p, i){
+        var X = x(i), Y = y(p.km);
+        line.push((i ? "L" : "M") + " " + X.toFixed(1) + " " + Y.toFixed(1));
+        area.push("L " + X.toFixed(1) + " " + Y.toFixed(1));
+      });
+      area.push("L " + x(points.length-1).toFixed(1) + " " + y(0).toFixed(1) + " Z");
+
+      // grid lines
+      var grids = "";
+      for(var g = 1; g <= 4; g++){
+        var gv = (maxY / 4) * g;
+        var gy = y(gv);
+        grids += '<line x1="'+pad.l+'" y1="'+gy.toFixed(1)+'" x2="'+(W-pad.r)+'" y2="'+gy.toFixed(1)+'" class="chart-grid"/>';
+        grids += '<text x="'+(pad.l-6)+'" y="'+(gy+3).toFixed(1)+'" text-anchor="end" class="chart-label">'+Math.round(gv)+'</text>';
       }
-      if(data.recent && data.recent.length){
-        var table = document.getElementById("recent-table");
-        var tb = table.querySelector("tbody");
-        data.recent.forEach(function(row){
-          var tr = document.createElement("tr");
-          tr.innerHTML = "<td>"+(row.date||"")+"</td><td>"+(row.type||"")+"</td><td>"+(row.km||"")+" km</td><td>"+(row.time||"")+"</td>";
-          tb.appendChild(tr);
-        });
-        table.hidden = false;
-        var empty = table.previousElementSibling;
-        if(empty && empty.classList.contains("empty-state")) empty.hidden = true;
-      }
-    })
-    .catch(function(){});
-})();
-</script>
+      var last = points[points.length-1];
+      var first = points[0];
+      var labels = '<text x="'+pad.l+'" y="'+(H-8)+'" class="chart-label">'+first.date+'</text>' +
+                   '<text x="'+(W-pad.r)+'" y="'+(H-8)+'" text-anchor="end" class="chart-label">'+last.date+'</text>';
+
+      svg.innerHTML =
+        grids +
+        '<path d="'+area.join(" ")+'" class="chart-area"/>' +
+        '<path d="'+line.join(" ")+'" class="chart-line" fill="none"/>' +
+        labels;
+
+      var cap = document.getElementById("cum-caption");
+      if(cap) cap.textContent = "Opbouw tot " + last.km + " km sinds " + first.date;
+    }
+
+    fetch("/data/strava.json")
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(data){
+        if(!data) return;
+        if(data.totals_all) fill(data.totals_all, "data-all");
+        if(data.totals) fill(data.totals, "data-plan");
+        if(data.avg_pace){
+          var p = document.getElementById("avg-pace");
+          if(p) p.textContent = data.avg_pace;
+        }
+        if(data.plan && data.plan.note){
+          var n = document.getElementById("plan-note");
+          if(n) n.textContent = data.plan.note + " · bron: Strava-export" + (data.updated ? " · bijgewerkt " + data.updated : "");
+        }
+        renderWeeks(data.weekly || []);
+        renderCum(data.cumulative || []);
+        if(data.recent && data.recent.length){
+          var tb = document.querySelector("#recent-table tbody");
+          data.recent.forEach(function(row){
+            var tr = document.createElement("tr");
+            tr.innerHTML = "<td>"+row.date+"</td><td>"+row.type+"</td><td>"+row.km+" km</td><td>"+row.time+"</td>";
+            tb.appendChild(tr);
+          });
+        }
+      })
+      .catch(function(){});
+  })();
+  </script>
 </body>
 </html>
