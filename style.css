@@ -74,7 +74,7 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-family: "IBM Plex Sans", system-ui, sans-serif;
-  overflow-x: hidden;
+  overflow-x: clip;
   transition: background 0.25s ease, color 0.25s ease;
 }
 
