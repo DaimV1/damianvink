@@ -1065,3 +1065,167 @@ footer {
     justify-content: center;
   }
 }
+
+/* =========================================================
+   BREADCRUMB
+   ========================================================= */
+
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--grey);
+  margin: 0 0 28px;
+}
+
+.breadcrumb a {
+  color: var(--grey);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.breadcrumb a:hover {
+  color: var(--ink);
+  border-bottom-color: var(--line-strong);
+}
+
+.breadcrumb span[aria-hidden="true"] {
+  opacity: 0.5;
+}
+
+/* =========================================================
+   COMING SOON / DISABLED LINKS
+   ========================================================= */
+
+.knowledge-link--soon {
+  cursor: default;
+  opacity: 0.72;
+  pointer-events: none;
+  position: relative;
+}
+
+.knowledge-link--soon:hover {
+  color: inherit;
+  padding-left: 0;
+}
+
+.badge-soon {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--grey);
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  padding: 4px 10px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* =========================================================
+   PROFESSIONAL REFINEMENTS
+   ========================================================= */
+
+.article-body {
+  max-width: 640px;
+}
+
+.article-body p {
+  margin: 0 0 18px;
+}
+
+.article-body h2 {
+  margin-top: 48px;
+}
+
+.blog-card {
+  border-radius: 0;
+  padding: 24px 0;
+}
+
+.blog-card:hover {
+  background: transparent;
+}
+
+.page-item {
+  border-radius: 0;
+}
+
+header {
+  border-bottom: 1px solid transparent;
+  padding-bottom: 8px;
+}
+
+main {
+  padding-top: 40px;
+}
+
+/* Engineering toggle on kennis */
+.engineering-header {
+  display: grid;
+  grid-template-columns: 60px 1fr auto;
+  gap: 18px;
+  align-items: start;
+}
+
+@media (max-width: 720px) {
+  .engineering-header {
+    grid-template-columns: 42px 1fr auto;
+    gap: 12px;
+  }
+}
+
+.engineering-title {
+  text-decoration: none;
+  color: inherit;
+}
+
+.engineering-title:hover h3 {
+  color: var(--blue);
+}
+
+.engineering-toggle {
+  background: var(--paper-elevated);
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  color: var(--ink);
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  transition: background 0.15s ease;
+}
+
+.engineering-toggle:hover {
+  background: var(--hover-bg);
+}
+
+.engineering-toggle[aria-expanded="true"] {
+  transform: rotate(180deg);
+}
+
+/* Slightly tighter professional lede */
+.lede {
+  max-width: 620px;
+}
+
+/* Table polish */
+.comparison-table th {
+  font-size: 13px;
+  letter-spacing: 0.02em;
+}
+
+/* Focus ring consistency */
+:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+}
