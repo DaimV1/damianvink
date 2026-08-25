@@ -1180,8 +1180,22 @@ footer {
 }
 
 main {
-  padding-top: 40px;
+  padding-top: 32px;
+  padding-bottom: 80px;
 }
+
+/* Space under sticky header so content never sits under it */
+body {
+  padding-top: 0;
+}
+
+main > .hero:first-child,
+main > .breadcrumb:first-child,
+main > .back-link:first-child,
+main > .eyebrow:first-child {
+  /* first content clear of sticky bar via header flow */
+}
+
 
 /* Engineering toggle on kennis */
 .engineering-header {
@@ -1296,10 +1310,9 @@ main {
 
 .reveal {
   opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
+  transform: translateY(18px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .reveal.is-visible {
