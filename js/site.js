@@ -98,7 +98,36 @@
 
     var CONSENT_KEY = "cookie-consent";
     var GA_ID = "G-C0F8CBQPT0";
+
+    if (!document.querySelector('link[href="/cookie.css"]')) {
+      var css = document.createElement("link");
+      css.rel = "stylesheet";
+      css.href = "/cookie.css";
+      document.head.appendChild(css);
+    }
+
     var banner = document.getElementById("cookie-banner");
+    if (!banner) {
+      banner = document.createElement("div");
+      banner.className = "cookie-banner";
+      banner.id = "cookie-banner";
+      banner.hidden = true;
+      banner.setAttribute("role", "dialog");
+      banner.setAttribute("aria-modal", "false");
+      banner.setAttribute("aria-labelledby", "cookie-banner-title");
+      banner.setAttribute("aria-describedby", "cookie-banner-text");
+      banner.innerHTML =
+        '<div class="cookie-banner__inner">' +
+        '<div class="cookie-banner__copy">' +
+        '<p id="cookie-banner-title" class="cookie-banner__title">Cookies</p>' +
+        '<p id="cookie-banner-text">Alleen Google Analytics, en alleen na jouw keuze. Functionele cookies zitten er niet bij.</p>' +
+        "</div>" +
+        '<div class="cookie-banner__actions">' +
+        '<button type="button" class="cv-button secondary" data-cookie="deny">Weigeren</button>' +
+        '<button type="button" class="cv-button" data-cookie="allow">Accepteren</button>' +
+        "</div></div>";
+      document.body.appendChild(banner);
+    }
 
     function loadGa() {
       if (window.__gaLoaded) return;
@@ -154,6 +183,17 @@
         var value = btn.getAttribute("data-cookie");
         if (value === "allow" || value === "deny") setConsent(value);
       });
+    }
+
+    var copy = document.querySelector("footer .copy");
+    if (copy && !copy.querySelector("[data-cookie-reset]")) {
+      copy.appendChild(document.createTextNode(" · "));
+      var resetBtn = document.createElement("button");
+      resetBtn.type = "button";
+      resetBtn.className = "cookie-reset";
+      resetBtn.setAttribute("data-cookie-reset", "");
+      resetBtn.textContent = "Cookies";
+      copy.appendChild(resetBtn);
     }
 
     document.querySelectorAll("[data-cookie-reset]").forEach(function (el) {
