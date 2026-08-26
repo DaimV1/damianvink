@@ -6,11 +6,24 @@
 <title>Marathon — Damian Vink</title>
 <meta name="description" content="Trainingsdashboard: totalen en EDP Porto Marathon-plan vanaf 3 juni 2026.">
 <link rel="canonical" href="https://damianvink.nl/doe/marathon/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Damian Vink">
+<meta property="og:locale" content="nl_NL">
+<meta property="og:url" content="https://damianvink.nl/doe/marathon/">
+<meta property="og:title" content="Marathon — Damian Vink">
+<meta property="og:description" content="Trainingsdashboard: totalen en EDP Porto Marathon-plan vanaf 3 juni 2026.">
+<meta property="og:image" content="https://damianvink.nl/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://damianvink.nl/img/og.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script>(function(){var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);})();</script>
 <link rel="stylesheet" href="/style.css">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-C0F8CBQPT0"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-C0F8CBQPT0');</script>
 </head>
 <body>
   <div class="grid-bg" aria-hidden="true"></div>
@@ -41,16 +54,17 @@
     <p class="eyebrow eyebrow--muted">Wat ik doe</p>
     <h1 class="display-title">Mara<span class="last">thon.</span></h1>
     <p class="lede">
-      Trainingsdata uit Strava. Eerst het totaalbeeld van alle hardloopsessies,
-      daaronder het trainingsblok richting de EDP Porto Marathon
+      Trainingsdata uit een Strava-export. Eerst het totaal van alle hardloopsessies
+      in die export, daaronder het trainingsblok richting de EDP Porto Marathon
       (runs vanaf 3 juni 2026).
     </p>
     <section class="dash-panel" aria-labelledby="total-title">
       <h2 id="total-title" class="dash-heading">Totaaloverzicht</h2>
-      <p class="dash-note">Alle hardloopsessies in Strava (april 2023 – heden).</p>
-      <div class="dash-kpis">        <article class="kpi">
+      <p class="dash-note">Alle hardloopsessies in de Strava-export.</p>
+      <div class="dash-kpis" id="kpis-all">
+        <article class="kpi">
           <span class="kpi-label">Afstand</span>
-          <span class="kpi-value">1091.5</span>
+          <span class="kpi-value">1.091,5</span>
           <span class="kpi-unit">km</span>
         </article>
         <article class="kpi">
@@ -60,22 +74,23 @@
         </article>
         <article class="kpi">
           <span class="kpi-label">Tijd in beweging</span>
-          <span class="kpi-value">110.0</span>
+          <span class="kpi-value">110,0</span>
           <span class="kpi-unit">uur</span>
         </article>
         <article class="kpi">
           <span class="kpi-label">Hoogtemeters</span>
-          <span class="kpi-value">4554</span>
+          <span class="kpi-value">4.554</span>
           <span class="kpi-unit">m</span>
         </article>
       </div>
     </section>
     <section class="dash-panel" aria-labelledby="plan-title">
       <h2 id="plan-title" class="dash-heading">Trainingsblok · EDP Porto Marathon</h2>
-      <p class="dash-note">Hardloopsessies vanaf 3 juni 2026 · bron: Strava-export · bijgewerkt 2026-08-25</p>
-      <div class="dash-kpis">        <article class="kpi">
+      <p class="dash-note" id="plan-note">Hardloopsessies vanaf 3 juni 2026 · bron: Strava-export · bijgewerkt 2026-08-25</p>
+      <div class="dash-kpis" id="kpis-plan">
+        <article class="kpi">
           <span class="kpi-label">Afstand plan</span>
-          <span class="kpi-value">302.8</span>
+          <span class="kpi-value">302,8</span>
           <span class="kpi-unit">km</span>
         </article>
         <article class="kpi">
@@ -85,7 +100,7 @@
         </article>
         <article class="kpi">
           <span class="kpi-label">Tijd in beweging</span>
-          <span class="kpi-value">29.9</span>
+          <span class="kpi-value">29,9</span>
           <span class="kpi-unit">uur</span>
         </article>
         <article class="kpi">
@@ -93,81 +108,76 @@
           <span class="kpi-value">5:55</span>
           <span class="kpi-unit">min/km</span>
         </article>
+        <article class="kpi">
+          <span class="kpi-label">Hoogtemeters plan</span>
+          <span class="kpi-value">821</span>
+          <span class="kpi-unit">m</span>
+        </article>
+        <article class="kpi">
+          <span class="kpi-label">Langste run</span>
+          <span class="kpi-value">21,1</span>
+          <span class="kpi-unit">km</span>
+        </article>
       </div>
       <h3 class="dash-sub">Weekvolume (km)</h3>
-      <div class="week-bars week-bars--wide" role="img" aria-label="Weekkilometers">
-          <div class="week-bar" style="--h:39%" title="W23: 13.9 km"><span class="wb-val">13.9</span><span class="wb-lab">W23</span></div>
-          <div class="week-bar" style="--h:57%" title="W24: 20.6 km"><span class="wb-val">20.6</span><span class="wb-lab">W24</span></div>
-          <div class="week-bar" style="--h:63%" title="W25: 22.8 km"><span class="wb-val">22.8</span><span class="wb-lab">W25</span></div>
-          <div class="week-bar" style="--h:51%" title="W26: 18.4 km"><span class="wb-val">18.4</span><span class="wb-lab">W26</span></div>
-          <div class="week-bar" style="--h:73%" title="W27: 26.4 km"><span class="wb-val">26.4</span><span class="wb-lab">W27</span></div>
-          <div class="week-bar" style="--h:97%" title="W28: 35.1 km"><span class="wb-val">35.1</span><span class="wb-lab">W28</span></div>
-          <div class="week-bar" style="--h:63%" title="W29: 22.8 km"><span class="wb-val">22.8</span><span class="wb-lab">W29</span></div>
-          <div class="week-bar" style="--h:57%" title="W30: 20.6 km"><span class="wb-val">20.6</span><span class="wb-lab">W30</span></div>
-          <div class="week-bar" style="--h:100%" title="W31: 36.1 km"><span class="wb-val">36.1</span><span class="wb-lab">W31</span></div>
-          <div class="week-bar" style="--h:36%" title="W32: 13.0 km"><span class="wb-val">13.0</span><span class="wb-lab">W32</span></div>
-          <div class="week-bar" style="--h:86%" title="W33: 31.2 km"><span class="wb-val">31.2</span><span class="wb-lab">W33</span></div>
-          <div class="week-bar" style="--h:88%" title="W34: 31.9 km"><span class="wb-val">31.9</span><span class="wb-lab">W34</span></div>
-          <div class="week-bar is-now" style="--h:28%" title="Nu: 10.1 km"><span class="wb-val">10.1</span><span class="wb-lab">Nu</span></div>
+      <div class="week-bars week-bars--wide" id="week-bars" role="img" aria-label="Weekkilometers">
+          <div class="week-bar" style="--h:39%" title="W23: 13,9 km"><span class="wb-val">13,9</span><span class="wb-lab">W23</span></div>
+          <div class="week-bar" style="--h:57%" title="W24: 20,6 km"><span class="wb-val">20,6</span><span class="wb-lab">W24</span></div>
+          <div class="week-bar" style="--h:63%" title="W25: 22,8 km"><span class="wb-val">22,8</span><span class="wb-lab">W25</span></div>
+          <div class="week-bar" style="--h:51%" title="W26: 18,4 km"><span class="wb-val">18,4</span><span class="wb-lab">W26</span></div>
+          <div class="week-bar" style="--h:73%" title="W27: 26,4 km"><span class="wb-val">26,4</span><span class="wb-lab">W27</span></div>
+          <div class="week-bar" style="--h:97%" title="W28: 35,1 km"><span class="wb-val">35,1</span><span class="wb-lab">W28</span></div>
+          <div class="week-bar" style="--h:63%" title="W29: 22,8 km"><span class="wb-val">22,8</span><span class="wb-lab">W29</span></div>
+          <div class="week-bar" style="--h:57%" title="W30: 20,6 km"><span class="wb-val">20,6</span><span class="wb-lab">W30</span></div>
+          <div class="week-bar" style="--h:100%" title="W31: 36,1 km"><span class="wb-val">36,1</span><span class="wb-lab">W31</span></div>
+          <div class="week-bar" style="--h:36%" title="W32: 13,0 km"><span class="wb-val">13,0</span><span class="wb-lab">W32</span></div>
+          <div class="week-bar" style="--h:86%" title="W33: 31,2 km"><span class="wb-val">31,2</span><span class="wb-lab">W33</span></div>
+          <div class="week-bar" style="--h:88%" title="W34: 31,9 km"><span class="wb-val">31,9</span><span class="wb-lab">W34</span></div>
+          <div class="week-bar is-now" style="--h:28%" title="Nu: 10,1 km"><span class="wb-val">10,1</span><span class="wb-lab">Nu</span></div>
       </div>
-      <p class="table-note">13 weken · 302.9 km in het plan</p>
+      <p class="table-note" id="week-note">13 weken · plantsom 302,8 km (som van de weekstaven 302,9 km door afronding op 1 decimaal).</p>
       <h3 class="dash-sub">Cumulatieve kilometers</h3>
       <div class="chart-wrap">
-        <svg class="cum-chart" viewBox="0 0 640 220" preserveAspectRatio="none" role="img" aria-label="Cumulatieve kilometers"><line x1="40" y1="148.0" x2="628" y2="148.0" class="chart-grid"/><text x="34" y="151.0" text-anchor="end" class="chart-label">76</text><line x1="40" y1="104.0" x2="628" y2="104.0" class="chart-grid"/><text x="34" y="107.0" text-anchor="end" class="chart-label">151</text><line x1="40" y1="60.0" x2="628" y2="60.0" class="chart-grid"/><text x="34" y="63.0" text-anchor="end" class="chart-label">227</text><line x1="40" y1="16.0" x2="628" y2="16.0" class="chart-grid"/><text x="34" y="19.0" text-anchor="end" class="chart-label">303</text><path d="M 40.0 192.0 L 40.0 188.7 L 57.3 183.9 L 74.6 180.1 L 91.9 177.2 L 109.2 171.9 L 126.5 168.1 L 143.8 164.6 L 161.1 158.6 L 178.4 155.3 L 195.6 152.4 L 212.9 147.9 L 230.2 143.6 L 247.5 140.2 L 264.8 132.6 L 282.1 127.8 L 299.4 124.5 L 316.7 120.3 L 334.0 112.2 L 351.3 107.7 L 368.6 99.0 L 385.9 95.9 L 403.2 90.6 L 420.5 87.0 L 437.8 82.6 L 455.1 80.9 L 472.4 76.7 L 489.6 66.0 L 506.9 61.5 L 524.2 58.5 L 541.5 52.7 L 558.8 40.4 L 576.1 36.5 L 593.4 31.9 L 610.7 21.9 L 628.0 16.0 L 628.0 192.0 Z" class="chart-area"/><path d="M 40.0 188.7 L 57.3 183.9 L 74.6 180.1 L 91.9 177.2 L 109.2 171.9 L 126.5 168.1 L 143.8 164.6 L 161.1 158.6 L 178.4 155.3 L 195.6 152.4 L 212.9 147.9 L 230.2 143.6 L 247.5 140.2 L 264.8 132.6 L 282.1 127.8 L 299.4 124.5 L 316.7 120.3 L 334.0 112.2 L 351.3 107.7 L 368.6 99.0 L 385.9 95.9 L 403.2 90.6 L 420.5 87.0 L 437.8 82.6 L 455.1 80.9 L 472.4 76.7 L 489.6 66.0 L 506.9 61.5 L 524.2 58.5 L 541.5 52.7 L 558.8 40.4 L 576.1 36.5 L 593.4 31.9 L 610.7 21.9 L 628.0 16.0" class="chart-line" fill="none"/><text x="40" y="212" class="chart-label">2026-06-03</text><text x="628" y="212" text-anchor="end" class="chart-label">2026-08-25</text></svg>
+        <svg class="cum-chart" id="cum-chart" viewBox="0 0 640 220" preserveAspectRatio="none" role="img" aria-label="Cumulatieve kilometers"></svg>
       </div>
-      <p class="table-note">Opbouw tot 302.8 km sinds 2026-06-03</p>
+      <p class="table-note" id="cum-note">Opbouw tot 302,8 km sinds 2026-06-03.</p>
     </section>
     <section class="dash-panel" aria-labelledby="recent-title">
       <h2 id="recent-title" class="dash-heading">Recente trainingen in het plan</h2>
-      <table class="dash-table">
+      <div class="table-scroll">
+      <table class="dash-table" id="recent-table">
         <thead><tr><th>Datum</th><th>Training</th><th>Afstand</th><th>Tijd</th></tr></thead>
         <tbody>
-          <tr><td>25-08-2026</td><td>Tempo 6km</td><td>10.1 km</td><td>55 min</td></tr>
-          <tr><td>22-08-2026</td><td>17km Long Run</td><td>17.3 km</td><td>1:47</td></tr>
-          <tr><td>20-08-2026</td><td>5km Easy Run</td><td>8.0 km</td><td>48 min</td></tr>
-          <tr><td>18-08-2026</td><td>Progressive Run</td><td>6.6 km</td><td>31 min</td></tr>
-          <tr><td>15-08-2026</td><td>Half Marathon Progressive Long Run</td><td>21.1 km</td><td>1:54</td></tr>
-          <tr><td>11-08-2026</td><td>400s into 200s</td><td>10.1 km</td><td>57 min</td></tr>
-          <tr><td>06-08-2026</td><td>7km Easy Run</td><td>5.0 km</td><td>32 min</td></tr>
-          <tr><td>04-08-2026</td><td>Tempo 2-1-1</td><td>8.0 km</td><td>43 min</td></tr>
-          <tr><td>01-08-2026</td><td>17km Hotspot Long Run</td><td>18.4 km</td><td>1:45</td></tr>
-          <tr><td>30-07-2026</td><td>7km Easy Run</td><td>7.1 km</td><td>48 min</td></tr>
-          <tr><td>29-07-2026</td><td>Hyrox sessie 2</td><td>3.0 km</td><td>37 min</td></tr>
-          <tr><td>28-07-2026</td><td>On Off Ks</td><td>7.5 km</td><td>41 min</td></tr>
-          <tr><td>25-07-2026</td><td>5km Time Trial</td><td>6.2 km</td><td>29 min</td></tr>
-          <tr><td>23-07-2026</td><td>9km Long Run</td><td>9.1 km</td><td>50 min</td></tr>
-          <tr><td>21-07-2026</td><td>5km Easy Run</td><td>5.4 km</td><td>33 min</td></tr>
-          <tr><td>18-07-2026</td><td>15km Block Long Run</td><td>15.0 km</td><td>1:23</td></tr>
-          <tr><td>14-07-2026</td><td>Tempo 4km</td><td>7.7 km</td><td>43 min</td></tr>
-          <tr><td>11-07-2026</td><td>14km Long Run</td><td>14.0 km</td><td>1:27</td></tr>
-          <tr><td>09-07-2026</td><td>7km Easy Run</td><td>7.0 km</td><td>46 min</td></tr>
-          <tr><td>07-07-2026</td><td>Avondloop</td><td>5.8 km</td><td>37 min</td></tr>
+          <tr><td>25-08-2026</td><td>Tempo 6km</td><td>10,1 km</td><td>55 min</td></tr>
+          <tr><td>22-08-2026</td><td>17km Long Run</td><td>17,3 km</td><td>1:47</td></tr>
+          <tr><td>20-08-2026</td><td>5km Easy Run</td><td>8,0 km</td><td>48 min</td></tr>
+          <tr><td>18-08-2026</td><td>Progressive Run</td><td>6,6 km</td><td>31 min</td></tr>
+          <tr><td>15-08-2026</td><td>Half Marathon Progressive Long Run</td><td>21,1 km</td><td>1:54</td></tr>
+          <tr><td>11-08-2026</td><td>400s into 200s</td><td>10,1 km</td><td>57 min</td></tr>
+          <tr><td>06-08-2026</td><td>7km Easy Run</td><td>5,0 km</td><td>32 min</td></tr>
+          <tr><td>04-08-2026</td><td>Tempo 2-1-1</td><td>8,0 km</td><td>43 min</td></tr>
+          <tr><td>01-08-2026</td><td>17km Hotspot Long Run</td><td>18,4 km</td><td>1:45</td></tr>
+          <tr><td>30-07-2026</td><td>7km Easy Run</td><td>7,1 km</td><td>48 min</td></tr>
+          <tr><td>29-07-2026</td><td>Hyrox sessie 2</td><td>3,0 km</td><td>37 min</td></tr>
+          <tr><td>28-07-2026</td><td>On Off Ks</td><td>7,5 km</td><td>41 min</td></tr>
+          <tr><td>25-07-2026</td><td>5km Time Trial</td><td>6,2 km</td><td>29 min</td></tr>
+          <tr><td>23-07-2026</td><td>9km Long Run</td><td>9,1 km</td><td>50 min</td></tr>
+          <tr><td>21-07-2026</td><td>5km Easy Run</td><td>5,4 km</td><td>33 min</td></tr>
+          <tr><td>18-07-2026</td><td>15km Block Long Run</td><td>15,0 km</td><td>1:23</td></tr>
+          <tr><td>14-07-2026</td><td>Tempo 4km</td><td>7,7 km</td><td>43 min</td></tr>
+          <tr><td>11-07-2026</td><td>14km Long Run</td><td>14,0 km</td><td>1:27</td></tr>
+          <tr><td>09-07-2026</td><td>7km Easy Run</td><td>7,0 km</td><td>46 min</td></tr>
+          <tr><td>07-07-2026</td><td>Avondloop</td><td>5,8 km</td><td>37 min</td></tr>
         </tbody>
       </table>
+      </div>
     </section>
   </main>
   <footer>
     <span class="contact"><a href="/#contact">Contact</a></span>
     <span class="copy">© <span id="year"></span> Damian Vink</span>
   </footer>
-  <script>document.getElementById("year").textContent=new Date().getFullYear();</script>
-  <script>
-  (function(){
-    var root=document.documentElement;
-    var stored=localStorage.getItem("theme");
-    if(stored==="light"||stored==="dark") root.setAttribute("data-theme",stored);
-    document.addEventListener("DOMContentLoaded",function(){
-      var btn=document.querySelector(".theme-toggle");
-      if(!btn) return;
-      btn.addEventListener("click",function(){
-        var current=root.getAttribute("data-theme");
-        if(!current) current=window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";
-        var next=current==="dark"?"light":"dark";
-        root.setAttribute("data-theme",next);
-        localStorage.setItem("theme",next);
-      });
-    });
-  })();
-  </script>
+  <script src="/js/site.js"></script>
+  <script src="/js/marathon.js"></script>
 </body>
 </html>
