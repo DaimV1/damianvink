@@ -72,8 +72,7 @@
       });
     }
 
-    var els = document.querySelectorSelectorAll ? null : document.querySelectorAll(".reveal");
-    els = document.querySelectorAll(".reveal");
+    var els = document.querySelectorAll(".reveal");
     if (els.length) {
       if (!("IntersectionObserver" in window)) {
         els.forEach(function (el) {
