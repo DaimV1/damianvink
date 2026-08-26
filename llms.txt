@@ -1,0 +1,27 @@
+# damianvink.nl
+
+> Persoonlijke site van Damian Vink, Project Engineer werktuigbouwkunde en machinebouw (Nederland).
+
+Site in het Nederlands. Geen verzonnen projectcases. Tabellen zijn naslag, geen vervanging van de norm.
+
+## Pagina's
+
+- [Home](https://damianvink.nl/): wie ik ben, wat ik doe, toolkit, contact
+- [Wie ik ben](https://damianvink.nl/over-mij/): achtergrond + CV (PDF)
+- [Engineering toolkit](https://damianvink.nl/weet/toolkit/): ISO 286, DIN 6885, CAD-bronnen
+- [ISO 286 passingen](https://damianvink.nl/weet/toolkit/passingen/): voorkeurpassingen tot Ø 50 mm, gat/as, rekenhulp
+- [DIN 6885 spiebanen](https://damianvink.nl/weet/toolkit/spiebaan-toleranties/): t1/t2, b×h, P9/N9/H9
+- [Bronnen en CAD](https://damianvink.nl/weet/toolkit/bronnen/): TraceParts, 3Dfindit, MISUMI, 247 Tailor Steel, ISO OBP
+- [Marathon](https://damianvink.nl/doe/marathon/): trainingsdashboard, EDP Porto Marathon-plan (Strava-export)
+- [Projecten](https://damianvink.nl/doe/projecten/): leeg tot er echte toelichtingen zijn
+
+## Contact
+
+- E-mail: damianvink@live.nl
+- LinkedIn: https://www.linkedin.com/in/damianvink
+- X: https://x.com/damianvink_
+
+## Bronnen voor tabellen
+
+- Passingen: ISO 286-1 / ISO 286-2 (limietafwijkingen, eenheidsgat)
+- Spiebanen: DIN 6885-1 hoge vorm

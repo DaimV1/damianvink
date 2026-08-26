@@ -14,4 +14,4 @@ Persoonlijke site van Damian Vink. Statische HTML op GitHub Pages.
   - `/weet/toolkit/spiebaan-toleranties/` — DIN 6885-1
   - `/weet/toolkit/bronnen/` — CAD en naslag
 
-Onbekende paden vallen op `404.html`.
+Onbekende paden vallen op `404.html`. `llms.txt` is een korte inhoudsopgave voor AI-crawlers.
