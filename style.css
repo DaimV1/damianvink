@@ -163,6 +163,43 @@ header.is-scrolled {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.brand-vink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  color: var(--grey);
+  opacity: 0.7;
+  text-decoration: none;
+  transition: color 0.15s ease, opacity 0.15s ease;
+}
+
+.brand-vink:hover,
+.brand-vink:focus-visible {
+  color: var(--blue);
+  opacity: 1;
+}
+
+.brand-vink svg {
+  width: 22px;
+  height: 15px;
+  display: block;
+  fill: currentColor;
+}
+
+.brand-vink__eye {
+  fill: var(--paper);
+}
+
 .mark {
   font-family: "IBM Plex Mono", monospace;
   font-size: 13px;

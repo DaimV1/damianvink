@@ -16,7 +16,6 @@ Site in het Nederlands. Geen verzonnen projectcases. Tabellen zijn naslag, geen 
 - [O-ringgroef](https://damianvink.nl/weet/toolkit/o-ringgroef/): ISO 3601-1 koorden, groef t/b (Dichtomatik)
 - [CAD-bibliotheken](https://damianvink.nl/weet/toolkit/bronnen/): TraceParts, 3Dfindit, MISUMI, 247 Tailor Steel, ISO OBP
 - [Blog](https://damianvink.nl/weet/blog/): leeg tot er echte artikelen zijn
-- [Vink (spel)](https://damianvink.nl/spel/): eigen minigame, geen Flappy Bird
 - [Marathon](https://damianvink.nl/doe/marathon/): trainingsdashboard, EDP Porto Marathon-plan (Strava-export)
 - [Projecten](https://damianvink.nl/doe/projecten/): leeg tot er echte toelichtingen zijn
 
