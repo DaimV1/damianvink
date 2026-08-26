@@ -8,9 +8,10 @@ Site in het Nederlands. Geen verzonnen projectcases. Tabellen zijn naslag, geen 
 
 - [Home](https://damianvink.nl/): Wie ik ben, Wat ik doe, Wat ik denk, Contact
 - [Wie ik ben](https://damianvink.nl/over-mij/): achtergrond + CV (PDF)
-- [Wat ik denk](https://damianvink.nl/weet/): Passingen (ISO 286), Spiebaan-toleranties (DIN 6885), CAD-bibliotheken
+- [Wat ik denk](https://damianvink.nl/weet/): Passingen (ISO 286), Spiebaan-toleranties (DIN 6885), Lagerpassingen, CAD-bibliotheken
 - [Passingen (ISO 286)](https://damianvink.nl/weet/toolkit/passingen/): voorkeurpassingen tot Ø 50 mm, gat/as, rekenhulp
 - [Spiebaan-toleranties (DIN 6885)](https://damianvink.nl/weet/toolkit/spiebaan-toleranties/): t1/t2, b×h, P9/N9/H9
+- [Lagerpassingen](https://damianvink.nl/weet/toolkit/lagerpassingen/): groefkogellagers, SKF-klassen, ISO 286 tot Ø 50 mm
 - [CAD-bibliotheken](https://damianvink.nl/weet/toolkit/bronnen/): TraceParts, 3Dfindit, MISUMI, 247 Tailor Steel, ISO OBP
 - [Marathon](https://damianvink.nl/doe/marathon/): trainingsdashboard, EDP Porto Marathon-plan (Strava-export)
 - [Projecten](https://damianvink.nl/doe/projecten/): leeg tot er echte toelichtingen zijn
@@ -25,3 +26,4 @@ Site in het Nederlands. Geen verzonnen projectcases. Tabellen zijn naslag, geen 
 
 - Passingen (ISO 286): ISO 286-1 / ISO 286-2 (limietafwijkingen, eenheidsgat)
 - Spiebaan-toleranties (DIN 6885): DIN 6885-1 hoge vorm
+- Lagerpassingen: Duursma (rotatie vast/los); SKF-aanbevelingen via Duursma; ISO 286-2 (limietafwijkingen)

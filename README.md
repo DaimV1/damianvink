@@ -11,6 +11,7 @@ Persoonlijke site van Damian Vink. Statische HTML op GitHub Pages.
 - `/weet/` — Wat ik denk (Passingen, Spiebaan, CAD-bibliotheken)
   - `/weet/toolkit/passingen/` — Passingen (ISO 286)
   - `/weet/toolkit/spiebaan-toleranties/` — Spiebaan-toleranties (DIN 6885)
+  - `/weet/toolkit/lagerpassingen/` — Lagerpassingen
   - `/weet/toolkit/bronnen/` — CAD-bibliotheken
 
 `/weet/toolkit/` verwijst door naar `/weet/`. Onbekende paden vallen op `404.html`. `llms.txt` is een korte inhoudsopgave voor AI-crawlers.
