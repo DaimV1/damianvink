@@ -497,44 +497,70 @@ h3 {
    CONTACT
    ========================================================= */
 
-.contact-block {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  max-width: 480px;
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  max-width: 680px;
   margin-top: 8px;
 }
 
-.contact-row {
+.contact-card {
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  border-bottom: 1px solid var(--line);
-  padding-bottom: 14px;
-  gap: 16px;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  background: var(--paper-elevated);
+  transition: border-color 0.15s ease, transform 0.15s ease;
 }
 
-.contact-row .label {
+.contact-card:hover {
+  border-color: var(--blue);
+  transform: translateY(-1px);
+}
+
+.contact-card__icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  color: var(--ink);
+}
+
+.contact-card:hover .contact-card__icon {
+  color: var(--blue);
+}
+
+.contact-card__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.contact-card__meta strong {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--ink);
+}
+
+.contact-card__meta small {
   font-family: "IBM Plex Mono", monospace;
   font-size: 12px;
   color: var(--grey);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.contact-row a {
-  font-family: "Space Grotesk", sans-serif;
-  font-weight: 600;
-  font-size: 17px;
-  text-decoration: none;
-  color: var(--ink);
-  border-bottom: 1px solid var(--ink);
-  transition: color 0.15s ease, border-color 0.15s ease;
-}
-
-.contact-row a:hover {
-  color: var(--blue);
-  border-color: var(--blue);
+@media (max-width: 720px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* =========================================================
