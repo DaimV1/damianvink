@@ -61,25 +61,34 @@
     return { cls: "fit-overgang", text: "Overgang — speling of klemming" };
   }
 
-  function render() {
+  function readDiameter(input, commit) {
+    var raw = String(input.value).replace(",", ".");
+    var n = parseFloat(raw);
+    if (isNaN(n)) return NaN;
+    n = Math.round(n);
+    if (commit) {
+      if (n < 4) n = 4;
+      if (n > 50) n = 50;
+      if (input.value !== String(n)) input.value = String(n);
+    }
+    return n;
+  }
+
+  function render(commit) {
     var form = document.getElementById("fit-calc");
     var out = document.getElementById("fit-calc-out");
     if (!form || !out) return;
 
-    var d = parseFloat(form.diameter.value);
+    var d = readDiameter(form.diameter, commit);
     var fitId = form.fit.value;
     var fit = FITS.filter(function (f) { return f.id === fitId; })[0];
     if (!fit || isNaN(d)) {
       out.innerHTML = "<p class='dash-note'>Kies een nominale Ø en een passing.</p>";
       return;
     }
-    if (d <= 3 || d > 50) {
-      out.innerHTML = "<p class='dash-note'>Deze tabellen gelden voor nominale Ø <strong>boven 3 mm tot en met 50 mm</strong>.</p>";
-      return;
-    }
     var i = bandIndex(d);
     if (i < 0) {
-      out.innerHTML = "<p class='dash-note'>Geen ISO-band voor deze diameter.</p>";
+      out.innerHTML = "<p class='dash-note'>Nominale Ø in <strong>hele mm, 4 t/m 50</strong>.</p>";
       return;
     }
 
@@ -96,7 +105,7 @@
 
     out.innerHTML =
       "<div class='calc-result'>" +
-        "<p class='calc-kicker'>Ø " + String(d).replace(".", ",") + " mm · band " + band.label + " mm · <span class='swatch " + kind.cls + "'></span>" + kind.text + "</p>" +
+        "<p class='calc-kicker'>Ø " + d + " mm · band " + band.label + " mm · <span class='swatch " + kind.cls + "'></span>" + kind.text + "</p>" +
         "<dl class='calc-dl'>" +
           "<div><dt>Gat " + fit.hole + "</dt><dd>" + mmFromUm(ES) + " / " + mmFromUm(EI) + " mm</dd></div>" +
           "<div><dt>As " + fit.shaft + "</dt><dd>" + mmFromUm(es) + " / " + mmFromUm(ei) + " mm</dd></div>" +
@@ -109,8 +118,18 @@
   document.addEventListener("DOMContentLoaded", function () {
     var form = document.getElementById("fit-calc");
     if (!form) return;
-    form.addEventListener("input", render);
-    form.addEventListener("change", render);
-    render();
+    var dia = form.diameter;
+    dia.addEventListener("keydown", function (e) {
+      if (e.key === "." || e.key === "," || e.key === "e" || e.key === "E" || e.key === "+" || e.key === "-") {
+        e.preventDefault();
+      }
+    });
+    dia.addEventListener("input", function () {
+      if (/[.,]/.test(dia.value)) render(true);
+      else render(false);
+    });
+    dia.addEventListener("blur", function () { render(true); });
+    form.addEventListener("change", function () { render(true); });
+    render(true);
   });
 })();

@@ -205,13 +205,13 @@
 
     <h2 class="dash-heading">Rekenhulp</h2>
     <p class="dash-note">
-      Zelfde getallen als de tabellen hierboven. Nominale Ø in mm, resultaat in mm.
+      Zelfde getallen als de tabellen hierboven. Nominale Ø in <strong>hele mm</strong> (4 t/m 50).
     </p>
     <form class="fit-calc" id="fit-calc" action="javascript:void(0)">
       <div class="fit-calc-fields">
         <label>
           Nominale Ø (mm)
-          <input type="number" name="diameter" min="3.01" max="50" step="0.1" value="20" inputmode="decimal">
+          <input type="number" name="diameter" id="fit-diameter" min="4" max="50" step="1" value="20" inputmode="numeric" pattern="[0-9]*">
         </label>
         <label>
           Passing
