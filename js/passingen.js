@@ -61,6 +61,8 @@
     return { cls: "fit-overgang", text: "Overgang — speling of klemming" };
   }
 
+  var lastCopy = "";
+
   function readDiameter(input, commit) {
     var raw = String(input.value).replace(",", ".");
     var n = parseFloat(raw);
@@ -103,6 +105,12 @@
     var kind = kindLabel(fit.kind, minC, maxC);
     var band = BANDS[i];
 
+    lastCopy =
+      "Ø " + d + " mm · " + fit.id + " · band " + band.label + " mm\n" +
+      "Gat " + fit.hole + "  " + mmFromUm(ES) + " / " + mmFromUm(EI) + " mm\n" +
+      "As " + fit.shaft + "  " + mmFromUm(es) + " / " + mmFromUm(ei) + " mm\n" +
+      "Speling  " + mmFromUm(minC) + " … " + mmFromUm(maxC) + " mm";
+
     out.innerHTML =
       "<div class='calc-result'>" +
         "<p class='calc-kicker'>Ø " + d + " mm · band " + band.label + " mm · <span class='swatch " + kind.cls + "'></span>" + kind.text + "</p>" +
@@ -112,12 +120,14 @@
           "<div><dt>Speling min … max</dt><dd>" + mmFromUm(minC) + " … " + mmFromUm(maxC) + " mm</dd></div>" +
         "</dl>" +
         "<p class='calc-use'>" + fit.use + "</p>" +
+        "<button type='button' class='copy-result'>Kopieer resultaat</button>" +
       "</div>";
   }
 
   document.addEventListener("DOMContentLoaded", function () {
     var form = document.getElementById("fit-calc");
-    if (!form) return;
+    var out = document.getElementById("fit-calc-out");
+    if (!form || !out) return;
     var dia = form.diameter;
     dia.addEventListener("keydown", function (e) {
       if (e.key === "." || e.key === "," || e.key === "e" || e.key === "E" || e.key === "+" || e.key === "-") {
@@ -130,6 +140,17 @@
     });
     dia.addEventListener("blur", function () { render(true); });
     form.addEventListener("change", function () { render(true); });
+    out.addEventListener("click", function (e) {
+      var btn = e.target.closest(".copy-result");
+      if (!btn || !lastCopy) return;
+      function ok() {
+        btn.textContent = "Gekopieerd";
+        setTimeout(function () { btn.textContent = "Kopieer resultaat"; }, 1600);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(lastCopy).then(ok).catch(function () {});
+      }
+    });
     render(true);
   });
 })();
