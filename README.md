@@ -13,6 +13,7 @@ Persoonlijke site van Damian Vink. Statische HTML op GitHub Pages.
   - `/weet/toolkit/passingen/` — Passingen (ISO 286)
   - `/weet/toolkit/spiebaan-toleranties/` — Spiebaan-toleranties (DIN 6885)
   - `/weet/toolkit/lagerpassingen/` — Lagerpassingen
+  - `/weet/toolkit/o-ringgroef/` — O-ringgroef
   - `/weet/toolkit/bronnen/` — CAD-bibliotheken
 - `/weet/blog/` — Blog (leeg tot er echte artikelen zijn)
 

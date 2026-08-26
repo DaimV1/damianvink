@@ -1539,6 +1539,11 @@ h1.display-title {
   border-color: var(--blue);
 }
 
+.calc-tol {
+  color: var(--grey);
+  font-size: 12px;
+}
+
 @media print {
   .grid-bg,
   .block,
