@@ -99,12 +99,13 @@
     var CONSENT_KEY = "cookie-consent";
     var GA_ID = "G-C0F8CBQPT0";
 
-    if (!document.querySelector('link[href="/cookie.css"]')) {
+    ["/cookie.css", "/heading.css"].forEach(function (href) {
+      if (document.querySelector('link[href="' + href + '"]')) return;
       var css = document.createElement("link");
       css.rel = "stylesheet";
-      css.href = "/cookie.css";
+      css.href = href;
       document.head.appendChild(css);
-    }
+    });
 
     var banner = document.getElementById("cookie-banner");
     if (!banner) {
