@@ -8,10 +8,12 @@ Persoonlijke site van Damian Vink. Statische HTML op GitHub Pages.
 - `/over-mij/` — Wie ik ben + CV
 - `/doe/marathon/` — Marathon (`data/strava.json`)
 - `/doe/projecten/` — Projecten (leeg tot er echte cases zijn)
-- `/weet/` — Wat ik denk (Passingen, Spiebaan, CAD-bibliotheken)
+- `/weet/` — Wat ik denk (Engineering toolkit · Blog)
+- `/weet/toolkit/` — Engineering toolkit
   - `/weet/toolkit/passingen/` — Passingen (ISO 286)
   - `/weet/toolkit/spiebaan-toleranties/` — Spiebaan-toleranties (DIN 6885)
   - `/weet/toolkit/lagerpassingen/` — Lagerpassingen
   - `/weet/toolkit/bronnen/` — CAD-bibliotheken
+- `/weet/blog/` — Blog (leeg tot er echte artikelen zijn)
 
-`/weet/toolkit/` verwijst door naar `/weet/`. Onbekende paden vallen op `404.html`. `llms.txt` is een korte inhoudsopgave voor AI-crawlers.
+Onbekende paden vallen op `404.html`. `llms.txt` is een korte inhoudsopgave voor AI-crawlers.
