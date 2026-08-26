@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0e1014" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f6f4ee" media="(prefers-color-scheme: light)">
 <meta name="author" content="Damian Vink">
-<meta name="theme-color" content="#0e1014">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 
 
@@ -96,6 +97,7 @@
 </head>
 
 <body>
+  <a class="skip-link" href="#inhoud">Ga naar inhoud</a>
 
   <div class="grid-bg" aria-hidden="true"></div>
 
@@ -108,24 +110,25 @@
 
   <!-- HEADER -->
 
+  <!-- CHROME:header -->
   <header>
-
     <div class="brand">
       <a class="brand-vink" href="/spel/" aria-label="Vink"><svg viewBox="0 0 24 16" aria-hidden="true"><ellipse cx="10" cy="8.2" rx="8.2" ry="5.6"/><path d="M16.4 6.4 23 8.2 16.4 10z"/><circle class="brand-vink__eye" cx="12.4" cy="6.6" r="1.55"/></svg></a>
       <a class="mark" href="/"><strong>Damian Vink</strong> — damianvink.nl</a>
     </div>
-
     <div class="header-actions">
-<nav class="site-nav" aria-label="Hoofdmenu">
-
-      <a href="/#over-mij">Wie ik ben</a>
-      <a href="/#werk">Wat ik doe</a>
-      <a href="/weet/">Wat ik denk</a>
-      <a href="/#contact">Contact</a>
-
-    </nav>
-
-      <button class="theme-toggle" type="button" aria-label="Wissel licht/donker thema" title="Thema wisselen">
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
+        <span class="nav-toggle__icon" aria-hidden="true"></span>
+        Menu
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Hoofdmenu">
+        <a href="/over-mij/">Wie ik ben</a>
+        <a href="/doe/">Wat ik doe</a>
+        <a href="/denk/toolkit/">Toolkit</a>
+        <a href="/denk/">Wat ik denk</a>
+        <a href="/#contact">Contact</a>
+      </nav>
+      <button class="theme-toggle" type="button" aria-label="Thema wisselen" title="Thema wisselen">
         <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M21 14.3A9 9 0 1 1 9.7 3a7 7 0 0 0 11.3 11.3z"/>
         </svg>
@@ -134,13 +137,12 @@
           <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
         </svg>
       </button>
-
     </div>
-
   </header>
+  <!-- /CHROME:header -->
 
 
-  <main>
+  <main id="inhoud">
 
 
     <!-- HERO -->
@@ -155,7 +157,8 @@
         Damian <span class="last">Vink.</span>
       </h1>
 
-      <p class="lede">
+      <!-- AI-TEXT A1 -->
+      <p data-ai="A1" class="lede ai-text"><span class="ai-tag" aria-hidden="true">A1</span>
         Project Engineer werktuigbouwkunde. Mechanisch ontwerp,
         naslag en een marathonlogboek.
       </p>
@@ -172,7 +175,8 @@
       </h2>
 
       <div class="body-text">
-        <p>
+        <!-- AI-TEXT A2 -->
+        <p data-ai="A2" class="ai-text"><span class="ai-tag" aria-hidden="true">A2</span>
           Achtergrond in werktuigbouwkunde en machinebouw.
         </p>
       </div>
@@ -222,7 +226,8 @@
       <h2 id="denk-title" class="display-title">
         Wat ik <span class="last">denk.</span>
       </h2>
-      <p class="section-intro">
+      <!-- AI-TEXT A3 -->
+      <p data-ai="A3" class="section-intro ai-text"><span class="ai-tag" aria-hidden="true">A3</span>
         Naslag tijdens ontwerp, en later artikelen.
       </p>
 
@@ -234,7 +239,7 @@
             <p>Passingen, spiebanen, lagerpassingen en CAD-bronnen.</p>
           </div>
         </div>
-        <a class="knowledge-link" href="/weet/toolkit/">
+        <a class="knowledge-link" href="/denk/toolkit/">
           <span><strong>Engineering toolkit</strong><small>Werktuigbouwkunde · Machinebouw</small></span>
           <span aria-hidden="true">→</span>
         </a>
@@ -247,7 +252,7 @@
             <p>Artikelen. Nog geen stukken gepubliceerd.</p>
           </div>
         </div>
-        <a class="knowledge-link" href="/weet/blog/">
+        <a class="knowledge-link" href="/denk/blog/">
           <span><strong>Blog</strong><small>Artikelen volgen.</small></span>
           <span aria-hidden="true">→</span>
         </a>
@@ -266,7 +271,8 @@
         Con<span class="last">tact.</span>
       </h2>
 
-      <p class="lede">
+      <!-- AI-TEXT A4 -->
+      <p data-ai="A4" class="lede ai-text"><span class="ai-tag" aria-hidden="true">A4</span>
         Voor vragen over engineering, samenwerkingen of deze website:
         mail of stuur een bericht via onderstaande kanalen.
       </p>
@@ -314,6 +320,11 @@
         </a>
       </div>
 
+      <!-- AI-TEXT A5 -->
+      <p data-ai="A5" class="ai-disclaimer ai-text"><span class="ai-tag" aria-hidden="true">A5</span>
+        Tekst gemarkeerd met A1, A2, … is concept- of hulkopie. Ik vervang die stukken nog.
+      </p>
+
     </section>
 
 </main>
@@ -321,15 +332,18 @@
 
   <!-- FOOTER -->
 
-    <footer>
+    <!-- CHROME:footer -->
+  <footer>
     <nav class="footer-nav" aria-label="Footer">
       <a href="/over-mij/">Wie ik ben</a>
-      <a href="/weet/">Wat ik denk</a>
+      <a href="/denk/toolkit/">Toolkit</a>
+      <a href="/denk/">Wat ik denk</a>
       <a href="/doe/marathon/">Marathon</a>
       <a href="/#contact">Contact</a>
     </nav>
     <span class="copy">© <span id="year"></span> Damian Vink</span>
   </footer>
+  <!-- /CHROME:footer -->
 
 
   <script src="/js/site.js"></script>

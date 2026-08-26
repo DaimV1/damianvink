@@ -7,38 +7,50 @@
 <meta name="theme-color" content="#f6f4ee" media="(prefers-color-scheme: light)">
 <meta name="author" content="Damian Vink">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-
-<title>Projecten — Damian Vink</title>
-<meta name="description" content="Projecten van Damian Vink in machinebouw en mechanisch ontwerp. Nog geen toegelichte cases.">
-<link rel="canonical" href="https://damianvink.nl/doe/projecten/">
+<title>Engineering toolkit — Damian Vink</title>
+<meta name="description" content="Engineering toolkit: Passingen (ISO 286), Spiebaan-toleranties (DIN 6885), Lagerpassingen en CAD-bibliotheken.">
+<link rel="canonical" href="https://damianvink.nl/denk/toolkit/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Damian Vink">
 <meta property="og:locale" content="nl_NL">
-<meta property="og:url" content="https://damianvink.nl/doe/projecten/">
-<meta property="og:title" content="Projecten — Damian Vink">
-<meta property="og:description" content="Nog geen toegelichte projectcases. Damian Vink, Project Engineer werktuigbouwkunde.">
+<meta property="og:url" content="https://damianvink.nl/denk/toolkit/">
+<meta property="og:title" content="Engineering toolkit — Damian Vink">
+<meta property="og:description" content="Naslag voor mechanisch ontwerp: ISO 286, DIN 6885, lagerpassingen, CAD.">
 <meta property="og:image" content="https://damianvink.nl/img/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@damianvink_">
-
+<meta name="twitter:title" content="Engineering toolkit — Damian Vink">
 <meta name="twitter:image" content="https://damianvink.nl/img/og.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script>(function(){var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);})();</script>
-
 <link rel="stylesheet" href="/style.css">
 <link rel="sitemap" type="application/xml" href="/sitemap.xml">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-C0F8CBQPT0"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-C0F8CBQPT0');</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Engineering toolkit",
+  "url": "https://damianvink.nl/denk/toolkit/",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Passingen (ISO 286)", "url": "https://damianvink.nl/denk/toolkit/passingen/" },
+    { "@type": "ListItem", "position": 2, "name": "Spiebaan-toleranties (DIN 6885)", "url": "https://damianvink.nl/denk/toolkit/spiebaan-toleranties/" },
+    { "@type": "ListItem", "position": 3, "name": "Lagerpassingen", "url": "https://damianvink.nl/denk/toolkit/lagerpassingen/" },
+    { "@type": "ListItem", "position": 4, "name": "O-ringgroef", "url": "https://damianvink.nl/denk/toolkit/o-ringgroef/" },
+    { "@type": "ListItem", "position": 5, "name": "CAD-bibliotheken", "url": "https://damianvink.nl/denk/toolkit/bronnen/" }
+  ]
+}
+</script>
 </head>
 <body>
   <a class="skip-link" href="#inhoud">Ga naar inhoud</a>
   <div class="grid-bg" aria-hidden="true"></div>
   <div class="block block--blue" aria-hidden="true"></div>
-  <noscript><style>.reveal{opacity:1 !important;transform:none !important;}</style></noscript>
   <!-- CHROME:header -->
   <header>
     <div class="brand">
@@ -52,8 +64,8 @@
       </button>
       <nav class="site-nav" id="site-nav" aria-label="Hoofdmenu">
         <a href="/over-mij/">Wie ik ben</a>
-        <a href="/doe/" aria-current="page">Wat ik doe</a>
-        <a href="/denk/toolkit/">Toolkit</a>
+        <a href="/doe/">Wat ik doe</a>
+        <a href="/denk/toolkit/" aria-current="page">Toolkit</a>
         <a href="/denk/">Wat ik denk</a>
         <a href="/#contact">Contact</a>
       </nav>
@@ -69,29 +81,59 @@
     </div>
   </header>
   <!-- /CHROME:header -->
-
-  <main id="inhoud">
+  <main id="inhoud" class="reveal">
     <nav class="breadcrumb" aria-label="Broodkruimel">
       <a href="/">Home</a>
       <span aria-hidden="true">/</span>
-      <a href="/doe/">Wat ik doe</a>
+      <a href="/denk/">Wat ik denk</a>
       <span aria-hidden="true">/</span>
-      <span>Projecten</span>
+      <span>Engineering toolkit</span>
     </nav>
-
-    <p class="eyebrow eyebrow--muted">Wat ik doe</p>
-    <h1 class="display-title">Projec<span class="last">ten.</span></h1>
-    <!-- AI-TEXT A13 -->
-    <p data-ai="A13" class="lede ai-text"><span class="ai-tag" aria-hidden="true">A13</span>
-      Werk uit de machinebouw en werktuigbouwkunde.
+    <p class="eyebrow eyebrow--muted">Wat ik denk</p>
+    <h1 class="display-title">Engineering <span class="last">toolkit.</span></h1>
+    <!-- AI-TEXT A11 -->
+    <p data-ai="A11" class="lede ai-text"><span class="ai-tag" aria-hidden="true">A11</span>
+      Tabellen en links die ik tijdens ontwerp gebruik. Per onderwerp: overzicht, eenheden en bron.
     </p>
-
-    <div class="empty-state">
-      <p class="title">Nog geen cases</p>
-      <p>Hier komen alleen projecten met een echte toelichting.</p>
+    <div class="knowledge-articles">
+      <a class="knowledge-link" href="/denk/toolkit/passingen/">
+        <span>
+          <strong>Passingen (ISO 286)</strong>
+          <small>Voorkeurpassingen tot 50 mm. JS7 = ±IT7/2, niet afgerond. Rekenhulp.</small>
+        </span>
+        <span aria-hidden="true">→</span>
+      </a>
+      <a class="knowledge-link" href="/denk/toolkit/spiebaan-toleranties/">
+        <span>
+          <strong>Spiebaan-toleranties (DIN 6885)</strong>
+          <small>Spiemaat, t₁/t₂. As-Ø: boven de ondergrens t/m de bovengrens (eerste rij boven 6 t/m 8).</small>
+        </span>
+        <span aria-hidden="true">→</span>
+      </a>
+      <a class="knowledge-link" href="/denk/toolkit/lagerpassingen/">
+        <span>
+          <strong>Lagerpassingen</strong>
+          <small>Groefkogellagers: vast/los, SKF-klassen, ISO 286 tot Ø 50 mm.</small>
+        </span>
+        <span aria-hidden="true">→</span>
+      </a>
+      <a class="knowledge-link" href="/denk/toolkit/o-ringgroef/">
+        <span>
+          <strong>O-ringgroef</strong>
+          <small>ISO-koorden 1,80–7,00 mm: groef t / b, schema radiaal en axiaal.</small>
+        </span>
+        <span aria-hidden="true">→</span>
+      </a>
+      <a class="knowledge-link" href="/denk/toolkit/bronnen/">
+        <span>
+          <strong>CAD-bibliotheken</strong>
+          <small>3D-modellen, componenten, plaatwerk (247 Tailor Steel) en naslag.</small>
+        </span>
+        <span aria-hidden="true">→</span>
+      </a>
     </div>
   </main>
-    <!-- CHROME:footer -->
+  <!-- CHROME:footer -->
   <footer>
     <nav class="footer-nav" aria-label="Footer">
       <a href="/over-mij/">Wie ik ben</a>
@@ -103,8 +145,6 @@
     <span class="copy">© <span id="year"></span> Damian Vink</span>
   </footer>
   <!-- /CHROME:footer -->
-
-<script src="/js/site.js"></script>
-
+  <script src="/js/site.js"></script>
 </body>
 </html>

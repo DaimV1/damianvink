@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0e1014" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f6f4ee" media="(prefers-color-scheme: light)">
+<meta name="author" content="Damian Vink">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<title>O-ringgroef — Damian Vink</title>
+<meta name="description" content="O-ringgroef voor ISO 3601-1 koorden 1,80 tot 7,00 mm: groefdiepte t, breedte b, schema radiaal en axiaal. Bron: Dichtomatik / DIN ISO 3601.">
+<link rel="canonical" href="https://damianvink.nl/denk/toolkit/o-ringgroef/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Damian Vink">
+<meta property="og:locale" content="nl_NL">
+<meta property="og:url" content="https://damianvink.nl/denk/toolkit/o-ringgroef/">
+<meta property="og:title" content="O-ringgroef — Damian Vink">
+<meta property="og:description" content="Groefmaten t en b voor ISO-koorden 1,80 / 2,65 / 3,55 / 5,30 / 7,00 mm. Schema radiaal en axiaal.">
+<meta property="og:image" content="https://damianvink.nl/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@damianvink_">
+<meta name="twitter:title" content="O-ringgroef — Damian Vink">
+<meta name="twitter:image" content="https://damianvink.nl/img/og.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>(function(){var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);})();</script>
+<link rel="stylesheet" href="/style.css">
+<link rel="sitemap" type="application/xml" href="/sitemap.xml">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-C0F8CBQPT0"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-C0F8CBQPT0');</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "headline": "O-ringgroef",
+      "description": "Groefdiepte t en groefbreedte b voor ISO 3601-1 koorden. Bron: Dichtomatik (DIN ISO 3601).",
+      "inLanguage": "nl-NL",
+      "url": "https://damianvink.nl/denk/toolkit/o-ringgroef/",
+      "author": { "@id": "https://damianvink.nl/#person" }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Wat is d2 bij een O-ring?",
+          "acceptedAnswer": { "@type": "Answer", "text": "d2 is de koorddiameter volgens ISO 3601-1. Standaardgroepen: 1,80 / 2,65 / 3,55 / 5,30 / 7,00 mm." }
+        },
+        {
+          "@type": "Question",
+          "name": "Welke groef voor d2 2,65 mm radiaal statisch?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Dichtomatik: t = 2,0 mm (+0,05), b = 3,6 mm (+0,25). Nominale samendrukking ongeveer 25 % (geen plus-mintolerantie)." }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Wat ik denk", "item": "https://damianvink.nl/denk/" },
+        { "@type": "ListItem", "position": 2, "name": "Engineering toolkit", "item": "https://damianvink.nl/denk/toolkit/" },
+        { "@type": "ListItem", "position": 3, "name": "O-ringgroef", "item": "https://damianvink.nl/denk/toolkit/o-ringgroef/" }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+  <a class="skip-link" href="#inhoud">Ga naar inhoud</a>
+  <div class="grid-bg" aria-hidden="true"></div>
+  <!-- CHROME:header -->
+  <header>
+    <div class="brand">
+      <a class="brand-vink" href="/spel/" aria-label="Vink"><svg viewBox="0 0 24 16" aria-hidden="true"><ellipse cx="10" cy="8.2" rx="8.2" ry="5.6"/><path d="M16.4 6.4 23 8.2 16.4 10z"/><circle class="brand-vink__eye" cx="12.4" cy="6.6" r="1.55"/></svg></a>
+      <a class="mark" href="/"><strong>Damian Vink</strong> — damianvink.nl</a>
+    </div>
+    <div class="header-actions">
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
+        <span class="nav-toggle__icon" aria-hidden="true"></span>
+        Menu
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Hoofdmenu">
+        <a href="/over-mij/">Wie ik ben</a>
+        <a href="/doe/">Wat ik doe</a>
+        <a href="/denk/toolkit/" aria-current="page">Toolkit</a>
+        <a href="/denk/">Wat ik denk</a>
+        <a href="/#contact">Contact</a>
+      </nav>
+      <button class="theme-toggle" type="button" aria-label="Thema wisselen" title="Thema wisselen">
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M21 14.3A9 9 0 1 1 9.7 3a7 7 0 0 0 11.3 11.3z"/>
+        </svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+  <!-- /CHROME:header -->
+  <main id="inhoud">
+    <nav class="breadcrumb" aria-label="Broodkruimel">
+      <a href="/">Home</a>
+      <span aria-hidden="true">/</span>
+      <a href="/denk/">Wat ik denk</a>
+      <span aria-hidden="true">/</span>
+      <a href="/denk/toolkit/">Engineering toolkit</a>
+      <span aria-hidden="true">/</span>
+      <span>O-ringgroef</span>
+    </nav>
+    <p class="eyebrow eyebrow--muted">Wat ik denk · Engineering toolkit</p>
+    <h1 class="display-title">O-ring<span class="last">groef.</span></h1>
+    <p class="lede">
+      Groefdiepte t en groefbreedte b bij de vijf ISO 3601-1-koorden.
+      Schema voor radiale en axiale inbouw. Nominale maten.
+    </p>
+    <p class="table-note">
+      Groef: Dichtomatik-aanbeveling bij DIN ISO 3601, geen letterlijke ISO 3601-2-tabel.
+      Geen vervanging van de norm of de leverancier.
+    </p>
+
+    <h2 class="dash-heading">Doorsnede</h2>
+    <p class="dash-note">Geen schaal. t = groefdiepte, b = groefbreedte, d₂ = koord.</p>
+    <svg class="key-diagram" viewBox="0 0 640 250" role="img" aria-label="Schema O-ringgroef: radiaal in de zuiger en axiaal in de flens">
+      <text x="8" y="22">Radiaal (zuiger / boring)</text>
+      <rect class="kd-stroke" x="24" y="48" width="250" height="88" fill="none"/>
+      <rect class="kd-stroke" x="48" y="118" width="202" height="72"/>
+      <rect class="kd-fill" x="118" y="100" width="62" height="18"/>
+      <ellipse class="kd-stroke" cx="149" cy="118" rx="22" ry="12"/>
+      <line class="kd-dim" x1="118" y1="198" x2="180" y2="198"/>
+      <line class="kd-dim" x1="118" y1="192" x2="118" y2="204"/>
+      <line class="kd-dim" x1="180" y1="192" x2="180" y2="204"/>
+      <text x="140" y="218">b</text>
+      <line class="kd-dim" x1="196" y1="100" x2="196" y2="118"/>
+      <line class="kd-dim" x1="190" y1="100" x2="202" y2="100"/>
+      <line class="kd-dim" x1="190" y1="118" x2="202" y2="118"/>
+      <text x="208" y="114">t</text>
+      <text x="132" y="88">d₂</text>
+
+      <text x="330" y="22">Axiaal (flens)</text>
+      <rect class="kd-stroke" x="340" y="48" width="250" height="48" fill="none"/>
+      <rect class="kd-stroke" x="340" y="132" width="250" height="58"/>
+      <rect class="kd-fill" x="422" y="114" width="86" height="18"/>
+      <ellipse class="kd-stroke" cx="465" cy="132" rx="28" ry="12"/>
+      <line class="kd-dim" x1="422" y1="208" x2="508" y2="208"/>
+      <line class="kd-dim" x1="422" y1="202" x2="422" y2="214"/>
+      <line class="kd-dim" x1="508" y1="202" x2="508" y2="214"/>
+      <text x="456" y="228">b</text>
+      <line class="kd-dim" x1="524" y1="114" x2="524" y2="132"/>
+      <line class="kd-dim" x1="518" y1="114" x2="530" y2="114"/>
+      <line class="kd-dim" x1="518" y1="132" x2="530" y2="132"/>
+      <text x="536" y="128">t</text>
+    </svg>
+
+    <h2 class="dash-heading">Groefmaten</h2>
+    <p class="dash-note">
+      Alleen ISO-koorden A–E. t +0,05 mm, b +0,25 mm (Dichtomatik).
+      C = inloop/afschuining, alleen bij radiale groef.
+    </p>
+    <div class="table-scroll">
+      <table class="fit-table">
+        <thead>
+          <tr>
+            <th>d₂ (mm)</th>
+            <th>Groep</th>
+            <th>Radiaal statisch t / b</th>
+            <th>Axiaal statisch t / b</th>
+            <th>Hydrauliek t / b</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">1,80</th><td>A</td><td>1,3 / 2,4</td><td>1,3 / 2,6</td><td>1,5 / 2,4</td></tr>
+          <tr><th scope="row">2,65</th><td>B</td><td>2,0 / 3,6</td><td>2,0 / 3,8</td><td>2,3 / 3,4</td></tr>
+          <tr><th scope="row">3,55</th><td>C</td><td>2,8 / 4,7</td><td>2,7 / 5,0</td><td>3,1 / 4,5</td></tr>
+          <tr><th scope="row">5,30</th><td>D</td><td>4,3 / 7,0</td><td>4,2 / 7,2</td><td>4,7 / 6,8</td></tr>
+          <tr><th scope="row">7,00</th><td>E</td><td>5,8 / 9,3</td><td>5,7 / 9,7</td><td>6,2 / 8,9</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-note">Bron: Dichtomatik O-ring brochure, static radial / axial / dynamic hydraulics. Trapezium, driehoek en vacuüm weggelaten.</p>
+
+    <h2 class="dash-heading">Rekenhulp</h2>
+    <form class="fit-calc" id="oring-calc" action="javascript:void(0)">
+      <div class="fit-calc-fields">
+        <label>
+          Koord d₂
+          <select name="d2">
+            <option value="1.8">1,80 mm (A)</option>
+            <option value="2.65" selected>2,65 mm (B)</option>
+            <option value="3.55">3,55 mm (C)</option>
+            <option value="5.3">5,30 mm (D)</option>
+            <option value="7">7,00 mm (E)</option>
+          </select>
+        </label>
+        <label>
+          Inbouw
+          <select name="soort">
+            <option value="radial" selected>Radiaal, statisch</option>
+            <option value="axial">Axiaal, statisch</option>
+            <option value="hydro">Hydrauliek, dynamisch</option>
+          </select>
+        </label>
+      </div>
+      <div id="oring-calc-out" aria-live="polite"></div>
+    </form>
+
+    <h2 class="dash-heading">Let op</h2>
+    <ul class="body-text">
+      <li>Dichtomatik: groefvulling circa 70–85 % (niet bij vacuüm). Statische samendrukking 15–30 %.</li>
+      <li>Rek op de binnendiameter na montage max. circa 6 %.</li>
+      <li>Hoge druk: steunring; maten daarvan staan hier niet.</li>
+      <li>Binnendiameter d₁: ISO 3601-1, niet in deze tabel.</li>
+    </ul>
+
+    <h2 class="dash-heading">Vragen</h2>
+    <div class="faq">
+      <details>
+        <summary>Wat is d₂?</summary>
+        <p>Koorddiameter volgens ISO 3601-1. Vijf groepen: 1,80 / 2,65 / 3,55 / 5,30 / 7,00 mm.</p>
+      </details>
+      <details>
+        <summary>Groef voor 2,65 mm radiaal statisch?</summary>
+        <p>t = 2,0 mm (+0,05), b = 3,6 mm (+0,25). Nominale samendrukking ongeveer 25 % — geen plus-mintolerantie.</p>
+      </details>
+    </div>
+
+    <h2 class="dash-heading">Bronnen</h2>
+    <div class="knowledge-articles">
+      <a class="knowledge-link" href="https://dichtomatik.fst.com/products/static-seals/o-rings/" target="_blank" rel="noopener noreferrer">
+        <span><strong>Dichtomatik — O-rings</strong><small>Brochure met groeftabellen (DIN ISO 3601).</small></span>
+        <span aria-hidden="true">↗</span>
+      </a>
+      <a class="knowledge-link" href="https://www.iso.org/obp/ui/#iso:std:iso:3601:-1:ed-2:v1:en" target="_blank" rel="noopener noreferrer">
+        <span><strong>ISO 3601-1</strong><small>d₁, d₂, toleranties, aanduiding.</small></span>
+        <span aria-hidden="true">↗</span>
+      </a>
+      <a class="knowledge-link" href="https://www.iso.org/standard/85921.html" target="_blank" rel="noopener noreferrer">
+        <span><strong>ISO 3601-2</strong><small>Huis/groefmaten — primaire norm, niet hier overgetypt.</small></span>
+        <span aria-hidden="true">↗</span>
+      </a>
+    </div>
+
+    <p class="section-cta">
+      <a class="text-link" href="/denk/toolkit/lagerpassingen/">Lagerpassingen →</a>
+      &nbsp;·&nbsp;
+      <a class="text-link" href="/denk/toolkit/">← Engineering toolkit</a>
+    </p>
+  </main>
+  <!-- CHROME:footer -->
+  <footer>
+    <nav class="footer-nav" aria-label="Footer">
+      <a href="/over-mij/">Wie ik ben</a>
+      <a href="/denk/toolkit/">Toolkit</a>
+      <a href="/denk/">Wat ik denk</a>
+      <a href="/doe/marathon/">Marathon</a>
+      <a href="/#contact">Contact</a>
+    </nav>
+    <span class="copy">© <span id="year"></span> Damian Vink</span>
+  </footer>
+  <!-- /CHROME:footer -->
+  <script src="/js/site.js"></script>
+  <script src="/js/oringgroef.js"></script>
+</body>
+</html>

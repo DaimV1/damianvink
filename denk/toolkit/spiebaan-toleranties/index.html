@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0e1014" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f6f4ee" media="(prefers-color-scheme: light)">
+<meta name="author" content="Damian Vink">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+<title>Spiebaan-toleranties (DIN 6885) — Damian Vink</title>
+<meta name="description" content="DIN 6885-1 hoge vorm: spiemaat b×h, groefdiepte t1 in de as en t2 in de naaf, breedte P9 / N9 / JS9 / H9 / D10. Maten in mm.">
+<link rel="canonical" href="https://damianvink.nl/denk/toolkit/spiebaan-toleranties/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Damian Vink">
+<meta property="og:locale" content="nl_NL">
+<meta property="og:url" content="https://damianvink.nl/denk/toolkit/spiebaan-toleranties/">
+<meta property="og:title" content="Spiebaan-toleranties (DIN 6885) — Damian Vink">
+<meta property="og:description" content="DIN 6885-1: spiemaat, t1/t2 en breedtepassing P9 / N9 / H9.">
+<meta property="og:image" content="https://damianvink.nl/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@damianvink_">
+
+<meta name="twitter:image" content="https://damianvink.nl/img/og.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>(function(){var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);})();</script>
+<link rel="stylesheet" href="/style.css">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-C0F8CBQPT0"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-C0F8CBQPT0');</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "headline": "Spiebaan-toleranties (DIN 6885)",
+      "description": "DIN 6885-1 hoge vorm: spiemaat, groefdiepte t1/t2 en breedtepassing P9 / N9 / H9.",
+      "inLanguage": "nl-NL",
+      "url": "https://damianvink.nl/denk/toolkit/spiebaan-toleranties/",
+      "author": { "@id": "https://damianvink.nl/#person" },
+      "about": ["DIN 6885", "spiebaan", "parallelspie"]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Wat is t1 en t2 bij DIN 6885?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "t1 is de groefdiepte in de as, t2 in de naaf. b × h is de spiemaat."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Welke breedtetolerantie is standaard?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "P9 in as en naaf: vaste zitting (DIN 6885-1:2021). Lichte zitting is N9 (as) / JS9 (naaf). H9/D10 is een werkplaats-/UNI-conventie voor glijdende naven, niet de benoemde glijdpassing in DIN 6885-1:2021."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Hoort Ø 6 mm in de tabel?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nee. DIN 6885-1: eerste rij is boven 6 mm tot en met 8 mm. Precies Ø 6 mm valt erbuiten."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wat is het verschil tussen DIN 6885-1 en 6885-2?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "DIN 6885-1 is de hoge vorm. DIN 6885-2 is de lage vorm, met een andere radiale positie van de spie."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "Person",
+      "@id": "https://damianvink.nl/#person",
+      "name": "Damian Vink",
+      "url": "https://damianvink.nl/"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Wat ik denk", "item": "https://damianvink.nl/denk/" },
+        { "@type": "ListItem", "position": 2, "name": "Engineering toolkit", "item": "https://damianvink.nl/denk/toolkit/" },
+        { "@type": "ListItem", "position": 3, "name": "Spiebaan-toleranties (DIN 6885)", "item": "https://damianvink.nl/denk/toolkit/spiebaan-toleranties/" }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+  <a class="skip-link" href="#inhoud">Ga naar inhoud</a>
+  <div class="grid-bg" aria-hidden="true"></div>
+  <!-- CHROME:header -->
+  <header>
+    <div class="brand">
+      <a class="brand-vink" href="/spel/" aria-label="Vink"><svg viewBox="0 0 24 16" aria-hidden="true"><ellipse cx="10" cy="8.2" rx="8.2" ry="5.6"/><path d="M16.4 6.4 23 8.2 16.4 10z"/><circle class="brand-vink__eye" cx="12.4" cy="6.6" r="1.55"/></svg></a>
+      <a class="mark" href="/"><strong>Damian Vink</strong> — damianvink.nl</a>
+    </div>
+    <div class="header-actions">
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
+        <span class="nav-toggle__icon" aria-hidden="true"></span>
+        Menu
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Hoofdmenu">
+        <a href="/over-mij/">Wie ik ben</a>
+        <a href="/doe/">Wat ik doe</a>
+        <a href="/denk/toolkit/" aria-current="page">Toolkit</a>
+        <a href="/denk/">Wat ik denk</a>
+        <a href="/#contact">Contact</a>
+      </nav>
+      <button class="theme-toggle" type="button" aria-label="Thema wisselen" title="Thema wisselen">
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M21 14.3A9 9 0 1 1 9.7 3a7 7 0 0 0 11.3 11.3z"/>
+        </svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+  <!-- /CHROME:header -->
+  <main id="inhoud">
+    <nav class="breadcrumb" aria-label="Broodkruimel">
+      <a href="/">Home</a>
+      <span aria-hidden="true">/</span>
+      <a href="/denk/">Wat ik denk</a>
+      <span aria-hidden="true">/</span>
+      <a href="/denk/toolkit/">Engineering toolkit</a>
+      <span aria-hidden="true">/</span>
+      <span>Spiebaan-toleranties (DIN 6885)</span>
+    </nav>
+    <p class="eyebrow eyebrow--muted">Wat ik denk · Engineering toolkit</p>
+    <h1 class="display-title">Spiebaan-toleranties <span class="last">(DIN 6885).</span></h1>
+    <p class="lede">
+      Parallelspieën en spiebanen volgens <strong>DIN 6885-1</strong> (hoge vorm).
+      Maten in mm. Breedtetolerantie bepaalt of de spie vast, licht of glijdend zit.
+    </p>
+
+    <ul class="fit-legend">
+      <li><span class="swatch fit-vast"></span> Vaste zitting — P9 / P9 (standaard)</li>
+      <li><span class="swatch fit-overgang"></span> Lichte zitting — N9 (as) / JS9 (naaf)</li>
+      <li><span class="swatch fit-los"></span> Glijdend — H9 / D10 (werkplaats/UNI)</li>
+    </ul>
+
+    <h2 class="dash-heading">Doorsnede</h2>
+    <p class="dash-note">t₁ in de as, t₂ in de naaf, b × h de spie. Geen schaal.</p>
+    <svg class="key-diagram" viewBox="0 0 560 240" role="img" aria-label="Dwarsdoorsnede: as, spie en naaf met t1, t2, b en h">
+      <circle cx="150" cy="130" r="88" class="kd-stroke" opacity="0.5"/>
+      <circle cx="150" cy="130" r="58" class="kd-stroke"/>
+      <!-- key: t2 above shaft surface, t1 into shaft -->
+      <rect class="kd-fill" x="139" y="56" width="22" height="36" rx="1.5"/>
+      <text x="10" y="48">naaf</text>
+      <text x="14" y="138">as</text>
+      <line class="kd-dim" x1="178" y1="56" x2="178" y2="72"/>
+      <line class="kd-dim" x1="172" y1="56" x2="184" y2="56"/>
+      <line class="kd-dim" x1="172" y1="72" x2="184" y2="72"/>
+      <text x="190" y="68">t₂</text>
+      <line class="kd-dim" x1="178" y1="72" x2="178" y2="92"/>
+      <line class="kd-dim" x1="172" y1="92" x2="184" y2="92"/>
+      <text x="190" y="86">t₁</text>
+      <line class="kd-dim" x1="126" y1="56" x2="126" y2="92"/>
+      <line class="kd-dim" x1="120" y1="56" x2="132" y2="56"/>
+      <line class="kd-dim" x1="120" y1="92" x2="132" y2="92"/>
+      <text x="100" y="78">h</text>
+      <line class="kd-dim" x1="139" y1="214" x2="161" y2="214"/>
+      <line class="kd-dim" x1="139" y1="208" x2="139" y2="220"/>
+      <line class="kd-dim" x1="161" y1="208" x2="161" y2="220"/>
+      <text x="144" y="236">b</text>
+      <text x="320" y="80">t₁ — groefdiepte in de as</text>
+      <text x="320" y="104">t₂ — groefdiepte in de naaf</text>
+      <text x="320" y="128">b × h — spiebreedte × hoogte</text>
+      <text x="320" y="160">DIN 6885-1, hoge vorm</text>
+    </svg>
+
+    <h2 class="dash-heading">Spie en groefdiepte (DIN 6885-1)</h2>
+    <p class="dash-note">
+      As Ø: boven de ondergrens tot en met de bovengrens. Eerste rij is
+      <strong>boven 6 t/m 8</strong> — Ø 6 mm staat niet in DIN 6885-1.
+      t₁ = diepte in de as · t₂ = diepte in de naaf.
+      Dieptetolerantie: 0 tot pluswaarde (b ≤ 6 mm: +0,1; daarna +0,2).
+    </p>
+    <div class="table-scroll">
+      <table class="fit-table">
+        <thead>
+          <tr>
+            <th>As Ø d (mm)</th>
+            <th>Spie b × h</th>
+            <th>t₁ as</th>
+            <th>t₂ naaf</th>
+            <th>Tol. diepte</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">boven 6 t/m 8</th><td>2 × 2</td><td>1,2</td><td>1,0</td><td>0 / +0,1</td></tr>
+          <tr><th scope="row">boven 8 t/m 10</th><td>3 × 3</td><td>1,8</td><td>1,4</td><td>0 / +0,1</td></tr>
+          <tr><th scope="row">boven 10 t/m 12</th><td>4 × 4</td><td>2,5</td><td>1,8</td><td>0 / +0,1</td></tr>
+          <tr><th scope="row">boven 12 t/m 17</th><td>5 × 5</td><td>3,0</td><td>2,3</td><td>0 / +0,1</td></tr>
+          <tr><th scope="row">boven 17 t/m 22</th><td>6 × 6</td><td>3,5</td><td>2,8</td><td>0 / +0,1</td></tr>
+          <tr><th scope="row">boven 22 t/m 30</th><td>8 × 7</td><td>4,0</td><td>3,3</td><td>0 / +0,2</td></tr>
+          <tr><th scope="row">boven 30 t/m 38</th><td>10 × 8</td><td>5,0</td><td>3,3</td><td>0 / +0,2</td></tr>
+          <tr><th scope="row">boven 38 t/m 44</th><td>12 × 8</td><td>5,0</td><td>3,3</td><td>0 / +0,2</td></tr>
+          <tr><th scope="row">boven 44 t/m 50</th><td>14 × 9</td><td>5,5</td><td>3,8</td><td>0 / +0,2</td></tr>
+          <tr><th scope="row">boven 50 t/m 58</th><td>16 × 10</td><td>6,0</td><td>4,3</td><td>0 / +0,2</td></tr>
+          <tr><th scope="row">boven 58 t/m 65</th><td>18 × 11</td><td>7,0</td><td>4,4</td><td>0 / +0,2</td></tr>
+          <tr><th scope="row">boven 65 t/m 75</th><td>20 × 12</td><td>7,5</td><td>4,9</td><td>0 / +0,2</td></tr>
+          <tr><th scope="row">boven 75 t/m 85</th><td>22 × 14</td><td>9,0</td><td>5,4</td><td>0 / +0,2</td></tr>
+          <tr><th scope="row">boven 85 t/m 95</th><td>25 × 14</td><td>9,0</td><td>5,4</td><td>0 / +0,2</td></tr>
+          <tr><th scope="row">boven 95 t/m 110</th><td>28 × 16</td><td>10,0</td><td>6,4</td><td>0 / +0,2</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="dash-heading">Rekenhulp</h2>
+    <p class="dash-note">
+      As-Ø in <strong>hele mm</strong>. DIN 6885-1: boven de ondergrens tot en met de bovengrens.
+      De eerste rij is boven 6 t/m 8 — Ø 6 mm valt erbuiten. Het veld mag leeg.
+    </p>
+    <form class="fit-calc" id="spie-calc" action="javascript:void(0)">
+      <div class="fit-calc-fields">
+        <label>
+          As-Ø (mm)
+          <input type="text" name="diameter" id="spie-diameter" inputmode="numeric" pattern="[0-9]*" value="20" autocomplete="off" spellcheck="false">
+        </label>
+      </div>
+      <div id="spie-calc-out" aria-live="polite"></div>
+    </form>
+
+    <h2 class="dash-heading">Breedtetolerantie b</h2>
+    <div class="fit-cards">
+      <article class="fit-card fit-vast">
+        <h3>P9 / P9 — vast</h3>
+        <p>Standaard. As en naaf beide P9. Spie zit strak; geschikt voor wisselende belasting en positieve koppeloverdracht.</p>
+      </article>
+      <article class="fit-card fit-overgang">
+        <h3>N9 / JS9 — licht</h3>
+        <p>As N9, naaf JS9. Makkelijker monteren. Alleen gebruiken als de toepassing dat toelaat (schriftelijke afspraak in de norm).</p>
+      </article>
+      <article class="fit-card fit-los">
+        <h3>H9 / D10 — glijdend</h3>
+        <p>Werkplaats-/UNI-conventie voor verschuifbare naven. As H9, naaf D10. DIN 6885-1:2021 noemt P9 sluitend en N9/JS9 vrij — niet H9/D10.</p>
+      </article>
+    </div>
+
+    <h2 class="dash-heading">Op tekening</h2>
+    <p class="dash-note">
+      Noteer naast de nominale breedte het tolerantieveld, bijvoorbeeld
+      <strong>spiebaan 8 P9</strong> in as en naaf. Diepte vaak als
+      <strong>t₁ = 4</strong> of maat vanaf buitendiameter
+      <strong>d − t₁</strong> (as) / <strong>d + t₂</strong> (boring).
+    </p>
+    <p class="table-note">
+      Bron: DIN 6885-1 (hoge vorm). DIN 6885-2 is de lage vorm (andere radiale positie van de spie).
+      Tabel gecontroleerd tegen DIN 6885-1-maattabellen (o.a. fasten.it, RoyMech / BS 4235).
+      H9/D10 is werkplaats-/UNI-conventie, niet de benoemde glijdpassing in DIN 6885-1:2021.
+      Voor geruimde naven wordt soms IT8 i.p.v. IT9 aanbevolen (P8, N8, JS8).
+      Controleer kritieke maten in de actuele norm.
+    </p>
+
+    <section class="faq" aria-labelledby="faq-title">
+      <h2 id="faq-title" class="dash-heading">Vragen</h2>
+      <details>
+        <summary>Wat is t1 en t2 bij DIN 6885?</summary>
+        <p>t₁ is de groefdiepte in de as, t₂ in de naaf. b × h is de spiemaat.</p>
+      </details>
+      <details>
+        <summary>Welke breedtetolerantie is standaard?</summary>
+        <p>P9 in as en naaf: vaste zitting (DIN 6885-1:2021). Lichte zitting is N9 (as) / JS9 (naaf). H9/D10 is werkplaats-/UNI-conventie, niet de benoemde glijdpassing in DIN 6885-1:2021.</p>
+      </details>
+      <details>
+        <summary>Hoort Ø 6 mm in de tabel?</summary>
+        <p>Nee. DIN 6885-1: eerste rij is boven 6 mm tot en met 8 mm. Precies Ø 6 mm valt erbuiten.</p>
+      </details>
+      <details>
+        <summary>Wat is het verschil tussen DIN 6885-1 en 6885-2?</summary>
+        <p>DIN 6885-1 is de hoge vorm. DIN 6885-2 is de lage vorm, met een andere radiale positie van de spie.</p>
+      </details>
+    </section>
+
+    <p class="section-cta">
+      <a class="text-link" href="/denk/toolkit/passingen/">Passingen (ISO 286) →</a>
+      &nbsp;·&nbsp;
+      <a class="text-link" href="/denk/toolkit/lagerpassingen/">Lagerpassingen →</a>
+      &nbsp;·&nbsp;
+      <a class="text-link" href="/denk/toolkit/">← Engineering toolkit</a>
+    </p>
+  </main>
+    <!-- CHROME:footer -->
+  <footer>
+    <nav class="footer-nav" aria-label="Footer">
+      <a href="/over-mij/">Wie ik ben</a>
+      <a href="/denk/toolkit/">Toolkit</a>
+      <a href="/denk/">Wat ik denk</a>
+      <a href="/doe/marathon/">Marathon</a>
+      <a href="/#contact">Contact</a>
+    </nav>
+    <span class="copy">© <span id="year"></span> Damian Vink</span>
+  </footer>
+  <!-- /CHROME:footer -->
+  <script src="/js/site.js"></script>
+  <script src="/js/spiebaan.js"></script>
+</body>
+</html>

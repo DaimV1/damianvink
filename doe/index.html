@@ -7,32 +7,42 @@
 <meta name="theme-color" content="#f6f4ee" media="(prefers-color-scheme: light)">
 <meta name="author" content="Damian Vink">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-
-<title>Projecten — Damian Vink</title>
-<meta name="description" content="Projecten van Damian Vink in machinebouw en mechanisch ontwerp. Nog geen toegelichte cases.">
-<link rel="canonical" href="https://damianvink.nl/doe/projecten/">
+<title>Wat ik doe — Damian Vink</title>
+<meta name="description" content="Wat Damian Vink doet: marathonvoorbereiding (EDP Porto 2026) en projecten in machinebouw.">
+<link rel="canonical" href="https://damianvink.nl/doe/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Damian Vink">
 <meta property="og:locale" content="nl_NL">
-<meta property="og:url" content="https://damianvink.nl/doe/projecten/">
-<meta property="og:title" content="Projecten — Damian Vink">
-<meta property="og:description" content="Nog geen toegelichte projectcases. Damian Vink, Project Engineer werktuigbouwkunde.">
+<meta property="og:url" content="https://damianvink.nl/doe/">
+<meta property="og:title" content="Wat ik doe — Damian Vink">
+<meta property="og:description" content="Marathonvoorbereiding en projecten.">
 <meta property="og:image" content="https://damianvink.nl/img/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@damianvink_">
-
+<meta name="twitter:title" content="Wat ik doe — Damian Vink">
 <meta name="twitter:image" content="https://damianvink.nl/img/og.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script>(function(){var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);})();</script>
-
 <link rel="stylesheet" href="/style.css">
 <link rel="sitemap" type="application/xml" href="/sitemap.xml">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-C0F8CBQPT0"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-C0F8CBQPT0');</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Wat ik doe",
+  "url": "https://damianvink.nl/doe/",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Marathon", "url": "https://damianvink.nl/doe/marathon/" },
+    { "@type": "ListItem", "position": 2, "name": "Projecten", "url": "https://damianvink.nl/doe/projecten/" }
+  ]
+}
+</script>
 </head>
 <body>
   <a class="skip-link" href="#inhoud">Ga naar inhoud</a>
@@ -69,29 +79,35 @@
     </div>
   </header>
   <!-- /CHROME:header -->
-
   <main id="inhoud">
     <nav class="breadcrumb" aria-label="Broodkruimel">
       <a href="/">Home</a>
       <span aria-hidden="true">/</span>
-      <a href="/doe/">Wat ik doe</a>
-      <span aria-hidden="true">/</span>
-      <span>Projecten</span>
+      <span>Wat ik doe</span>
     </nav>
-
     <p class="eyebrow eyebrow--muted">Wat ik doe</p>
-    <h1 class="display-title">Projec<span class="last">ten.</span></h1>
-    <!-- AI-TEXT A13 -->
-    <p data-ai="A13" class="lede ai-text"><span class="ai-tag" aria-hidden="true">A13</span>
-      Werk uit de machinebouw en werktuigbouwkunde.
+    <h1 class="display-title">Wat ik <span class="last">doe.</span></h1>
+    <p class="lede">
+      Marathonvoorbereiding en projecten.
     </p>
-
-    <div class="empty-state">
-      <p class="title">Nog geen cases</p>
-      <p>Hier komen alleen projecten met een echte toelichting.</p>
+    <div class="tile-grid" role="list">
+      <a class="tile" role="listitem" href="/doe/marathon/">
+        <picture>
+          <source srcset="/img/marathon.webp" type="image/webp">
+          <img src="/img/marathon.jpg" alt="Hardloper op een verlichte weg in het donker" width="953" height="640">
+        </picture>
+        <span class="tile-title">Mara<span class="last">thon.</span></span>
+      </a>
+      <a class="tile" role="listitem" href="/doe/projecten/">
+        <picture>
+          <source srcset="/img/projecten.webp" type="image/webp">
+          <img src="/img/projecten.jpg" alt="Metaalwerkplaats met freesbank en werkstukken" width="953" height="640" loading="lazy">
+        </picture>
+        <span class="tile-title">Projec<span class="last">ten.</span></span>
+      </a>
     </div>
   </main>
-    <!-- CHROME:footer -->
+  <!-- CHROME:footer -->
   <footer>
     <nav class="footer-nav" aria-label="Footer">
       <a href="/over-mij/">Wie ik ben</a>
@@ -103,8 +119,6 @@
     <span class="copy">© <span id="year"></span> Damian Vink</span>
   </footer>
   <!-- /CHROME:footer -->
-
-<script src="/js/site.js"></script>
-
+  <script src="/js/site.js"></script>
 </body>
 </html>

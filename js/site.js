@@ -5,25 +5,38 @@
     root.setAttribute("data-theme", stored);
   }
 
+  function resolvedTheme() {
+    var current = root.getAttribute("data-theme");
+    if (current === "light" || current === "dark") return current;
+    return window.matchMedia("(prefers-color-scheme: light)").matches
+      ? "light"
+      : "dark";
+  }
+
+  function syncThemeColor(theme) {
+    var color = theme === "light" ? "#f6f4ee" : "#0e1014";
+    var metas = document.querySelectorAll('meta[name="theme-color"]');
+    metas.forEach(function (meta) {
+      meta.setAttribute("content", color);
+    });
+  }
+
   function apply(theme) {
     root.setAttribute("data-theme", theme);
     localStorage.setItem("theme", theme);
+    syncThemeColor(theme);
   }
 
   document.addEventListener("DOMContentLoaded", function () {
     var year = document.getElementById("year");
     if (year) year.textContent = String(new Date().getFullYear());
 
+    syncThemeColor(resolvedTheme());
+
     var btn = document.querySelector(".theme-toggle");
     if (btn) {
       btn.addEventListener("click", function () {
-        var current = root.getAttribute("data-theme");
-        if (!current) {
-          current = window.matchMedia("(prefers-color-scheme: light)").matches
-            ? "light"
-            : "dark";
-        }
-        apply(current === "dark" ? "light" : "dark");
+        apply(resolvedTheme() === "dark" ? "light" : "dark");
       });
     }
 
@@ -34,6 +47,29 @@
       };
       onScroll();
       window.addEventListener("scroll", onScroll, { passive: true });
+    }
+
+    var toggle = document.querySelector(".nav-toggle");
+    var nav = document.getElementById("site-nav");
+    if (toggle && nav) {
+      var setOpen = function (open) {
+        toggle.setAttribute("aria-expanded", open ? "true" : "false");
+        nav.classList.toggle("is-open", open);
+      };
+      toggle.addEventListener("click", function () {
+        setOpen(toggle.getAttribute("aria-expanded") !== "true");
+      });
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") setOpen(false);
+      });
+      nav.querySelectorAll("a").forEach(function (link) {
+        link.addEventListener("click", function () {
+          setOpen(false);
+        });
+      });
+      window.addEventListener("resize", function () {
+        if (window.matchMedia("(min-width: 961px)").matches) setOpen(false);
+      });
     }
 
     var els = document.querySelectorAll(".reveal");

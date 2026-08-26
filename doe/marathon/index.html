@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0e1014" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f6f4ee" media="(prefers-color-scheme: light)">
 <meta name="author" content="Damian Vink">
-<meta name="theme-color" content="#0e1014">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 
 <title>Marathon — Damian Vink</title>
@@ -32,31 +33,44 @@
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-C0F8CBQPT0');</script>
 </head>
 <body>
+  <a class="skip-link" href="#inhoud">Ga naar inhoud</a>
   <div class="grid-bg" aria-hidden="true"></div>
   <div class="block block--blue" aria-hidden="true"></div>
+  <!-- CHROME:header -->
   <header>
     <div class="brand">
       <a class="brand-vink" href="/spel/" aria-label="Vink"><svg viewBox="0 0 24 16" aria-hidden="true"><ellipse cx="10" cy="8.2" rx="8.2" ry="5.6"/><path d="M16.4 6.4 23 8.2 16.4 10z"/><circle class="brand-vink__eye" cx="12.4" cy="6.6" r="1.55"/></svg></a>
       <a class="mark" href="/"><strong>Damian Vink</strong> — damianvink.nl</a>
     </div>
     <div class="header-actions">
-      <nav class="site-nav" aria-label="Hoofdmenu">
-        <a href="/#over-mij">Wie ik ben</a>
-        <a href="/#werk" aria-current="page">Wat ik doe</a>
-        <a href="/weet/">Wat ik denk</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
+        <span class="nav-toggle__icon" aria-hidden="true"></span>
+        Menu
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Hoofdmenu">
+        <a href="/over-mij/">Wie ik ben</a>
+        <a href="/doe/" aria-current="page">Wat ik doe</a>
+        <a href="/denk/toolkit/">Toolkit</a>
+        <a href="/denk/">Wat ik denk</a>
         <a href="/#contact">Contact</a>
       </nav>
-      <button class="theme-toggle" type="button" aria-label="Wissel licht/donker thema" title="Thema wisselen">
-        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 14.3A9 9 0 1 1 9.7 3a7 7 0 0 0 11.3 11.3z"/></svg>
-        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      <button class="theme-toggle" type="button" aria-label="Thema wisselen" title="Thema wisselen">
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M21 14.3A9 9 0 1 1 9.7 3a7 7 0 0 0 11.3 11.3z"/>
+        </svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+        </svg>
       </button>
     </div>
   </header>
-  <main>
+  <!-- /CHROME:header -->
+  <main id="inhoud">
     <nav class="breadcrumb" aria-label="Broodkruimel">
       <a href="/">Home</a>
       <span aria-hidden="true">/</span>
-      <a href="/#werk">Wat ik doe</a>
+      <a href="/doe/">Wat ik doe</a>
       <span aria-hidden="true">/</span>
       <span>Marathon</span>
     </nav>
@@ -182,15 +196,18 @@
       </div>
     </section>
   </main>
-    <footer>
+    <!-- CHROME:footer -->
+  <footer>
     <nav class="footer-nav" aria-label="Footer">
       <a href="/over-mij/">Wie ik ben</a>
-      <a href="/weet/">Wat ik denk</a>
+      <a href="/denk/toolkit/">Toolkit</a>
+      <a href="/denk/">Wat ik denk</a>
       <a href="/doe/marathon/">Marathon</a>
       <a href="/#contact">Contact</a>
     </nav>
     <span class="copy">© <span id="year"></span> Damian Vink</span>
   </footer>
+  <!-- /CHROME:footer -->
   <script src="/js/site.js"></script>
   <script src="/js/marathon.js"></script>
 </body>
