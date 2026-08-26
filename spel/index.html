@@ -2,25 +2,25 @@
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="author" content="Damian Vink">
 <meta name="theme-color" content="#0e1014">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<title>Blog — Damian Vink</title>
-<meta name="description" content="Blog en artikelen van Damian Vink. Nog geen stukken gepubliceerd.">
-<link rel="canonical" href="https://damianvink.nl/weet/blog/">
+<title>Vink — Damian Vink</title>
+<meta name="description" content="Vink: een klein browserspel op damianvink.nl. Tik of spatie om te vliegen. Eigen spel, geen Flappy Bird.">
+<link rel="canonical" href="https://damianvink.nl/spel/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Damian Vink">
 <meta property="og:locale" content="nl_NL">
-<meta property="og:url" content="https://damianvink.nl/weet/blog/">
-<meta property="og:title" content="Blog — Damian Vink">
-<meta property="og:description" content="Nog geen artikelen. Damian Vink, Project Engineer werktuigbouwkunde.">
+<meta property="og:url" content="https://damianvink.nl/spel/">
+<meta property="og:title" content="Vink — Damian Vink">
+<meta property="og:description" content="Klein eigen spel: tik om te vliegen. Record blijft in deze browser.">
 <meta property="og:image" content="https://damianvink.nl/img/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@damianvink_">
-<meta name="twitter:title" content="Blog — Damian Vink">
+<meta name="twitter:title" content="Vink — Damian Vink">
 <meta name="twitter:image" content="https://damianvink.nl/img/og.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,14 +33,13 @@
 </head>
 <body>
   <div class="grid-bg" aria-hidden="true"></div>
-  <div class="block block--blue" aria-hidden="true"></div>
   <header>
     <a class="mark" href="/"><strong>Damian Vink</strong> — damianvink.nl</a>
     <div class="header-actions">
       <nav class="site-nav" aria-label="Hoofdmenu">
         <a href="/#over-mij">Wie ik ben</a>
         <a href="/#werk">Wat ik doe</a>
-        <a href="/weet/" aria-current="page">Wat ik denk</a>
+        <a href="/weet/">Wat ik denk</a>
         <a href="/#contact">Contact</a>
       </nav>
       <button class="theme-toggle" type="button" aria-label="Thema wisselen">
@@ -51,19 +50,26 @@
   </header>
   <main>
     <nav class="breadcrumb" aria-label="Broodkruimel">
-      <a href="/weet/">Wat ik denk</a>
+      <a href="/">Home</a>
       <span aria-hidden="true">/</span>
-      <span>Blog</span>
+      <span>Vink</span>
     </nav>
-    <p class="eyebrow eyebrow--muted">Wat ik denk</p>
-    <h1 class="display-title">Blog.</h1>
+    <p class="eyebrow eyebrow--muted">Spel</p>
+    <h1 class="display-title">Vink.</h1>
     <p class="lede">
-      Artikelen over werktuigbouwkunde, ontwerp en wat ik onderweg leer.
+      Eigen minigame. Tik of spatie om te vliegen, door de opening.
+      Record blijft in deze browser.
     </p>
-    <div class="empty-state">
-      <p class="title">Nog geen artikelen</p>
-      <p>Hier komen alleen stukken die ik zelf schrijf.</p>
+    <div class="game-shell">
+      <canvas id="vink-game" width="400" height="560" role="img" aria-label="Vink: tik of spatie om te vliegen"></canvas>
+      <p class="game-hud">
+        <span>Record: <strong id="vink-best">0</strong></span>
+        <span>Mobiel: tik op het veld</span>
+      </p>
     </div>
+    <p class="table-note">
+      Geen Flappy Bird: andere naam, eigen tekening, geen overgenomen sprites of geluid.
+    </p>
   </main>
   <footer>
     <nav class="footer-nav" aria-label="Footer">
@@ -76,5 +82,6 @@
     <span class="copy">© <span id="year"></span> Damian Vink</span>
   </footer>
   <script src="/js/site.js"></script>
+  <script src="/js/spel.js"></script>
 </body>
 </html>

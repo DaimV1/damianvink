@@ -136,6 +136,7 @@ footer {
   z-index: 1;
 }
 
+
 /* =========================================================
    HEADER / NAVIGATION
    ========================================================= */
@@ -1569,4 +1570,28 @@ h1.display-title {
     font-size: 10px;
     white-space: nowrap;
   }
+}
+
+.game-shell {
+  max-width: 400px;
+  margin: 8px 0 28px;
+}
+.game-shell canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper-elevated);
+  touch-action: none;
+  cursor: pointer;
+}
+.game-hud {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 10px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+  color: var(--grey);
 }

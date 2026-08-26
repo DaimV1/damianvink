@@ -16,5 +16,6 @@ Persoonlijke site van Damian Vink. Statische HTML op GitHub Pages.
   - `/weet/toolkit/o-ringgroef/` — O-ringgroef
   - `/weet/toolkit/bronnen/` — CAD-bibliotheken
 - `/weet/blog/` — Blog (leeg tot er echte artikelen zijn)
+- `/spel/` — Vink (eigen minigame)
 
 Onbekende paden vallen op `404.html`. `llms.txt` is een korte inhoudsopgave voor AI-crawlers.
