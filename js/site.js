@@ -73,26 +73,134 @@
     }
 
     var els = document.querySelectorAll(".reveal");
-    if (!els.length) return;
-    if (!("IntersectionObserver" in window)) {
-      els.forEach(function (el) {
-        el.classList.add("is-visible");
-      });
-      return;
-    }
-    var io = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            io.unobserve(entry.target);
-          }
+    if (els.length) {
+      if (!("IntersectionObserver" in window)) {
+        els.forEach(function (el) {
+          el.classList.add("is-visible");
         });
-      },
-      { threshold: 0.12, rootMargin: "0px 0px -60px 0px" }
-    );
-    els.forEach(function (el) {
-      io.observe(el);
+      } else {
+        var io = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                io.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.12, rootMargin: "0px 0px -60px 0px" }
+        );
+        els.forEach(function (el) {
+          io.observe(el);
+        });
+      }
+    }
+
+    var CONSENT_KEY = "cookie-consent";
+    var GA_ID = "G-C0F8CBQPT0";
+
+    if (!document.querySelector('link[href="/cookie.css"]')) {
+      var css = document.createElement("link");
+      css.rel = "stylesheet";
+      css.href = "/cookie.css";
+      document.head.appendChild(css);
+    }
+
+    var banner = document.getElementById("cookie-banner");
+    if (!banner) {
+      banner = document.createElement("div");
+      banner.className = "cookie-banner";
+      banner.id = "cookie-banner";
+      banner.hidden = true;
+      banner.setAttribute("role", "dialog");
+      banner.setAttribute("aria-modal", "false");
+      banner.setAttribute("aria-labelledby", "cookie-banner-title");
+      banner.setAttribute("aria-describedby", "cookie-banner-text");
+      banner.innerHTML =
+        '<div class="cookie-banner__inner">' +
+        '<div class="cookie-banner__copy">' +
+        '<p id="cookie-banner-title" class="cookie-banner__title">Cookies</p>' +
+        '<p id="cookie-banner-text">Alleen Google Analytics, en alleen na jouw keuze. Functionele cookies zitten er niet bij.</p>' +
+        "</div>" +
+        '<div class="cookie-banner__actions">' +
+        '<button type="button" class="cv-button secondary" data-cookie="deny">Weigeren</button>' +
+        '<button type="button" class="cv-button" data-cookie="allow">Accepteren</button>' +
+        "</div></div>";
+      document.body.appendChild(banner);
+    }
+
+    function loadGa() {
+      if (window.__gaLoaded) return;
+      window.__gaLoaded = true;
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () {
+        dataLayer.push(arguments);
+      };
+      gtag("js", new Date());
+      gtag("consent", "default", {
+        ad_storage: "denied",
+        ad_user_data: "denied",
+        ad_personalization: "denied",
+        analytics_storage: "granted"
+      });
+      gtag("config", GA_ID, { anonymize_ip: true });
+      var s = document.createElement("script");
+      s.async = true;
+      s.src = "https://www.googletagmanager.com/gtag/js?id=" + GA_ID;
+      document.head.appendChild(s);
+    }
+
+    function hideBanner() {
+      if (!banner) return;
+      banner.hidden = true;
+    }
+
+    function showBanner() {
+      if (!banner) return;
+      banner.hidden = false;
+    }
+
+    function setConsent(value) {
+      localStorage.setItem(CONSENT_KEY, value);
+      hideBanner();
+      if (value === "allow") loadGa();
+    }
+
+    var choice = localStorage.getItem(CONSENT_KEY);
+    if (choice === "allow") {
+      loadGa();
+      hideBanner();
+    } else if (choice === "deny") {
+      hideBanner();
+    } else {
+      showBanner();
+    }
+
+    if (banner) {
+      banner.addEventListener("click", function (e) {
+        var btn = e.target.closest("[data-cookie]");
+        if (!btn) return;
+        var value = btn.getAttribute("data-cookie");
+        if (value === "allow" || value === "deny") setConsent(value);
+      });
+    }
+
+    var copy = document.querySelector("footer .copy");
+    if (copy && !copy.querySelector("[data-cookie-reset]")) {
+      copy.appendChild(document.createTextNode(" · "));
+      var resetBtn = document.createElement("button");
+      resetBtn.type = "button";
+      resetBtn.className = "cookie-reset";
+      resetBtn.setAttribute("data-cookie-reset", "");
+      resetBtn.textContent = "Cookies";
+      copy.appendChild(resetBtn);
+    }
+
+    document.querySelectorAll("[data-cookie-reset]").forEach(function (el) {
+      el.addEventListener("click", function () {
+        localStorage.removeItem(CONSENT_KEY);
+        showBanner();
+      });
     });
   });
 })();

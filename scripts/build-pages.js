@@ -85,6 +85,14 @@ function ensureMainId(html) {
   });
 }
 
+function stripAnalytics(html) {
+  return html
+    .replace(/\s*<!-- Google Analytics -->\s*/g, "\n")
+    .replace(/\s*<script async src="https:\/\/www\.googletagmanager\.com\/gtag\/js\?id=G-[A-Z0-9]+"><\/script>\s*/g, "\n")
+    .replace(/\s*<script>\s*window\.dataLayer[\s\S]*?gtag\(['"]config['"],\s*['"]G-[A-Z0-9]+['"]\);?\s*<\/script>\s*/g, "\n")
+    .replace(/\s*<script>\s*window\.dataLayer[\s\S]*?gtag\(['"]config['"],\s*['"]G-[A-Z0-9]+['"]\);[\s\S]*?<\/script>\s*/g, "\n");
+}
+
 function replaceChrome(html, current) {
   const header = renderHeader(current);
   const footer = footerTpl;
@@ -143,6 +151,7 @@ function processPage(abs) {
 
   let html = fs.readFileSync(abs, "utf8");
   html = rewriteWeetUrls(html);
+  html = stripAnalytics(html);
   html = ensureThemeColor(html);
   html = ensureSkip(html);
   html = ensureMainId(html);
