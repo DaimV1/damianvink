@@ -6,12 +6,13 @@ Site in het Nederlands. Geen verzonnen projectcases. Tabellen zijn naslag, geen 
 
 ## Pagina's
 
-- [Home](https://damianvink.nl/): wie ik ben, wat ik doe, toolkit, contact
+- [Home](https://damianvink.nl/): Wie ik ben, Wat ik doe, Wat ik denk, Contact
 - [Wie ik ben](https://damianvink.nl/over-mij/): achtergrond + CV (PDF)
-- [Engineering toolkit](https://damianvink.nl/weet/toolkit/): ISO 286, DIN 6885, CAD-bronnen
-- [ISO 286 passingen](https://damianvink.nl/weet/toolkit/passingen/): voorkeurpassingen tot Ø 50 mm, gat/as, rekenhulp
-- [DIN 6885 spiebanen](https://damianvink.nl/weet/toolkit/spiebaan-toleranties/): t1/t2, b×h, P9/N9/H9
-- [Bronnen en CAD](https://damianvink.nl/weet/toolkit/bronnen/): TraceParts, 3Dfindit, MISUMI, 247 Tailor Steel, ISO OBP
+- [Wat ik denk](https://damianvink.nl/weet/): Engineering toolkit
+- [Engineering toolkit](https://damianvink.nl/weet/toolkit/): Passingen (ISO 286), Spiebaan-toleranties (DIN 6885), CAD-bibliotheken
+- [Passingen (ISO 286)](https://damianvink.nl/weet/toolkit/passingen/): voorkeurpassingen tot Ø 50 mm, gat/as, rekenhulp
+- [Spiebaan-toleranties (DIN 6885)](https://damianvink.nl/weet/toolkit/spiebaan-toleranties/): t1/t2, b×h, P9/N9/H9
+- [CAD-bibliotheken](https://damianvink.nl/weet/toolkit/bronnen/): TraceParts, 3Dfindit, MISUMI, 247 Tailor Steel, ISO OBP
 - [Marathon](https://damianvink.nl/doe/marathon/): trainingsdashboard, EDP Porto Marathon-plan (Strava-export)
 - [Projecten](https://damianvink.nl/doe/projecten/): leeg tot er echte toelichtingen zijn
 
@@ -23,5 +24,5 @@ Site in het Nederlands. Geen verzonnen projectcases. Tabellen zijn naslag, geen 
 
 ## Bronnen voor tabellen
 
-- Passingen: ISO 286-1 / ISO 286-2 (limietafwijkingen, eenheidsgat)
-- Spiebanen: DIN 6885-1 hoge vorm
+- Passingen (ISO 286): ISO 286-1 / ISO 286-2 (limietafwijkingen, eenheidsgat)
+- Spiebaan-toleranties (DIN 6885): DIN 6885-1 hoge vorm
