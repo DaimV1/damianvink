@@ -9,13 +9,10 @@
   --paper-elevated: #161920;
   --ink: #eceae4;
   --ink-muted: #a8a9ad;
-  --red: #ff5c3a;
   --blue: #4d8cff;
-  --yellow: #f2be19;
   --grey: #8b8d94;
   --line: rgba(255, 255, 255, 0.09);
   --line-strong: rgba(255, 255, 255, 0.14);
-  --callout-bg: rgba(255, 92, 58, 0.08);
   --hover-bg: rgba(255, 255, 255, 0.04);
   --shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
   color-scheme: dark;
@@ -26,13 +23,10 @@
   --paper-elevated: #efede5;
   --ink: #15161b;
   --ink-muted: #3a3b41;
-  --red: #e14b2a;
   --blue: #1b54c4;
-  --yellow: #f2be19;
   --grey: #8c8e92;
   --line: rgba(21, 22, 27, 0.12);
   --line-strong: rgba(21, 22, 27, 0.18);
-  --callout-bg: #efede5;
   --hover-bg: #efede5;
   --shadow: 0 8px 24px rgba(21, 22, 27, 0.08);
   color-scheme: light;
@@ -44,13 +38,10 @@
     --paper-elevated: #efede5;
     --ink: #15161b;
     --ink-muted: #3a3b41;
-    --red: #e14b2a;
     --blue: #1b54c4;
-    --yellow: #f2be19;
     --grey: #8c8e92;
     --line: rgba(21, 22, 27, 0.12);
     --line-strong: rgba(21, 22, 27, 0.18);
-    --callout-bg: #efede5;
     --hover-bg: #efede5;
     --shadow: 0 8px 24px rgba(21, 22, 27, 0.08);
     color-scheme: light;
@@ -130,11 +121,6 @@ img {
   z-index: 0;
   border-radius: 2px;
 }
-
-.block--red {
-  display: none;
-}
-
 .block--blue {
   width: 96px;
   height: 48px;
@@ -143,27 +129,6 @@ img {
   left: 48px;
   opacity: 0.35;
 }
-
-.block--yellow {
-  display: none;
-}
-
-@keyframes pulse {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.28);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .block--yellow {
-    animation: none;
-  }
-}
-
 header,
 main,
 footer {
@@ -384,68 +349,6 @@ h3 {
 .body-text p {
   margin: 0 0 20px;
 }
-
-.placeholder {
-  border: 1px dashed var(--line);
-  border-radius: 4px;
-  padding: 2px 8px;
-  color: var(--grey);
-  font-style: italic;
-}
-
-/* =========================================================
-   MAIN PAGE NAVIGATION (map)
-   ========================================================= */
-
-.pages {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(120px, 1fr));
-  gap: 1px;
-  background: var(--line);
-  border: 1px solid var(--line);
-  max-width: 680px;
-  margin-top: 8px;
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.page-item {
-  background: var(--paper);
-  padding: 18px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  min-height: 110px;
-  justify-content: space-between;
-  text-decoration: none;
-  color: inherit;
-  transition: background 0.15s ease, transform 0.15s ease;
-}
-
-.page-item:hover {
-  background: var(--paper-elevated);
-  transform: translateY(-2px);
-}
-
-.page-item .num {
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 11px;
-  color: var(--grey);
-}
-
-.page-item .name {
-  font-family: "Space Grotesk", sans-serif;
-  font-weight: 600;
-  font-size: 16px;
-  color: var(--ink);
-}
-
-.page-item .teaser {
-  font-size: 12px;
-  color: var(--grey);
-  line-height: 1.4;
-}
-
 /* =========================================================
    KNOWLEDGE SECTION
    ========================================================= */
@@ -563,23 +466,6 @@ h3 {
 .knowledge-articles {
   margin-top: 18px;
 }
-
-/* =========================================================
-   ACCESSIBILITY
-   ========================================================= */
-
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
 /* =========================================================
    EMPTY STATE
    ========================================================= */
@@ -604,34 +490,6 @@ h3 {
   margin: 0;
   line-height: 1.6;
 }
-
-/* =========================================================
-   WORK GRID
-   ========================================================= */
-
-.work-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-  max-width: 680px;
-  margin-top: 8px;
-}
-
-.work-card {
-  border: 1px dashed var(--line);
-  border-radius: 8px;
-  min-height: 140px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--grey);
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 12px;
-  text-align: center;
-  padding: 16px;
-  background: var(--paper-elevated);
-}
-
 /* =========================================================
    CONTACT
    ========================================================= */
@@ -716,194 +574,6 @@ footer {
   color: var(--grey);
   text-align: right;
 }
-
-/* =========================================================
-   BLOG / KNOWLEDGE INDEX
-   ========================================================= */
-
-.blog-list {
-  display: flex;
-  flex-direction: column;
-  max-width: 680px;
-  margin-top: 8px;
-  border-top: 1px solid var(--line);
-}
-
-.blog-card {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 24px;
-  padding: 22px 0;
-  border-bottom: 1px solid var(--line);
-  text-decoration: none;
-  color: inherit;
-  transition: background 0.15s ease;
-}
-
-.blog-card:hover .blog-card-title {
-  color: var(--blue);
-}
-
-.blog-card-left {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.blog-card-title {
-  font-family: "Space Grotesk", sans-serif;
-  font-weight: 600;
-  font-size: 19px;
-  transition: color 0.15s ease;
-}
-
-.blog-card-excerpt {
-  font-size: 14px;
-  color: var(--grey);
-  max-width: 480px;
-  line-height: 1.5;
-}
-
-.blog-card-date {
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 12px;
-  color: var(--grey);
-  white-space: nowrap;
-}
-
-.more-soon {
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 13px;
-  color: var(--grey);
-  padding: 18px 0 0;
-}
-
-/* =========================================================
-   ARTICLE PAGE
-   ========================================================= */
-
-.article-meta {
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 12px;
-  color: var(--grey);
-  margin: -12px 0 32px;
-}
-
-.back-link {
-  display: inline-block;
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 13px;
-  color: var(--grey);
-  text-decoration: none;
-  margin-bottom: 24px;
-  transition: color 0.15s ease;
-}
-
-.back-link:hover {
-  color: var(--ink);
-}
-
-.article-body h2 {
-  font-family: "Space Grotesk", sans-serif;
-  font-weight: 600;
-  font-size: 24px;
-  margin: 40px 0 16px;
-  letter-spacing: -0.01em;
-}
-
-.article-body h2:first-child {
-  margin-top: 0;
-}
-
-.article-body ul,
-.article-body ol {
-  margin: 0 0 20px;
-  padding-left: 22px;
-  line-height: 1.7;
-  color: var(--ink-muted);
-}
-
-.article-body li {
-  margin-bottom: 8px;
-}
-
-.article-body strong {
-  color: var(--ink);
-  font-weight: 500;
-}
-
-.article-body p {
-  color: var(--ink-muted);
-  line-height: 1.7;
-}
-
-.callout {
-  border-left: 3px solid var(--red);
-  background: var(--callout-bg);
-  padding: 14px 20px;
-  margin: 0 0 28px;
-  font-size: 15px;
-  line-height: 1.6;
-  color: var(--ink-muted);
-  max-width: 600px;
-  border-radius: 0 6px 6px 0;
-}
-
-.callout strong {
-  color: var(--ink);
-}
-
-/* =========================================================
-   COMPARISON TABLE
-   ========================================================= */
-
-.comparison-table {
-  max-width: 680px;
-  overflow-x: auto;
-  margin: 8px 0 12px;
-  border-radius: 8px;
-  border: 1px solid var(--line);
-}
-
-.comparison-table table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-.comparison-table th,
-.comparison-table td {
-  text-align: left;
-  vertical-align: top;
-  padding: 14px 12px;
-  border-bottom: 1px solid var(--line);
-}
-
-.comparison-table tr:last-child th,
-.comparison-table tr:last-child td {
-  border-bottom: none;
-}
-
-.comparison-table th {
-  font-family: "Space Grotesk", sans-serif;
-  font-weight: 600;
-  color: var(--ink);
-  background: var(--paper-elevated);
-}
-
-.comparison-table td {
-  color: var(--ink-muted);
-}
-
-.comparison-table th:first-child,
-.comparison-table td:first-child {
-  width: 28%;
-  font-weight: 500;
-  color: var(--ink);
-}
-
 .table-note {
   font-size: 12px;
   line-height: 1.6;
@@ -1006,13 +676,7 @@ footer {
     padding-bottom: 4px;
     -webkit-overflow-scrolling: touch;
   }
-
-  .pages {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    max-width: 100%;
-  }
-
-  .knowledge {
+.knowledge {
     margin-top: 72px;
   }
 
@@ -1028,12 +692,7 @@ footer {
   .knowledge-link {
     margin-left: 54px;
   }
-
-  .work-grid {
-    grid-template-columns: 1fr;
-  }
-
-  footer {
+footer {
     flex-direction: column;
     align-items: flex-start;
   }
@@ -1042,33 +701,11 @@ footer {
     text-align: left;
   }
 
-  .block--red {
-    width: 36px;
-    height: 72px;
-    right: 24px;
-    top: 96px;
-  }
-
   .block--blue {
     width: 72px;
     height: 36px;
     left: 24px;
   }
-
-  .block--yellow {
-    width: 36px;
-    height: 36px;
-    bottom: 120px;
-  }
-
-  .comparison-table {
-    max-width: 100%;
-  }
-
-  .comparison-table table {
-    min-width: 560px;
-  }
-
   .cv-section {
     margin-top: 72px;
     padding-top: 32px;
@@ -1118,62 +755,8 @@ footer {
 }
 
 /* =========================================================
-   COMING SOON / DISABLED LINKS
+   PAGE SHELL
    ========================================================= */
-
-.knowledge-link--soon {
-  cursor: default;
-  opacity: 0.72;
-  pointer-events: none;
-  position: relative;
-}
-
-.knowledge-link--soon:hover {
-  color: inherit;
-  padding-left: 0;
-}
-
-.badge-soon {
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--grey);
-  border: 1px solid var(--line-strong);
-  border-radius: 999px;
-  padding: 4px 10px;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-/* =========================================================
-   PROFESSIONAL REFINEMENTS
-   ========================================================= */
-
-.article-body {
-  max-width: 640px;
-}
-
-.article-body p {
-  margin: 0 0 18px;
-}
-
-.article-body h2 {
-  margin-top: 48px;
-}
-
-.blog-card {
-  border-radius: 0;
-  padding: 24px 0;
-}
-
-.blog-card:hover {
-  background: transparent;
-}
-
-.page-item {
-  border-radius: 0;
-}
 
 main {
   padding-top: 32px;
@@ -1184,74 +767,6 @@ main {
 body {
   padding-top: 0;
 }
-
-main > .hero:first-child,
-main > .breadcrumb:first-child,
-main > .back-link:first-child,
-main > .eyebrow:first-child {
-  /* first content clear of sticky bar via header flow */
-}
-
-
-/* Engineering toggle on kennis */
-.engineering-header {
-  display: grid;
-  grid-template-columns: 60px 1fr auto;
-  gap: 18px;
-  align-items: start;
-}
-
-@media (max-width: 720px) {
-  .engineering-header {
-    grid-template-columns: 42px 1fr auto;
-    gap: 12px;
-  }
-}
-
-.engineering-title {
-  text-decoration: none;
-  color: inherit;
-}
-
-.engineering-title:hover h3 {
-  color: var(--blue);
-}
-
-.engineering-toggle {
-  background: var(--paper-elevated);
-  border: 1px solid var(--line-strong);
-  border-radius: 8px;
-  width: 36px;
-  height: 36px;
-  cursor: pointer;
-  color: var(--ink);
-  font-size: 14px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: auto;
-  transition: background 0.15s ease;
-}
-
-.engineering-toggle:hover {
-  background: var(--hover-bg);
-}
-
-.engineering-toggle[aria-expanded="true"] {
-  transform: rotate(180deg);
-}
-
-/* Slightly tighter professional lede */
-.lede {
-  max-width: 620px;
-}
-
-/* Table polish */
-.comparison-table th {
-  font-size: 13px;
-  letter-spacing: 0.02em;
-}
-
 /* Focus ring consistency */
 :focus-visible {
   outline: 2px solid var(--blue);
@@ -1333,7 +848,6 @@ main [id] {
   scroll-margin-top: 96px;
 }
 
-
 /* =========================================================
    DISPLAY TITLES (Wie ik ben / Wat ik doe / Wat ik denk)
    Same visual weight as the hero name.
@@ -1389,12 +903,6 @@ h1.display-title {
   color: var(--blue);
   border-bottom-color: var(--blue);
 }
-
-.work-card-sub {
-  opacity: 0.7;
-  font-size: 11px;
-}
-
 /* CV only subtle on dedicated page */
 .cv-section--subtle {
   margin-top: 64px;
@@ -1414,13 +922,6 @@ h1.display-title {
 .cv-section--subtle .cv-button {
   margin-top: 8px;
 }
-
-/* Callouts: blue accent instead of orange/red */
-.callout {
-  border-left-color: var(--blue);
-}
-
-
 /* =========================================================
    DOE-TILES (Marathon / Projecten)
    ========================================================= */
@@ -1603,7 +1104,6 @@ h1.display-title {
   }
 }
 
-
 /* Marathon plan charts */
 .dash-sub {
   font-family: "Space Grotesk", sans-serif;
@@ -1771,7 +1271,6 @@ h1.display-title {
 }
 
 .link-list { display: flex; flex-direction: column; gap: 8px; margin: 8px 0 32px; }
-
 
 /* =========================================================
    PASSINGEN CALCULATOR + TOOLKIT LIST
