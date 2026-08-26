@@ -59,7 +59,15 @@
           "name": "Welke breedtetolerantie is standaard?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "P9 in as en naaf: vaste zitting. Lichte zitting is N9 (as) / JS9 (naaf); glijdend H9 (as) / D10 (naaf)."
+            "text": "P9 in as en naaf: vaste zitting (DIN 6885-1:2021). Lichte zitting is N9 (as) / JS9 (naaf). H9/D10 is een werkplaats-/UNI-conventie voor glijdende naven, niet de benoemde glijdpassing in DIN 6885-1:2021."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Hoort Ø 6 mm in de tabel?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nee. DIN 6885-1: eerste rij is boven 6 mm tot en met 8 mm. Precies Ø 6 mm valt erbuiten."
           }
         },
         {
@@ -128,7 +136,7 @@
     <ul class="fit-legend">
       <li><span class="swatch fit-vast"></span> Vaste zitting — P9 / P9 (standaard)</li>
       <li><span class="swatch fit-overgang"></span> Lichte zitting — N9 (as) / JS9 (naaf)</li>
-      <li><span class="swatch fit-los"></span> Glijdend — H9 (as) / D10 (naaf)</li>
+      <li><span class="swatch fit-los"></span> Glijdend — H9 / D10 (werkplaats/UNI)</li>
     </ul>
 
     <h2 class="dash-heading">Doorsnede</h2>
@@ -163,8 +171,9 @@
 
     <h2 class="dash-heading">Spie en groefdiepte (DIN 6885-1)</h2>
     <p class="dash-note">
-      As Ø: eerste rij vanaf 6 mm tot en met 8 mm; daarna boven de ondergrens
-      tot en met de bovengrens (DIN 6885-1). t₁ = diepte in de as · t₂ = diepte in de naaf.
+      As Ø: boven de ondergrens tot en met de bovengrens. Eerste rij is
+      <strong>boven 6 t/m 8</strong> — Ø 6 mm staat niet in DIN 6885-1.
+      t₁ = diepte in de as · t₂ = diepte in de naaf.
       Dieptetolerantie: 0 tot pluswaarde (b ≤ 6 mm: +0,1; daarna +0,2).
     </p>
     <div class="table-scroll">
@@ -179,24 +188,39 @@
           </tr>
         </thead>
         <tbody>
-          <tr><th scope="row">6 – 8</th><td>2 × 2</td><td>1,2</td><td>1,0</td><td>0 / +0,1</td></tr>
-          <tr><th scope="row">8 – 10</th><td>3 × 3</td><td>1,8</td><td>1,4</td><td>0 / +0,1</td></tr>
-          <tr><th scope="row">10 – 12</th><td>4 × 4</td><td>2,5</td><td>1,8</td><td>0 / +0,1</td></tr>
-          <tr><th scope="row">12 – 17</th><td>5 × 5</td><td>3,0</td><td>2,3</td><td>0 / +0,1</td></tr>
-          <tr><th scope="row">17 – 22</th><td>6 × 6</td><td>3,5</td><td>2,8</td><td>0 / +0,1</td></tr>
-          <tr><th scope="row">22 – 30</th><td>8 × 7</td><td>4,0</td><td>3,3</td><td>0 / +0,2</td></tr>
-          <tr><th scope="row">30 – 38</th><td>10 × 8</td><td>5,0</td><td>3,3</td><td>0 / +0,2</td></tr>
-          <tr><th scope="row">38 – 44</th><td>12 × 8</td><td>5,0</td><td>3,3</td><td>0 / +0,2</td></tr>
-          <tr><th scope="row">44 – 50</th><td>14 × 9</td><td>5,5</td><td>3,8</td><td>0 / +0,2</td></tr>
-          <tr><th scope="row">50 – 58</th><td>16 × 10</td><td>6,0</td><td>4,3</td><td>0 / +0,2</td></tr>
-          <tr><th scope="row">58 – 65</th><td>18 × 11</td><td>7,0</td><td>4,4</td><td>0 / +0,2</td></tr>
-          <tr><th scope="row">65 – 75</th><td>20 × 12</td><td>7,5</td><td>4,9</td><td>0 / +0,2</td></tr>
-          <tr><th scope="row">75 – 85</th><td>22 × 14</td><td>9,0</td><td>5,4</td><td>0 / +0,2</td></tr>
-          <tr><th scope="row">85 – 95</th><td>25 × 14</td><td>9,0</td><td>5,4</td><td>0 / +0,2</td></tr>
-          <tr><th scope="row">95 – 110</th><td>28 × 16</td><td>10,0</td><td>6,4</td><td>0 / +0,2</td></tr>
+          <tr><th scope="row">boven 6 t/m 8</th><td>2 × 2</td><td>1,2</td><td>1,0</td><td>0 / +0,1</td></tr>
+          <tr><th scope="row">boven 8 t/m 10</th><td>3 × 3</td><td>1,8</td><td>1,4</td><td>0 / +0,1</td></tr>
+          <tr><th scope="row">boven 10 t/m 12</th><td>4 × 4</td><td>2,5</td><td>1,8</td><td>0 / +0,1</td></tr>
+          <tr><th scope="row">boven 12 t/m 17</th><td>5 × 5</td><td>3,0</td><td>2,3</td><td>0 / +0,1</td></tr>
+          <tr><th scope="row">boven 17 t/m 22</th><td>6 × 6</td><td>3,5</td><td>2,8</td><td>0 / +0,1</td></tr>
+          <tr><th scope="row">boven 22 t/m 30</th><td>8 × 7</td><td>4,0</td><td>3,3</td><td>0 / +0,2</td></tr>
+          <tr><th scope="row">boven 30 t/m 38</th><td>10 × 8</td><td>5,0</td><td>3,3</td><td>0 / +0,2</td></tr>
+          <tr><th scope="row">boven 38 t/m 44</th><td>12 × 8</td><td>5,0</td><td>3,3</td><td>0 / +0,2</td></tr>
+          <tr><th scope="row">boven 44 t/m 50</th><td>14 × 9</td><td>5,5</td><td>3,8</td><td>0 / +0,2</td></tr>
+          <tr><th scope="row">boven 50 t/m 58</th><td>16 × 10</td><td>6,0</td><td>4,3</td><td>0 / +0,2</td></tr>
+          <tr><th scope="row">boven 58 t/m 65</th><td>18 × 11</td><td>7,0</td><td>4,4</td><td>0 / +0,2</td></tr>
+          <tr><th scope="row">boven 65 t/m 75</th><td>20 × 12</td><td>7,5</td><td>4,9</td><td>0 / +0,2</td></tr>
+          <tr><th scope="row">boven 75 t/m 85</th><td>22 × 14</td><td>9,0</td><td>5,4</td><td>0 / +0,2</td></tr>
+          <tr><th scope="row">boven 85 t/m 95</th><td>25 × 14</td><td>9,0</td><td>5,4</td><td>0 / +0,2</td></tr>
+          <tr><th scope="row">boven 95 t/m 110</th><td>28 × 16</td><td>10,0</td><td>6,4</td><td>0 / +0,2</td></tr>
         </tbody>
       </table>
     </div>
+
+    <h2 class="dash-heading">Rekenhulp</h2>
+    <p class="dash-note">
+      As-Ø in <strong>hele mm</strong>. DIN 6885-1: boven de ondergrens tot en met de bovengrens.
+      De eerste rij is boven 6 t/m 8 — Ø 6 mm valt erbuiten. Het veld mag leeg.
+    </p>
+    <form class="fit-calc" id="spie-calc" action="javascript:void(0)">
+      <div class="fit-calc-fields">
+        <label>
+          As-Ø (mm)
+          <input type="text" name="diameter" id="spie-diameter" inputmode="numeric" pattern="[0-9]*" value="20" autocomplete="off" spellcheck="false">
+        </label>
+      </div>
+      <div id="spie-calc-out" aria-live="polite"></div>
+    </form>
 
     <h2 class="dash-heading">Breedtetolerantie b</h2>
     <div class="fit-cards">
@@ -210,7 +234,7 @@
       </article>
       <article class="fit-card fit-los">
         <h3>H9 / D10 — glijdend</h3>
-        <p>Voor verschuifbare naven. As H9, naaf D10. Meer speling in de breedte.</p>
+        <p>Werkplaats-/UNI-conventie voor verschuifbare naven. As H9, naaf D10. DIN 6885-1:2021 noemt P9 sluitend en N9/JS9 vrij — niet H9/D10.</p>
       </article>
     </div>
 
@@ -224,6 +248,7 @@
     <p class="table-note">
       Bron: DIN 6885-1 (hoge vorm). DIN 6885-2 is de lage vorm (andere radiale positie van de spie).
       Tabel gecontroleerd tegen DIN 6885-1-maattabellen (o.a. fasten.it, RoyMech / BS 4235).
+      H9/D10 is werkplaats-/UNI-conventie, niet de benoemde glijdpassing in DIN 6885-1:2021.
       Voor geruimde naven wordt soms IT8 i.p.v. IT9 aanbevolen (P8, N8, JS8).
       Controleer kritieke maten in de actuele norm.
     </p>
@@ -236,7 +261,11 @@
       </details>
       <details>
         <summary>Welke breedtetolerantie is standaard?</summary>
-        <p>P9 in as en naaf: vaste zitting. Lichte zitting is N9 (as) / JS9 (naaf); glijdend H9 (as) / D10 (naaf).</p>
+        <p>P9 in as en naaf: vaste zitting (DIN 6885-1:2021). Lichte zitting is N9 (as) / JS9 (naaf). H9/D10 is werkplaats-/UNI-conventie, niet de benoemde glijdpassing in DIN 6885-1:2021.</p>
+      </details>
+      <details>
+        <summary>Hoort Ø 6 mm in de tabel?</summary>
+        <p>Nee. DIN 6885-1: eerste rij is boven 6 mm tot en met 8 mm. Precies Ø 6 mm valt erbuiten.</p>
       </details>
       <details>
         <summary>Wat is het verschil tussen DIN 6885-1 en 6885-2?</summary>
@@ -262,5 +291,6 @@
     <span class="copy">© <span id="year"></span> Damian Vink</span>
   </footer>
   <script src="/js/site.js"></script>
+  <script src="/js/spiebaan.js"></script>
 </body>
 </html>

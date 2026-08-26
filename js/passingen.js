@@ -1,7 +1,6 @@
 (function () {
   /* ISO 286-2 limit deviations in µm. Bands: over … up to and including.
-     H, h, c, d, f, g, k, n, p, s: RoyMech / ISO 286-2.
-     30–40 and 40–50 split because shaft c changes at 40 mm; IT grades stay 30–50. */
+     JS7 = ±IT7/2, no rounding to whole µm. */
   var BANDS = [
     { over: 3, to: 6, label: "3–6" },
     { over: 6, to: 10, label: "6–10" },
@@ -31,15 +30,15 @@
   };
 
   var FITS = [
-    { id: "H11/c11", hole: "H11", shaft: "c11", kind: "los", use: "Ruime speling. Plaatwerk, ruwe montage, geverfde of vuile vlakken." },
-    { id: "H9/d9", hole: "H9", shaft: "d9", kind: "los", use: "Ruime looppassing. Poelies, ringen, onderdelen die makkelijk moeten lopen." },
-    { id: "H8/f7", hole: "H8", shaft: "f7", kind: "los", use: "Looppassing. Glijassen en lagers die met speling moeten draaien." },
-    { id: "H7/g6", hole: "H7", shaft: "g6", kind: "los", use: "Nauwkeurig glijden. Weinig speling, nog met de hand te verschuiven." },
-    { id: "H7/h6", hole: "H7", shaft: "h6", kind: "los", use: "Centrumpassing. Schuiven met minimale speling; locatie van stilstaande delen." },
-    { id: "H7/k6", hole: "H7", shaft: "k6", kind: "overgang", use: "Overgang. Tikken met hamer; centreren waar speling of lichte klemming mag." },
-    { id: "H7/n6", hole: "H7", shaft: "n6", kind: "overgang", use: "Stevige overgang. Meestal klemming; persen of tikken." },
-    { id: "H7/p6", hole: "H7", shaft: "p6", kind: "vast", use: "Lichte perspassing. Naven op assen; uitlijning zonder speling." },
-    { id: "H7/s6", hole: "H7", shaft: "s6", kind: "vast", use: "Perspassing. Pers of krimp; niet bedoeld om los te nemen." }
+    { id: "H11/c11", hole: "H11", shaft: "c11", use: "Ruime speling. Plaatwerk, ruwe montage, geverfde of vuile vlakken." },
+    { id: "H9/d9", hole: "H9", shaft: "d9", use: "Ruime looppassing. Poelies, ringen, onderdelen die makkelijk moeten lopen." },
+    { id: "H8/f7", hole: "H8", shaft: "f7", use: "Looppassing. Glijassen en lagers die met speling moeten draaien." },
+    { id: "H7/g6", hole: "H7", shaft: "g6", use: "Nauwkeurig glijden. Weinig speling, nog met de hand te verschuiven." },
+    { id: "H7/h6", hole: "H7", shaft: "h6", use: "Centrumpassing. Schuiven met minimale speling; locatie van stilstaande delen." },
+    { id: "H7/k6", hole: "H7", shaft: "k6", use: "Overgang. Tikken met hamer; centreren waar speling of lichte klemming mag." },
+    { id: "H7/n6", hole: "H7", shaft: "n6", use: "Stevige overgang. Meestal klemming; persen of tikken." },
+    { id: "H7/p6", hole: "H7", shaft: "p6", use: "Lichte perspassing. Naven op assen; uitlijning zonder speling. Tot 18 mm is max. speling 0 µm (lijnpassing mogelijk)." },
+    { id: "H7/s6", hole: "H7", shaft: "s6", use: "Perspassing. Pers of krimp; niet bedoeld om los te nemen." }
   ];
 
   function bandIndex(d) {
@@ -52,45 +51,49 @@
   function mmFromUm(um) {
     var n = um / 1000;
     var sign = n > 0 ? "+" : n < 0 ? "" : "+";
-    return sign + n.toFixed(3).replace(".", ",");
+    var decimals = (Math.abs(um) % 1 === 0) ? 3 : 4;
+    return sign + n.toFixed(decimals).replace(".", ",");
   }
 
-  function kindLabel(kind, minC, maxC) {
+  function kindLabel(minC, maxC) {
     if (minC >= 0 && maxC >= 0) return { cls: "fit-los", text: "Los — altijd speling" };
-    if (minC < 0 && maxC <= 0) return { cls: "fit-vast", text: "Vast — altijd overmaat" };
+    if (maxC < 0) return { cls: "fit-vast", text: "Vast — altijd overmaat" };
+    if (maxC === 0 && minC < 0) return { cls: "fit-lijn", text: "Vast — tot lijnpassing (max. 0 µm)" };
     return { cls: "fit-overgang", text: "Overgang — speling of klemming" };
+  }
+
+  function readDiameter(input) {
+    var raw = String(input.value).replace(",", ".").trim();
+    if (raw === "") return NaN;
+    if (!/^\d{1,4}$/.test(raw)) return NaN;
+    return parseInt(raw, 10);
   }
 
   var lastCopy = "";
 
-  function readDiameter(input, commit) {
-    var raw = String(input.value).replace(",", ".");
-    var n = parseFloat(raw);
-    if (isNaN(n)) return NaN;
-    n = Math.round(n);
-    if (commit) {
-      if (n < 4) n = 4;
-      if (n > 50) n = 50;
-      if (input.value !== String(n)) input.value = String(n);
-    }
-    return n;
-  }
-
-  function render(commit) {
+  function render() {
     var form = document.getElementById("fit-calc");
     var out = document.getElementById("fit-calc-out");
     if (!form || !out) return;
 
-    var d = readDiameter(form.diameter, commit);
+    var raw = String(form.diameter.value).trim();
+    if (raw === "") {
+      lastCopy = "";
+      out.innerHTML = "<p class='dash-note'>Vul een nominale Ø in.</p>";
+      return;
+    }
+    var d = readDiameter(form.diameter);
     var fitId = form.fit.value;
     var fit = FITS.filter(function (f) { return f.id === fitId; })[0];
     if (!fit || isNaN(d)) {
-      out.innerHTML = "<p class='dash-note'>Kies een nominale Ø en een passing.</p>";
+      lastCopy = "";
+      out.innerHTML = "<p class='dash-note'>Vul een nominale Ø in hele millimeters in.</p>";
       return;
     }
     var i = bandIndex(d);
     if (i < 0) {
-      out.innerHTML = "<p class='dash-note'>Nominale Ø in <strong>hele mm, 4 t/m 50</strong>.</p>";
+      lastCopy = "";
+      out.innerHTML = "<p class='dash-note'>Geen ISO-band voor Ø " + d + " mm. Tabellen: boven 3 t/m 50 mm.</p>";
       return;
     }
 
@@ -102,7 +105,7 @@
     var ei = shaft.ei[i];
     var minC = EI - es;
     var maxC = ES - ei;
-    var kind = kindLabel(fit.kind, minC, maxC);
+    var kind = kindLabel(minC, maxC);
     var band = BANDS[i];
 
     lastCopy =
@@ -129,28 +132,23 @@
     var out = document.getElementById("fit-calc-out");
     if (!form || !out) return;
     var dia = form.diameter;
-    dia.addEventListener("keydown", function (e) {
-      if (e.key === "." || e.key === "," || e.key === "e" || e.key === "E" || e.key === "+" || e.key === "-") {
-        e.preventDefault();
-      }
-    });
+    dia.addEventListener("focus", function () { dia.select(); });
     dia.addEventListener("input", function () {
-      if (/[.,]/.test(dia.value)) render(true);
-      else render(false);
+      var v = dia.value.replace(",", ".").replace(/[^\d]/g, "");
+      if (dia.value !== v) dia.value = v;
+      render();
     });
-    dia.addEventListener("blur", function () { render(true); });
-    form.addEventListener("change", function () { render(true); });
+    form.addEventListener("change", render);
     out.addEventListener("click", function (e) {
       var btn = e.target.closest(".copy-result");
       if (!btn || !lastCopy) return;
-      function ok() {
-        btn.textContent = "Gekopieerd";
-        setTimeout(function () { btn.textContent = "Kopieer resultaat"; }, 1600);
-      }
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(lastCopy).then(ok).catch(function () {});
+        navigator.clipboard.writeText(lastCopy).then(function () {
+          btn.textContent = "Gekopieerd";
+          setTimeout(function () { btn.textContent = "Kopieer resultaat"; }, 1600);
+        }).catch(function () {});
       }
     });
-    render(true);
+    render();
   });
 })();

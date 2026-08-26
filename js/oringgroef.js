@@ -1,6 +1,7 @@
 (function () {
   /* Groefmaten: Dichtomatik O-ring brochure (DIN ISO 3601).
-     Koorden d2: ISO 3601-1 groepen A–E. t/b nominale aanbeveling, t +0,05 / b +0,25. */
+     Koorden d2: ISO 3601-1 groepen A–E. t/b nominale aanbeveling, t +0,05 / b +0,25.
+     Samendrukking = (d2 − t)/d2: nominale compressie, geen plus-mintolerantie. */
   var GROOVE = {
     radial: {
       1.8: { t: 1.3, b: 2.4, C: 1.5 },
@@ -60,7 +61,7 @@
       "O-ring d2 " + fmt(d2, 2) + " mm · " + LABELS[kind] + "\n" +
       "Groefdiepte t  " + fmt(g.t) + " mm (+0,05)\n" +
       "Groefbreedte b  " + fmt(g.b) + " mm (+0,25)\n" +
-      "Samendrukking  ± " + sq + " %";
+      "Samendrukking  ca. " + sq + " %";
 
     out.innerHTML =
       "<div class='calc-result'>" +
@@ -68,10 +69,10 @@
         "<dl class='calc-dl'>" +
           "<div><dt>Groefdiepte t</dt><dd>" + fmt(g.t) + " mm <span class='calc-tol'>+0,05</span></dd></div>" +
           "<div><dt>Groefbreedte b</dt><dd>" + fmt(g.b) + " mm <span class='calc-tol'>+0,25</span></dd></div>" +
-          "<div><dt>Samendrukking</dt><dd>± " + sq + " %</dd></div>" +
+          "<div><dt>Nominale samendrukking</dt><dd>ca. " + sq + " %</dd></div>" +
           cLine +
         "</dl>" +
-        "<p class='calc-use'>Nominale groef. Dichtomatik; geen vervanging van ISO 3601-2.</p>" +
+        "<p class='calc-use'>Samendrukking = (d₂ − t) / d₂. Nominale compressie, geen plus-mintolerantie. Dichtomatik; geen vervanging van ISO 3601-2.</p>" +
         "<button type='button' class='copy-result'>Kopieer resultaat</button>" +
       "</div>";
   }

@@ -1426,9 +1426,11 @@ h1.display-title {
 }
 .fit-los, .swatch.fit-los { background: rgba(46, 160, 110, 0.22); }
 .fit-overgang, .swatch.fit-overgang { background: rgba(210, 160, 40, 0.24); }
+.fit-lijn, .swatch.fit-lijn { background: rgba(183, 154, 122, 0.34); }
 .fit-vast, .swatch.fit-vast { background: rgba(210, 80, 60, 0.22); }
 .fit-table td.fit-los { background: rgba(46, 160, 110, 0.18); }
 .fit-table td.fit-overgang { background: rgba(210, 160, 40, 0.18); }
+.fit-table td.fit-lijn { background: rgba(183, 154, 122, 0.22); }
 .fit-table td.fit-vast { background: rgba(210, 80, 60, 0.18); }
 .fit-cards {
   display: grid;
@@ -1483,6 +1485,16 @@ h1.display-title {
   font-size: 11px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  color: var(--grey);
+}
+
+.fit-calc label.is-disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.fit-calc label.is-disabled select {
+  cursor: not-allowed;
   color: var(--grey);
 }
 
@@ -1659,6 +1671,7 @@ h1.display-title {
   border: 1px solid var(--line-strong);
   border-radius: 8px;
   padding: 8px 12px;
+  cursor: pointer;
 }
 .copy-result:hover {
   background: var(--hover-bg);

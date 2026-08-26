@@ -1,7 +1,4 @@
 (function () {
-  /* ISO 286-2 limit deviations in µm. Bands: over … up to and including.
-     30–40 and 40–50 share IT 30–50 except where a fundamental deviation splits (not here).
-     Shafts: RoyMech / MachiningDoctor / ISO 286-2. Holes: same + existing passingen.js. */
   var BANDS = [
     { over: 3, to: 6, label: "3–6" },
     { over: 6, to: 10, label: "6–10" },
@@ -44,24 +41,16 @@
     return sign + n.toFixed(decimals).replace(".", ",");
   }
 
-  function readDiameter(input, commit) {
-    var n = parseFloat(String(input.value).replace(",", "."));
-    if (isNaN(n)) return NaN;
-    n = Math.round(n);
-    if (commit) {
-      if (n < 4) n = 4;
-      if (n > 50) n = 50;
-      if (input.value !== String(n)) input.value = String(n);
-    }
-    return n;
+  function readDiameter(input) {
+    var raw = String(input.value).replace(",", ".").trim();
+    if (raw === "" || !/^\d{1,4}$/.test(raw)) return NaN;
+    return parseInt(raw, 10);
   }
 
-  /* SKF via Duursma: groefkogellagers, massieve stalen as, cilindrische boring. */
+  /* SKF: groefkogellagers, massieve stalen as, cilindrische boring.
+     js5 alleen tot en met 17 mm; Ø 20 mm licht is j6. */
   function pick(d, rot, load) {
-    var shaft;
-    var hole;
-    var holeAlt = null;
-    var note;
+    var shaft, hole, holeAlt = null, note;
 
     if (rot === "binnen") {
       if (load === "licht") {
@@ -97,21 +86,38 @@
 
   var lastCopy = "";
 
-  function render(commit) {
+  function syncLoad(form) {
+    var load = form.belasting;
+    var wrap = load.closest("label");
+    var stil = form.rotatie.value === "stil";
+    load.disabled = stil;
+    if (wrap) wrap.classList.toggle("is-disabled", stil);
+  }
+
+  function render() {
     var form = document.getElementById("lager-calc");
     var out = document.getElementById("lager-calc-out");
     if (!form || !out) return;
+    syncLoad(form);
 
-    var d = readDiameter(form.diameter, commit);
+    var raw = String(form.diameter.value).trim();
+    if (raw === "") {
+      lastCopy = "";
+      out.innerHTML = "<p class='dash-note'>Vul een as-Ø in.</p>";
+      return;
+    }
+    var d = readDiameter(form.diameter);
     var rot = form.rotatie.value;
     var load = form.belasting.value;
     if (isNaN(d)) {
-      out.innerHTML = "<p class='dash-note'>Kies een nominale as-Ø.</p>";
+      lastCopy = "";
+      out.innerHTML = "<p class='dash-note'>Vul een as-Ø in hele millimeters in.</p>";
       return;
     }
     var i = bandIndex(d);
     if (i < 0) {
-      out.innerHTML = "<p class='dash-note'>Nominale as-Ø in <strong>hele mm, 4 t/m 50</strong>.</p>";
+      lastCopy = "";
+      out.innerHTML = "<p class='dash-note'>Geen SKF-rij voor Ø " + d + " mm. Rekenhulp: 4 t/m 50 mm.</p>";
       return;
     }
 
@@ -126,6 +132,13 @@
         "<div><dt>Huis " + rec.holeAlt + " (alternatief)</dt><dd>" +
         mmFromUm(ha.ES[i]) + " / " + mmFromUm(ha.EI[i]) + " mm</dd></div>";
     }
+    var h6line = "";
+    if (rot === "stil") {
+      var h6 = SHAFT.h6;
+      h6line =
+        "<div><dt>As h6 (geen verschuiving nodig)</dt><dd>" +
+        mmFromUm(h6.es[i]) + " / " + mmFromUm(h6.ei[i]) + " mm</dd></div>";
+    }
 
     lastCopy =
       "Groefkogellager · as Ø " + d + " mm · band " + band.label + " mm\n" +
@@ -139,7 +152,7 @@
         "<dl class='calc-dl'>" +
           "<div><dt>As " + rec.shaft + "</dt><dd>" + mmFromUm(sh.es[i]) + " / " + mmFromUm(sh.ei[i]) + " mm</dd></div>" +
           "<div><dt>Huis " + rec.hole + "</dt><dd>" + mmFromUm(ho.ES[i]) + " / " + mmFromUm(ho.EI[i]) + " mm</dd></div>" +
-          alt +
+          alt + h6line +
         "</dl>" +
         "<p class='calc-use'>" + rec.note + "</p>" +
         "<button type='button' class='copy-result'>Kopieer resultaat</button>" +
@@ -151,17 +164,13 @@
     var out = document.getElementById("lager-calc-out");
     if (!form || !out) return;
     var dia = form.diameter;
-    dia.addEventListener("keydown", function (e) {
-      if (e.key === "." || e.key === "," || e.key === "e" || e.key === "E" || e.key === "+" || e.key === "-") {
-        e.preventDefault();
-      }
-    });
+    dia.addEventListener("focus", function () { dia.select(); });
     dia.addEventListener("input", function () {
-      if (/[.,]/.test(dia.value)) render(true);
-      else render(false);
+      var v = dia.value.replace(",", ".").replace(/[^\d]/g, "");
+      if (dia.value !== v) dia.value = v;
+      render();
     });
-    dia.addEventListener("blur", function () { render(true); });
-    form.addEventListener("change", function () { render(true); });
+    form.addEventListener("change", render);
     out.addEventListener("click", function (e) {
       var btn = e.target.closest(".copy-result");
       if (!btn || !lastCopy) return;
@@ -172,6 +181,6 @@
         }).catch(function () {});
       }
     });
-    render(true);
+    render();
   });
 })();

@@ -54,7 +54,7 @@
         {
           "@type": "Question",
           "name": "Welke astolerantie bij een groefkogellager Ø 20 mm?",
-          "acceptedAnswer": { "@type": "Answer", "text": "SKF, massieve stalen as: js5 of j6 bij lichte last (P ≤ 0,05 C), k5 bij normale tot hoge last (P > 0,05 C). Huis meestal H7." }
+          "acceptedAnswer": { "@type": "Answer", "text": "SKF, massieve stalen as: licht (P ≤ 0,05 C) is j6 bij Ø 20 mm (js5 alleen tot en met 17 mm); normaal tot hoog (P > 0,05 C) is k5. Huis meestal H7." }
         },
         {
           "@type": "Question",
@@ -160,7 +160,7 @@
         </tbody>
       </table>
     </div>
-    <p class="table-note">Bron: SKF-aanbevelingen lagerpassingen, via Duursma. k5 tot 100 mm in de originele tabel.</p>
+    <p class="table-note">Bron: SKF-aanbevelingen lagerpassingen, via Duursma (citaat, niet nagemeten). k5 tot 100 mm in de originele tabel.</p>
 
     <h2 class="dash-heading">3. Huis — gietijzer / staal</h2>
     <p class="dash-note">Ongedeeld huis tenzij anders vermeld. Verschuifbaarheid van de buitenring.</p>
@@ -187,14 +187,15 @@
 
     <h2 class="dash-heading">Rekenhulp</h2>
     <p class="dash-note">
-      Groefkogellager, as-Ø in <strong>hele mm (4 t/m 50)</strong>. Klassen uit de tabellen hierboven;
+      Groefkogellager, as-Ø in <strong>hele mm (4 t/m 50)</strong>. Het veld mag leeg.
+      Lastkeuze valt weg bij stilstaande binnenring. Klassen uit de tabellen hierboven;
       µm → mm volgens ISO 286-2.
     </p>
     <form class="fit-calc" id="lager-calc" action="javascript:void(0)">
       <div class="fit-calc-fields">
         <label>
           As-Ø (mm)
-          <input type="number" name="diameter" id="lager-diameter" min="4" max="50" step="1" value="20" inputmode="numeric" pattern="[0-9]*">
+          <input type="text" name="diameter" id="lager-diameter" inputmode="numeric" pattern="[0-9]*" value="20" autocomplete="off" spellcheck="false">
         </label>
         <label>
           Rotatie
@@ -231,7 +232,7 @@
       </details>
       <details>
         <summary>Welke astolerantie bij groefkogel Ø 20 mm?</summary>
-        <p>Licht: j6. Normaal tot hoog: k5. Huis meestal H7, of K7 als de buitenring niet hoeft te schuiven.</p>
+        <p>Licht: j6. Normaal tot hoog: k5. Huis meestal H7, of K7 als de buitenring niet hoeft te schuiven. js5 geldt alleen tot en met 17 mm.</p>
       </details>
       <details>
         <summary>Gedeeld huis?</summary>
