@@ -246,6 +246,41 @@ export function todayIso(now = new Date()) {
   return now.toISOString().slice(0, 10);
 }
 
+/** Tap opens a phase view. It never moves the official phase. */
+export function selectPhaseView(official: PhaseId, tap: PhaseId): { official: PhaseId; lookingAt: PhaseId } {
+  return { official, lookingAt: tap };
+}
+
+/** Record a gate decision. Go with blockers is a no-op. Only go without blockers may advance phase. */
+export function applyGateDecision(
+  project: Project,
+  input: { advice: DecisionKind; decision: DecisionKind; who: string; notes: string; date?: string },
+): Project {
+  const { advice, decision, who, notes } = input;
+  if (decision === "go" && gateBlockers(project).length > 0) return project;
+
+  const nxt = nextPhase(project.phase);
+  const going = decision === "go";
+  const freezeBaseline = going && project.phase === "definitie";
+
+  return {
+    ...project,
+    decisions: [...project.decisions, {
+      id: uid(),
+      from: project.phase,
+      advice,
+      decision,
+      who,
+      date: input.date ?? todayIso(),
+      notes,
+    }],
+    phase: going && nxt ? nxt : project.phase,
+    baselineFrozen: freezeBaseline ? true : project.baselineFrozen,
+    baselineEndDate: freezeBaseline ? project.endDate : project.baselineEndDate,
+    baselineBudget: freezeBaseline ? project.budget : project.baselineBudget,
+  };
+}
+
 export function isOverdue(due: string, today = todayIso()) {
   return Boolean(due && due < today);
 }
