@@ -1,13 +1,14 @@
 import type { ReactNode } from "react";
 import { DisplayTitle } from "@/components/display-title";
 import { PageWrap, SiteShell } from "@/components/site-shell";
+import { RelatedTools } from "@/components/toolkit/related-tools";
 import { Breadcrumb, ToolSwitcher } from "@/components/toolkit/tool-switcher";
 import type { ToolId } from "@/lib/toolkit/tools";
 
 export function ToolkitFrame({
   active,
   crumbs,
-  eyebrow = "Wat ik heb · Engineering toolkit",
+  eyebrow = "Engineering toolkit",
   before,
   last,
   lede,
@@ -31,6 +32,7 @@ export function ToolkitFrame({
         <DisplayTitle before={before} last={last} className="mt-3" />
         <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted">{lede}</p>
         <div className="mt-10">{children}</div>
+        {active ? <RelatedTools active={active} /> : null}
       </PageWrap>
     </SiteShell>
   );
