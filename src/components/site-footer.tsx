@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 const FOOTER = [
   { to: "/over-mij", label: "Wie ik ben" },
   { to: "/denk/toolkit", label: "Toolkit" },
+  { to: "/denk/project", label: "Project" },
   { to: "/denk", label: "Wat ik denk" },
   { to: "/doe/marathon", label: "Marathon" },
 ] as const;
