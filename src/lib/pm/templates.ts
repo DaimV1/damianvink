@@ -30,10 +30,10 @@ export const TEMPLATES = [
     id: "gantt",
     phase: "03 Definitie",
     title: "Gantt",
-    body: "Twintig weken, balken op start–einde, mijlpalen apart. Wijzig de startdatum; de tijdlijn schuift mee.",
+    body: "Zestien weken met balken en mijlpalen. Wijzig de startdatum in de kop en kopieer de blauwe cellen over de weken van de activiteit.",
+    href: "/templates/gantt.xls",
     file: "gantt.xls",
     kind: "Excel",
-    generate: "gantt",
   },
   {
     id: "weekstatus",
