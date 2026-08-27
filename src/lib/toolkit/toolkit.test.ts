@@ -42,3 +42,91 @@ describe("ISO 286 passingen", () => {
     assert.equal(computeFit(60, "H7/h6"), null);
   });
 });
+
+describe("DIN 6885 spiebaan", () => {
+  it("Ø 20 mm is 6 × 6 with t1 3.5", () => {
+    const row = lookupKeyway(20);
+    assert.ok(row);
+    assert.equal(row.b, 6);
+    assert.equal(row.h, 6);
+    assert.equal(row.t1, 3.5);
+    assert.equal(row.t2, 2.8);
+  });
+
+  it("Ø 6 mm is outside the first row", () => {
+    assert.equal(lookupKeyway(6), null);
+    assert.ok(lookupKeyway(7));
+  });
+
+  it("P9 on 6 mm width is hole-basis interference", () => {
+    const tol = keyWidthTol(6, "P9");
+    assert.ok(tol);
+    assert.equal(tol.ES, -12);
+    assert.equal(tol.EI, -42);
+  });
+});
+
+describe("lagerpassingen", () => {
+  it("Ø 20 inner ring normal load is k5 / H7", () => {
+    const rec = pickBearing(20, "binnen", "normaal");
+    assert.equal(rec.shaft, "k5");
+    assert.equal(rec.hole, "H7");
+    const r = computeBearing(20, "binnen", "normaal");
+    assert.ok(r);
+    assert.equal(r.shaftDev.es[r.i], 11);
+    assert.equal(r.shaftDev.ei[r.i], 2);
+  });
+
+  it("light load at Ø 20 is j6 not js5", () => {
+    assert.equal(pickBearing(20, "binnen", "licht").shaft, "j6");
+    assert.equal(pickBearing(17, "binnen", "licht").shaft, "js5");
+  });
+});
+
+describe("seeger DIN 471/472", () => {
+  it("Ø 20 shaft groove is 19.0 × 1.3", () => {
+    const row = lookupSeeger(20);
+    assert.ok(row);
+    const as = seegerFor(row, "as");
+    const bore = seegerFor(row, "boring");
+    assert.ok(as && bore);
+    assert.equal(as.d2, 19);
+    assert.equal(bore.d2, 21);
+    assert.equal(as.b, 1.3);
+    assert.equal(as.t, 0.5);
+  });
+});
+
+describe("O-ring squeeze", () => {
+  it("2.65 mm radial static is nominally 25 %", () => {
+    const g = GROOVE.radial[2.65];
+    assert.equal(g.t, 2);
+    assert.equal(squeeze(2.65, g.t), 25);
+  });
+});
+
+describe("bevestigers", () => {
+  it("M8 medium clearance and VDI table moment", () => {
+    const row = lookupFastener(8);
+    assert.ok(row);
+    assert.equal(row.p, 1.25);
+    assert.equal(row.tap, 6.8);
+    assert.equal(row.hole.middel, 9);
+    assert.equal(row.ma?.["8.8"], 27.3);
+  });
+
+  it("scales Ma with friction class and keeps table at factor 1", () => {
+    assert.equal(scaleMa(27.3, "tabel"), 27.3);
+    assert.equal(FRICTION.tabel.factor, 1);
+    assert.ok(scaleMa(27.3, "geolied") < 27.3);
+    assert.ok(scaleMa(27.3, "droog") > 27.3);
+  });
+});
+
+describe("bereikstop", () => {
+  it("warns below exclusive lower bound and above max", () => {
+    assert.match(rangeHint(6, 6, 7, 110) ?? "", /buiten/);
+    assert.match(rangeHint(60, null, 4, 50) ?? "", /50/);
+    assert.equal(rangeHint(20, 3, 4, 50), null);
+  });
+});

@@ -4,6 +4,7 @@ import {
   STORAGE_KEY_V1,
   emptyProject,
   emptyWorkspace,
+  exportIsStale,
   isoNow,
   parseProject,
   parseWorkspace,
@@ -69,6 +70,7 @@ export function useProject() {
     setWorkspace((ws) => ({
       version: 2,
       activeId: next.id,
+      lastExportAt: ws.lastExportAt,
       projects: { ...ws.projects, [next.id]: { ...next, updatedAt: isoNow() } },
     }));
     return next.id;
@@ -84,7 +86,7 @@ export function useProject() {
       delete leftover[ws.activeId];
       const ids = Object.keys(leftover);
       if (!ids.length) return emptyWorkspace();
-      return { version: 2, activeId: ids[0], projects: leftover };
+      return { version: 2, activeId: ids[0], lastExportAt: ws.lastExportAt, projects: leftover };
     });
   }, []);
 
@@ -93,13 +95,15 @@ export function useProject() {
   }, [createProject]);
 
   const exportJson = useCallback(() => {
-    const blob = new Blob([JSON.stringify(workspace, null, 2)], { type: "application/json" });
+    const stamped = { ...workspace, lastExportAt: isoNow() };
+    const blob = new Blob([JSON.stringify(stamped, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
     a.download = `projectwerkplek-${project.name || "export"}.json`;
     a.click();
     URL.revokeObjectURL(url);
+    setWorkspace(stamped);
   }, [workspace, project.name]);
 
   const importJson = useCallback(async (file: File) => {
@@ -107,7 +111,7 @@ export function useProject() {
     const parsed = parseWorkspace(JSON.parse(text));
     setWorkspace((ws) => {
       const projects = { ...ws.projects, ...parsed.projects };
-      return { version: 2, activeId: parsed.activeId, projects };
+      return { version: 2, activeId: parsed.activeId, lastExportAt: isoNow(), projects };
     });
   }, []);
 
@@ -129,6 +133,8 @@ export function useProject() {
     exportJson,
     importJson,
     ready,
+    backupStale: exportIsStale(workspace.lastExportAt, project.updatedAt),
+    lastExportAt: workspace.lastExportAt,
   };
 }
 
