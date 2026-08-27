@@ -91,3 +91,13 @@ export function storeDiameter(value: string) {
   if (typeof window === "undefined") return;
   if (/^\d{1,4}$/.test(value)) sessionStorage.setItem(DIAMETER_KEY, value);
 }
+
+export function rangeHint(d: number, minExclusive: number | null, min: number, max: number, unit = "mm") {
+  if (minExclusive != null && d <= minExclusive) {
+    return `Ø ${d} ${unit} valt buiten de tabel. De eerste rij begint boven ${minExclusive} ${unit} (niet ${minExclusive} zelf). Open de norm; neem geen naburige rij.`;
+  }
+  if (d < min || d > max) {
+    return `Ø ${d} ${unit} valt buiten het werkblad (${min} t/m ${max} ${unit}). Geen naburige rij gebruiken — sla de norm of catalogus na.`;
+  }
+  return null;
+}

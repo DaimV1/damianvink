@@ -6,31 +6,31 @@ import {
   emptyWorkspace,
   isoNow,
   parseProject,
-  parseWorkspace,
   sampleProject,
   type Project,
   type Workspace,
 } from "@/lib/pm/model";
+import { exportIsStale, parseWorkspaceKeepExport, type WorkspaceWithExport } from "@/lib/pm/export-freshness";
 
-function readWorkspace(): Workspace {
+function readWorkspace(): WorkspaceWithExport {
   try {
     const rawV2 = localStorage.getItem(STORAGE_KEY);
-    if (rawV2) return parseWorkspace(JSON.parse(rawV2));
+    if (rawV2) return parseWorkspaceKeepExport(JSON.parse(rawV2));
     const rawV1 = localStorage.getItem(STORAGE_KEY_V1);
-    if (rawV1) return parseWorkspace(JSON.parse(rawV1));
+    if (rawV1) return parseWorkspaceKeepExport(JSON.parse(rawV1));
   } catch {
     /* keep empty */
   }
   return emptyWorkspace();
 }
 
-function persist(workspace: Workspace) {
+function persist(workspace: WorkspaceWithExport) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(workspace));
   localStorage.removeItem(STORAGE_KEY_V1);
 }
 
 export function useProject() {
-  const [workspace, setWorkspace] = useState<Workspace>(emptyWorkspace);
+  const [workspace, setWorkspace] = useState<WorkspaceWithExport>(emptyWorkspace);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -69,6 +69,7 @@ export function useProject() {
     setWorkspace((ws) => ({
       version: 2,
       activeId: next.id,
+      lastExportAt: ws.lastExportAt,
       projects: { ...ws.projects, [next.id]: { ...next, updatedAt: isoNow() } },
     }));
     return next.id;
@@ -84,7 +85,7 @@ export function useProject() {
       delete leftover[ws.activeId];
       const ids = Object.keys(leftover);
       if (!ids.length) return emptyWorkspace();
-      return { version: 2, activeId: ids[0], projects: leftover };
+      return { version: 2, activeId: ids[0], lastExportAt: ws.lastExportAt, projects: leftover };
     });
   }, []);
 
@@ -93,21 +94,23 @@ export function useProject() {
   }, [createProject]);
 
   const exportJson = useCallback(() => {
-    const blob = new Blob([JSON.stringify(workspace, null, 2)], { type: "application/json" });
+    const stamped: WorkspaceWithExport = { ...workspace, lastExportAt: isoNow() };
+    const blob = new Blob([JSON.stringify(stamped, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
     a.download = `projectwerkplek-${project.name || "export"}.json`;
     a.click();
     URL.revokeObjectURL(url);
+    setWorkspace(stamped);
   }, [workspace, project.name]);
 
   const importJson = useCallback(async (file: File) => {
     const text = await file.text();
-    const parsed = parseWorkspace(JSON.parse(text));
+    const parsed = parseWorkspaceKeepExport(JSON.parse(text));
     setWorkspace((ws) => {
       const projects = { ...ws.projects, ...parsed.projects };
-      return { version: 2, activeId: parsed.activeId, projects };
+      return { version: 2, activeId: parsed.activeId, lastExportAt: isoNow(), projects };
     });
   }, []);
 
@@ -129,6 +132,8 @@ export function useProject() {
     exportJson,
     importJson,
     ready,
+    backupStale: exportIsStale(workspace.lastExportAt, project.updatedAt),
+    lastExportAt: workspace.lastExportAt,
   };
 }
 
