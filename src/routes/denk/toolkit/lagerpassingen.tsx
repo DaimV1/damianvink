@@ -1,10 +1,20 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { JsonLd } from "@/components/json-ld";
 import { Faq } from "@/components/toolkit/calc-ui";
 import { LagerCalc } from "@/components/toolkit/lager-calc";
 import { ToolkitFrame } from "@/components/toolkit/toolkit-frame";
+import { pageHead, softwareJsonLd } from "@/lib/seo";
+
+const DESCRIPTION =
+  "Lagerpassingen voor groefkogellagers tot Ø50 mm. SKF-klassen, vast/los, as j6/k5, huis H7. Rekenhulp plus naslag.";
 
 export const Route = createFileRoute("/denk/toolkit/lagerpassingen")({
-  head: () => ({ meta: [{ title: "Lagerpassingen — Damian Vink" }] }),
+  head: () =>
+    pageHead({
+      title: "Lagerpassingen — Damian Vink",
+      description: DESCRIPTION,
+      path: "/denk/toolkit/lagerpassingen",
+    }),
   component: LagerPage,
 });
 
@@ -21,6 +31,14 @@ function LagerPage() {
       last="passingen."
       lede="Groefkogellagers: vast/los, SKF-klassen, ISO 286 tot Ø 50 mm. Kies rotatie en last; de aanbevolen as- en huisklasse volgt direct."
     >
+      <JsonLd
+        data={softwareJsonLd({
+          name: "Lagerpassingen",
+          path: "/denk/toolkit/lagerpassingen",
+          description: DESCRIPTION,
+          featureList: ["SKF", "j6", "k5", "H7", "vast/los"],
+        })}
+      />
       <LagerCalc />
       <Faq
         items={[

@@ -1,10 +1,20 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { JsonLd } from "@/components/json-ld";
 import { Faq } from "@/components/toolkit/calc-ui";
 import { OringCalc } from "@/components/toolkit/oring-calc";
 import { ToolkitFrame } from "@/components/toolkit/toolkit-frame";
+import { pageHead, softwareJsonLd } from "@/lib/seo";
+
+const DESCRIPTION =
+  "O-ringgroef volgens ISO 3601. Koorden 1,80–7,00 mm: groefdiepte t en breedte b, radiaal en axiaal.";
 
 export const Route = createFileRoute("/denk/toolkit/o-ringgroef")({
-  head: () => ({ meta: [{ title: "O-ringgroef — Damian Vink" }] }),
+  head: () =>
+    pageHead({
+      title: "O-ringgroef — Damian Vink",
+      description: DESCRIPTION,
+      path: "/denk/toolkit/o-ringgroef",
+    }),
   component: OringPage,
 });
 
@@ -21,6 +31,14 @@ function OringPage() {
       last="groef."
       lede="ISO-koorden 1,80–7,00 mm: groef t / b, schema radiaal en axiaal. Kies koord en inbouw; de tabel markeert de rij."
     >
+      <JsonLd
+        data={softwareJsonLd({
+          name: "O-ringgroef ISO 3601",
+          path: "/denk/toolkit/o-ringgroef",
+          description: DESCRIPTION,
+          featureList: ["ISO 3601", "radiaal", "axiaal", "koorddiameter"],
+        })}
+      />
       <OringCalc />
       <Faq
         items={[
