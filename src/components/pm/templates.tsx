@@ -1,5 +1,6 @@
 import { GanttBoard } from "@/components/pm/gantt";
 import { GENERATORS } from "@/lib/pm/fill-templates";
+import { downloadMsProject } from "@/lib/pm/msproject";
 import { TEMPLATES } from "@/lib/pm/templates";
 import type { Project } from "@/lib/pm/model";
 
@@ -35,7 +36,10 @@ export function TemplatesPanel({
               </div>
               <button
                 type="button"
-                onClick={() => GENERATORS[t.id](project)}
+                onClick={() => {
+                  if (t.id === "msproject") downloadMsProject(project);
+                  else GENERATORS[t.id](project);
+                }}
                 className="inline-flex h-11 shrink-0 items-center justify-center rounded-full border border-accent bg-accent px-4 text-sm text-accent-fg"
               >
                 Download {t.kind}
