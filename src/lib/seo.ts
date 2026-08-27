@@ -75,7 +75,7 @@ export const websiteJsonLd = {
   url: `${SITE_ORIGIN}/`,
   inLanguage: "nl-NL",
   description: DEFAULT_DESCRIPTION,
-  publisher: { "@id": `${SITE_ORIGIN}/#person" },
+  publisher: { "@id": `${SITE_ORIGIN}/#person` },
 };
 
 export function softwareJsonLd({
