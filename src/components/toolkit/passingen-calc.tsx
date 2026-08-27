@@ -20,22 +20,27 @@ import {
   KindDot,
   Note,
   NumInput,
+  parseWholeMm,
   ResultGrid,
   SelectInput,
 } from "./calc-ui";
 
 export function PassingenCalc() {
-  const [diameter, setDiameter] = useState(() => readStoredDiameter());
+  const [diameter, setDiameter] = useState(() =>
+    readStoredDiameter({ min: 4, max: 50 }),
+  );
   const [fitId, setFitId] = useState("H7/h6");
 
   function onDia(v: string) {
     setDiameter(v);
-    storeDiameter(v);
+    const parsed = parseWholeMm(v);
+    if (parsed.status === "ok") storeDiameter(String(parsed.mm));
   }
 
-  const d = diameter === "" ? NaN : parseInt(diameter, 10);
-  const result = !Number.isNaN(d) ? computeFit(d, fitId) : null;
-  const activeBand = !Number.isNaN(d) ? bandIndex(d) : -1;
+  const parsed = parseWholeMm(diameter);
+  const d = parsed.status === "ok" ? parsed.mm : Number.NaN;
+  const result = parsed.status === "ok" ? computeFit(d, fitId) : null;
+  const activeBand = parsed.status === "ok" ? bandIndex(d) : -1;
 
   const copy = useMemo(() => {
     if (!result) return "";
@@ -58,7 +63,8 @@ export function PassingenCalc() {
         </h2>
         <Note>
           Nominale Ø in hele millimeters. Tabellen: boven 3 t/m 50 mm. Zelfde
-          getallen als de naslag hieronder.
+          getallen als de naslag hieronder. Een decimaal (20,5) wordt niet
+          omgezet naar 205.
         </Note>
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
           <Field label="Nominale Ø (mm)">
@@ -75,15 +81,16 @@ export function PassingenCalc() {
           </Field>
         </div>
 
-        {diameter === "" ? (
+        {parsed.status === "empty" ? (
           <p className="mt-5 text-sm text-muted">Vul een nominale Ø in.</p>
-        ) : Number.isNaN(d) ? (
+        ) : parsed.status === "fraction" ? (
           <p className="mt-5 text-sm text-muted">
-            Vul een nominale Ø in hele millimeters in.
+            Alleen hele millimeters. {diameter} mm valt niet in de tabel.
           </p>
         ) : !result ? (
           <p className="mt-5 text-sm text-muted">
-            Geen ISO-band voor Ø {d} mm. Tabellen: boven 3 t/m 50 mm.
+            Geen ISO-band voor Ø {d} mm. Tabellen: boven 3 t/m 50 mm (Ø 3 valt
+            erbuiten).
           </p>
         ) : (
           <>
@@ -156,18 +163,25 @@ export function PassingenCalc() {
           Wanneer welke passing
         </h2>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
-          {FITS.map((f) => (
-            <article
-              key={f.id}
-              className="rounded-lg border border-line bg-elevated p-4"
-            >
-              <p className="flex items-center gap-2 font-mono text-sm text-ink">
-                <KindDot kind={f.kind} />
-                {f.id}
-              </p>
-              <p className="mt-2 text-sm leading-relaxed text-muted">{f.use}</p>
-            </article>
-          ))}
+          {FITS.map((f) => {
+            const live = parsed.status === "ok" ? computeFit(d, f.id) : null;
+            const kind = live?.kind.kind ?? f.kind;
+            return (
+              <article
+                key={f.id}
+                className="rounded-lg border border-line bg-elevated p-4"
+              >
+                <p className="flex items-center gap-2 font-mono text-sm text-ink">
+                  <KindDot kind={kind} />
+                  {f.id}
+                  {live ? (
+                    <span className="font-sans text-muted">· {live.kind.text}</span>
+                  ) : null}
+                </p>
+                <p className="mt-2 text-sm leading-relaxed text-muted">{f.use}</p>
+              </article>
+            );
+          })}
         </div>
       </section>
 
