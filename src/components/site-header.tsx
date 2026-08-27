@@ -10,6 +10,7 @@ const NAV = [
   { to: "/doe", label: "Wat ik doe", match: "/doe" },
   { to: "/denk", label: "Wat ik denk", match: "/denk" },
   { to: "/denk/toolkit", label: "Toolkit", match: "/denk/toolkit" },
+  { to: "/denk/project", label: "Project", match: "/denk/project" },
   { to: "/#contact", label: "Contact", match: null },
 ] as const;
 
@@ -22,7 +23,10 @@ export function SiteHeader() {
     if (!item.match) return false;
     if (item.to === "/denk/toolkit") return pathname.startsWith("/denk/toolkit");
     if (item.to === "/denk")
-      return pathname === "/denk" || pathname.startsWith("/denk/blog");
+      return (
+        pathname === "/denk" ||
+        pathname.startsWith("/denk/blog")
+      );
     if (item.to === "/doe") return pathname.startsWith("/doe");
     return pathname === item.match || pathname.startsWith(item.match + "/");
   }

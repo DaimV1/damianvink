@@ -19,7 +19,8 @@ function Denk() {
         </p>
         <DisplayTitle before="Wat ik" last="denk." className="mt-3" />
         <p className="mt-5 text-lg leading-relaxed text-muted">
-          Twee sporen: naslag tijdens ontwerp, en artikelen wanneer die er zijn.
+          Drie sporen: naslag tijdens ontwerp, een projectwerkplek tijdens de rit,
+          en artikelen wanneer die er zijn.
         </p>
         <div className="mt-10 space-y-3">
           <Link
@@ -35,10 +36,22 @@ function Denk() {
             </p>
           </Link>
           <Link
-            to="/denk/blog"
+            to="/denk/project"
             className="block rounded-lg border border-line bg-elevated p-5 transition-colors hover:border-line-strong"
           >
             <p className="font-mono text-xs text-accent">02</p>
+            <h2 className="mt-1 font-display text-xl font-semibold">
+              Projectwerkplek
+            </h2>
+            <p className="mt-1 text-sm text-muted">
+              Fasen, stakeholders, risico’s, issues en het beslispunt.
+            </p>
+          </Link>
+          <Link
+            to="/denk/blog"
+            className="block rounded-lg border border-line bg-elevated p-5 transition-colors hover:border-line-strong"
+          >
+            <p className="font-mono text-xs text-accent">03</p>
             <h2 className="mt-1 font-display text-xl font-semibold">Blog</h2>
             <p className="mt-1 text-sm text-muted">
               Artikelen. Nog geen stukken gepubliceerd.
