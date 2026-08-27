@@ -19,3 +19,31 @@ export const KEYWAYS = [
 export function lookupKeyway(d: number) {
   return KEYWAYS.find((row) => d > row.over && d <= row.to) ?? null;
 }
+
+export type WidthFit = "P9" | "N9" | "JS9" | "H9" | "D10";
+
+const WIDTH_BANDS = [
+  { over: 0, to: 3, it9: 25, it10: 40, P: -6, N: -4, D: 20 },
+  { over: 3, to: 6, it9: 30, it10: 48, P: -12, N: -8, D: 30 },
+  { over: 6, to: 10, it9: 36, it10: 58, P: -15, N: -10, D: 40 },
+  { over: 10, to: 18, it9: 43, it10: 70, P: -18, N: -12, D: 50 },
+  { over: 18, to: 30, it9: 52, it10: 84, P: -22, N: -15, D: 65 },
+] as const;
+
+export function widthBand(b: number) {
+  return WIDTH_BANDS.find((row) => b > row.over && b <= row.to) ?? null;
+}
+
+/** Spleet = gatbasis. Waarden in µm volgens ISO 286-2. */
+export function keyWidthTol(b: number, fit: WidthFit): { ES: number; EI: number; label: string } | null {
+  const band = widthBand(b);
+  if (!band) return null;
+  if (fit === "H9") return { ES: band.it9, EI: 0, label: "H9" };
+  if (fit === "JS9") {
+    const half = band.it9 / 2;
+    return { ES: half, EI: -half, label: "JS9" };
+  }
+  if (fit === "P9") return { ES: band.P, EI: band.P - band.it9, label: "P9" };
+  if (fit === "N9") return { ES: band.N, EI: band.N - band.it9, label: "N9" };
+  return { ES: band.D + band.it10, EI: band.D, label: "D10" };
+}

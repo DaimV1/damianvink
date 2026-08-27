@@ -1,4 +1,4 @@
-import { BANDS, HOLE, SHAFT, bandIndex } from "./iso286";
+import { BANDS, HOLE, SHAFT, bandIndex } from "./iso286.ts";
 
 export function pickBearing(d: number, rot: string, load: string) {
   let shaft: string;
