@@ -5,12 +5,12 @@ import { pageHead, softwareJsonLd } from "@/lib/seo";
 import { TOOLS } from "@/lib/toolkit/tools";
 
 const DESCRIPTION =
-  "Engineering toolkit: ISO 286-passingen, DIN 6885-spiebanen, lagerpassingen, seegerringgroef, bevestigers, O-ringgroef en CAD-bronnen.";
+  "Engineering toolkit: ISO 286-passingen, DIN 6885-spiebanen, SKF-lagerpassingen, seegerringgroef DIN 471/472, VDI 2230-bevestigers, O-ringgroef ISO 3601 en CAD-bronnen. Rekenhulp bovenaan, naslag eronder.";
 
 export const Route = createFileRoute("/denk/toolkit/")({
   head: () =>
     pageHead({
-      title: "Engineering toolkit — Damian Vink",
+      title: "Engineering toolkit werktuigbouwkunde — Damian Vink",
       description: DESCRIPTION,
       path: "/denk/toolkit",
     }),
@@ -20,13 +20,10 @@ export const Route = createFileRoute("/denk/toolkit/")({
 function ToolkitIndex() {
   return (
     <ToolkitFrame
-      crumbs={[
-        { href: "/heb", label: "Wat ik heb" },
-        { label: "Engineering toolkit" },
-      ]}
+      crumbs={[{ label: "Toolkit" }]}
       before="Engineering"
       last="toolkit."
-      lede="Tabellen en links die ik tijdens ontwerp gebruik. Open een tool: de rekenhulp staat bovenaan, de naslag eronder. Wisselen gaat via de balk."
+      lede="Tabellen en links die ik tijdens ontwerp gebruik. Open een tool: de rekenhulp staat bovenaan, de naslag (tabel of bronnen) eronder. Wisselen gaat via de balk."
     >
       <JsonLd
         data={softwareJsonLd({
@@ -45,12 +42,15 @@ function ToolkitIndex() {
           >
             <span>
               <span className="font-mono text-xs text-accent">
-                {String(i + 1).padStart(2, "0")}
+                {String(i + 1).padStart(2, "0")} · {tool.standard}
               </span>
               <strong className="mt-1 block font-display text-lg font-semibold tracking-tight text-ink">
                 {tool.title}
               </strong>
               <small className="mt-1 block text-sm text-muted">{tool.blurb}</small>
+              <small className="mt-2 block font-mono text-xs uppercase tracking-[0.12em] text-subtle">
+                {tool.kind === "naslag" ? "Naslag" : "Rekenhulp + naslag"}
+              </small>
             </span>
             <span aria-hidden="true" className="text-accent">
               →
