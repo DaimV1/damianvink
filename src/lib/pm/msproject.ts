@@ -2,7 +2,10 @@ import { durationDays, toDate, type Activity } from "@/lib/pm/activity";
 import type { Project } from "@/lib/pm/model";
 
 function esc(value: string) {
-  return value.replace(/&/g, "&").replace(/</g, "<").replace(/>/g, ">").replace(/"/g, """);
+  return value
+    .replaceAll("&", "&" + "amp;")
+    .replaceAll("<", "&" + "lt;")
+    .replaceAll(">", "&" + "gt;");
 }
 
 function stamp(isoDate: string, endOfDay = false) {
@@ -25,7 +28,8 @@ function workingDays(start: string, end: string) {
 }
 
 function weekDays() {
-  const work = `<WorkingTimes><WorkingTime><FromTime>08:00:00</FromTime><ToTime>12:00:00</ToTime></WorkingTime><WorkingTime><FromTime>13:00:00</FromTime><ToTime>17:00:00</ToTime></WorkingTime></WorkingTimes>`;
+  const work =
+    "<WorkingTimes><WorkingTime><FromTime>08:00:00</FromTime><ToTime>12:00:00</ToTime></WorkingTime><WorkingTime><FromTime>13:00:00</FromTime><ToTime>17:00:00</ToTime></WorkingTime></WorkingTimes>";
   return [1, 2, 3, 4, 5, 6, 7]
     .map((day) => {
       const working = day >= 2 && day <= 6;
@@ -67,7 +71,6 @@ function taskXml(a: Activity, uid: number, id: number) {
 <PercentComplete>${Math.max(0, Math.min(100, a.pct ?? 0))}</PercentComplete>
 <ConstraintType>0</ConstraintType>
 <CalendarUID>1</CalendarUID>
-<IgnoreResourceCalendar>0</IgnoreResourceCalendar>
 </Task>`;
 }
 
@@ -111,12 +114,6 @@ export function buildMsProjectXml(p: Project) {
 <ScheduleFromStart>1</ScheduleFromStart>
 <StartDate>${stamp(projectStart)}</StartDate>
 <FinishDate>${stamp(projectFinish, true)}</FinishDate>
-<FYStartDate>1</FYStartDate>
-<CriticalSlackLimit>0</CriticalSlackLimit>
-<CurrencyDigits>2</CurrencyDigits>
-<CurrencySymbol>€</CurrencySymbol>
-<CurrencyCode>EUR</CurrencyCode>
-<CurrencySymbolPosition>3</CurrencySymbolPosition>
 <CalendarUID>1</CalendarUID>
 <DefaultStartTime>08:00:00</DefaultStartTime>
 <DefaultFinishTime>17:00:00</DefaultFinishTime>
@@ -124,11 +121,11 @@ export function buildMsProjectXml(p: Project) {
 <MinutesPerWeek>2400</MinutesPerWeek>
 <DaysPerMonth>20</DaysPerMonth>
 <DefaultTaskType>1</DefaultTaskType>
-<DefaultFixedCostAccrual>3</DefaultFixedCostAccrual>
-<DefaultTaskEVMethod>0</DefaultTaskEVMethod>
-<HonorConstraints>1</HonorConstraints>
 <NewTasksAreManual>1</NewTasksAreManual>
 <WeekStartDay>1</WeekStartDay>
+<CurrencyDigits>2</CurrencyDigits>
+<CurrencySymbol>EUR</CurrencySymbol>
+<CurrencyCode>EUR</CurrencyCode>
 <Calendars>
 <Calendar>
 <UID>1</UID>
