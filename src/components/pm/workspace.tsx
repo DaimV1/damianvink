@@ -4,6 +4,7 @@ import { Field, TextInput } from "@/components/pm/fields";
 import { GatePanel } from "@/components/pm/gate";
 import { PhasePanel } from "@/components/pm/phases";
 import { ChangesPanel, IssuesPanel, RisksPanel, StakeholdersPanel } from "@/components/pm/registers";
+import { TemplatesPanel } from "@/components/pm/templates";
 import { Button } from "@/components/ui/button";
 import { PHASES, euro, inferredRag, openCount, type Project } from "@/lib/pm/model";
 import { cn } from "@/lib/utils";
@@ -16,7 +17,7 @@ export function ProjectWorkspace({
   setProject: (p: Project | ((prev: Project) => Project)) => void;
   reset: () => void;
 }) {
-  const [panel, setPanel] = useState<"fase" | "mensen" | "risicos" | "issues" | "wijzigingen" | "poort">("fase");
+  const [panel, setPanel] = useState<"fase" | "mensen" | "risicos" | "issues" | "wijzigingen" | "poort" | "templates">("fase");
   const suggestedRag = inferredRag(project);
   const phase = PHASES.find((p) => p.id === project.phase)!;
 
@@ -46,8 +47,8 @@ export function ProjectWorkspace({
         </div>
         <dl className="mt-5 grid gap-3 sm:grid-cols-4">
           <Stat label="Fase" value={phase.label} />
-          <Stat label="Klaar" value={project.percentDone == null ? "—" : `${project.percentDone}%`} />
-          <Stat label="Einddatum" value={project.endDate || "—"} />
+          <Stat label="Klaar" value={project.percentDone == null ? "\u2014" : `${project.percentDone}%`} />
+          <Stat label="Einddatum" value={project.endDate || "\u2014"} />
           <Stat label="Budget" value={`${euro(project.spent)} / ${euro(project.budget)}`} />
         </dl>
         <p className="mt-4 text-sm text-muted">
@@ -65,6 +66,7 @@ export function ProjectWorkspace({
           ["issues", "Issues"],
           ["wijzigingen", "Wijzigingen"],
           ["poort", "Beslispunt"],
+          ["templates", "Templates"],
         ] as const).map(([id, label]) => (
           <button
             key={id}
@@ -86,6 +88,7 @@ export function ProjectWorkspace({
       {panel === "issues" ? <IssuesPanel project={project} setProject={setProject} /> : null}
       {panel === "wijzigingen" ? <ChangesPanel project={project} setProject={setProject} /> : null}
       {panel === "poort" ? <GatePanel project={project} setProject={setProject} /> : null}
+      {panel === "templates" ? <TemplatesPanel /> : null}
 
       <div className="flex flex-wrap items-center justify-between gap-3 border-t border-line pt-4">
         <p className="text-xs text-subtle">Staat in deze browser. Geen account, geen server.</p>
