@@ -29,8 +29,7 @@ function Spel() {
           <VinkGame />
         </div>
         <p className="mt-6 text-xs text-subtle">
-          Geen Flappy Bird: andere naam, eigen tekening, geen overgenomen sprites
-          of geluid.
+          Vink vliegt door. Geen plan, geen overleg — alleen de volgende opening.
         </p>
       </PageWrap>
     </SiteShell>
