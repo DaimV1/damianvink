@@ -24,6 +24,7 @@ import { Route as DenkToolkitBronnenRouteImport } from './routes/denk/toolkit/br
 import { Route as DenkToolkitLagerpassingenRouteImport } from './routes/denk/toolkit/lagerpassingen'
 import { Route as DenkToolkitORinggroefRouteImport } from './routes/denk/toolkit/o-ringgroef'
 import { Route as DenkToolkitPassingenRouteImport } from './routes/denk/toolkit/passingen'
+import { Route as DenkToolkitSeegerringGroefRouteImport } from './routes/denk/toolkit/seegerring-groef'
 import { Route as DenkToolkitSpiebaanTolerantiesRouteImport } from './routes/denk/toolkit/spiebaan-toleranties'
 
 const IndexRoute = IndexRouteImport.update({
@@ -102,6 +103,12 @@ const DenkToolkitPassingenRoute = DenkToolkitPassingenRouteImport.update({
   path: '/denk/toolkit/passingen',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DenkToolkitSeegerringGroefRoute =
+  DenkToolkitSeegerringGroefRouteImport.update({
+    id: '/denk/toolkit/seegerring-groef',
+    path: '/denk/toolkit/seegerring-groef',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const DenkToolkitSpiebaanTolerantiesRoute =
   DenkToolkitSpiebaanTolerantiesRouteImport.update({
     id: '/denk/toolkit/spiebaan-toleranties',
@@ -124,6 +131,7 @@ export interface FileRoutesByFullPath {
   '/denk/toolkit/lagerpassingen': typeof DenkToolkitLagerpassingenRoute
   '/denk/toolkit/o-ringgroef': typeof DenkToolkitORinggroefRoute
   '/denk/toolkit/passingen': typeof DenkToolkitPassingenRoute
+  '/denk/toolkit/seegerring-groef': typeof DenkToolkitSeegerringGroefRoute
   '/denk/toolkit/spiebaan-toleranties': typeof DenkToolkitSpiebaanTolerantiesRoute
   '/denk/toolkit/': typeof DenkToolkitIndexRoute
 }
@@ -142,6 +150,7 @@ export interface FileRoutesByTo {
   '/denk/toolkit/lagerpassingen': typeof DenkToolkitLagerpassingenRoute
   '/denk/toolkit/o-ringgroef': typeof DenkToolkitORinggroefRoute
   '/denk/toolkit/passingen': typeof DenkToolkitPassingenRoute
+  '/denk/toolkit/seegerring-groef': typeof DenkToolkitSeegerringGroefRoute
   '/denk/toolkit/spiebaan-toleranties': typeof DenkToolkitSpiebaanTolerantiesRoute
   '/denk/toolkit': typeof DenkToolkitIndexRoute
 }
@@ -161,6 +170,7 @@ export interface FileRoutesById {
   '/denk/toolkit/lagerpassingen': typeof DenkToolkitLagerpassingenRoute
   '/denk/toolkit/o-ringgroef': typeof DenkToolkitORinggroefRoute
   '/denk/toolkit/passingen': typeof DenkToolkitPassingenRoute
+  '/denk/toolkit/seegerring-groef': typeof DenkToolkitSeegerringGroefRoute
   '/denk/toolkit/spiebaan-toleranties': typeof DenkToolkitSpiebaanTolerantiesRoute
   '/denk/toolkit/': typeof DenkToolkitIndexRoute
 }
@@ -181,6 +191,7 @@ export interface FileRouteTypes {
     | '/denk/toolkit/lagerpassingen'
     | '/denk/toolkit/o-ringgroef'
     | '/denk/toolkit/passingen'
+    | '/denk/toolkit/seegerring-groef'
     | '/denk/toolkit/spiebaan-toleranties'
     | '/denk/toolkit/'
   fileRoutesByTo: FileRoutesByTo
@@ -199,6 +210,7 @@ export interface FileRouteTypes {
     | '/denk/toolkit/lagerpassingen'
     | '/denk/toolkit/o-ringgroef'
     | '/denk/toolkit/passingen'
+    | '/denk/toolkit/seegerring-groef'
     | '/denk/toolkit/spiebaan-toleranties'
     | '/denk/toolkit'
   id:
@@ -217,6 +229,7 @@ export interface FileRouteTypes {
     | '/denk/toolkit/lagerpassingen'
     | '/denk/toolkit/o-ringgroef'
     | '/denk/toolkit/passingen'
+    | '/denk/toolkit/seegerring-groef'
     | '/denk/toolkit/spiebaan-toleranties'
     | '/denk/toolkit/'
   fileRoutesById: FileRoutesById
@@ -236,6 +249,7 @@ export interface RootRouteChildren {
   DenkToolkitLagerpassingenRoute: typeof DenkToolkitLagerpassingenRoute
   DenkToolkitORinggroefRoute: typeof DenkToolkitORinggroefRoute
   DenkToolkitPassingenRoute: typeof DenkToolkitPassingenRoute
+  DenkToolkitSeegerringGroefRoute: typeof DenkToolkitSeegerringGroefRoute
   DenkToolkitSpiebaanTolerantiesRoute: typeof DenkToolkitSpiebaanTolerantiesRoute
   DenkToolkitIndexRoute: typeof DenkToolkitIndexRoute
 }
@@ -347,6 +361,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DenkToolkitPassingenRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/denk/toolkit/seegerring-groef': {
+      id: '/denk/toolkit/seegerring-groef'
+      path: '/denk/toolkit/seegerring-groef'
+      fullPath: '/denk/toolkit/seegerring-groef'
+      preLoaderRoute: typeof DenkToolkitSeegerringGroefRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/denk/toolkit/spiebaan-toleranties': {
       id: '/denk/toolkit/spiebaan-toleranties'
       path: '/denk/toolkit/spiebaan-toleranties'
@@ -372,6 +393,7 @@ const rootRouteChildren: RootRouteChildren = {
   DenkToolkitLagerpassingenRoute: DenkToolkitLagerpassingenRoute,
   DenkToolkitORinggroefRoute: DenkToolkitORinggroefRoute,
   DenkToolkitPassingenRoute: DenkToolkitPassingenRoute,
+  DenkToolkitSeegerringGroefRoute: DenkToolkitSeegerringGroefRoute,
   DenkToolkitSpiebaanTolerantiesRoute: DenkToolkitSpiebaanTolerantiesRoute,
   DenkToolkitIndexRoute: DenkToolkitIndexRoute,
 }

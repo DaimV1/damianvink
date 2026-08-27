@@ -102,6 +102,11 @@ const GROUPS = [
         note: "Rotatie, SKF-tabellen, huis en as. Ook op deze site onder Lagerpassingen.",
       },
       {
+        href: "https://verspanenmuzo.wordpress.com/2015/02/24/seegerring-groef-tabbel/",
+        name: "verspanen-metaal — Seegerringgroef",
+        note: "Werkplaatstabel DIN 471/472. Ook op deze site onder Seegerringgroef.",
+      },
+      {
         href: "https://www.engineeringtoolbox.com/",
         name: "Engineering Toolbox",
         note: "Dichtheden, schroefdraad, eenheden. Snel, niet altijd de primaire bron.",

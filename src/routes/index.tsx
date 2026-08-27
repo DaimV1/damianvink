@@ -75,7 +75,7 @@ function Home() {
             <KnowledgeRow
               num="01"
               title="Engineering toolkit"
-              body="Passingen, spiebanen, lagerpassingen en CAD-bronnen."
+              body="Passingen, spiebanen, lagerpassingen, seegerringgroef en CAD-bronnen."
               href="/denk/toolkit"
               link="Engineering toolkit"
               meta="Werktuigbouwkunde · Machinebouw"
@@ -90,7 +90,7 @@ function Home() {
             />
           </div>
           <div className="mt-6 flex flex-wrap gap-2">
-            {TOOLS.slice(0, 4).map((tool) => (
+            {TOOLS.slice(0, 5).map((tool) => (
               <Link
                 key={tool.id}
                 to={tool.href}

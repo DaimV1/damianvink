@@ -24,6 +24,14 @@ export const TOOLS = [
     blurb: "Groefkogellagers: vast/los, SKF-klassen tot Ø 50 mm.",
   },
   {
+    id: "seeger",
+    href: "/denk/toolkit/seegerring-groef",
+    short: "Seeger",
+    title: "Seegerringgroef",
+    standard: "DIN 471 / 472",
+    blurb: "Groef d₂, breedte b en diepte t op as of in boring, tot Ø 100 mm.",
+  },
+  {
     id: "oring",
     href: "/denk/toolkit/o-ringgroef",
     short: "O-ring",
