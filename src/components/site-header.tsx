@@ -8,8 +8,8 @@ import { cn } from "@/lib/utils";
 const NAV = [
   { to: "/over-mij", label: "Wie ik ben", match: "/over-mij" },
   { to: "/doe", label: "Wat ik doe", match: "/doe" },
-  { to: "/denk/toolkit", label: "Toolkit", match: "/denk/toolkit" },
   { to: "/denk", label: "Wat ik denk", match: "/denk" },
+  { to: "/denk/toolkit", label: "Toolkit", match: "/denk/toolkit" },
   { to: "/#contact", label: "Contact", match: null },
 ] as const;
 
