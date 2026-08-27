@@ -36,6 +36,15 @@ export const TEMPLATES = [
     kind: "Excel",
   },
   {
+    id: "msproject",
+    phase: "03 Definitie",
+    title: "Microsoft Project",
+    body: "XML die Project opent (Bestand → Openen). Taken, datums en mijlpalen komen uit de Gantt. Geen echt .mpp: dat formaat is gesloten.",
+    href: "/templates/planning.xml",
+    file: "planning.xml",
+    kind: "Project",
+  },
+  {
     id: "weekstatus",
     phase: "04 Uitvoering",
     title: "Weekstatus",
