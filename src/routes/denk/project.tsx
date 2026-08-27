@@ -10,7 +10,7 @@ export const Route = createFileRoute("/denk/project")({
 });
 
 function ProjectPage() {
-  const { project, patch, setProject, reset, ready } = useProject();
+  const store = useProject();
 
   return (
     <SiteShell>
@@ -28,16 +28,23 @@ function ProjectPage() {
           Project<span className="text-accent">werkplek.</span>
         </h1>
         <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">
-          Eén project, vijf fasen. Registers lopen mee tot decharge. Bedoeld voor
-          de weekstart en het beslispunt, niet als lesboek.
+          Eén scherm voor de weekstart en het beslispunt. Vijf fasen, registers
+          tot decharge. Geen lesboek.
         </p>
         <div className="mt-8">
-          {ready ? (
+          {store.ready ? (
             <ProjectWorkspace
-              project={project}
-              patch={patch}
-              setProject={setProject}
-              reset={reset}
+              project={store.project}
+              list={store.list}
+              activeId={store.activeId}
+              patch={store.patch}
+              setProject={store.setProject}
+              reset={store.reset}
+              createProject={store.createProject}
+              switchProject={store.switchProject}
+              loadSample={store.loadSample}
+              exportJson={store.exportJson}
+              importJson={store.importJson}
             />
           ) : (
             <p className="text-sm text-muted">Laden…</p>
