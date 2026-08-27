@@ -1,3 +1,5 @@
+import type { Activity } from "@/lib/pm/activity";
+
 export const PHASES = [
   { id: "orientatie", n: "01", label: "Oriëntatie", question: "Moet dit een project zijn?", result: "Kader en werkvorm" },
   { id: "voorbereiding", n: "02", label: "Voorbereiding", question: "Mag het van start?", result: "Projectopdracht voor go/no-go" },
@@ -32,13 +34,13 @@ export type Decision = {
 };
 
 export type Project = {
-  name: string; sponsor: string; manager: string; phase: PhaseId; rag: Rag; endDate: string;
+  name: string; sponsor: string; manager: string; phase: PhaseId; rag: Rag; startDate: string; endDate: string;
   budget: number | null; spent: number | null; percentDone: number | null;
   result: string; outcome: string; goal: string; constraint: Constraint; workform: Workform;
   why: string; authority: string; scopeIn: string; scopeOut: string;
   riskReserve: number | null; contingency: number | null;
   baselineFrozen: boolean; baselineEndDate: string; baselineBudget: number | null;
-  estimates: Estimate[]; stakeholders: Stakeholder[]; risks: Risk[]; issues: Issue[];
+  estimates: Estimate[]; activities: Activity[]; stakeholders: Stakeholder[]; risks: Risk[]; issues: Issue[];
   changes: Change[]; decisions: Decision[]; accepted: boolean; handover: string; lessons: string;
 };
 
@@ -47,18 +49,21 @@ export function uid() { return Math.random().toString(36).slice(2, 10); }
 
 export function emptyProject(): Project {
   return {
-    name: "", sponsor: "", manager: "", phase: "orientatie", rag: "groen", endDate: "",
+    name: "", sponsor: "", manager: "", phase: "orientatie", rag: "groen", startDate: "", endDate: "",
     budget: null, spent: null, percentDone: null, result: "", outcome: "", goal: "",
     constraint: "tijd", workform: "project", why: "", authority: "", scopeIn: "", scopeOut: "",
     riskReserve: null, contingency: null, baselineFrozen: false, baselineEndDate: "", baselineBudget: null,
-    estimates: [], stakeholders: [], risks: [], issues: [], changes: [], decisions: [],
+    estimates: [], activities: [], stakeholders: [], risks: [], issues: [], changes: [], decisions: [],
     accepted: false, handover: "", lessons: "",
   };
 }
 
 export function parseProject(raw: unknown): Project {
   if (!raw || typeof raw !== "object") return emptyProject();
-  return { ...emptyProject(), ...(raw as Partial<Project>) };
+  const next = { ...emptyProject(), ...(raw as Partial<Project>) };
+  if (!Array.isArray(next.activities)) next.activities = [];
+  if (!next.startDate) next.startDate = "";
+  return next;
 }
 
 export function nextPhase(id: PhaseId): PhaseId | null {
@@ -108,7 +113,7 @@ export function inferredRag(project: Project): Rag {
 }
 
 export function euro(n: number | null | undefined) {
-  if (n == null || Number.isNaN(n)) return "—";
+  if (n == null || Number.isNaN(n)) return "\u2014";
   return n.toLocaleString("nl-NL", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
 }
 
@@ -118,12 +123,12 @@ export function gateBrief(project: Project) {
   const issues = project.issues.filter((i) => i.status !== "dicht");
   const changes = project.changes.filter((c) => c.status !== "dicht");
   return [
-    `Faseovergang — ${project.name || "Naamloos project"}`,
+    `Faseovergang \u2014 ${project.name || "Naamloos project"}`,
     `Fase: ${phase?.label ?? project.phase}`,
-    `Opdrachtgever: ${project.sponsor || "—"}`,
-    `Projectmanager: ${project.manager || "—"}`,
-    `Stand: ${project.rag.toUpperCase()} · ${project.percentDone ?? "—"}% klaar`,
-    `Einddatum: ${project.endDate || "—"} (baseline ${project.baselineEndDate || "nog niet bevroren"})`,
+    `Opdrachtgever: ${project.sponsor || "\u2014"}`,
+    `Projectmanager: ${project.manager || "\u2014"}`,
+    `Stand: ${project.rag.toUpperCase()} \u00b7 ${project.percentDone ?? "\u2014"}% klaar`,
+    `Einddatum: ${project.endDate || "\u2014"} (baseline ${project.baselineEndDate || "nog niet bevroren"})`,
     `Budget: ${euro(project.spent)} / ${euro(project.budget)}`,
     "",
     "Toprisico's",
@@ -132,14 +137,14 @@ export function gateBrief(project: Project) {
       : ["- geen open risico's"]),
     "",
     "Open issues",
-    ...(issues.length ? issues.map((i) => `- ${i.title} (${i.owner || "—"}${i.due ? `, ${i.due}` : ""})`) : ["- geen"]),
+    ...(issues.length ? issues.map((i) => `- ${i.title} (${i.owner || "\u2014"}${i.due ? `, ${i.due}` : ""})`) : ["- geen"]),
     "",
     "Open wijzigingen",
     ...(changes.length
-      ? changes.map((c) => `- ${c.title} · advies ${c.advice}${c.days != null ? ` · ${c.days} d` : ""}${c.money != null ? ` · ${euro(c.money)}` : ""}`)
+      ? changes.map((c) => `- ${c.title} \u00b7 advies ${c.advice}${c.days != null ? ` \u00b7 ${c.days} d` : ""}${c.money != null ? ` \u00b7 ${euro(c.money)}` : ""}`)
       : ["- geen"]),
     "",
-    `Scope in: ${project.scopeIn || "—"}`,
-    `Scope uit: ${project.scopeOut || "—"}`,
+    `Scope in: ${project.scopeIn || "\u2014"}`,
+    `Scope uit: ${project.scopeOut || "\u2014"}`,
   ].join("\n");
 }
