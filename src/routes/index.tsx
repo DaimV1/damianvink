@@ -1,8 +1,8 @@
-import type { ReactNode } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowUpRight, Mail } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { DisplayTitle, SectionTitle } from "@/components/display-title";
 import { PageWrap, SiteShell } from "@/components/site-shell";
+import { SOCIALS } from "@/lib/socials";
 import { TOOLS } from "@/lib/toolkit/tools";
 
 export const Route = createFileRoute("/")({
@@ -127,37 +127,16 @@ function Home() {
           </div>
         </section>
 
-        <section id="contact" className="border-t border-line py-14 sm:py-16">
+        <section className="border-t border-line py-14 sm:py-16">
           <SectionTitle before="Con" last="tact." />
           <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted">
-            Voor vragen over engineering, samenwerkingen of deze website: mail of
-            stuur een bericht via onderstaande kanalen.
+            Voor vragen over engineering, samenwerkingen of deze website: stuur
+            een bericht via LinkedIn, X of Instagram.
           </p>
           <div className="mt-8 grid gap-3 sm:grid-cols-2">
-            <ContactCard
-              href="mailto:damianvink@live.nl"
-              label="E-mail"
-              value="damianvink@live.nl"
-              icon={<Mail className="size-5" />}
-            />
-            <ContactCard
-              href="https://www.linkedin.com/in/damianvink"
-              label="LinkedIn"
-              value="linkedin.com/in/damianvink"
-              external
-            />
-            <ContactCard
-              href="https://x.com/damianvink_"
-              label="X"
-              value="x.com/damianvink_"
-              external
-            />
-            <ContactCard
-              href="https://www.instagram.com/damianvink_"
-              label="Instagram"
-              value="instagram.com/damianvink_"
-              external
-            />
+            {SOCIALS.map((item) => (
+              <ContactCard key={item.href} href={item.href} label={item.label} value={item.value} />
+            ))}
           </div>
         </section>
       </PageWrap>
@@ -179,10 +158,7 @@ function Tile({
   titleLast: string;
 }) {
   return (
-    <Link
-      to={href}
-      className="group relative block overflow-hidden rounded-xl border border-line"
-    >
+    <Link to={href} className="group relative block overflow-hidden rounded-xl border border-line">
       <img
         src={src}
         alt={alt}
@@ -222,10 +198,7 @@ function KnowledgeRow({
           <p className="mt-1 text-sm leading-relaxed text-muted">{body}</p>
         </div>
       </div>
-      <Link
-        to={href}
-        className="mt-4 flex items-center justify-between gap-3 border-t border-line pt-4 text-sm"
-      >
+      <Link to={href} className="mt-4 flex items-center justify-between gap-3 border-t border-line pt-4 text-sm">
         <span>
           <strong className="font-medium text-ink">{link}</strong>
           <span className="ml-2 text-muted">{meta}</span>
@@ -242,30 +215,23 @@ function ContactCard({
   href,
   label,
   value,
-  icon,
-  external,
 }: {
   href: string;
   label: string;
   value: string;
-  icon?: ReactNode;
-  external?: boolean;
 }) {
   return (
     <a
       href={href}
-      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      target="_blank"
+      rel="noopener noreferrer"
       className="flex min-h-16 items-center justify-between gap-3 rounded-lg border border-line bg-elevated px-4 py-3 transition-colors duration-150 hover:border-line-strong"
     >
       <span>
         <strong className="block text-sm font-medium text-ink">{label}</strong>
         <small className="text-sm text-muted">{value}</small>
       </span>
-      {external ? (
-        <ArrowUpRight className="size-4 text-subtle" />
-      ) : (
-        icon ?? null
-      )}
+      <ArrowUpRight className="size-4 text-subtle" />
     </a>
   );
 }
