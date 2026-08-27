@@ -1,6 +1,7 @@
+import { downloadGantt } from "@/lib/pm/gantt-template";
 import { TEMPLATES } from "@/lib/pm/templates";
 
-export function TemplatesPanel() {
+export function TemplatesPanel({ projectName = "" }: { projectName?: string }) {
   return (
     <section className="space-y-4">
       <div>
@@ -25,13 +26,23 @@ export function TemplatesPanel() {
               </h3>
               <p className="mt-1 text-sm text-muted">{t.body}</p>
             </div>
-            <a
-              href={t.href}
-              download={t.file}
-              className="inline-flex h-11 shrink-0 items-center justify-center rounded-full border border-accent bg-accent px-4 text-sm text-accent-fg"
-            >
-              Download {t.kind}
-            </a>
+            {"generate" in t && t.generate === "gantt" ? (
+              <button
+                type="button"
+                onClick={() => downloadGantt(projectName)}
+                className="inline-flex h-11 shrink-0 items-center justify-center rounded-full border border-accent bg-accent px-4 text-sm text-accent-fg"
+              >
+                Download {t.kind}
+              </button>
+            ) : (
+              <a
+                href={"href" in t ? t.href : t.file}
+                download={t.file}
+                className="inline-flex h-11 shrink-0 items-center justify-center rounded-full border border-accent bg-accent px-4 text-sm text-accent-fg"
+              >
+                Download {t.kind}
+              </a>
+            )}
           </article>
         ))}
       </div>
