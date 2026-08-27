@@ -32,6 +32,14 @@ export const TOOLS = [
     blurb: "Groef d₂, breedte b en diepte t op as of in boring, tot Ø 100 mm.",
   },
   {
+    id: "bevestigers",
+    href: "/denk/toolkit/bevestigers",
+    short: "Bouten",
+    title: "Bevestigers",
+    standard: "ISO 273 · VDI 2230",
+    blurb: "M3–M24: doorlaat, zeskant/inbus, aandraaimoment 8.8 / 10.9 / 12.9.",
+  },
+  {
     id: "oring",
     href: "/denk/toolkit/o-ringgroef",
     short: "O-ring",

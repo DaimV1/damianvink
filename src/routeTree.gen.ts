@@ -20,6 +20,7 @@ import { Route as DoeProjectenRouteImport } from './routes/doe/projecten'
 import { Route as WeetIndexRouteImport } from './routes/weet/index'
 import { Route as WeetSplatRouteImport } from './routes/weet/$'
 import { Route as DenkToolkitIndexRouteImport } from './routes/denk/toolkit/index'
+import { Route as DenkToolkitBevestigersRouteImport } from './routes/denk/toolkit/bevestigers'
 import { Route as DenkToolkitBronnenRouteImport } from './routes/denk/toolkit/bronnen'
 import { Route as DenkToolkitLagerpassingenRouteImport } from './routes/denk/toolkit/lagerpassingen'
 import { Route as DenkToolkitORinggroefRouteImport } from './routes/denk/toolkit/o-ringgroef'
@@ -82,6 +83,11 @@ const DenkToolkitIndexRoute = DenkToolkitIndexRouteImport.update({
   path: '/denk/toolkit/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DenkToolkitBevestigersRoute = DenkToolkitBevestigersRouteImport.update({
+  id: '/denk/toolkit/bevestigers',
+  path: '/denk/toolkit/bevestigers',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DenkToolkitBronnenRoute = DenkToolkitBronnenRouteImport.update({
   id: '/denk/toolkit/bronnen',
   path: '/denk/toolkit/bronnen',
@@ -127,6 +133,7 @@ export interface FileRoutesByFullPath {
   '/denk/': typeof DenkIndexRoute
   '/doe/': typeof DoeIndexRoute
   '/weet/': typeof WeetIndexRoute
+  '/denk/toolkit/bevestigers': typeof DenkToolkitBevestigersRoute
   '/denk/toolkit/bronnen': typeof DenkToolkitBronnenRoute
   '/denk/toolkit/lagerpassingen': typeof DenkToolkitLagerpassingenRoute
   '/denk/toolkit/o-ringgroef': typeof DenkToolkitORinggroefRoute
@@ -146,6 +153,7 @@ export interface FileRoutesByTo {
   '/denk': typeof DenkIndexRoute
   '/doe': typeof DoeIndexRoute
   '/weet': typeof WeetIndexRoute
+  '/denk/toolkit/bevestigers': typeof DenkToolkitBevestigersRoute
   '/denk/toolkit/bronnen': typeof DenkToolkitBronnenRoute
   '/denk/toolkit/lagerpassingen': typeof DenkToolkitLagerpassingenRoute
   '/denk/toolkit/o-ringgroef': typeof DenkToolkitORinggroefRoute
@@ -166,6 +174,7 @@ export interface FileRoutesById {
   '/denk/': typeof DenkIndexRoute
   '/doe/': typeof DoeIndexRoute
   '/weet/': typeof WeetIndexRoute
+  '/denk/toolkit/bevestigers': typeof DenkToolkitBevestigersRoute
   '/denk/toolkit/bronnen': typeof DenkToolkitBronnenRoute
   '/denk/toolkit/lagerpassingen': typeof DenkToolkitLagerpassingenRoute
   '/denk/toolkit/o-ringgroef': typeof DenkToolkitORinggroefRoute
@@ -187,6 +196,7 @@ export interface FileRouteTypes {
     | '/denk/'
     | '/doe/'
     | '/weet/'
+    | '/denk/toolkit/bevestigers'
     | '/denk/toolkit/bronnen'
     | '/denk/toolkit/lagerpassingen'
     | '/denk/toolkit/o-ringgroef'
@@ -206,6 +216,7 @@ export interface FileRouteTypes {
     | '/denk'
     | '/doe'
     | '/weet'
+    | '/denk/toolkit/bevestigers'
     | '/denk/toolkit/bronnen'
     | '/denk/toolkit/lagerpassingen'
     | '/denk/toolkit/o-ringgroef'
@@ -225,6 +236,7 @@ export interface FileRouteTypes {
     | '/denk/'
     | '/doe/'
     | '/weet/'
+    | '/denk/toolkit/bevestigers'
     | '/denk/toolkit/bronnen'
     | '/denk/toolkit/lagerpassingen'
     | '/denk/toolkit/o-ringgroef'
@@ -245,6 +257,7 @@ export interface RootRouteChildren {
   DenkIndexRoute: typeof DenkIndexRoute
   DoeIndexRoute: typeof DoeIndexRoute
   WeetIndexRoute: typeof WeetIndexRoute
+  DenkToolkitBevestigersRoute: typeof DenkToolkitBevestigersRoute
   DenkToolkitBronnenRoute: typeof DenkToolkitBronnenRoute
   DenkToolkitLagerpassingenRoute: typeof DenkToolkitLagerpassingenRoute
   DenkToolkitORinggroefRoute: typeof DenkToolkitORinggroefRoute
@@ -333,6 +346,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DenkToolkitIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/denk/toolkit/bevestigers': {
+      id: '/denk/toolkit/bevestigers'
+      path: '/denk/toolkit/bevestigers'
+      fullPath: '/denk/toolkit/bevestigers'
+      preLoaderRoute: typeof DenkToolkitBevestigersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/denk/toolkit/bronnen': {
       id: '/denk/toolkit/bronnen'
       path: '/denk/toolkit/bronnen'
@@ -389,6 +409,7 @@ const rootRouteChildren: RootRouteChildren = {
   DenkIndexRoute: DenkIndexRoute,
   DoeIndexRoute: DoeIndexRoute,
   WeetIndexRoute: WeetIndexRoute,
+  DenkToolkitBevestigersRoute: DenkToolkitBevestigersRoute,
   DenkToolkitBronnenRoute: DenkToolkitBronnenRoute,
   DenkToolkitLagerpassingenRoute: DenkToolkitLagerpassingenRoute,
   DenkToolkitORinggroefRoute: DenkToolkitORinggroefRoute,

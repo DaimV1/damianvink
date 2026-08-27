@@ -107,6 +107,11 @@ const GROUPS = [
         note: "Werkplaatstabel DIN 471/472. Ook op deze site onder Seegerringgroef.",
       },
       {
+        href: "https://www.wurth.nl/nl/wuerth_nl/uw_branche/architecten_en_planners/din__en_normdelen/voorspan_en_aandraaimoment_3/voorspanaandraai.php",
+        name: "Würth — Aandraaimoment (VDI 2230)",
+        note: "Tabel A1, μ = 0,14. Ook op deze site onder Bevestigers.",
+      },
+      {
         href: "https://www.engineeringtoolbox.com/",
         name: "Engineering Toolbox",
         note: "Dichtheden, schroefdraad, eenheden. Snel, niet altijd de primaire bron.",
