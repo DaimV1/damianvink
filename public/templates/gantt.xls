@@ -1,0 +1,51 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel">
+<head>
+<meta charset="utf-8"/>
+<title>Gantt-planning</title>
+<style>
+table { border-collapse: collapse; font-family: Calibri, Arial, sans-serif; font-size: 10pt; }
+th { background: #1D4ED8; color: #fff; font-weight: 600; border: 1px solid #1E40AF; padding: 4px 5px; text-align: center; }
+td { border: 1px solid #D1D5DB; padding: 4px 5px; }
+h1 { font-family: Calibri, Arial, sans-serif; color: #1D4ED8; font-size: 18pt; }
+.note { color: #6B7280; font-size: 10pt; }
+.meta td { background: #FEF3C7; }
+.wd { font-weight: 400; font-size: 8pt; }
+.bar { background: #93C5FD; color: #1D4ED8; text-align: center; font-size: 8pt; }
+.ms { background: #1D4ED8; color: #fff; text-align: center; font-weight: 700; }
+</style>
+</head>
+<body>
+<h1>Gantt-planning</h1>
+<table>
+<tr class="meta"><td>Project</td><td></td><td>Startdatum (maandag W1)</td><td>7 sep 2026</td><td>Projectmanager</td><td></td></tr>
+</table>
+<br/>
+<table>
+<tr>
+<th>ID</th><th>WBS</th><th>Activiteit / mijlpaal</th><th>Type</th><th>Eigenaar</th><th>Start</th><th>Einde</th><th>% klaar</th>
+<th>W1<br/><span class="wd">7-sep</span></th><th>W2<br/><span class="wd">14-sep</span></th><th>W3<br/><span class="wd">21-sep</span></th><th>W4<br/><span class="wd">28-sep</span></th><th>W5<br/><span class="wd">5-okt</span></th><th>W6<br/><span class="wd">12-okt</span></th><th>W7<br/><span class="wd">19-okt</span></th><th>W8<br/><span class="wd">26-okt</span></th><th>W9<br/><span class="wd">2-nov</span></th><th>W10<br/><span class="wd">9-nov</span></th><th>W11<br/><span class="wd">16-nov</span></th><th>W12<br/><span class="wd">23-nov</span></th><th>W13<br/><span class="wd">30-nov</span></th><th>W14<br/><span class="wd">7-dec</span></th><th>W15<br/><span class="wd">14-dec</span></th><th>W16<br/><span class="wd">21-dec</span></th>
+</tr>
+<tr><td>M1</td><td>1</td><td>Kick-off</td><td>Mijlpaal</td><td>PM</td><td></td><td></td><td></td><td class="ms">&#9670;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>A1</td><td>1.1</td><td>Opdracht en scope</td><td>Activiteit</td><td>PM</td><td></td><td></td><td></td><td class="bar">&#9608;</td><td class="bar">&#9608;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>A2</td><td>1.2</td><td>Stakeholderanalyse</td><td>Activiteit</td><td>PM</td><td></td><td></td><td></td><td></td><td class="bar">&#9608;</td><td class="bar">&#9608;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>A3</td><td>2.1</td><td>WBS uitwerken</td><td>Activiteit</td><td>PM</td><td></td><td></td><td></td><td></td><td></td><td class="bar">&#9608;</td><td class="bar">&#9608;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>A4</td><td>2.2</td><td>Raming PERT</td><td>Activiteit</td><td>PM</td><td></td><td></td><td></td><td></td><td></td><td class="bar">&#9608;</td><td class="bar">&#9608;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>A5</td><td>2.3</td><td>Planning en baseline</td><td>Activiteit</td><td>PM</td><td></td><td></td><td></td><td></td><td></td><td></td><td class="bar">&#9608;</td><td class="bar">&#9608;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>M2</td><td>2</td><td>Baseline goedgekeurd</td><td>Mijlpaal</td><td>OG</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="ms">&#9670;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>A6</td><td>3.1</td><td>Werkpakket A</td><td>Activiteit</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="bar">&#9608;</td><td class="bar">&#9608;</td><td class="bar">&#9608;</td><td class="bar">&#9608;</td><td class="bar">&#9608;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>A7</td><td>3.2</td><td>Werkpakket B</td><td>Activiteit</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="bar">&#9608;</td><td class="bar">&#9608;</td><td class="bar">&#9608;</td><td class="bar">&#9608;</td><td class="bar">&#9608;</td><td class="bar">&#9608;</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>A8</td><td>3.3</td><td>Integratie en test</td><td>Activiteit</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="bar">&#9608;</td><td class="bar">&#9608;</td><td class="bar">&#9608;</td><td class="bar">&#9608;</td><td></td><td></td><td></td></tr>
+<tr><td>M3</td><td>4</td><td>Oplevering intern</td><td>Mijlpaal</td><td>PM</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="ms">&#9670;</td><td></td><td></td><td></td></tr>
+<tr><td>A9</td><td>4.1</td><td>Nazorg en dossier</td><td>Activiteit</td><td>PM</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="bar">&#9608;</td><td class="bar">&#9608;</td><td class="bar">&#9608;</td><td></td></tr>
+<tr><td>M4</td><td>5</td><td>Decharge</td><td>Mijlpaal</td><td>OG</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class="ms">&#9670;</td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+</table>
+<p class="note">W1 start op de maandag in de kop. Blauwe balk = activiteit in die week. Donkere cel met ruit = mijlpaal. Vul start/einde in, kopieer een blauwe cel over de weken van de activiteit, of overschrijf de voorbeelden. Print liggend.</p>
+</body></html>
