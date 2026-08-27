@@ -7,10 +7,16 @@ import {
 import { AuthProvider } from "@/lib/auth/provider";
 import { ThemeProvider } from "@/lib/theme";
 import { PreviewHostBridge } from "@/components/preview-host-bridge";
+import { JsonLd } from "@/components/json-ld";
 import { AppErrorComponent } from "@/lib/error-component";
+import {
+  DEFAULT_DESCRIPTION,
+  personJsonLd,
+  SITE_NAME,
+  websiteJsonLd,
+} from "@/lib/seo";
 import appCss from "../styles.css?url";
 
-const APP_NAME = "Damian Vink";
 const THEME_BOOT = `(function(){var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);else if(window.matchMedia("(prefers-color-scheme: light)").matches)document.documentElement.setAttribute("data-theme","light");else document.documentElement.setAttribute("data-theme","dark");})();`;
 
 export const Route = createRootRoute({
@@ -18,17 +24,14 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: APP_NAME },
-      {
-        name: "description",
-        content:
-          "Damian Vink, Project Engineer werktuigbouwkunde. Naslag: ISO 286-passingen, DIN 6885-spiebanen, CAD-bronnen. Marathonlogboek Porto 2026.",
-      },
+      { title: SITE_NAME },
+      { name: "description", content: DEFAULT_DESCRIPTION },
       { name: "theme-color", content: "#0c0d11" },
       { name: "author", content: "Damian Vink" },
     ],
     links: [
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+      { rel: "icon", href: "/favicon.ico" },
       { rel: "stylesheet", href: appCss },
       { rel: "manifest", href: "/__grok/manifest.webmanifest" },
       { rel: "apple-touch-icon", href: "/__grok/icon-180.png" },
@@ -57,6 +60,8 @@ function RootDocument() {
       </head>
       <body className="antialiased">
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOT }} />
+        <JsonLd data={personJsonLd} />
+        <JsonLd data={websiteJsonLd} />
         <PreviewHostBridge />
         <AuthProvider>
           <ThemeProvider>
@@ -77,7 +82,10 @@ function RootDocument() {
 
 function NotFound() {
   return (
-    <div className="flex min-h-dvh flex-col items-center justify-center bg-paper px-6 text-center text-ink">
+    <div
+      id="inhoud"
+      className="flex min-h-dvh flex-col items-center justify-center bg-paper px-6 text-center text-ink"
+    >
       <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">404</p>
       <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight">
         Pagina niet <span className="text-accent">gevonden.</span>

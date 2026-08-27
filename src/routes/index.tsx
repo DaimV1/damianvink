@@ -2,16 +2,16 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowUpRight } from "lucide-react";
 import { DisplayTitle, SectionTitle } from "@/components/display-title";
 import { PageWrap, SiteShell } from "@/components/site-shell";
+import { DEFAULT_DESCRIPTION, pageHead } from "@/lib/seo";
 import { SOCIALS } from "@/lib/socials";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      {
-        title: "Damian Vink | Project Engineer werktuigbouwkunde & machinebouw",
-      },
-    ],
-  }),
+  head: () =>
+    pageHead({
+      title: "Damian Vink | Project Engineer werktuigbouwkunde & machinebouw",
+      description: DEFAULT_DESCRIPTION,
+      path: "/",
+    }),
   component: Home,
 });
 
@@ -119,7 +119,7 @@ function Home() {
           <SectionTitle before="Con" last="tact." />
           <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted">
             Voor vragen over engineering, samenwerkingen of deze website: stuur
-            een bericht via LinkedIn, X of Instagram.
+            een bericht via e-mail, LinkedIn, X of Instagram.
           </p>
           <div className="mt-8 grid gap-3 sm:grid-cols-2">
             {SOCIALS.map((item) => (
@@ -208,11 +208,12 @@ function ContactCard({
   label: string;
   value: string;
 }) {
+  const external = href.startsWith("http");
   return (
     <a
       href={href}
-      target="_blank"
-      rel="noopener noreferrer"
+      target={external ? "_blank" : undefined}
+      rel={external ? "noopener noreferrer" : undefined}
       className="flex min-h-16 items-center justify-between gap-3 rounded-lg border border-line bg-elevated px-4 py-3 transition-colors duration-150 hover:border-line-strong"
     >
       <span>
