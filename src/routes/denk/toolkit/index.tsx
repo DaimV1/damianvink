@@ -11,7 +11,7 @@ function ToolkitIndex() {
   return (
     <ToolkitFrame
       crumbs={[
-        { href: "/denk", label: "Wat ik denk" },
+        { href: "/heb", label: "Wat ik heb" },
         { label: "Engineering toolkit" },
       ]}
       before="Engineering"

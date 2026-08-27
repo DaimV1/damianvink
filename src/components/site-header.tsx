@@ -8,9 +8,9 @@ import { cn } from "@/lib/utils";
 const NAV = [
   { to: "/over-mij", label: "Wie ik ben", match: "/over-mij" },
   { to: "/doe", label: "Wat ik doe", match: "/doe" },
+  { to: "/heb", label: "Wat ik heb", match: "/heb" },
   { to: "/denk", label: "Wat ik denk", match: "/denk" },
   { to: "/denk/toolkit", label: "Toolkit", match: "/denk/toolkit" },
-  { to: "/denk/project", label: "Project", match: "/denk/project" },
   { to: "/#contact", label: "Contact", match: null },
 ] as const;
 
@@ -25,7 +25,14 @@ export function SiteHeader() {
     if (item.to === "/denk")
       return (
         pathname === "/denk" ||
-        pathname.startsWith("/denk/blog")
+        pathname.startsWith("/denk/blog") ||
+        pathname.startsWith("/denk/podcast")
+      );
+    if (item.to === "/heb")
+      return (
+        pathname === "/heb" ||
+        pathname.startsWith("/heb/") ||
+        pathname.startsWith("/denk/project")
       );
     if (item.to === "/doe") return pathname.startsWith("/doe");
     return pathname === item.match || pathname.startsWith(item.match + "/");
