@@ -42,6 +42,8 @@ export function ProjectWorkspace({
   loadSample,
   exportJson,
   importJson,
+  backupStale,
+  lastExportAt,
 }: {
   project: Project;
   list: Project[];
@@ -49,19 +51,34 @@ export function ProjectWorkspace({
   patch: (p: Partial<Project>) => void;
   setProject: (p: Project | ((prev: Project) => Project)) => void;
   reset: () => void;
-  createProject: () => string;
+  createProject: (name?: string) => string;
   switchProject: (id: string) => void;
   loadSample: () => void;
   exportJson: () => void;
   importJson: (file: File) => Promise<void>;
+  backupStale: boolean;
+  lastExportAt?: string;
 }) {
   const [panel, setPanel] = useState<WorkspaceTab | "templates">("overzicht");
   const fileRef = useRef<HTMLInputElement>(null);
   const suggestedRag = inferredRag(project);
   const phase = PHASES.find((p) => p.id === project.phase)!;
 
+  function onNew() {
+    const name = window.prompt("Naam van het nieuwe project");
+    if (name == null) return;
+    createProject(name.trim() || undefined);
+  }
+
   return (
     <div className="space-y-6">
+      {backupStale ? (
+        <p className="rounded-md border border-line bg-elevated px-4 py-3 text-sm text-ink">
+          Backup is verouderd{lastExportAt ? ` (laatste export ${lastExportAt.slice(0, 10)})` : " (nog nooit geëxporteerd)"}.
+          Staat zit in dit tabblad.{" "}
+          <button type="button" className="text-accent hover:underline" onClick={exportJson}>Exporteer JSON</button>
+        </p>
+      ) : null}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <label className="flex min-w-0 items-center gap-2 text-sm">
           <span className="text-muted">Project</span>
@@ -78,7 +95,7 @@ export function ProjectWorkspace({
           </select>
         </label>
         <div className="flex flex-wrap gap-2">
-          <Button variant="secondary" size="sm" onClick={() => createProject()}>Nieuw</Button>
+          <Button variant="secondary" size="sm" onClick={onNew}>Nieuw</Button>
           <Button variant="secondary" size="sm" onClick={loadSample}>Voorbeeld</Button>
           <Button variant="ghost" size="sm" onClick={exportJson}>Export</Button>
           <Button variant="ghost" size="sm" onClick={() => fileRef.current?.click()}>Import</Button>
@@ -150,7 +167,7 @@ export function ProjectWorkspace({
         ))}
       </div>
 
-      {panel === "overzicht" ? <OverviewPanel project={project} onOpen={setPanel} /> : null}
+      {panel === "overzicht" ? <OverviewPanel project={project} onOpen={(tab) => setPanel(tab)} patch={patch} setProject={setProject} /> : null}
       {panel === "fase" ? <PhasePanel project={project} patch={patch} setProject={setProject} /> : null}
       {panel === "plan" ? <GanttBoard project={project} setProject={setProject} /> : null}
       {panel === "mensen" ? <StakeholdersPanel project={project} setProject={setProject} /> : null}

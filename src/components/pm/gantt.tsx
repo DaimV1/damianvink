@@ -1,14 +1,15 @@
-import { Field, Select, TextInput } from "@/components/pm/fields";
+import { Field, NumInput, Select, TextInput } from "@/components/pm/fields";
 import {
   durationDays,
   emptyActivity,
   overlapsWeek,
+  planWeekCount,
   weekLabel,
   weekStarts,
   type Activity,
   type ActivityKind,
 } from "@/lib/pm/activity";
-import { uid, type Project } from "@/lib/pm/model";
+import { applyActivityProgress, uid, type Project } from "@/lib/pm/model";
 
 export function GanttBoard({
   project,
@@ -17,8 +18,8 @@ export function GanttBoard({
   project: Project;
   setProject: (p: Project | ((prev: Project) => Project)) => void;
 }) {
-  const weeks = weekStarts(project.startDate, 16);
   const activities = project.activities ?? [];
+  const weeks = weekStarts(project.startDate, planWeekCount(project.startDate, project.endDate, activities));
 
   function patch(partial: Partial<Project>) {
     setProject((prev) => ({ ...prev, ...partial }));
@@ -64,27 +65,38 @@ export function GanttBoard({
         <div>
           <h2 className="font-display text-xl font-semibold tracking-tight">Gantt</h2>
           <p className="mt-1 max-w-2xl text-sm text-muted">
-            Vul start en einde. De balk volgt die datums vanaf W1.
+            Vul start, einde, eigenaar en %. De balk volgt de datums; de horizon volgt jouw plan.
           </p>
         </div>
-        <Field label="W1 start (maandag)">
-          <TextInput
-            type="date"
-            value={project.startDate}
-            onChange={(e) => patch({ startDate: e.target.value })}
-          />
-        </Field>
+        <div className="flex flex-wrap items-end gap-3">
+          <Field label="W1 start (maandag)">
+            <TextInput
+              type="date"
+              value={project.startDate}
+              onChange={(e) => patch({ startDate: e.target.value })}
+            />
+          </Field>
+          <Field label="Einde">
+            <TextInput
+              type="date"
+              value={project.endDate}
+              onChange={(e) => patch({ endDate: e.target.value })}
+            />
+          </Field>
+        </div>
       </div>
 
       <div className="overflow-x-auto rounded-lg border border-line">
-        <table className="min-w-[960px] w-full border-collapse text-sm">
+        <table className="min-w-[1100px] w-full border-collapse text-sm">
           <thead>
             <tr className="bg-elevated">
               <th className="border-b border-line px-2 py-2 text-left font-medium">WBS</th>
               <th className="border-b border-line px-2 py-2 text-left font-medium">Activiteit</th>
               <th className="border-b border-line px-2 py-2 text-left font-medium">Type</th>
+              <th className="border-b border-line px-2 py-2 text-left font-medium">Eigenaar</th>
               <th className="border-b border-line px-2 py-2 text-left font-medium">Start</th>
               <th className="border-b border-line px-2 py-2 text-left font-medium">Einde</th>
+              <th className="border-b border-line px-2 py-2 text-left font-medium">%</th>
               <th className="border-b border-line px-2 py-2 text-left font-medium">d</th>
               {weeks.map((w, i) => (
                 <th key={i} className="border-b border-line px-1 py-2 text-center font-mono text-[10px] text-muted">
@@ -92,6 +104,7 @@ export function GanttBoard({
                   <span className="block font-sans">{weekLabel(w)}</span>
                 </th>
               ))}
+              <th className="border-b border-line px-2 py-2 text-left font-medium"><span className="sr-only">Weg</span></th>
             </tr>
           </thead>
           <tbody>
@@ -114,10 +127,22 @@ export function GanttBoard({
                   </Select>
                 </td>
                 <td className="border-b border-line p-1">
+                  <TextInput value={a.owner} onChange={(e) => update(a.id, { owner: e.target.value })} className="h-9 min-w-[6rem] px-2" placeholder="Wie" />
+                </td>
+                <td className="border-b border-line p-1">
                   <TextInput type="date" value={a.start} onChange={(e) => update(a.id, { start: e.target.value, end: a.end || e.target.value })} className="h-9 px-2" />
                 </td>
                 <td className="border-b border-line p-1">
                   <TextInput type="date" value={a.end} onChange={(e) => update(a.id, { end: e.target.value })} className="h-9 px-2" />
+                </td>
+                <td className="border-b border-line p-1">
+                  <NumInput
+                    min={0}
+                    max={100}
+                    value={a.pct}
+                    onValue={(pct) => setProject((p) => applyActivityProgress(p, a.id, pct))}
+                    className="h-9 w-16 px-2"
+                  />
                 </td>
                 <td className="border-b border-line px-2 text-center text-muted">{durationDays(a.start, a.end) ?? "\u2014"}</td>
                 {weeks.map((w, i) => {
@@ -136,6 +161,20 @@ export function GanttBoard({
                     </td>
                   );
                 })}
+                <td className="border-b border-line p-1">
+                  <button
+                    type="button"
+                    className="px-2 text-xs text-subtle hover:text-ink"
+                    onClick={() =>
+                      setProject((prev) => ({
+                        ...prev,
+                        activities: (prev.activities ?? []).filter((row) => row.id !== a.id),
+                      }))
+                    }
+                  >
+                    weg
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -153,18 +192,7 @@ export function GanttBoard({
           <button type="button" onClick={seed} className="h-11 rounded-full border border-accent bg-accent px-4 text-sm text-accent-fg">
             Voorbeeld vullen
           </button>
-        ) : (
-          <button
-            type="button"
-            onClick={() => {
-              const last = activities[activities.length - 1];
-              if (last) setProject((prev) => ({ ...prev, activities: (prev.activities ?? []).filter((a) => a.id !== last.id) }));
-            }}
-            className="h-11 rounded-full border border-line px-4 text-sm text-muted"
-          >
-            Laatste regel weg
-          </button>
-        )}
+        ) : null}
       </div>
     </section>
   );

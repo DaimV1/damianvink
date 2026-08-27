@@ -66,3 +66,29 @@ export function durationDays(start: string, end: string) {
 export function emptyActivity(id: string): Activity {
   return { id, wbs: "", name: "", kind: "activiteit", owner: "", start: "", end: "", pct: 0 };
 }
+
+/** Horizon follows the live plan, not a 16-week screenshot. */
+export function planWeekCount(
+  projectStart: string,
+  projectEnd: string,
+  activities: { start: string; end: string }[],
+  min = 8,
+  max = 40,
+) {
+  const dates: Date[] = [];
+  const s = toDate(projectStart);
+  const e = toDate(projectEnd);
+  if (s) dates.push(s);
+  if (e) dates.push(e);
+  for (const a of activities) {
+    const as = toDate(a.start);
+    const ae = toDate(a.end);
+    if (as) dates.push(as);
+    if (ae) dates.push(ae);
+  }
+  if (!dates.length) return min;
+  const origin = mondayOf(s ?? dates.reduce((a, b) => (a.getTime() < b.getTime() ? a : b)));
+  const last = dates.reduce((a, b) => (a.getTime() > b.getTime() ? a : b));
+  const weeks = Math.ceil((last.getTime() - origin.getTime()) / (7 * 86400000)) + 1;
+  return Math.min(max, Math.max(min, weeks));
+}

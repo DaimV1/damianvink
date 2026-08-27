@@ -5,12 +5,11 @@ import {
   emptyProject,
   emptyWorkspace,
   isoNow,
-  parseProject,
   sampleProject,
   type Project,
 } from "@/lib/pm/model";
 import { exportIsStale, parseWorkspaceKeepExport, type WorkspaceWithExport } from "@/lib/pm/export-freshness";
-import { isStockSample, isUntitled, pruneWorkspace } from "@/lib/pm/workspace-ops";
+import { isStockSample, isUntitled, pruneWorkspace, startNamedProject } from "@/lib/pm/workspace-ops";
 
 function readWorkspace(): WorkspaceWithExport {
   try {
@@ -65,14 +64,13 @@ export function useProject() {
     setProject((p) => ({ ...p, ...partial }));
   }, [setProject]);
 
-  const createProject = useCallback((seed?: Project) => {
+  const createProject = useCallback((name?: string) => {
     setWorkspace((ws) => {
       const clean = pruneWorkspace(ws ?? emptyWorkspace());
-      if (!seed) {
-        const existing = Object.values(clean.projects).find(isUntitled);
-        if (existing) return { ...clean, activeId: existing.id };
-      }
-      const next = seed ? parseProject({ ...seed, id: uidSafe() }) : emptyProject();
+      if (name?.trim()) return startNamedProject(clean, name.trim());
+      const existing = Object.values(clean.projects).find(isUntitled);
+      if (existing) return { ...clean, activeId: existing.id };
+      const next = emptyProject();
       return pruneWorkspace({
         version: 2,
         activeId: next.id,
@@ -174,6 +172,3 @@ export function useProject() {
   };
 }
 
-function uidSafe() {
-  return Math.random().toString(36).slice(2, 10);
-}

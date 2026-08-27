@@ -1,4 +1,4 @@
-import { emptyWorkspace, type Project, type Workspace } from "./model.ts";
+import { emptyProject, emptyWorkspace, type Project, type Workspace } from "./model.ts";
 
 export function isUntitled(p: Project) {
   return !p.name.trim();
@@ -57,4 +57,17 @@ export function pruneWorkspace<T extends Workspace>(ws: T): T {
   const ids = Object.keys(projects);
   const activeId = projects[ws.activeId] ? ws.activeId : ids[0];
   return { ...ws, activeId, projects };
+}
+
+/** Named blank you can run. Drops leftover blank untitled projects. */
+export function startNamedProject<T extends Workspace>(ws: T, name: string): T {
+  const clean = pruneWorkspace(ws);
+  const next = emptyProject({ name: name.trim() });
+  const projects: Record<string, Project> = {};
+  for (const p of Object.values(clean.projects)) {
+    if (isBlankProject(p)) continue;
+    projects[p.id] = p;
+  }
+  projects[next.id] = next;
+  return { ...clean, activeId: next.id, projects };
 }

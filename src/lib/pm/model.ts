@@ -58,6 +58,17 @@ export const STORAGE_KEY = "pm-workspace-v2";
 export function uid() { return Math.random().toString(36).slice(2, 10); }
 export function isoNow() { return new Date().toISOString(); }
 
+function shiftIso(isoDate: string, days: number) {
+  if (!isoDate) return isoDate;
+  const d = new Date(`${isoDate}T00:00:00`);
+  if (Number.isNaN(d.getTime())) return isoDate;
+  d.setDate(d.getDate() + days);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
 export function emptyProject(partial: Partial<Project> = {}): Project {
   return {
     id: uid(),
@@ -223,13 +234,63 @@ export function gateBlockers(project: Project) {
   const blockers: string[] = [];
   if (!project.name.trim()) blockers.push("Nog geen projectnaam.");
   if (!project.sponsor.trim()) blockers.push("Geen opdrachtgever.");
-  if (project.phase === "definitie" && !project.baselineFrozen && !project.endDate && project.budget == null) {
-    blockers.push("Geen einddatum of budget om te bevriezen.");
+  for (const check of phaseChecks(project)) {
+    if (!check.done) blockers.push(check.label);
   }
   const orphanRisks = project.risks.filter((r) => r.status !== "dicht" && riskScore(r) >= 16 && !r.owner.trim());
   if (orphanRisks.length) blockers.push("Kritiek risico zonder eigenaar.");
-  if (project.phase === "afsluiting" && !project.accepted) blockers.push("Resultaat is nog niet geaccepteerd.");
   return blockers;
+}
+
+export function todayIso(now = new Date()) {
+  return now.toISOString().slice(0, 10);
+}
+
+export function isOverdue(due: string, today = todayIso()) {
+  return Boolean(due && due < today);
+}
+
+export function overdueIssues(project: Project, today = todayIso()) {
+  return project.issues.filter((i) => i.status !== "dicht" && isOverdue(i.due, today));
+}
+
+export function baselineSlip(project: Project) {
+  const late = Boolean(project.endDate && project.baselineEndDate && project.endDate > project.baselineEndDate);
+  const over = project.budget != null && project.spent != null && project.spent > project.budget;
+  const budgetDelta =
+    project.baselineBudget != null && project.budget != null ? project.budget - project.baselineBudget : null;
+  return { late, over, budgetDelta };
+}
+
+export function applyActivityProgress(project: Project, id: string, pct: number | null): Project {
+  const activities = (project.activities ?? []).map((a) => (a.id === id ? { ...a, pct } : a));
+  const scored = activities.filter((a) => a.kind === "activiteit" && a.pct != null);
+  const percentDone = scored.length
+    ? Math.round(scored.reduce((n, a) => n + (a.pct ?? 0), 0) / scored.length)
+    : project.percentDone;
+  return { ...project, activities, percentDone };
+}
+
+/** Accepted change moves the live plan against the frozen baseline. */
+export function acceptChange(project: Project, changeId: string): Project {
+  const change = project.changes.find((c) => c.id === changeId);
+  if (!change || change.status === "dicht") return project;
+  let endDate = project.endDate;
+  let budget = project.budget;
+  if (change.days != null && change.days !== 0) {
+    const base = endDate || project.baselineEndDate;
+    if (base) endDate = shiftIso(base, change.days);
+  }
+  if (change.money != null) budget = (budget ?? 0) + change.money;
+  const extra = change.scope.trim();
+  const scopeIn = extra ? (project.scopeIn.trim() ? `${project.scopeIn.trim()}\n${extra}` : extra) : project.scopeIn;
+  return {
+    ...project,
+    endDate,
+    budget,
+    scopeIn,
+    changes: project.changes.map((c) => (c.id === changeId ? { ...c, status: "dicht" as const } : c)),
+  };
 }
 
 export function sampleProject(): Project {

@@ -23,20 +23,15 @@ function ProjectPage() {
   return (
     <SiteShell>
       <PageWrap wide>
-        <Breadcrumb
-          items={[
-            { href: "/heb", label: "Wat ik heb" },
-            { label: "Projectwerkplek" },
-          ]}
-        />
+        <Breadcrumb items={[{ label: "Werkplek" }]} />
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">
-          Wat ik heb
+          Werkplek
         </p>
         <h1 className="mt-3 font-display text-[clamp(2rem,5vw,3.25rem)] font-semibold leading-[1.08] tracking-[-0.03em]">
           Project<span className="text-accent">werkplek.</span>
         </h1>
         <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">
-          Eén scherm voor de weekstart en het beslispunt. Vijf fasen, registers
+          Eén scherm voor je weekstart en het beslispunt. Vijf fasen, registers
           tot decharge. Geen lesboek.
         </p>
         <div className="mt-8">
@@ -53,6 +48,8 @@ function ProjectPage() {
               loadSample={store.loadSample}
               exportJson={store.exportJson}
               importJson={store.importJson}
+              backupStale={store.backupStale}
+              lastExportAt={store.lastExportAt}
             />
           ) : (
             <p className="text-sm text-muted">Laden…</p>

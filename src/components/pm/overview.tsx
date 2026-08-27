@@ -1,14 +1,18 @@
 import { mondayOf, overlapsWeek } from "@/lib/pm/activity";
 import {
+  applyActivityProgress,
+  baselineSlip,
   euro,
+  inferredRag,
   nextAction,
   openCount,
+  overdueIssues,
   phaseChecks,
   riskScore,
   topRisks,
   type Project,
 } from "@/lib/pm/model";
-import { Card } from "@/components/pm/fields";
+import { Card, Field, NumInput, TextInput } from "@/components/pm/fields";
 import { Button } from "@/components/ui/button";
 
 export type WorkspaceTab =
@@ -24,16 +28,23 @@ export type WorkspaceTab =
 export function OverviewPanel({
   project,
   onOpen,
+  patch,
+  setProject,
 }: {
   project: Project;
   onOpen: (tab: WorkspaceTab) => void;
+  patch: (p: Partial<Project>) => void;
+  setProject: (p: Project | ((prev: Project) => Project)) => void;
 }) {
   const checks = phaseChecks(project);
   const risks = topRisks(project.risks, 3);
   const issues = project.issues.filter((i) => i.status !== "dicht").slice(0, 5);
+  const late = overdueIssues(project);
   const changes = project.changes.filter((c) => c.status !== "dicht").slice(0, 4);
   const weekStart = mondayOf(new Date());
   const weekWork = (project.activities ?? []).filter((a) => overlapsWeek(weekStart, a.start, a.end));
+  const suggested = inferredRag(project);
+  const slip = baselineSlip(project);
 
   return (
     <div className="grid gap-4">
@@ -42,11 +53,67 @@ export function OverviewPanel({
         <p className="mt-2 text-sm text-muted">
           {project.result || "Nog geen resultaat geformuleerd."} Harde constraint: {project.constraint}.
         </p>
+        {slip.late || slip.over || suggested !== project.rag ? (
+          <p className="mt-2 text-sm text-ink">
+            {slip.late ? `Einddatum later dan baseline (${project.baselineEndDate}). ` : ""}
+            {slip.over ? "Besteed boven budget. " : ""}
+            {suggested !== project.rag ? `Registers wijzen op ${suggested}.` : ""}
+          </p>
+        ) : null}
+        <div className="mt-4 grid gap-3 sm:grid-cols-3">
+          <Field label="% klaar">
+            <NumInput min={0} max={100} value={project.percentDone} onValue={(percentDone) => patch({ percentDone })} />
+          </Field>
+          <Field label="Besteed">
+            <NumInput value={project.spent} onValue={(spent) => patch({ spent })} />
+          </Field>
+          <Field label="Einddatum">
+            <TextInput type="date" value={project.endDate} onChange={(e) => patch({ endDate: e.target.value })} />
+          </Field>
+        </div>
         <div className="mt-4 flex flex-wrap gap-2">
           <Button size="sm" onClick={() => onOpen("fase")}>Naar fasewerk</Button>
           <Button size="sm" variant="secondary" onClick={() => onOpen("poort")}>Beslispunt</Button>
         </div>
       </Card>
+
+      {late.length ? (
+        <Card title="Verlopen issues">
+          <ul className="space-y-3">
+            {late.map((issue) => (
+              <li key={issue.id} className="flex flex-wrap items-end gap-2">
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm text-ink">{issue.title || "Naamloos"}</p>
+                  <p className="font-mono text-xs text-accent">{issue.due}</p>
+                </div>
+                <TextInput
+                  placeholder="Eigenaar"
+                  value={issue.owner}
+                  onChange={(e) =>
+                    setProject((p) => ({
+                      ...p,
+                      issues: p.issues.map((x) => (x.id === issue.id ? { ...x, owner: e.target.value } : x)),
+                    }))
+                  }
+                  className="h-9 w-36"
+                />
+                <button
+                  type="button"
+                  className="text-sm text-accent hover:underline"
+                  onClick={() =>
+                    setProject((p) => ({
+                      ...p,
+                      issues: p.issues.map((x) => (x.id === issue.id ? { ...x, status: "dicht" as const } : x)),
+                    }))
+                  }
+                >
+                  sluiten
+                </button>
+              </li>
+            ))}
+          </ul>
+        </Card>
+      ) : null}
 
       <div className="grid gap-4 lg:grid-cols-2">
         <Card title="Fasecheck">
@@ -63,11 +130,21 @@ export function OverviewPanel({
           {weekWork.length === 0 ? (
             <p className="text-sm text-muted">Nog geen activiteiten in deze week. Zet ze onder Plan.</p>
           ) : (
-            <ul className="space-y-2 text-sm">
+            <ul className="space-y-3">
               {weekWork.map((a) => (
-                <li key={a.id}>
-                  <span className="font-mono text-xs text-accent">{a.wbs || a.kind}</span> {a.name || "Naamloos"}
-                  {a.owner ? <span className="text-muted"> \u00b7 {a.owner}</span> : null}
+                <li key={a.id} className="flex flex-wrap items-center gap-2 text-sm">
+                  <span className="min-w-0 flex-1">
+                    <span className="font-mono text-xs text-accent">{a.wbs || a.kind}</span> {a.name || "Naamloos"}
+                    {a.owner ? <span className="text-muted"> · {a.owner}</span> : null}
+                  </span>
+                  <NumInput
+                    min={0}
+                    max={100}
+                    value={a.pct}
+                    onValue={(pct) => setProject((p) => applyActivityProgress(p, a.id, pct))}
+                    className="h-9 w-20"
+                    aria-label={`Voortgang ${a.name || "activiteit"}`}
+                  />
                 </li>
               ))}
             </ul>
@@ -79,12 +156,13 @@ export function OverviewPanel({
       </div>
 
       <div className="grid gap-4 lg:grid-cols-3">
-        <Card title="Toprisico\u2019s">
-          {risks.length === 0 ? <p className="text-sm text-muted">Geen open risico\u2019s.</p> : (
+        <Card title="Toprisico’s">
+          {risks.length === 0 ? <p className="text-sm text-muted">Geen open risico’s.</p> : (
             <ul className="space-y-2 text-sm">
               {risks.map((r) => (
                 <li key={r.id}>
                   <span className="font-mono text-xs text-accent">{riskScore(r)}</span> {r.event || r.source || "Naamloos"}
+                  {r.owner ? <span className="text-muted"> · {r.owner}</span> : null}
                 </li>
               ))}
             </ul>
@@ -99,7 +177,7 @@ export function OverviewPanel({
               {issues.map((i) => (
                 <li key={i.id}>
                   {i.title || "Naamloos"}
-                  <span className="text-muted">{i.due ? ` \u00b7 ${i.due}` : ""}{i.owner ? ` \u00b7 ${i.owner}` : ""}</span>
+                  <span className="text-muted">{i.due ? ` · ${i.due}` : ""}{i.owner ? ` · ${i.owner}` : ""}</span>
                 </li>
               ))}
             </ul>
@@ -112,7 +190,7 @@ export function OverviewPanel({
           {changes.length === 0 ? <p className="text-sm text-muted">Geen open wijzigingen.</p> : (
             <ul className="space-y-2 text-sm">
               {changes.map((c) => (
-                <li key={c.id}>{c.title || "Naamloos"} \u00b7 {c.advice}</li>
+                <li key={c.id}>{c.title || "Naamloos"} · {c.advice}</li>
               ))}
             </ul>
           )}
@@ -124,8 +202,9 @@ export function OverviewPanel({
 
       <p className="text-sm text-muted">
         Budget {euro(project.spent)} / {euro(project.budget)}
-        {project.endDate ? ` \u00b7 einde ${project.endDate}` : ""}
-        {project.baselineFrozen ? ` \u00b7 baseline ${project.baselineEndDate || "bevroren"}` : " \u00b7 baseline nog open"}
+        {project.endDate ? ` · einde ${project.endDate}` : ""}
+        {project.baselineFrozen ? ` · baseline ${project.baselineEndDate || "bevroren"}` : " · baseline nog open"}
+        {slip.budgetDelta ? ` · plan ${slip.budgetDelta > 0 ? "+" : ""}${euro(slip.budgetDelta)} t.o.v. baseline` : ""}
       </p>
     </div>
   );
