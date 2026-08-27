@@ -3,12 +3,18 @@ import { DisplayTitle } from "@/components/display-title";
 import { PageWrap, SiteShell } from "@/components/site-shell";
 import { Breadcrumb } from "@/components/toolkit/tool-switcher";
 import { buttonVariants } from "@/components/ui/button";
+import { pageHead } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/over-mij")({
-  head: () => ({
-    meta: [{ title: "Wie ik ben — Damian Vink" }],
-  }),
+  head: () =>
+    pageHead({
+      title: "Wie ik ben — Damian Vink",
+      description:
+        "Damian Vink, Project Engineer bij Protakt. Achtergrond in werktuigbouwkunde en machinebouw. Loopbaan, opleiding Hogeschool Rotterdam en CV.",
+      path: "/over-mij",
+      ogType: "profile",
+    }),
   component: OverMij,
 });
 

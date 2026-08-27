@@ -2,10 +2,18 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ProjectWorkspace } from "@/components/pm/workspace";
 import { Breadcrumb } from "@/components/toolkit/tool-switcher";
 import { PageWrap, SiteShell } from "@/components/site-shell";
+import { pageHead } from "@/lib/seo";
 import { useProject } from "@/lib/pm/use-project";
 
 export const Route = createFileRoute("/denk/project")({
-  head: () => ({ meta: [{ title: "Projectwerkplek — Damian Vink" }] }),
+  head: () =>
+    pageHead({
+      title: "Projectwerkplek — Damian Vink",
+      description:
+        "Persoonlijke projectwerkplek: fasen, stakeholders, risico's en het beslispunt. Bedoeld voor de weekstart, niet als lesboek.",
+      path: "/denk/project",
+      noindex: true,
+    }),
   component: ProjectPage,
 });
 

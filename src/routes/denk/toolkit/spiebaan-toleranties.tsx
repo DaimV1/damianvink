@@ -1,12 +1,20 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { JsonLd } from "@/components/json-ld";
 import { Faq } from "@/components/toolkit/calc-ui";
 import { SpiebaanCalc } from "@/components/toolkit/spiebaan-calc";
 import { ToolkitFrame } from "@/components/toolkit/toolkit-frame";
+import { pageHead, softwareJsonLd } from "@/lib/seo";
+
+const DESCRIPTION =
+  "DIN 6885-1 spiebaan-toleranties: t1, t2, b×h. Vul de as-Ø in; de tabel markeert de rij. P9 vaste zitting, N9/JS9 lichte zitting.";
 
 export const Route = createFileRoute("/denk/toolkit/spiebaan-toleranties")({
-  head: () => ({
-    meta: [{ title: "Spiebaan-toleranties (DIN 6885) — Damian Vink" }],
-  }),
+  head: () =>
+    pageHead({
+      title: "Spiebaan-toleranties (DIN 6885) — Damian Vink",
+      description: DESCRIPTION,
+      path: "/denk/toolkit/spiebaan-toleranties",
+    }),
   component: SpiebaanPage,
 });
 
@@ -23,6 +31,14 @@ function SpiebaanPage() {
       last="(DIN 6885)."
       lede="Parallelspieën en spiebanen volgens DIN 6885-1 (hoge vorm). Vul de as-Ø in; de tabel eronder markeert de bijbehorende rij."
     >
+      <JsonLd
+        data={softwareJsonLd({
+          name: "Spiebaan-toleranties DIN 6885",
+          path: "/denk/toolkit/spiebaan-toleranties",
+          description: DESCRIPTION,
+          featureList: ["t1", "t2", "P9", "N9/JS9", "DIN 6885-1"],
+        })}
+      />
       <SpiebaanCalc />
       <Faq
         items={[
