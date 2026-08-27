@@ -91,7 +91,7 @@ function NotFound() {
           Pagina niet <span className="text-accent">gevonden.</span>
         </h1>
         <p className="mt-3 max-w-md text-muted">
-          Dit pad bestaat niet. Terwijl je hier bent: Vink rent door.
+          Dit pad bestaat niet. Terwijl je hier bent: Vink vliegt door.
         </p>
         <div className="mt-6 flex flex-wrap gap-4">
           <a href="/" className="text-sm text-accent hover:underline">

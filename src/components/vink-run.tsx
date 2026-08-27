@@ -216,13 +216,13 @@ export function VinkRun() {
       ctx.textAlign = "left";
       ctx.fillText("record " + bestLocal, 16, H - 14);
       ctx.textAlign = "right";
-      ctx.fillText("spatie / ↓", W - 16, H - 14);
+      ctx.fillText("spatie / \u2193", W - 16, H - 14);
 
       if (state === "ready") {
         ctx.textAlign = "center";
         ctx.fillStyle = c.ink;
         ctx.font = "700 20px Space Grotesk, sans-serif";
-        ctx.fillText("Vink loopt door.", W / 2, 78);
+        ctx.fillText("Vink vliegt door.", W / 2, 78);
         ctx.font = "14px IBM Plex Sans, sans-serif";
         ctx.fillStyle = c.muted;
         ctx.fillText("Spatie of tik om te springen", W / 2, 102);
