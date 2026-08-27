@@ -2,9 +2,17 @@ import { createFileRoute } from "@tanstack/react-router";
 import { DisplayTitle } from "@/components/display-title";
 import { PageWrap, SiteShell } from "@/components/site-shell";
 import { Breadcrumb } from "@/components/toolkit/tool-switcher";
+import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/denk/podcast")({
-  head: () => ({ meta: [{ title: "Podcast — Damian Vink" }] }),
+  head: () =>
+    pageHead({
+      title: "Podcast — Damian Vink",
+      description:
+        "Podcast van Damian Vink over werktuigbouwkunde, projecten en wat hij onderweg leert. Nog geen afleveringen.",
+      path: "/denk/podcast",
+      noindex: true,
+    }),
   component: Podcast,
 });
 

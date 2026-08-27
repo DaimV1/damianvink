@@ -2,9 +2,16 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { DisplayTitle } from "@/components/display-title";
 import { PageWrap, SiteShell } from "@/components/site-shell";
 import { Breadcrumb } from "@/components/toolkit/tool-switcher";
+import { pageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/doe/")({
-  head: () => ({ meta: [{ title: "Wat ik doe — Damian Vink" }] }),
+  head: () =>
+    pageHead({
+      title: "Wat ik doe — Damian Vink",
+      description:
+        "Wat Damian Vink doet: marathonvoorbereiding EDP Porto 2026 en projecten in werktuigbouwkunde en machinebouw.",
+      path: "/doe",
+    }),
   component: Doe,
 });
 
