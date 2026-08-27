@@ -67,9 +67,9 @@ function Home() {
         </section>
 
         <section className="reveal reveal-delay-3 border-t border-line py-14 sm:py-16">
-          <SectionTitle before="Wat ik" last="denk." />
+          <SectionTitle before="Wat ik" last="heb." />
           <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted">
-            Naslag tijdens ontwerp, en later artikelen.
+            Naslag tijdens ontwerp en een projectwerkplek tijdens de rit.
           </p>
           <div className="mt-8 grid gap-3">
             <KnowledgeRow
@@ -82,11 +82,11 @@ function Home() {
             />
             <KnowledgeRow
               num="02"
-              title="Blog"
-              body="Artikelen. Nog geen stukken gepubliceerd."
-              href="/denk/blog"
-              link="Blog"
-              meta="Artikelen volgen."
+              title="Projectwerkplek"
+              body="Fasen, stakeholders, risico’s, issues en het beslispunt."
+              href="/denk/project"
+              link="Projectwerkplek"
+              meta="Projectmanagement"
             />
           </div>
           <div className="mt-6 flex flex-wrap gap-2">
@@ -99,6 +99,31 @@ function Home() {
                 {tool.short}
               </Link>
             ))}
+          </div>
+        </section>
+
+        <section className="reveal reveal-delay-3 border-t border-line py-14 sm:py-16">
+          <SectionTitle before="Wat ik" last="denk." />
+          <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted">
+            Artikelen en later een podcast.
+          </p>
+          <div className="mt-8 grid gap-3">
+            <KnowledgeRow
+              num="01"
+              title="Blog"
+              body="Artikelen. Nog geen stukken gepubliceerd."
+              href="/denk/blog"
+              link="Blog"
+              meta="Artikelen volgen."
+            />
+            <KnowledgeRow
+              num="02"
+              title="Podcast"
+              body="Afleveringen. Nog geen episodes gepubliceerd."
+              href="/denk/podcast"
+              link="Podcast"
+              meta="Afleveringen volgen."
+            />
           </div>
         </section>
 
