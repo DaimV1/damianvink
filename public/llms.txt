@@ -1,0 +1,36 @@
+# damianvink.nl
+
+> Persoonlijke site van Damian Vink, Project Engineer werktuigbouwkunde en machinebouw (Nederland).
+
+Site in het Nederlands.
+Canonical host: https://www.damianvink.nl (zonder trailing slash).
+Naslagtabelen zijn een werkblad, geen vervanging van de norm.
+Geen verzonnen projectcases.
+
+## Pagina's
+
+- [Home](https://www.damianvink.nl/): Project Engineer, toolkit, marathonlogboek, contact
+- [Wie ik ben](https://www.damianvink.nl/over-mij): achtergrond, loopbaan, CV (PDF)
+- [Wat ik doe](https://www.damianvink.nl/doe): marathon en projecten
+- [Marathon](https://www.damianvink.nl/doe/marathon): trainingsdashboard, EDP Porto Marathon (Strava-export)
+- [Wat ik heb](https://www.damianvink.nl/heb): engineering toolkit en projectwerkplek
+- [Wat ik denk](https://www.damianvink.nl/denk): blog en podcast (leeg tot er echte stukken zijn)
+- [Engineering toolkit](https://www.damianvink.nl/denk/toolkit): rekenhulp + naslag
+- [Passingen (ISO 286)](https://www.damianvink.nl/denk/toolkit/passingen): voorkeurpassingen tot Ø50 mm, eenheidsgatstelsel H7
+- [Spiebaan-toleranties (DIN 6885)](https://www.damianvink.nl/denk/toolkit/spiebaan-toleranties): t1/t2, b×h; as-Ø boven ondergrens t/m bovengrens
+- [Lagerpassingen](https://www.damianvink.nl/denk/toolkit/lagerpassingen): groefkogellagers, SKF-klassen tot Ø50 mm
+- [Seegerringgroef (DIN 471/472)](https://www.damianvink.nl/denk/toolkit/seegerring-groef): groef d2, b, t op as of in boring tot Ø100 mm
+- [Bevestigers](https://www.damianvink.nl/denk/toolkit/bevestigers): M3–M24, ISO 273 doorlaat, VDI 2230 aandraaimoment
+- [O-ringgroef (ISO 3601)](https://www.damianvink.nl/denk/toolkit/o-ringgroef): koorden 1,80–7,00 mm, radiaal en axiaal
+- [CAD-bibliotheken](https://www.damianvink.nl/denk/toolkit/bronnen): TraceParts, 3Dfindit, MISUMI, 247 Tailor Steel, ISO OBP
+- [Contact](https://www.damianvink.nl/contact): e-mail en LinkedIn
+
+Leeg tot er echte inhoud is (noindex): /denk/blog, /denk/podcast, /doe/projecten.
+Oude paden /weet/… en /kennis/… verwijzen permanent door naar /denk/….
+
+## Contact
+
+- E-mail: damianvink@live.nl
+- LinkedIn: https://www.linkedin.com/in/damianvink
+- X: https://x.com/damianvink_
+- Instagram: https://www.instagram.com/damianvink_
