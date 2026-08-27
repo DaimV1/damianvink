@@ -10,6 +10,7 @@ import {
   phaseChecks,
   sampleProject,
 } from "./model.ts";
+import { isBlankProject, isStockSample, pruneWorkspace } from "./workspace-ops.ts";
 
 describe("pm workspace model", () => {
   it("migrates a v1 project object into a workspace", () => {
@@ -58,5 +59,40 @@ describe("pm workspace model", () => {
     assert.ok(s.name);
     assert.ok(s.risks.length);
     assert.ok(s.activities.length);
+  });
+});
+
+describe("workspace prune", () => {
+  it("collapses extra blank projects to one", () => {
+    const a = emptyProject();
+    const b = emptyProject();
+    const named = emptyProject({ name: "Perscel" });
+    const ws = pruneWorkspace({
+      version: 2,
+      activeId: b.id,
+      projects: { [a.id]: a, [b.id]: b, [named.id]: named },
+    });
+    assert.equal(Object.keys(ws.projects).length, 2);
+    assert.ok(ws.projects[named.id]);
+    assert.ok(ws.projects[b.id]);
+    assert.equal(ws.activeId, b.id);
+  });
+
+  it("keeps one stock sample", () => {
+    const s1 = sampleProject();
+    const s2 = sampleProject();
+    assert.ok(isStockSample(s1) && isStockSample(s2));
+    const ws = pruneWorkspace({
+      version: 2,
+      activeId: s2.id,
+      projects: { [s1.id]: s1, [s2.id]: s2 },
+    });
+    assert.equal(Object.keys(ws.projects).length, 1);
+    assert.equal(ws.activeId, s2.id);
+  });
+
+  it("treats a filled project as not blank", () => {
+    assert.equal(isBlankProject(emptyProject({ name: "X" })), false);
+    assert.equal(isBlankProject(emptyProject()), true);
   });
 });

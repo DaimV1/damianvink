@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   STORAGE_KEY,
   STORAGE_KEY_V1,
@@ -8,16 +8,16 @@ import {
   parseProject,
   sampleProject,
   type Project,
-  type Workspace,
 } from "@/lib/pm/model";
 import { exportIsStale, parseWorkspaceKeepExport, type WorkspaceWithExport } from "@/lib/pm/export-freshness";
+import { isBlankProject, isStockSample, pruneWorkspace } from "@/lib/pm/workspace-ops";
 
 function readWorkspace(): WorkspaceWithExport {
   try {
     const rawV2 = localStorage.getItem(STORAGE_KEY);
-    if (rawV2) return parseWorkspaceKeepExport(JSON.parse(rawV2));
+    if (rawV2) return pruneWorkspace(parseWorkspaceKeepExport(JSON.parse(rawV2)));
     const rawV1 = localStorage.getItem(STORAGE_KEY_V1);
-    if (rawV1) return parseWorkspaceKeepExport(JSON.parse(rawV1));
+    if (rawV1) return pruneWorkspace(parseWorkspaceKeepExport(JSON.parse(rawV1)));
   } catch {
     /* keep empty */
   }
@@ -32,14 +32,16 @@ function persist(workspace: WorkspaceWithExport) {
 export function useProject() {
   const [workspace, setWorkspace] = useState<WorkspaceWithExport>(emptyWorkspace);
   const [ready, setReady] = useState(false);
+  const hydrated = useRef(false);
 
   useEffect(() => {
     setWorkspace(readWorkspace());
     setReady(true);
+    hydrated.current = true;
   }, []);
 
   useEffect(() => {
-    if (!ready) return;
+    if (!ready || !hydrated.current) return;
     persist(workspace);
   }, [workspace, ready]);
 
@@ -65,14 +67,21 @@ export function useProject() {
   }, [setProject]);
 
   const createProject = useCallback((seed?: Project) => {
-    const next = seed ? parseProject({ ...seed, id: uidSafe() }) : emptyProject();
-    setWorkspace((ws) => ({
-      version: 2,
-      activeId: next.id,
-      lastExportAt: ws.lastExportAt,
-      projects: { ...ws.projects, [next.id]: { ...next, updatedAt: isoNow() } },
-    }));
-    return next.id;
+    setWorkspace((ws) => {
+      const clean = pruneWorkspace(ws);
+      if (!seed) {
+        const existingBlank = Object.values(clean.projects).find(isBlankProject);
+        if (existingBlank) return { ...clean, activeId: existingBlank.id };
+      }
+      const next = seed ? parseProject({ ...seed, id: uidSafe() }) : emptyProject();
+      return {
+        version: 2,
+        activeId: next.id,
+        lastExportAt: clean.lastExportAt,
+        projects: { ...clean.projects, [next.id]: { ...next, updatedAt: isoNow() } },
+      };
+    });
+    return "";
   }, []);
 
   const switchProject = useCallback((id: string) => {
@@ -85,13 +94,37 @@ export function useProject() {
       delete leftover[ws.activeId];
       const ids = Object.keys(leftover);
       if (!ids.length) return emptyWorkspace();
-      return { version: 2, activeId: ids[0], lastExportAt: ws.lastExportAt, projects: leftover };
+      return pruneWorkspace({
+        version: 2,
+        activeId: ids[0],
+        lastExportAt: ws.lastExportAt,
+        projects: leftover,
+      });
     });
   }, []);
 
   const loadSample = useCallback(() => {
-    createProject(sampleProject());
-  }, [createProject]);
+    setWorkspace((ws) => {
+      const clean = pruneWorkspace(ws);
+      const existing = Object.values(clean.projects).find(isStockSample);
+      if (existing) return { ...clean, activeId: existing.id };
+      const active = clean.projects[clean.activeId];
+      const sample = sampleProject();
+      if (active && isBlankProject(active)) {
+        const reused = { ...sample, id: active.id, updatedAt: isoNow() };
+        return {
+          ...clean,
+          projects: { ...clean.projects, [active.id]: reused },
+        };
+      }
+      return {
+        version: 2,
+        activeId: sample.id,
+        lastExportAt: clean.lastExportAt,
+        projects: { ...clean.projects, [sample.id]: { ...sample, updatedAt: isoNow() } },
+      };
+    });
+  }, []);
 
   const exportJson = useCallback(() => {
     const stamped: WorkspaceWithExport = { ...workspace, lastExportAt: isoNow() };
@@ -110,7 +143,12 @@ export function useProject() {
     const parsed = parseWorkspaceKeepExport(JSON.parse(text));
     setWorkspace((ws) => {
       const projects = { ...ws.projects, ...parsed.projects };
-      return { version: 2, activeId: parsed.activeId, lastExportAt: isoNow(), projects };
+      return pruneWorkspace({
+        version: 2,
+        activeId: parsed.activeId,
+        lastExportAt: isoNow(),
+        projects,
+      });
     });
   }, []);
 
