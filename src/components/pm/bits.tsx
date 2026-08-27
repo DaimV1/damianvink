@@ -2,7 +2,7 @@ import type { PhaseId, Project, Rag } from "@/lib/pm/model";
 import { PHASES } from "@/lib/pm/model";
 import { cn } from "@/lib/utils";
 
-export function PhaseBar({ current, onSelect }: { current: PhaseId; onSelect: (id: PhaseId) => void }) {
+export function PhaseBar({ current, onSelect }: { current: PhaseId; onSelect?: (id: PhaseId) => void }) {
   return (
     <nav aria-label="Projectfasen" className="grid gap-2 sm:grid-cols-5">
       {PHASES.map((p) => {
@@ -11,7 +11,7 @@ export function PhaseBar({ current, onSelect }: { current: PhaseId; onSelect: (i
           <button
             key={p.id}
             type="button"
-            onClick={() => onSelect(p.id)}
+            onClick={() => onSelect?.(p.id)}
             className={cn(
               "rounded-lg border px-3 py-3 text-left transition-colors",
               on ? "border-accent bg-accent/10" : "border-line bg-elevated hover:border-line-strong",
