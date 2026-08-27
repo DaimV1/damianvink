@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { computeBearing, pickBearing } from "./bearing.ts";
-import { FRICTION, lookupFastener, scaleMa } from "./fastener.ts";
+import { lookupFastener } from "./fastener.ts";
+import { FRICTION, scaleMa } from "./friction.ts";
 import { HOLE, bandIndex, computeFit } from "./iso286.ts";
 import { keyWidthTol, lookupKeyway } from "./keyway.ts";
 import { GROOVE, squeeze } from "./oring.ts";
