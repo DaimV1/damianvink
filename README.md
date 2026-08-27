@@ -18,6 +18,16 @@ npm run typecheck
 npm run build
 ```
 
+## Deploy (Vercel)
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/DaimV1/damianvink/tree/redesign&project-name=damianvink&repository-name=damianvink)
+
+Of importeer de repo: [vercel.com/new/import](https://vercel.com/new/import?s=https://github.com/DaimV1/damianvink) en kies branch `redesign`.
+
+Framework preset: **TanStack Start**. Elke push naar die branch krijgt daarna een preview-URL.
+
+`damianvink.nl` staat nu nog op GitHub Pages. Pas DNS om naar Vercel als de preview goed is, en merge daarna `redesign` naar `main`.
+
 ## Pagina’s
 
 - `/` — home
@@ -35,8 +45,6 @@ npm run build
 ## Stack
 
 TanStack Start, React 19, Vite, Tailwind CSS v4.
-
-Dit is een Node-app, geen statische HTML. GitHub Pages host nog de vorige site. Voor deze versie: Vercel, Netlify of een eigen Node-host.
 
 ## Bronnen
 
