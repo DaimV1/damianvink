@@ -9,7 +9,7 @@ export const Route = createFileRoute("/denk/podcast")({
     pageHead({
       title: "Podcast — Damian Vink",
       description:
-        "Podcast van Damian Vink over werktuigbouwkunde, projecten en wat hij onderweg leert. Nog geen afleveringen.",
+        "Nog geen afleveringen. Podcast over werktuigbouwkunde en projecten, als die er is.",
       path: "/denk/podcast",
       noindex: true,
     }),
@@ -22,21 +22,21 @@ function Podcast() {
       <PageWrap>
         <Breadcrumb
           items={[
-            { href: "/denk", label: "Wat ik denk" },
+            { href: "/denk", label: "Artikelen" },
             { label: "Podcast" },
           ]}
         />
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">
-          Wat ik denk
+          Artikelen
         </p>
         <DisplayTitle last="Podcast." className="mt-3" />
         <p className="mt-5 text-lg leading-relaxed text-muted">
-          Afleveringen over werktuigbouwkunde, projecten en wat ik onderweg leer.
+          Nog geen afleveringen.
         </p>
         <div className="mt-10 rounded-xl border border-dashed border-line-strong bg-elevated px-6 py-12 text-center">
           <p className="font-display text-xl font-semibold">Nog geen afleveringen</p>
           <p className="mt-2 text-sm text-muted">
-            Hier komen alleen afleveringen die ik zelf maak.
+            Hier komen afleveringen over werktuigbouwkunde en projecten, als ze er zijn.
           </p>
         </div>
       </PageWrap>

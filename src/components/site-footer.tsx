@@ -24,6 +24,8 @@ export function SiteFooter() {
           ))}
         </nav>
         <p className="font-mono text-xs text-subtle">
+          Project Engineer · werktuigbouwkunde
+          <span className="mx-2 text-line">·</span>
           © {new Date().getFullYear()} Damian Vink
         </p>
       </div>

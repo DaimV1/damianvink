@@ -7,9 +7,9 @@ import { pageHead } from "@/lib/seo";
 export const Route = createFileRoute("/doe/")({
   head: () =>
     pageHead({
-      title: "Wat ik doe — Damian Vink",
+      title: "Marathon — Damian Vink",
       description:
-        "Wat Damian Vink doet: marathonvoorbereiding EDP Porto 2026 en projecten in werktuigbouwkunde en machinebouw.",
+        "Trainingslogboek EDP Porto Marathon 2026. Projectcases volgen als ze een echte toelichting hebben.",
       path: "/doe",
     }),
   component: Doe,
@@ -19,13 +19,14 @@ function Doe() {
   return (
     <SiteShell>
       <PageWrap wide>
-        <Breadcrumb items={[{ label: "Wat ik doe" }]} />
+        <Breadcrumb items={[{ label: "Marathon" }]} />
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">
-          Wat ik doe
+          Logboek
         </p>
-        <DisplayTitle before="Wat ik" last="doe." className="mt-3" />
+        <DisplayTitle before="Mara" last="thon." className="mt-3" />
         <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted">
-          Marathonvoorbereiding en projecten.
+          Trainingslogboek EDP Porto Marathon 2026. Projectcases staan erbij als
+          ze een echte toelichting hebben.
         </p>
         <div className="mt-10 grid gap-4 sm:grid-cols-2">
           <Link

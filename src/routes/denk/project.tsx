@@ -10,7 +10,7 @@ export const Route = createFileRoute("/denk/project")({
     pageHead({
       title: "Projectwerkplek — Damian Vink",
       description:
-        "Persoonlijke projectwerkplek: fasen, stakeholders, risico's en het beslispunt. Bedoeld voor de weekstart, niet als lesboek.",
+        "Projectwerkplek voor machinebouw: weekstart, fasen, stakeholders, risico's en het beslispunt. Staat in de browser.",
       path: "/denk/project",
       noindex: true,
     }),
@@ -31,8 +31,7 @@ function ProjectPage() {
           Project<span className="text-accent">werkplek.</span>
         </h1>
         <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">
-          Eén scherm voor je weekstart en het beslispunt. Vijf fasen, registers
-          tot decharge. Geen lesboek.
+          Weekstart, fasen, registers en het beslispunt. Staat in deze browser.
         </p>
         <div className="mt-8">
           {store.ready ? (

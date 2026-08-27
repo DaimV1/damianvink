@@ -1,6 +1,6 @@
 # damianvink.nl
 
-> Persoonlijke site van Damian Vink, Project Engineer werktuigbouwkunde en machinebouw (Nederland).
+> Site van Damian Vink, Project Engineer werktuigbouwkunde en machinebouw (Nederland).
 
 Site in het Nederlands.
 Canonical host: https://www.damianvink.nl (zonder trailing slash).
@@ -11,7 +11,7 @@ Hoofdnavigatie: Toolkit, Werkplek, Marathon, Over, Contact.
 
 ## Pagina's
 
-- [Home](https://www.damianvink.nl/): Project Engineer; deuren naar toolkit, werkplek, marathon en contact
+- [Home](https://www.damianvink.nl/): Project Engineer machinebouw; toolkit, werkplek, marathon, contact
 - [Toolkit](https://www.damianvink.nl/denk/toolkit): rekenhulp + naslag
 - [Werkplek](https://www.damianvink.nl/denk/project): projectwerkplek (fasen, stakeholders, risico's, beslispunt)
 - [Marathon](https://www.damianvink.nl/doe/marathon): trainingsdashboard, EDP Porto Marathon (Strava-export)
@@ -25,7 +25,7 @@ Hoofdnavigatie: Toolkit, Werkplek, Marathon, Over, Contact.
 - [O-ringgroef (ISO 3601)](https://www.damianvink.nl/denk/toolkit/o-ringgroef): koorden 1,80–7,00 mm, radiaal en axiaal
 - [CAD-bibliotheken](https://www.damianvink.nl/denk/toolkit/bronnen): TraceParts, 3Dfindit, MISUMI, 247 Tailor Steel, ISO OBP
 
-Oude rubriek-URL's blijven bereikbaar: /over-mij, /doe, /heb, /denk.
+Oude paden blijven bereikbaar: /over-mij, /doe, /heb, /denk.
 Leeg tot er echte inhoud is (noindex): /denk/blog, /denk/podcast, /doe/projecten.
 Oude paden /weet/… en /kennis/… verwijzen permanent door naar /denk/….
 
