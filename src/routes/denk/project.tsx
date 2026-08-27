@@ -17,12 +17,12 @@ function ProjectPage() {
       <PageWrap wide>
         <Breadcrumb
           items={[
-            { href: "/denk", label: "Wat ik denk" },
+            { href: "/heb", label: "Wat ik heb" },
             { label: "Projectwerkplek" },
           ]}
         />
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">
-          Wat ik denk
+          Wat ik heb
         </p>
         <h1 className="mt-3 font-display text-[clamp(2rem,5vw,3.25rem)] font-semibold leading-[1.08] tracking-[-0.03em]">
           Project<span className="text-accent">werkplek.</span>

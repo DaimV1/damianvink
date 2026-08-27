@@ -7,7 +7,7 @@ import type { ToolId } from "@/lib/toolkit/tools";
 export function ToolkitFrame({
   active,
   crumbs,
-  eyebrow = "Wat ik denk · Engineering toolkit",
+  eyebrow = "Wat ik heb · Engineering toolkit",
   before,
   last,
   lede,
