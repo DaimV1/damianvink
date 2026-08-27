@@ -1,0 +1,34 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel">
+<head>
+<meta charset="utf-8"/>
+<title>Projectplanning</title>
+<style>
+table { border-collapse: collapse; font-family: Calibri, Arial, sans-serif; font-size: 11pt; }
+th { background: #1D4ED8; color: #fff; font-weight: 600; border: 1px solid #1E40AF; padding: 6px 8px; }
+td { border: 1px solid #D1D5DB; padding: 6px 8px; }
+h1 { font-family: Calibri, Arial, sans-serif; color: #1D4ED8; font-size: 18pt; }
+.note { color: #6B7280; font-size: 10pt; }
+.meta td { background: #FEF3C7; }
+</style>
+</head>
+<body>
+<h1>Projectplanning</h1>
+<table>
+<tr class="meta"><td>Project</td><td></td><td>Datum</td><td></td><td>Projectmanager</td><td></td></tr>
+</table>
+<br/>
+<table>
+<tr><th>ID</th><th>WBS</th><th>Activiteit / mijlpaal</th><th>Type</th><th>Eigenaar</th><th>Start</th><th>Einde</th><th>Voorganger</th><th>% klaar</th><th>Status</th><th>Opmerking</th></tr>
+<tr><td>M1</td><td>1</td><td>Kick-off afgerond</td><td>Mijlpaal</td><td>PM</td><td></td><td></td><td></td><td>0</td><td>Gepland</td><td></td></tr>
+<tr><td>A1</td><td>2.1</td><td>Scope vastleggen</td><td>Activiteit</td><td>PM</td><td></td><td></td><td></td><td>0</td><td>Gepland</td><td></td></tr>
+<tr><td>A2</td><td>2.2</td><td>WBS uitwerken</td><td>Activiteit</td><td>PM</td><td></td><td></td><td>A1</td><td>0</td><td>Gepland</td><td></td></tr>
+<tr><td>A3</td><td>2.3</td><td>Raming en planning</td><td>Activiteit</td><td>PM</td><td></td><td></td><td>A2</td><td>0</td><td>Gepland</td><td></td></tr>
+<tr><td>M2</td><td>2</td><td>Baseline goedgekeurd</td><td>Mijlpaal</td><td>OG</td><td></td><td></td><td>A3</td><td>0</td><td>Gepland</td><td></td></tr>
+<tr><td>A4</td><td>3.1</td><td>Werkpakket A</td><td>Activiteit</td><td></td><td></td><td></td><td>M2</td><td>0</td><td>Gepland</td><td></td></tr>
+<tr><td>M3</td><td>4</td><td>Oplevering intern</td><td>Mijlpaal</td><td>PM</td><td></td><td></td><td>A4</td><td>0</td><td>Gepland</td><td></td></tr>
+<tr><td>M4</td><td>5</td><td>Decharge</td><td>Mijlpaal</td><td>OG</td><td></td><td></td><td>M3</td><td>0</td><td>Gepland</td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+</table>
+<p class="note">Type: Activiteit of Mijlpaal. Voorganger = ID van de regel erboven.</p>
+</body></html>

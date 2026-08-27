@@ -1,0 +1,35 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel">
+<head>
+<meta charset="utf-8"/>
+<title>WBS</title>
+<style>
+table { border-collapse: collapse; font-family: Calibri, Arial, sans-serif; font-size: 11pt; }
+th { background: #1D4ED8; color: #fff; font-weight: 600; border: 1px solid #1E40AF; padding: 6px 8px; }
+td { border: 1px solid #D1D5DB; padding: 6px 8px; }
+h1 { font-family: Calibri, Arial, sans-serif; color: #1D4ED8; font-size: 18pt; }
+.note { color: #6B7280; font-size: 10pt; }
+.meta td { background: #FEF3C7; }
+</style>
+</head>
+<body>
+<h1>WBS — Work Breakdown Structure</h1>
+<table>
+<tr class="meta"><td>Project</td><td></td><td>Datum</td><td></td><td>Projectmanager</td><td></td></tr>
+</table>
+<br/>
+<table>
+<tr><th>WBS-nr</th><th>Niveau</th><th>Pakket / activiteit</th><th>Resultaat</th><th>Eigenaar</th><th>Start</th><th>Einde</th><th>Uur</th><th>Voorganger</th><th>Status</th></tr>
+<tr><td>1</td><td>1</td><td>Projectmanagement</td><td>Besturing en beslispunten</td><td>PM</td><td></td><td></td><td></td><td></td><td>Open</td></tr>
+<tr><td>1.1</td><td>2</td><td>Kick-off</td><td>Gedeeld beeld</td><td>PM</td><td></td><td></td><td></td><td></td><td>Open</td></tr>
+<tr><td>2</td><td>1</td><td>Definitie</td><td>Goedgekeurde scope en plan</td><td>PM</td><td></td><td></td><td></td><td></td><td>Open</td></tr>
+<tr><td>2.1</td><td>2</td><td>Scope vastleggen</td><td>In en out of scope</td><td>PM</td><td></td><td></td><td></td><td></td><td>Open</td></tr>
+<tr><td>2.2</td><td>2</td><td>WBS uitwerken</td><td>Complete pakketten</td><td>PM</td><td></td><td></td><td></td><td></td><td>Open</td></tr>
+<tr><td>2.3</td><td>2</td><td>Raming</td><td>P50-duur en kost</td><td>PM</td><td></td><td></td><td></td><td></td><td>Open</td></tr>
+<tr><td>3</td><td>1</td><td>Realisatie</td><td></td><td></td><td></td><td></td><td></td><td></td><td>Open</td></tr>
+<tr><td>3.1</td><td>2</td><td>Werkpakket A</td><td>Op te leveren resultaat</td><td></td><td></td><td></td><td></td><td></td><td>Open</td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+</table>
+<p class="note">Nummer hiërarchisch (1, 1.1, 1.1.1). Elk pakket: één resultaat, één eigenaar. Status: Open / Bezig / Klaar / Geblokkeerd.</p>
+</body></html>

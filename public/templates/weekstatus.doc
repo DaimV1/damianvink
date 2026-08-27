@@ -1,0 +1,51 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word">
+<head>
+<meta charset="utf-8"/>
+<title>Weekstatus</title>
+<style>
+@page { size: A4; margin: 1.8cm; }
+body { font-family: Calibri, Arial, sans-serif; color: #111827; font-size: 11pt; line-height: 1.35; }
+h1 { color: #1D4ED8; font-size: 22pt; margin: 0 0 4pt; }
+h2 { color: #1D4ED8; font-size: 14pt; margin: 16pt 0 6pt; }
+.lede { color: #6B7280; margin-bottom: 14pt; }
+table { border-collapse: collapse; width: 100%; margin: 0 0 12pt; }
+th { background: #1D4ED8; color: #fff; text-align: left; padding: 6px 8px; font-weight: 600; }
+td { border: 1px solid #D1D5DB; padding: 6px 8px; vertical-align: top; }
+.meta td:nth-child(odd) { background: #F3F4F6; font-weight: 600; width: 22%; }
+</style>
+</head>
+<body>
+<h1>Weekstatus</h1>
+<p class="lede">Invultemplate voor de weekstart.</p>
+<table class="meta">
+<tr><td>Project</td><td></td><td>Periode</td><td></td></tr>
+<tr><td>Projectmanager</td><td></td><td>Stand</td><td>Groen / oranje / rood</td></tr>
+<tr><td>Fase</td><td></td><td>% klaar</td><td></td></tr>
+</table>
+<h2>1. Kop</h2>
+<p>In één alinea: wat is deze week gebeurd, en wat is de stand tegenover de baseline.</p>
+<h2>2. Voortgang</h2>
+<table>
+<tr><th>Mijlpaal / pakket</th><th>Gepland</th><th>Actueel</th><th>Afwijking</th><th>Actie</th></tr>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+</table>
+<h2>3. Toprisico’s en issues</h2>
+<table>
+<tr><th>ID</th><th>Omschrijving</th><th>Impact</th><th>Eigenaar</th><th>Volgende stap</th></tr>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td><td></td></tr>
+</table>
+<h2>4. Beslissingen gevraagd</h2>
+<table>
+<tr><th>Besluit</th><th>Opties</th><th>Advies PM</th><th>Nodig van</th></tr>
+<tr><td></td><td></td><td></td><td></td></tr>
+</table>
+<h2>5. Volgende week</h2>
+<table>
+<tr><th>Afspraak</th><th>Wie</th><th>Klaar op</th></tr>
+<tr><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td></tr>
+</table>
+</body></html>

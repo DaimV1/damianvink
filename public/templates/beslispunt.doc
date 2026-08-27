@@ -1,0 +1,47 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word">
+<head>
+<meta charset="utf-8"/>
+<title>Beslispunt</title>
+<style>
+@page { size: A4; margin: 1.8cm; }
+body { font-family: Calibri, Arial, sans-serif; color: #111827; font-size: 11pt; line-height: 1.35; }
+h1 { color: #1D4ED8; font-size: 22pt; margin: 0 0 4pt; }
+h2 { color: #1D4ED8; font-size: 14pt; margin: 16pt 0 6pt; }
+.lede { color: #6B7280; margin-bottom: 14pt; }
+table { border-collapse: collapse; width: 100%; margin: 0 0 12pt; }
+th { background: #1D4ED8; color: #fff; text-align: left; padding: 6px 8px; font-weight: 600; }
+td { border: 1px solid #D1D5DB; padding: 6px 8px; vertical-align: top; }
+.meta td:nth-child(odd) { background: #F3F4F6; font-weight: 600; width: 22%; }
+</style>
+</head>
+<body>
+<h1>Beslispunt</h1>
+<p class="lede">Invultemplate voor de fasepoort.</p>
+<table class="meta">
+<tr><td>Project</td><td></td><td>Fase</td><td></td></tr>
+<tr><td>Datum</td><td></td><td>Voorzitter</td><td>Opdrachtgever</td></tr>
+</table>
+<h2>1. Vraag</h2>
+<p>Ga / nader uitwerken / stoppen. Onderbouw met scope, tijd, geld en risico.</p>
+<h2>2. Ter besluitvorming</h2>
+<table>
+<tr><th>Onderwerp</th><th>Advies</th><th>Gevolg bij ja</th><th>Gevolg bij nee</th></tr>
+<tr><td>Doorgaan naar volgende fase</td><td></td><td></td><td></td></tr>
+<tr><td>Baseline vastzetten</td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td></tr>
+</table>
+<h2>3. Stand tegenover de baseline</h2>
+<table>
+<tr><th></th><th>Baseline</th><th>Actueel</th><th>Verschil</th></tr>
+<tr><td>Einddatum</td><td></td><td></td><td></td></tr>
+<tr><td>Budget</td><td></td><td></td><td></td></tr>
+<tr><td>Scope</td><td></td><td></td><td></td></tr>
+</table>
+<h2>4. Besluit</h2>
+<table>
+<tr><th>Keuze</th><th>Toelichting</th><th>Naam</th><th>Datum</th></tr>
+<tr><td>Ga</td><td></td><td></td><td></td></tr>
+<tr><td>Nader uitwerken</td><td></td><td></td><td></td></tr>
+<tr><td>Stoppen</td><td></td><td></td><td></td></tr>
+</table>
+</body></html>

@@ -1,0 +1,52 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word">
+<head>
+<meta charset="utf-8"/>
+<title>Project kick-off</title>
+<style>
+@page { size: A4; margin: 1.8cm; }
+body { font-family: Calibri, Arial, sans-serif; color: #111827; font-size: 11pt; line-height: 1.35; }
+h1 { color: #1D4ED8; font-size: 22pt; margin: 0 0 4pt; }
+h2 { color: #1D4ED8; font-size: 14pt; margin: 16pt 0 6pt; }
+.lede { color: #6B7280; margin-bottom: 14pt; }
+table { border-collapse: collapse; width: 100%; margin: 0 0 12pt; }
+th { background: #1D4ED8; color: #fff; text-align: left; padding: 6px 8px; font-weight: 600; }
+td { border: 1px solid #D1D5DB; padding: 6px 8px; vertical-align: top; }
+.meta td:nth-child(odd) { background: #F3F4F6; font-weight: 600; width: 22%; }
+</style>
+</head>
+<body>
+<h1>Project kick-off</h1>
+<p class="lede">Invultemplate voor het overleg. Laat weg wat niet speelt.</p>
+<table class="meta">
+<tr><td>Project</td><td></td><td>Datum</td><td></td></tr>
+<tr><td>Opdrachtgever</td><td></td><td>Projectmanager</td><td></td></tr>
+<tr><td>Locatie / link</td><td></td><td>Notulist</td><td></td></tr>
+</table>
+<h2>1. Doel van deze bijeenkomst</h2>
+<p>Aan het eind hebben we een gedeeld beeld van waarom dit project bestaat, wat er wél en niet in zit, en welke afspraken we vanaf morgen nakomen.</p>
+<h2>2. Agenda</h2>
+<table>
+<tr><th>min</th><th>Onderdeel</th><th>Wie</th><th>Klaar als</th></tr>
+<tr><td>5</td><td>Opening en rollen</td><td>PM</td><td>Iedereen weet wie welke rol heeft</td></tr>
+<tr><td>10</td><td>Aanleiding en business case</td><td>Opdrachtgever</td><td>Waarom nu, en wat faalt als we niets doen</td></tr>
+<tr><td>10</td><td>Resultaat, uitkomst, doel</td><td>PM</td><td>Één zin per laag</td></tr>
+<tr><td>10</td><td>Scope: in, out, aannames</td><td>PM</td><td>Grenzen staan op papier</td></tr>
+<tr><td>10</td><td>Werkvorm, planning, budget</td><td>PM</td><td>Eerste ritme is afgesproken</td></tr>
+<tr><td>10</td><td>Risico’s en open punten</td><td>Allen</td><td>Top 5 risico’s hebben een eigenaar</td></tr>
+<tr><td>5</td><td>Afspraken en volgende stap</td><td>PM</td><td>Acties met datum</td></tr>
+</table>
+<h2>3. Resultaat / uitkomst / doel</h2>
+<table>
+<tr><th>Laag</th><th>Tekst</th></tr>
+<tr><td>Resultaat — wat leveren we op</td><td></td></tr>
+<tr><td>Uitkomst — wat verandert er</td><td></td></tr>
+<tr><td>Doel — waarom het de moeite waard is</td><td></td></tr>
+</table>
+<h2>4. Afspraken</h2>
+<table>
+<tr><th>Actie</th><th>Eigenaar</th><th>Datum</th><th>Klaar als</th></tr>
+<tr><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td></tr>
+</table>
+</body></html>
