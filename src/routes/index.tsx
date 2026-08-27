@@ -3,7 +3,6 @@ import { ArrowUpRight } from "lucide-react";
 import { DisplayTitle, SectionTitle } from "@/components/display-title";
 import { PageWrap, SiteShell } from "@/components/site-shell";
 import { SOCIALS } from "@/lib/socials";
-import { TOOLS } from "@/lib/toolkit/tools";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -88,17 +87,6 @@ function Home() {
               link="Projectwerkplek"
               meta="Projectmanagement"
             />
-          </div>
-          <div className="mt-6 flex flex-wrap gap-2">
-            {TOOLS.slice(0, 6).map((tool) => (
-              <Link
-                key={tool.id}
-                to={tool.href}
-                className="rounded-full border border-line bg-elevated px-3 py-2 text-sm text-muted transition-colors duration-150 hover:text-ink"
-              >
-                {tool.short}
-              </Link>
-            ))}
           </div>
         </section>
 

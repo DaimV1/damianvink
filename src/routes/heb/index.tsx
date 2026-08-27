@@ -2,7 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { DisplayTitle } from "@/components/display-title";
 import { PageWrap, SiteShell } from "@/components/site-shell";
 import { Breadcrumb } from "@/components/toolkit/tool-switcher";
-import { TOOLS } from "@/lib/toolkit/tools";
 
 export const Route = createFileRoute("/heb/")({
   head: () => ({ meta: [{ title: "Wat ik heb — Damian Vink" }] }),
@@ -49,15 +48,6 @@ function Heb() {
             </p>
           </Link>
         </div>
-        <ul className="mt-8 space-y-2">
-          {TOOLS.map((tool) => (
-            <li key={tool.id}>
-              <Link to={tool.href} className="text-sm text-accent hover:underline">
-                {tool.title} ({tool.standard}) →
-              </Link>
-            </li>
-          ))}
-        </ul>
       </PageWrap>
     </SiteShell>
   );
