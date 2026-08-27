@@ -15,20 +15,25 @@ import {
   Field,
   Note,
   NumInput,
+  parseWholeMm,
   ResultGrid,
   SelectInput,
 } from "./calc-ui";
 
 export function SeegerCalc() {
-  const [diameter, setDiameter] = useState(() => readStoredDiameter());
+  const [diameter, setDiameter] = useState(() =>
+    readStoredDiameter({ min: 3, max: 100 }),
+  );
   const [kind, setKind] = useState<SeegerKind>("as");
-  const d = diameter === "" ? NaN : parseInt(diameter, 10);
-  const row = !Number.isNaN(d) ? lookupSeeger(d) : null;
+  const parsed = parseWholeMm(diameter);
+  const d = parsed.status === "ok" ? parsed.mm : Number.NaN;
+  const row = parsed.status === "ok" ? lookupSeeger(d) : null;
   const result = row ? seegerFor(row, kind) : null;
 
   function onDia(v: string) {
     setDiameter(v);
-    storeDiameter(v);
+    const next = parseWholeMm(v);
+    if (next.status === "ok") storeDiameter(String(next.mm));
   }
 
   const copy = useMemo(() => {
@@ -38,7 +43,7 @@ export function SeegerCalc() {
     return [
       `Seegerring ${where} Ø ${d} mm · ${norm}`,
       `d₂ groef  ${fmtSeeger(result.d2)} mm ${result.d2Class}`,
-      `b breedte  ${fmtSeeger(result.b)} mm (H13)`,
+      `b breedte  ${fmtSeeger(result.b)} mm (H13, werkplaatstabel)`,
       `t diepte  ${fmtSeeger(result.t)} mm  0 / +${fmtSeeger3(result.tPlus)}`,
     ].join("\n");
   }, [d, kind, result]);
@@ -54,9 +59,10 @@ export function SeegerCalc() {
         </h2>
         <Note>
           Nominale seegerringmaten, geen bereik. As = DIN 471 (d₂ h11, kleiner
-          dan d₁), boring = DIN 472 (d₂ H11, groter). b is groefbreedte H13. t
-          is nominaal |d₁ − d₂| / 2; de dieptetol. 0 / +IT11/2 volgt uit d₂
-          (dieper mag, ondieper niet).
+          dan d₁), boring = DIN 472 (d₂ H11, groter). b is groefbreedte H13 uit
+          een werkplaatstabel — kan afwijken van de officiële DIN. t is nominaal
+          |d₁ − d₂| / 2; de dieptetol. 0 / +IT11/2 volgt uit d₂ (dieper mag,
+          ondieper niet).
         </Note>
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
           <Field label="Ø d₁ (mm)">
@@ -72,11 +78,11 @@ export function SeegerCalc() {
             </SelectInput>
           </Field>
         </div>
-        {diameter === "" ? (
+        {parsed.status === "empty" ? (
           <p className="mt-5 text-sm text-muted">Vul een nominale Ø in.</p>
-        ) : Number.isNaN(d) ? (
+        ) : parsed.status === "fraction" ? (
           <p className="mt-5 text-sm text-muted">
-            Vul een Ø in hele millimeters in.
+            Alleen hele millimeters. Seegerringen zijn nominale maten, geen bereik.
           </p>
         ) : !row ? (
           <p className="mt-5 text-sm text-muted">
@@ -97,13 +103,20 @@ export function SeegerCalc() {
             <ResultGrid
               items={[
                 { label: "d₂ groef", value: `${fmtSeeger(result.d2)} mm ${result.d2Class}` },
-                { label: "b breedte", value: `${fmtSeeger(result.b)} mm H13` },
+                {
+                  label: "b breedte (werkplaatstabel)",
+                  value: `${fmtSeeger(result.b)} mm H13`,
+                },
                 {
                   label: "t diepte",
                   value: `${fmtSeeger(result.t)} mm  0 / +${fmtSeeger3(result.tPlus)}`,
                 },
               ]}
             />
+            <p className="mt-4 text-sm leading-relaxed text-muted">
+              Breedte b komt uit een werkplaatstabel, niet uit de officiële
+              DIN-pdf. Voor productiewerk b in DIN 471/472 controleren.
+            </p>
             <CopyResult text={copy} />
           </>
         )}
@@ -161,8 +174,8 @@ export function SeegerCalc() {
           </table>
         </div>
         <p className="mt-4 text-xs leading-relaxed text-subtle">
-          Bron: werkplaatstabel seegerringgroef (DIN 471 as, DIN 472 boring),
-          o.a.{" "}
+          Bron: werkplaatstabel seegerringgroef (samenvatting van DIN 471 as /
+          DIN 472 boring), o.a.{" "}
           <a
             href="https://verspanenmuzo.wordpress.com/2015/02/24/seegerring-groef-tabbel/"
             className="text-accent hover:underline"
@@ -171,10 +184,11 @@ export function SeegerCalc() {
           >
             verspanen-metaal
           </a>
-          . b = groefbreedte H13. t = |d₁ − d₂| / 2 (nominaal). d₂ as = h11, d₂
-          boring = H11: t wordt daardoor 0 / +IT11/2 — dieper mag, ondieper
-          niet. Geen n-min. (schouder). Controleer kritieke maten in de actuele
-          DIN.
+          . b = groefbreedte H13 uit die tabel — niet 1:1 overnemen uit de
+          officiële DIN zonder check. t = |d₁ − d₂| / 2 (nominaal). d₂ as =
+          h11, d₂ boring = H11: t wordt daardoor 0 / +IT11/2 — dieper mag,
+          ondieper niet. Geen n-min. (schouder). Controleer kritieke maten in de
+          actuele DIN.
         </p>
       </section>
     </>

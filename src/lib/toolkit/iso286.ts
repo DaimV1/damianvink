@@ -1,12 +1,12 @@
 import { mmFromUm } from "@/lib/utils";
 
 export const BANDS = [
-  { over: 3, to: 6, label: "3–6" },
-  { over: 6, to: 10, label: "6–10" },
-  { over: 10, to: 18, label: "10–18" },
-  { over: 18, to: 30, label: "18–30" },
-  { over: 30, to: 40, label: "30–40" },
-  { over: 40, to: 50, label: "40–50" },
+  { over: 3, to: 6, label: "boven 3 t/m 6" },
+  { over: 6, to: 10, label: "boven 6 t/m 10" },
+  { over: 10, to: 18, label: "boven 10 t/m 18" },
+  { over: 18, to: 30, label: "boven 18 t/m 30" },
+  { over: 30, to: 40, label: "boven 30 t/m 40" },
+  { over: 40, to: 50, label: "boven 40 t/m 50" },
 ] as const;
 
 export const HOLE: Record<string, { ES: number[]; EI: number[] }> = {
@@ -98,7 +98,7 @@ export const FITS = [
     hole: "H7",
     shaft: "p6",
     kind: "lijn" as FitKind,
-    use: "Lichte perspassing. Naven op assen; uitlijning zonder speling. Tot 18 mm is max. speling 0 µm (lijnpassing mogelijk).",
+    use: "Lichte perspassing. Tot 18 mm max. speling 0 µm (lijnpassing mogelijk). Daarboven altijd overmaat.",
   },
   {
     id: "H7/s6",

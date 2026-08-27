@@ -61,11 +61,30 @@ export type ToolId = (typeof TOOLS)[number]["id"];
 
 export const DIAMETER_KEY = "toolkit-diameter";
 
-export function readStoredDiameter(fallback = "20") {
-  if (typeof window === "undefined") return fallback;
+export function readStoredDiameter({
+  min,
+  max,
+  fallback = "20",
+}: {
+  min?: number;
+  max?: number;
+  fallback?: string;
+} = {}) {
+  if (typeof window === "undefined") {
+    return inRange(fallback, min, max) ? fallback : "";
+  }
   const raw = sessionStorage.getItem(DIAMETER_KEY);
-  if (raw && /^\d{1,4}$/.test(raw)) return raw;
-  return fallback;
+  if (raw && /^\d{1,4}$/.test(raw) && inRange(raw, min, max)) return raw;
+  if (inRange(fallback, min, max)) return fallback;
+  return "";
+}
+
+function inRange(raw: string, min?: number, max?: number) {
+  const n = Number.parseInt(raw, 10);
+  if (!Number.isFinite(n)) return false;
+  if (min != null && n < min) return false;
+  if (max != null && n > max) return false;
+  return true;
 }
 
 export function storeDiameter(value: string) {

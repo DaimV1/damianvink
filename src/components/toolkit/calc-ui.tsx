@@ -40,6 +40,29 @@ export function Field({
 const controlClass =
   "h-12 w-full rounded-md border border-line-strong bg-paper px-3 font-mono text-base text-ink tabular-nums outline-none transition-[border-color,box-shadow] duration-150 focus:border-accent focus:ring-2 focus:ring-accent/30";
 
+/** Keep one decimal separator visible so 20,5 does not become 205. */
+export function sanitizeDiameterInput(raw: string) {
+  let v = raw.replace(/[^\d.,]/g, "");
+  const sep = v.search(/[.,]/);
+  if (sep >= 0) {
+    const mark = v[sep];
+    v = v.slice(0, sep + 1) + v.slice(sep + 1).replace(/[.,]/g, "");
+    const [head, tail = ""] = v.split(mark);
+    return `${head.slice(0, 4)}${mark}${tail.slice(0, 2)}`;
+  }
+  return v.slice(0, 4);
+}
+
+export function parseWholeMm(raw: string): { status: "empty" } | { status: "fraction" } | { status: "ok"; mm: number } {
+  const t = raw.trim();
+  if (t === "") return { status: "empty" };
+  const n = t.replace(",", ".");
+  if (!/^\d+(\.0*)?$/.test(n)) return { status: "fraction" };
+  const mm = Number.parseInt(n, 10);
+  if (!Number.isFinite(mm)) return { status: "fraction" };
+  return { status: "ok", mm };
+}
+
 export function NumInput({
   value,
   onChange,
@@ -53,15 +76,12 @@ export function NumInput({
     <input
       id={id}
       type="text"
-      inputMode="numeric"
+      inputMode="decimal"
       autoComplete="off"
       spellCheck={false}
       value={value}
       onFocus={(e) => e.currentTarget.select()}
-      onChange={(e) => {
-        const v = e.target.value.replace(",", ".").replace(/[^\d]/g, "");
-        onChange(v);
-      }}
+      onChange={(e) => onChange(sanitizeDiameterInput(e.target.value))}
       className={controlClass}
     />
   );
