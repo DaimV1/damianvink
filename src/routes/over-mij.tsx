@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/over-mij")({
   head: () =>
     pageHead({
-      title: "Wie ik ben — Damian Vink",
+      title: "Over — Damian Vink",
       description:
         "Damian Vink, Project Engineer bij Protakt. Achtergrond in werktuigbouwkunde en machinebouw. Loopbaan, opleiding Hogeschool Rotterdam en CV.",
       path: "/over-mij",
@@ -62,11 +62,11 @@ function OverMij() {
   return (
     <SiteShell>
       <PageWrap>
-        <Breadcrumb items={[{ label: "Wie ik ben" }]} />
+        <Breadcrumb items={[{ label: "Over" }]} />
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">
-          Wie ik ben
+          Over
         </p>
-        <DisplayTitle before="Wie ik" last="ben." className="mt-3" />
+        <DisplayTitle before="Over" last="mij." className="mt-3" />
         <div className="mt-8 space-y-4 text-lg leading-relaxed text-muted">
           <p className="text-ink">
             Ik ben Damian Vink, Project Engineer met een achtergrond in
@@ -83,9 +83,9 @@ function OverMij() {
             uitwerking en realisatie.
           </p>
           <p>
-            Naast mijn werk gebruik ik deze website om wat ik denk en onderwerpen
-            te verzamelen — onder meer een engineering toolkit en een persoonlijk
-            marathonlogboek.
+            Op deze site staan een engineering toolkit voor machinebouw
+            (passingen, spiebanen, CAD-bronnen) en een trainingslogboek voor de
+            EDP Porto Marathon 2026.
           </p>
         </div>
 

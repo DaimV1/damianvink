@@ -9,7 +9,7 @@ export const Route = createFileRoute("/denk/blog")({
     pageHead({
       title: "Blog — Damian Vink",
       description:
-        "Artikelen van Damian Vink over werktuigbouwkunde, ontwerp en wat hij onderweg leert. Nog geen stukken gepubliceerd.",
+        "Nog geen artikelen. Stukken over werktuigbouwkunde en ontwerp, als ze er zijn.",
       path: "/denk/blog",
       noindex: true,
     }),
@@ -22,21 +22,21 @@ function Blog() {
       <PageWrap>
         <Breadcrumb
           items={[
-            { href: "/denk", label: "Wat ik denk" },
+            { href: "/denk", label: "Artikelen" },
             { label: "Blog" },
           ]}
         />
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">
-          Wat ik denk
+          Artikelen
         </p>
         <DisplayTitle last="Blog." className="mt-3" />
         <p className="mt-5 text-lg leading-relaxed text-muted">
-          Artikelen over werktuigbouwkunde, ontwerp en wat ik onderweg leer.
+          Nog geen artikelen.
         </p>
         <div className="mt-10 rounded-xl border border-dashed border-line-strong bg-elevated px-6 py-12 text-center">
           <p className="font-display text-xl font-semibold">Nog geen artikelen</p>
           <p className="mt-2 text-sm text-muted">
-            Hier komen alleen stukken die ik zelf schrijf.
+            Hier komen stukken over werktuigbouwkunde en ontwerp, als ze er zijn.
           </p>
         </div>
       </PageWrap>
