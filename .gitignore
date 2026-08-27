@@ -1,0 +1,17 @@
+node_modules
+dist
+.output
+.vercel
+.tanstack
+.nitro
+.wrangler
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+screenshots
+artifacts
+.grok
+.node_modules.lock
+public/__grok
