@@ -88,7 +88,7 @@ export function ProjectWorkspace({
       {panel === "issues" ? <IssuesPanel project={project} setProject={setProject} /> : null}
       {panel === "wijzigingen" ? <ChangesPanel project={project} setProject={setProject} /> : null}
       {panel === "poort" ? <GatePanel project={project} setProject={setProject} /> : null}
-      {panel === "templates" ? <TemplatesPanel projectName={project.name} /> : null}
+      {panel === "templates" ? <TemplatesPanel project={project} setProject={setProject} /> : null}
 
       <div className="flex flex-wrap items-center justify-between gap-3 border-t border-line pt-4">
         <p className="text-xs text-subtle">Staat in deze browser. Geen account, geen server.</p>
