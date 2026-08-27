@@ -1,8 +1,12 @@
 import { emptyWorkspace, type Project, type Workspace } from "./model.ts";
 
+export function isUntitled(p: Project) {
+  return !p.name.trim();
+}
+
 export function isBlankProject(p: Project) {
   return (
-    !p.name.trim() &&
+    isUntitled(p) &&
     !p.sponsor.trim() &&
     !p.manager.trim() &&
     !p.result.trim() &&
@@ -37,21 +41,20 @@ function pickKept(candidates: Project[], activeId: string) {
 
 export function pruneWorkspace<T extends Workspace>(ws: T): T {
   const all = Object.values(ws.projects);
-  if (all.length <= 1) return ws;
+  if (!all.length) return { ...ws, ...emptyWorkspace() };
+  if (all.length === 1) return ws;
 
-  const filled = all.filter((p) => !isBlankProject(p) && !isStockSample(p));
-  const blanks = all.filter(isBlankProject);
+  const untitled = all.filter(isUntitled);
   const samples = all.filter(isStockSample);
+  const named = all.filter((p) => !isUntitled(p) && !isStockSample(p));
 
-  const kept: Project[] = [...filled];
+  const kept: Project[] = [...named];
   if (samples.length) kept.push(pickKept(samples, ws.activeId));
-  if (blanks.length && !kept.some(isBlankProject)) kept.push(pickKept(blanks, ws.activeId));
+  if (untitled.length) kept.push(pickKept(untitled, ws.activeId));
 
   const projects: Record<string, Project> = {};
   for (const p of kept) projects[p.id] = p;
   const ids = Object.keys(projects);
-  if (!ids.length) return { ...ws, ...emptyWorkspace() };
-
   const activeId = projects[ws.activeId] ? ws.activeId : ids[0];
   return { ...ws, activeId, projects };
 }

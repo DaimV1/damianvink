@@ -10,7 +10,7 @@ import {
   phaseChecks,
   sampleProject,
 } from "./model.ts";
-import { isBlankProject, isStockSample, pruneWorkspace } from "./workspace-ops.ts";
+import { isBlankProject, isStockSample, isUntitled, pruneWorkspace } from "./workspace-ops.ts";
 
 describe("pm workspace model", () => {
   it("migrates a v1 project object into a workspace", () => {
@@ -63,9 +63,9 @@ describe("pm workspace model", () => {
 });
 
 describe("workspace prune", () => {
-  it("collapses extra blank projects to one", () => {
-    const a = emptyProject();
-    const b = emptyProject();
+  it("collapses extra untitled projects even when other fields are filled", () => {
+    const a = emptyProject({ sponsor: "Plant" });
+    const b = emptyProject({ manager: "PM" });
     const named = emptyProject({ name: "Perscel" });
     const ws = pruneWorkspace({
       version: 2,
@@ -75,7 +75,8 @@ describe("workspace prune", () => {
     assert.equal(Object.keys(ws.projects).length, 2);
     assert.ok(ws.projects[named.id]);
     assert.ok(ws.projects[b.id]);
-    assert.equal(ws.activeId, b.id);
+    assert.equal(ws.projects[a.id], undefined);
+    assert.equal(isUntitled(a), true);
   });
 
   it("keeps one stock sample", () => {
