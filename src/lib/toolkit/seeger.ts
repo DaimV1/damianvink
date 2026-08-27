@@ -69,13 +69,41 @@ export function lookupSeeger(d1: number) {
   return SEEGER.find((row) => row.d1 === d1) ?? null;
 }
 
+/** ISO 286-1 IT11 in mm, for the groove diameter d₂. */
+export function it11(d: number) {
+  if (d <= 3) return 0.06;
+  if (d <= 6) return 0.075;
+  if (d <= 10) return 0.09;
+  if (d <= 18) return 0.11;
+  if (d <= 30) return 0.13;
+  if (d <= 50) return 0.16;
+  if (d <= 80) return 0.19;
+  return 0.22;
+}
+
+/** t 0 / +IT11/2 — dieper mag (d₂ h11 as, H11 boring), ondieper niet. */
+export function depthPlus(d2: number) {
+  return Math.round((it11(d2) / 2) * 1000) / 1000;
+}
+
 export function seegerFor(row: SeegerRow, kind: SeegerKind) {
   const d2 = kind === "as" ? row.d2as : row.d2bor;
   if (d2 == null) return null;
-  return { d2, b: row.b, t: grooveDepth(row.d1, d2) };
+  const t = grooveDepth(row.d1, d2);
+  return {
+    d2,
+    b: row.b,
+    t,
+    d2Class: kind === "as" ? "h11" : "H11",
+    tPlus: depthPlus(d2),
+  };
 }
 
 export function fmtSeeger(n: number) {
   const digits = Number.isInteger(n) ? 0 : Math.round(n * 10) === n * 10 ? 1 : 2;
   return n.toFixed(digits).replace(".", ",");
+}
+
+export function fmtSeeger3(n: number) {
+  return n.toFixed(3).replace(".", ",").replace(/0+$/, "").replace(/,$/, ",0");
 }

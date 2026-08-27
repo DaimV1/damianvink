@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import {
   SEEGER,
   fmtSeeger,
+  fmtSeeger3,
   grooveDepth,
   lookupSeeger,
   seegerFor,
@@ -36,9 +37,9 @@ export function SeegerCalc() {
     const norm = kind === "as" ? "DIN 471" : "DIN 472";
     return [
       `Seegerring ${where} Ø ${d} mm · ${norm}`,
-      `d₂ groef  ${fmtSeeger(result.d2)} mm`,
+      `d₂ groef  ${fmtSeeger(result.d2)} mm ${result.d2Class}`,
       `b breedte  ${fmtSeeger(result.b)} mm (H13)`,
-      `t diepte  ${fmtSeeger(result.t)} mm`,
+      `t diepte  ${fmtSeeger(result.t)} mm  0 / +${fmtSeeger3(result.tPlus)}`,
     ].join("\n");
   }, [d, kind, result]);
 
@@ -52,9 +53,10 @@ export function SeegerCalc() {
           Groef bij Ø
         </h2>
         <Note>
-          Nominale seegerringmaten, geen bereik. As = DIN 471 (d₂ kleiner dan
-          d₁), boring = DIN 472 (d₂ groter). b is groefbreedte H13. t =
-          |d₁ − d₂| / 2.
+          Nominale seegerringmaten, geen bereik. As = DIN 471 (d₂ h11, kleiner
+          dan d₁), boring = DIN 472 (d₂ H11, groter). b is groefbreedte H13. t
+          is nominaal |d₁ − d₂| / 2; de dieptetol. 0 / +IT11/2 volgt uit d₂
+          (dieper mag, ondieper niet).
         </Note>
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
           <Field label="Ø d₁ (mm)">
@@ -94,9 +96,12 @@ export function SeegerCalc() {
             </p>
             <ResultGrid
               items={[
-                { label: "d₂ groef", value: `${fmtSeeger(result.d2)} mm` },
+                { label: "d₂ groef", value: `${fmtSeeger(result.d2)} mm ${result.d2Class}` },
                 { label: "b breedte", value: `${fmtSeeger(result.b)} mm H13` },
-                { label: "t diepte", value: `${fmtSeeger(result.t)} mm` },
+                {
+                  label: "t diepte",
+                  value: `${fmtSeeger(result.t)} mm  0 / +${fmtSeeger3(result.tPlus)}`,
+                },
               ]}
             />
             <CopyResult text={copy} />
@@ -166,8 +171,10 @@ export function SeegerCalc() {
           >
             verspanen-metaal
           </a>
-          . b = groefbreedte H13. t = |d₁ − d₂| / 2. Geen n-min. (schouder).
-          Controleer kritieke maten in de actuele DIN.
+          . b = groefbreedte H13. t = |d₁ − d₂| / 2 (nominaal). d₂ as = h11, d₂
+          boring = H11: t wordt daardoor 0 / +IT11/2 — dieper mag, ondieper
+          niet. Geen n-min. (schouder). Controleer kritieke maten in de actuele
+          DIN.
         </p>
       </section>
     </>

@@ -32,7 +32,11 @@ function SeegerPage() {
           },
           {
             q: "Hoe volgt t uit de tabel?",
-            a: "t is de groefdiepte: |d₁ − d₂| / 2. Bij Ø 20 mm as is d₂ = 19 mm, dus t = 0,5 mm. b is de groefbreedte, H13.",
+            a: "t is de nominale groefdiepte: |d₁ − d₂| / 2. Bij Ø 20 mm as is d₂ = 19 mm, dus t = 0,5 mm.",
+          },
+          {
+            q: "Zit er tolerantie op de groefdiepte?",
+            a: "DIN geeft t als rekenmaat bij nominale d₁/d₂. De maattolerantie zit op d₂: h11 op de as, H11 in de boring. t wordt daardoor 0 / +IT11/2 (bij Ø 20 as: 0 / +0,065 mm). Dieper mag, ondieper niet — anders staat de ring bol. Breedte b is H13.",
           },
           {
             q: "Waarom ontbreekt Ø 23 mm?",
