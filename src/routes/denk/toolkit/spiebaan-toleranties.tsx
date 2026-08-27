@@ -11,7 +11,7 @@ const DESCRIPTION =
 export const Route = createFileRoute("/denk/toolkit/spiebaan-toleranties")({
   head: () =>
     pageHead({
-      title: "Spiebaan-toleranties (DIN 6885) — Damian Vink",
+      title: "Spiebaan-toleranties DIN 6885 (t1/t2) — Damian Vink",
       description: DESCRIPTION,
       path: "/denk/toolkit/spiebaan-toleranties",
     }),
@@ -23,8 +23,7 @@ function SpiebaanPage() {
     <ToolkitFrame
       active="spiebaan"
       crumbs={[
-        { href: "/denk", label: "Wat ik denk" },
-        { href: "/denk/toolkit", label: "Engineering toolkit" },
+        { href: "/denk/toolkit", label: "Toolkit" },
         { label: "Spiebaan-toleranties" },
       ]}
       before="Spiebaan-toleranties"

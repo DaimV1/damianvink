@@ -11,7 +11,7 @@ const DESCRIPTION =
 export const Route = createFileRoute("/denk/toolkit/passingen")({
   head: () =>
     pageHead({
-      title: "Passingen (ISO 286) — Damian Vink",
+      title: "Passingen ISO 286 (H7/g6, JS7) — Damian Vink",
       description: DESCRIPTION,
       path: "/denk/toolkit/passingen",
     }),
@@ -23,8 +23,7 @@ function PassingenPage() {
     <ToolkitFrame
       active="passingen"
       crumbs={[
-        { href: "/denk", label: "Wat ik denk" },
-        { href: "/denk/toolkit", label: "Engineering toolkit" },
+        { href: "/denk/toolkit", label: "Toolkit" },
         { label: "Passingen" },
       ]}
       before="Passingen"

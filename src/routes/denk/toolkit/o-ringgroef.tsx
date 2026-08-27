@@ -6,12 +6,12 @@ import { ToolkitFrame } from "@/components/toolkit/toolkit-frame";
 import { pageHead, softwareJsonLd } from "@/lib/seo";
 
 const DESCRIPTION =
-  "O-ringgroef volgens ISO 3601. Koorden 1,80–7,00 mm: groefdiepte t en breedte b, radiaal en axiaal.";
+  "O-ringgroef volgens ISO 3601. Koorden 1,80–7,00 mm: groefdiepte t en breedte b, radiaal en axiaal. Rekenhulp plus naslagtabel.";
 
 export const Route = createFileRoute("/denk/toolkit/o-ringgroef")({
   head: () =>
     pageHead({
-      title: "O-ringgroef — Damian Vink",
+      title: "O-ringgroef ISO 3601 — Damian Vink",
       description: DESCRIPTION,
       path: "/denk/toolkit/o-ringgroef",
     }),
@@ -23,8 +23,7 @@ function OringPage() {
     <ToolkitFrame
       active="oring"
       crumbs={[
-        { href: "/denk", label: "Wat ik denk" },
-        { href: "/denk/toolkit", label: "Engineering toolkit" },
+        { href: "/denk/toolkit", label: "Toolkit" },
         { label: "O-ringgroef" },
       ]}
       before="O-ring"
