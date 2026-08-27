@@ -8,21 +8,26 @@ import {
   Field,
   Note,
   NumInput,
+  parseWholeMm,
   ResultGrid,
   SelectInput,
 } from "./calc-ui";
 
 export function LagerCalc() {
-  const [diameter, setDiameter] = useState(() => readStoredDiameter());
+  const [diameter, setDiameter] = useState(() =>
+    readStoredDiameter({ min: 4, max: 50 }),
+  );
   const [rot, setRot] = useState("binnen");
   const [load, setLoad] = useState("normaal");
-  const d = diameter === "" ? NaN : parseInt(diameter, 10);
+  const parsed = parseWholeMm(diameter);
+  const d = parsed.status === "ok" ? parsed.mm : Number.NaN;
   const stil = rot === "stil";
-  const result = !Number.isNaN(d) ? computeBearing(d, rot, load) : null;
+  const result = parsed.status === "ok" ? computeBearing(d, rot, load) : null;
 
   function onDia(v: string) {
     setDiameter(v);
-    storeDiameter(v);
+    const next = parseWholeMm(v);
+    if (next.status === "ok") storeDiameter(String(next.mm));
   }
 
   const copy = useMemo(() => {
@@ -95,10 +100,12 @@ export function LagerCalc() {
             </SelectInput>
           </Field>
         </div>
-        {diameter === "" ? (
+        {parsed.status === "empty" ? (
           <p className="mt-5 text-sm text-muted">Vul een as-Ø in.</p>
-        ) : Number.isNaN(d) ? (
-          <p className="mt-5 text-sm text-muted">Vul een as-Ø in hele millimeters in.</p>
+        ) : parsed.status === "fraction" ? (
+          <p className="mt-5 text-sm text-muted">
+            Alleen hele millimeters. {diameter} mm valt niet in de SKF-rijen tot 50 mm.
+          </p>
         ) : !result ? (
           <p className="mt-5 text-sm text-muted">
             Geen SKF-rij voor Ø {d} mm. Rekenhulp: 4 t/m 50 mm.
