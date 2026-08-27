@@ -2,7 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { DisplayTitle } from "@/components/display-title";
 import { PageWrap, SiteShell } from "@/components/site-shell";
 import { Breadcrumb } from "@/components/toolkit/tool-switcher";
-import { TOOLS } from "@/lib/toolkit/tools";
 
 export const Route = createFileRoute("/denk/")({
   head: () => ({ meta: [{ title: "Wat ik denk — Damian Vink" }] }),
@@ -19,54 +18,30 @@ function Denk() {
         </p>
         <DisplayTitle before="Wat ik" last="denk." className="mt-3" />
         <p className="mt-5 text-lg leading-relaxed text-muted">
-          Drie sporen: naslag tijdens ontwerp, een projectwerkplek tijdens de rit,
-          en artikelen wanneer die er zijn.
+          Artikelen en later een podcast. Alleen stukken die ik zelf maak.
         </p>
         <div className="mt-10 space-y-3">
-          <Link
-            to="/denk/toolkit"
-            className="block rounded-lg border border-line bg-elevated p-5 transition-colors hover:border-line-strong"
-          >
-            <p className="font-mono text-xs text-accent">01</p>
-            <h2 className="mt-1 font-display text-xl font-semibold">
-              Engineering toolkit
-            </h2>
-            <p className="mt-1 text-sm text-muted">
-              Passingen, spiebanen, lagerpassingen en CAD-bronnen.
-            </p>
-          </Link>
-          <Link
-            to="/denk/project"
-            className="block rounded-lg border border-line bg-elevated p-5 transition-colors hover:border-line-strong"
-          >
-            <p className="font-mono text-xs text-accent">02</p>
-            <h2 className="mt-1 font-display text-xl font-semibold">
-              Projectwerkplek
-            </h2>
-            <p className="mt-1 text-sm text-muted">
-              Fasen, stakeholders, risico’s, issues en het beslispunt.
-            </p>
-          </Link>
           <Link
             to="/denk/blog"
             className="block rounded-lg border border-line bg-elevated p-5 transition-colors hover:border-line-strong"
           >
-            <p className="font-mono text-xs text-accent">03</p>
+            <p className="font-mono text-xs text-accent">01</p>
             <h2 className="mt-1 font-display text-xl font-semibold">Blog</h2>
             <p className="mt-1 text-sm text-muted">
               Artikelen. Nog geen stukken gepubliceerd.
             </p>
           </Link>
+          <Link
+            to="/denk/podcast"
+            className="block rounded-lg border border-line bg-elevated p-5 transition-colors hover:border-line-strong"
+          >
+            <p className="font-mono text-xs text-accent">02</p>
+            <h2 className="mt-1 font-display text-xl font-semibold">Podcast</h2>
+            <p className="mt-1 text-sm text-muted">
+              Afleveringen. Nog geen episodes gepubliceerd.
+            </p>
+          </Link>
         </div>
-        <ul className="mt-8 space-y-2">
-          {TOOLS.map((tool) => (
-            <li key={tool.id}>
-              <Link to={tool.href} className="text-sm text-accent hover:underline">
-                {tool.title} ({tool.standard}) →
-              </Link>
-            </li>
-          ))}
-        </ul>
       </PageWrap>
     </SiteShell>
   );
