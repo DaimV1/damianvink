@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Card, Field, Select, TextInput, Area } from "@/components/pm/fields";
 import { Button } from "@/components/ui/button";
 import {
-  PHASES, gateBrief, nextPhase, openCount, riskScore, topRisks, uid,
+  PHASES, gateBlockers, gateBrief, nextPhase, openCount, riskScore, topRisks, uid,
   type DecisionKind, type Project,
 } from "@/lib/pm/model";
 
@@ -18,8 +18,11 @@ export function GatePanel({
   const nxt = nextPhase(project.phase);
   const phase = PHASES.find((p) => p.id === project.phase)!;
   const brief = gateBrief(project);
+  const blockers = gateBlockers(project);
+  const canGo = blockers.length === 0;
 
   function record(decision: DecisionKind) {
+    if (decision === "go" && !canGo) return;
     setProject((p) => ({
       ...p,
       decisions: [...p.decisions, {
@@ -48,6 +51,15 @@ export function GatePanel({
     <div className="grid gap-4">
       <Card title={`Beslispunt · ${phase.label}`}>
         <p className="text-sm text-muted">{phase.result}. Dit is het A4’tje voor de stuurgroep.</p>
+        {blockers.length ? (
+          <ul className="mt-3 space-y-1 text-sm text-ink">
+            {blockers.map((b) => (
+              <li key={b}><span className="font-mono text-xs text-accent">blok</span> {b}</li>
+            ))}
+          </ul>
+        ) : (
+          <p className="mt-3 text-sm text-muted">Geen harde blockers. Je kunt een go voorleggen.</p>
+        )}
         <div className="mt-4 grid gap-3 sm:grid-cols-3">
           {topRisks(project.risks, 3).map((r) => (
             <div key={r.id} className="rounded-md border border-line p-3 text-sm">
@@ -74,7 +86,7 @@ export function GatePanel({
         </div>
         <Field label="Toelichting" className="mt-4"><Area value={notes} onChange={(e) => setNotes(e.target.value)} /></Field>
         <div className="mt-4 flex flex-wrap gap-2">
-          <Button onClick={() => record("go")} disabled={!nxt && project.phase !== "afsluiting"}>
+          <Button onClick={() => record("go")} disabled={!canGo || (!nxt && project.phase !== "afsluiting")}>
             {nxt ? `Go naar ${PHASES.find((p) => p.id === nxt)?.label}` : "Go vastleggen"}
           </Button>
           <Button variant="secondary" onClick={() => record("bijsturen")}>Bijsturen</Button>
