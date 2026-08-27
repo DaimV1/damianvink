@@ -1,6 +1,8 @@
 import { Check, Copy } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
+import { JsonLd } from "@/components/json-ld";
+import { faqJsonLd } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 export function CalcPanel({
@@ -175,6 +177,7 @@ export function Faq({
 }) {
   return (
     <section className="mt-12">
+      <JsonLd data={faqJsonLd(items)} />
       <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
         Vragen
       </h2>
