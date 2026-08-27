@@ -8,6 +8,8 @@ import { AuthProvider } from "@/lib/auth/provider";
 import { ThemeProvider } from "@/lib/theme";
 import { PreviewHostBridge } from "@/components/preview-host-bridge";
 import { JsonLd } from "@/components/json-ld";
+import { PageWrap, SiteShell } from "@/components/site-shell";
+import { VinkRun } from "@/components/vink-run";
 import { AppErrorComponent } from "@/lib/error-component";
 import {
   DEFAULT_DESCRIPTION,
@@ -82,25 +84,33 @@ function RootDocument() {
 
 function NotFound() {
   return (
-    <div
-      id="inhoud"
-      className="flex min-h-dvh flex-col items-center justify-center bg-paper px-6 text-center text-ink"
-    >
-      <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">404</p>
-      <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight">
-        Pagina niet <span className="text-accent">gevonden.</span>
-      </h1>
-      <p className="mt-3 max-w-md text-muted">
-        Dit pad bestaat niet. Terug naar home, of naar de engineering toolkit.
-      </p>
-      <div className="mt-6 flex flex-wrap justify-center gap-4">
-        <a href="/" className="text-sm text-accent hover:underline">
-          Home
-        </a>
-        <a href="/denk/toolkit" className="text-sm text-accent hover:underline">
-          Toolkit
-        </a>
-      </div>
-    </div>
+    <SiteShell>
+      <PageWrap>
+        <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">404</p>
+        <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight">
+          Pagina niet <span className="text-accent">gevonden.</span>
+        </h1>
+        <p className="mt-3 max-w-md text-muted">
+          Dit pad bestaat niet. Terwijl je hier bent: Vink rent door.
+        </p>
+        <div className="mt-6 flex flex-wrap gap-4">
+          <a href="/" className="text-sm text-accent hover:underline">
+            Home
+          </a>
+          <a href="/denk/toolkit" className="text-sm text-accent hover:underline">
+            Toolkit
+          </a>
+          <a href="/spel" className="text-sm text-accent hover:underline">
+            Vink vliegt
+          </a>
+        </div>
+        <div className="mt-10">
+          <VinkRun />
+        </div>
+        <p className="mt-4 text-xs text-subtle">
+          Eigen runner. Zelfde Vink, zelfde raster. Geen Chrome-sprites.
+        </p>
+      </PageWrap>
+    </SiteShell>
   );
 }
