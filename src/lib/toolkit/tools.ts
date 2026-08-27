@@ -5,6 +5,8 @@ export const TOOLS = [
     short: "Passingen",
     title: "Passingen",
     standard: "ISO 286",
+    kind: "rekenhulp",
+    related: ["lager"],
     blurb: "Voorkeurpassingen tot Ø 50 mm. JS7 = ±IT7/2, niet afgerond.",
   },
   {
@@ -13,6 +15,8 @@ export const TOOLS = [
     short: "Spiebaan",
     title: "Spiebaan-toleranties",
     standard: "DIN 6885",
+    kind: "rekenhulp",
+    related: ["passingen"],
     blurb: "Spiemaat, t₁/t₂. As-Ø: boven de ondergrens t/m de bovengrens.",
   },
   {
@@ -21,6 +25,8 @@ export const TOOLS = [
     short: "Lager",
     title: "Lagerpassingen",
     standard: "SKF · ISO 286",
+    kind: "rekenhulp",
+    related: ["passingen"],
     blurb: "Groefkogellagers: vast/los, SKF-klassen tot Ø 50 mm.",
   },
   {
@@ -29,6 +35,8 @@ export const TOOLS = [
     short: "Seeger",
     title: "Seegerringgroef",
     standard: "DIN 471 / 472",
+    kind: "rekenhulp",
+    related: ["oring"],
     blurb: "Groef d₂, breedte b en diepte t op as of in boring, tot Ø 100 mm.",
   },
   {
@@ -37,6 +45,8 @@ export const TOOLS = [
     short: "Bouten",
     title: "Bevestigers",
     standard: "ISO 273 · VDI 2230",
+    kind: "rekenhulp",
+    related: ["bronnen"],
     blurb: "M3–M24: doorlaat, zeskant/inbus, aandraaimoment 8.8 / 10.9 / 12.9.",
   },
   {
@@ -45,6 +55,8 @@ export const TOOLS = [
     short: "O-ring",
     title: "O-ringgroef",
     standard: "ISO 3601",
+    kind: "rekenhulp",
+    related: ["seeger"],
     blurb: "ISO-koorden 1,80–7,00 mm: groef t / b, radiaal en axiaal.",
   },
   {
@@ -53,6 +65,8 @@ export const TOOLS = [
     short: "CAD",
     title: "CAD-bibliotheken",
     standard: "Bronnen",
+    kind: "naslag",
+    related: ["bevestigers"],
     blurb: "3D-modellen, componenten, plaatwerk en naslag.",
   },
 ] as const;

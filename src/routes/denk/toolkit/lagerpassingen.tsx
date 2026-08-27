@@ -6,12 +6,12 @@ import { ToolkitFrame } from "@/components/toolkit/toolkit-frame";
 import { pageHead, softwareJsonLd } from "@/lib/seo";
 
 const DESCRIPTION =
-  "Lagerpassingen voor groefkogellagers tot Ø50 mm. SKF-klassen, vast/los, as j6/k5, huis H7. Rekenhulp plus naslag.";
+  "Lagerpassingen voor groefkogellagers tot Ø50 mm. SKF-klassen, vast/los, as j6/k5, huis H7. Rekenhulp plus naslag volgens ISO 286.";
 
 export const Route = createFileRoute("/denk/toolkit/lagerpassingen")({
   head: () =>
     pageHead({
-      title: "Lagerpassingen — Damian Vink",
+      title: "Lagerpassingen SKF / ISO 286 — Damian Vink",
       description: DESCRIPTION,
       path: "/denk/toolkit/lagerpassingen",
     }),
@@ -23,8 +23,7 @@ function LagerPage() {
     <ToolkitFrame
       active="lager"
       crumbs={[
-        { href: "/denk", label: "Wat ik denk" },
-        { href: "/denk/toolkit", label: "Engineering toolkit" },
+        { href: "/denk/toolkit", label: "Toolkit" },
         { label: "Lagerpassingen" },
       ]}
       before="Lager"
@@ -33,10 +32,10 @@ function LagerPage() {
     >
       <JsonLd
         data={softwareJsonLd({
-          name: "Lagerpassingen",
+          name: "Lagerpassingen SKF / ISO 286",
           path: "/denk/toolkit/lagerpassingen",
           description: DESCRIPTION,
-          featureList: ["SKF", "j6", "k5", "H7", "vast/los"],
+          featureList: ["SKF", "ISO 286", "j6", "k5", "H7", "vast/los"],
         })}
       />
       <LagerCalc />

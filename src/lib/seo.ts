@@ -103,3 +103,36 @@ export function softwareJsonLd({
     isAccessibleForFree: true,
   };
 }
+
+export function faqJsonLd(items: { q: string; a: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: { "@type": "Answer", text: item.a },
+    })),
+  };
+}
+
+export function webPageJsonLd({
+  name,
+  path,
+  description,
+}: {
+  name: string;
+  path: string;
+  description: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name,
+    url: absUrl(path),
+    description,
+    inLanguage: "nl-NL",
+    isPartOf: { "@type": "WebSite", name: SITE_NAME, url: `${SITE_ORIGIN}/` },
+    author: { "@type": "Person", name: SITE_NAME, url: `${SITE_ORIGIN}/` },
+  };
+}

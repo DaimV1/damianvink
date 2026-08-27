@@ -11,7 +11,7 @@ const DESCRIPTION =
 export const Route = createFileRoute("/denk/toolkit/seegerring-groef")({
   head: () =>
     pageHead({
-      title: "Seegerringgroef (DIN 471 / 472) — Damian Vink",
+      title: "Seegerringgroef DIN 471 / DIN 472 — Damian Vink",
       description: DESCRIPTION,
       path: "/denk/toolkit/seegerring-groef",
     }),
@@ -23,8 +23,7 @@ function SeegerPage() {
     <ToolkitFrame
       active="seeger"
       crumbs={[
-        { href: "/denk", label: "Wat ik denk" },
-        { href: "/denk/toolkit", label: "Engineering toolkit" },
+        { href: "/denk/toolkit", label: "Toolkit" },
         { label: "Seegerringgroef" },
       ]}
       before="Seegerring"

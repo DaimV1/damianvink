@@ -11,7 +11,7 @@ const DESCRIPTION =
 export const Route = createFileRoute("/denk/toolkit/bevestigers")({
   head: () =>
     pageHead({
-      title: "Bevestigers (ISO 273 / VDI 2230) — Damian Vink",
+      title: "Bevestigers ISO 273 / VDI 2230 — Damian Vink",
       description: DESCRIPTION,
       path: "/denk/toolkit/bevestigers",
     }),
@@ -23,8 +23,7 @@ function FastenerPage() {
     <ToolkitFrame
       active="bevestigers"
       crumbs={[
-        { href: "/denk", label: "Wat ik denk" },
-        { href: "/denk/toolkit", label: "Engineering toolkit" },
+        { href: "/denk/toolkit", label: "Toolkit" },
         { label: "Bevestigers" },
       ]}
       before="Bevesti"

@@ -1,14 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowUpRight } from "lucide-react";
+import { JsonLd } from "@/components/json-ld";
 import { ToolkitFrame } from "@/components/toolkit/toolkit-frame";
-import { pageHead } from "@/lib/seo";
+import { pageHead, webPageJsonLd } from "@/lib/seo";
+
+const DESCRIPTION =
+  "CAD-bibliotheken en naslag voor machinebouw: TraceParts, 3Dfindit, MISUMI, 247 Tailor Steel, SKF, Fabory, ISO OBP.";
 
 export const Route = createFileRoute("/denk/toolkit/bronnen")({
   head: () =>
     pageHead({
-      title: "CAD-bibliotheken — Damian Vink",
-      description:
-        "CAD-bibliotheken en naslag voor machinebouw: TraceParts, 3Dfindit, MISUMI, 247 Tailor Steel, SKF, ISO OBP.",
+      title: "CAD-bibliotheken machinebouw — Damian Vink",
+      description: DESCRIPTION,
       path: "/denk/toolkit/bronnen",
     }),
   component: BronnenPage,
@@ -132,14 +135,20 @@ function BronnenPage() {
     <ToolkitFrame
       active="bronnen"
       crumbs={[
-        { href: "/denk", label: "Wat ik denk" },
-        { href: "/denk/toolkit", label: "Engineering toolkit" },
+        { href: "/denk/toolkit", label: "Toolkit" },
         { label: "CAD-bibliotheken" },
       ]}
       before="CAD-biblio"
       last="theken."
       lede="Sites waar ik CAD-modellen en specificaties vandaan haal. Kant- en plaatwerkrichtlijnen staan bij 247 Tailor Steel. Links openen in een nieuw tabblad."
     >
+      <JsonLd
+        data={webPageJsonLd({
+          name: "CAD-bibliotheken machinebouw",
+          path: "/denk/toolkit/bronnen",
+          description: DESCRIPTION,
+        })}
+      />
       <div className="space-y-10">
         {GROUPS.map((group) => (
           <section key={group.title}>
