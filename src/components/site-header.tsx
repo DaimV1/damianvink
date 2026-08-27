@@ -6,11 +6,10 @@ import { useTheme } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
 const NAV = [
-  { to: "/over-mij", label: "Wie ik ben", match: "/over-mij" },
-  { to: "/doe", label: "Wat ik doe", match: "/doe" },
-  { to: "/heb", label: "Wat ik heb", match: "/heb" },
-  { to: "/denk", label: "Wat ik denk", match: "/denk" },
   { to: "/denk/toolkit", label: "Toolkit", match: "/denk/toolkit" },
+  { to: "/denk/project", label: "Werkplek", match: "/denk/project" },
+  { to: "/doe/marathon", label: "Marathon", match: "/doe/marathon" },
+  { to: "/over-mij", label: "Over", match: "/over-mij" },
   { to: "/contact", label: "Contact", match: "/contact" },
 ] as const;
 
@@ -21,19 +20,8 @@ export function SiteHeader() {
 
   function isActive(item: (typeof NAV)[number]) {
     if (item.to === "/denk/toolkit") return pathname.startsWith("/denk/toolkit");
-    if (item.to === "/denk")
-      return (
-        pathname === "/denk" ||
-        pathname.startsWith("/denk/blog") ||
-        pathname.startsWith("/denk/podcast")
-      );
-    if (item.to === "/heb")
-      return (
-        pathname === "/heb" ||
-        pathname.startsWith("/heb/") ||
-        pathname.startsWith("/denk/project")
-      );
-    if (item.to === "/doe") return pathname.startsWith("/doe");
+    if (item.to === "/denk/project") return pathname.startsWith("/denk/project");
+    if (item.to === "/doe/marathon") return pathname.startsWith("/doe/marathon");
     return pathname === item.match || pathname.startsWith(item.match + "/");
   }
 
