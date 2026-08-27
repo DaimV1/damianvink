@@ -1,16 +1,20 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
+import { planWeekCount } from "./activity.ts";
 import {
+  acceptChange,
+  applyActivityProgress,
   emptyProject,
   gateBlockers,
   itemRef,
   nextAction,
+  overdueIssues,
   parseProject,
   parseWorkspace,
   phaseChecks,
   sampleProject,
 } from "./model.ts";
-import { isBlankProject, isStockSample, isUntitled, pruneWorkspace } from "./workspace-ops.ts";
+import { isBlankProject, isStockSample, isUntitled, pruneWorkspace, startNamedProject } from "./workspace-ops.ts";
 
 describe("pm workspace model", () => {
   it("migrates a v1 project object into a workspace", () => {
@@ -42,11 +46,43 @@ describe("pm workspace model", () => {
     assert.equal(itemRef("R", items, "y"), "R-02");
   });
 
-  it("blocks a go without name and sponsor", () => {
+  it("blocks a go without name, sponsor and phase checks", () => {
     const p = emptyProject();
-    assert.ok(gateBlockers(p).length >= 2);
-    const ready = emptyProject({ name: "X", sponsor: "Y", accepted: true, phase: "afsluiting" });
+    const blockers = gateBlockers(p);
+    assert.ok(blockers.some((b) => b.includes("projectnaam")));
+    assert.ok(blockers.some((b) => b.includes("opdrachtgever")));
+    assert.ok(blockers.some((b) => b.includes("Resultaat")));
+    const ready = emptyProject({
+      name: "X",
+      sponsor: "Y",
+      accepted: true,
+      phase: "afsluiting",
+      handover: "Naar onderhoud",
+      lessons: "Layout eerder bevriezen",
+    });
     assert.deepEqual(gateBlockers(ready), []);
+  });
+
+  it("uses unfinished phase checks as gate blockers", () => {
+    const p = emptyProject({
+      name: "Perscel",
+      sponsor: "Plant",
+      phase: "definitie",
+      result: "Cel",
+      outcome: "Output",
+      goal: "Takt",
+      why: "Ombouw",
+      authority: "5k",
+      stakeholders: [{ id: "s", name: "Plant", influence: 5, interest: 5, note: "" }],
+      risks: [{
+        id: "r", source: "Leverancier", event: "Te laat", effect: "Slip",
+        probability: 2, impact: 2, euro: null, owner: "PM", measure: "",
+        response: "verkleinen", status: "open",
+      }],
+    });
+    const labels = gateBlockers(p);
+    assert.ok(labels.includes("Scope in en uit"));
+    assert.ok(labels.includes("Baseline bevroren"));
   });
 
   it("points next action at the first missing check", () => {
@@ -59,6 +95,51 @@ describe("pm workspace model", () => {
     assert.ok(s.name);
     assert.ok(s.risks.length);
     assert.ok(s.activities.length);
+  });
+
+  it("accepts a change onto the live plan", () => {
+    const p = emptyProject({
+      name: "Lijn",
+      endDate: "2026-06-01",
+      budget: 10000,
+      baselineFrozen: true,
+      baselineEndDate: "2026-06-01",
+      baselineBudget: 10000,
+      scopeIn: "Frame",
+      changes: [{
+        id: "c1", title: "Extra geleiding", scope: "Tweede rail",
+        days: 7, money: 2500, riskNote: "", advice: "go", status: "open",
+      }],
+    });
+    const next = acceptChange(p, "c1");
+    assert.equal(next.endDate, "2026-06-08");
+    assert.equal(next.budget, 12500);
+    assert.match(next.scopeIn, /Tweede rail/);
+    assert.equal(next.changes[0].status, "dicht");
+    assert.equal(p.endDate, "2026-06-01");
+  });
+
+  it("lists overdue open issues", () => {
+    const p = emptyProject({
+      issues: [
+        { id: "a", title: "Layout", owner: "Eng", due: "2026-01-01", status: "open", note: "" },
+        { id: "b", title: "Old closed", owner: "Eng", due: "2026-01-01", status: "dicht", note: "" },
+        { id: "c", title: "Later", owner: "Eng", due: "2026-12-31", status: "open", note: "" },
+      ],
+    });
+    const late = overdueIssues(p, "2026-06-01");
+    assert.deepEqual(late.map((i) => i.id), ["a"]);
+  });
+
+  it("rolls activity percent into project percentDone", () => {
+    const p = emptyProject({
+      activities: [
+        { id: "1", wbs: "1", name: "A", kind: "activiteit", owner: "PM", start: "", end: "", pct: 20 },
+        { id: "2", wbs: "2", name: "B", kind: "activiteit", owner: "PM", start: "", end: "", pct: 40 },
+      ],
+    });
+    const next = applyActivityProgress(p, "1", 80);
+    assert.equal(next.percentDone, 60);
   });
 });
 
@@ -95,5 +176,30 @@ describe("workspace prune", () => {
   it("treats a filled project as not blank", () => {
     assert.equal(isBlankProject(emptyProject({ name: "X" })), false);
     assert.equal(isBlankProject(emptyProject()), true);
+  });
+
+  it("starts a named blank and drops leftover untitled", () => {
+    const blank = emptyProject();
+    const sample = sampleProject();
+    const ws = startNamedProject({
+      version: 2,
+      activeId: blank.id,
+      projects: { [blank.id]: blank, [sample.id]: sample },
+    }, "Perscel 3");
+    const names = Object.values(ws.projects).map((p) => p.name).sort();
+    assert.deepEqual(names, ["Montagelijn module B", "Perscel 3"]);
+    assert.equal(ws.projects[ws.activeId].name, "Perscel 3");
+    assert.equal(isBlankProject(ws.projects[ws.activeId]), false);
+  });
+});
+
+describe("plan horizon", () => {
+  it("follows the live end date instead of a 16-week screenshot", () => {
+    assert.equal(planWeekCount("", "", []), 8);
+    const ten = planWeekCount("2026-01-05", "2026-03-16", []);
+    assert.ok(ten >= 10 && ten <= 12, String(ten));
+    const long = planWeekCount("2026-01-01", "2026-12-01", []);
+    assert.ok(long > 16);
+    assert.ok(long <= 40);
   });
 });
