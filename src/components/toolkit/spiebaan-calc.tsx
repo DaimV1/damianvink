@@ -9,18 +9,23 @@ import {
   KindDot,
   Note,
   NumInput,
+  parseWholeMm,
   ResultGrid,
 } from "./calc-ui";
 
 export function SpiebaanCalc() {
-  const [diameter, setDiameter] = useState(() => readStoredDiameter());
-  const d = diameter === "" ? NaN : parseInt(diameter, 10);
-  const row = !Number.isNaN(d) ? lookupKeyway(d) : null;
+  const [diameter, setDiameter] = useState(() =>
+    readStoredDiameter({ min: 7, max: 110 }),
+  );
+  const parsed = parseWholeMm(diameter);
+  const d = parsed.status === "ok" ? parsed.mm : Number.NaN;
+  const row = parsed.status === "ok" ? lookupKeyway(d) : null;
   const activeLabel = row ? `boven ${row.over} t/m ${row.to}` : "";
 
   function onDia(v: string) {
     setDiameter(v);
-    storeDiameter(v);
+    const next = parseWholeMm(v);
+    if (next.status === "ok") storeDiameter(String(next.mm));
   }
 
   const copy = useMemo(() => {
@@ -52,10 +57,12 @@ export function SpiebaanCalc() {
             <NumInput id="spie-diameter" value={diameter} onChange={onDia} />
           </Field>
         </div>
-        {diameter === "" ? (
+        {parsed.status === "empty" ? (
           <p className="mt-5 text-sm text-muted">Vul een as-Ø in.</p>
-        ) : Number.isNaN(d) ? (
-          <p className="mt-5 text-sm text-muted">Vul een as-Ø in hele millimeters in.</p>
+        ) : parsed.status === "fraction" ? (
+          <p className="mt-5 text-sm text-muted">
+            Alleen hele millimeters. {diameter} mm valt niet in DIN 6885-1.
+          </p>
         ) : !row ? (
           <p className="mt-5 text-sm text-muted">
             Geen rij in DIN 6885-1 voor Ø {d} mm. De tabel begint boven 6 mm tot
