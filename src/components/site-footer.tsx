@@ -6,6 +6,7 @@ const FOOTER = [
   { to: "/heb", label: "Wat ik heb" },
   { to: "/denk", label: "Wat ik denk" },
   { to: "/denk/toolkit", label: "Toolkit" },
+  { to: "/contact", label: "Contact" },
 ] as const;
 
 export function SiteFooter() {
@@ -22,12 +23,6 @@ export function SiteFooter() {
               {item.label}
             </Link>
           ))}
-          <a
-            href="/#contact"
-            className="text-sm text-muted transition-colors duration-150 hover:text-ink"
-          >
-            Contact
-          </a>
         </nav>
         <p className="font-mono text-xs text-subtle">
           © {new Date().getFullYear()} Damian Vink
