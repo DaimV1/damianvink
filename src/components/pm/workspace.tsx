@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PhaseBar, RagBadge, Stat } from "@/components/pm/bits";
 import { Field, TextInput } from "@/components/pm/fields";
 import { GatePanel } from "@/components/pm/gate";
@@ -14,21 +14,47 @@ import {
   inferredRag,
   nextAction,
   openCount,
+  type PhaseId,
   type Project,
 } from "@/lib/pm/model";
 import { cn } from "@/lib/utils";
 
-const TABS: { id: WorkspaceTab | "templates"; label: string }[] = [
+const PRIMARY_TABS: { id: WorkspaceTab | "templates"; label: string }[] = [
   { id: "overzicht", label: "Weekstart" },
   { id: "fase", label: "Fasewerk" },
   { id: "plan", label: "Plan" },
+  { id: "poort", label: "Beslispunt" },
+];
+
+const REGISTER_TABS: { id: WorkspaceTab | "templates"; label: string }[] = [
   { id: "mensen", label: "Mensen" },
   { id: "risicos", label: "Risico’s" },
   { id: "issues", label: "Issues" },
   { id: "wijzigingen", label: "Wijzigingen" },
-  { id: "poort", label: "Beslispunt" },
   { id: "templates", label: "Templates" },
 ];
+
+function TabButton({
+  id, label, panel, setPanel,
+}: {
+  id: WorkspaceTab | "templates";
+  label: string;
+  panel: WorkspaceTab | "templates";
+  setPanel: (id: WorkspaceTab | "templates") => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={() => setPanel(id)}
+      className={cn(
+        "h-11 rounded-full border px-4 text-sm",
+        panel === id ? "border-accent bg-accent text-accent-fg" : "border-line bg-elevated text-muted hover:text-ink",
+      )}
+    >
+      {label}
+    </button>
+  );
+}
 
 export function ProjectWorkspace({
   project,
@@ -59,10 +85,17 @@ export function ProjectWorkspace({
   backupStale: boolean;
   lastExportAt?: string;
 }) {
-  const [panel, setPanel] = useState<WorkspaceTab | "templates">("overzicht");
+  const [panel, setPanel] = useState<WorkspaceTab | "templates">("fase");
+  const [viewPhase, setViewPhase] = useState<PhaseId>(project.phase);
   const fileRef = useRef<HTMLInputElement>(null);
   const suggestedRag = inferredRag(project);
   const phase = PHASES.find((p) => p.id === project.phase)!;
+  const looking = PHASES.find((p) => p.id === viewPhase)!;
+  const untitled = !project.name.trim();
+
+  useEffect(() => {
+    setViewPhase(project.phase);
+  }, [project.phase, project.id]);
 
   function onNew() {
     const name = window.prompt("Naam van het nieuwe project");
@@ -124,6 +157,9 @@ export function ProjectWorkspace({
               onChange={(e) => patch({ name: e.target.value })}
               className="mt-2 h-auto border-transparent bg-transparent px-0 py-1 font-display text-2xl font-semibold tracking-tight"
             />
+            {untitled ? (
+              <p className="mt-2 text-sm text-ink">Geef eerst een naam, daarna de vragen van fase 01.</p>
+            ) : null}
             <div className="mt-3 grid gap-3 sm:grid-cols-2">
               <Field label="Opdrachtgever">
                 <TextInput value={project.sponsor} onChange={(e) => patch({ sponsor: e.target.value })} placeholder="Wie is eigenaar van de business case?" />
@@ -149,26 +185,47 @@ export function ProjectWorkspace({
         </p>
       </header>
 
-      <PhaseBar current={project.phase} onSelect={() => setPanel("fase")} />
+      <aside className="rounded-lg border border-line bg-elevated p-4 text-sm leading-relaxed text-muted">
+        <p className="font-medium text-ink">Kort</p>
+        <ul className="mt-2 list-disc space-y-1 pl-5">
+          <li>Maandag: naam, vragen van deze fase, plan even nalopen.</li>
+          <li>Een fase is de open vraag: kader, opdracht, plan/baseline, stand, decharge.</li>
+          <li>Beslispunt is de enige officiële fasezet. Later fases zijn al leesbaar en invulbaar.</li>
+          <li>Staat in deze browser. Export bewaart een kopie. Voorbeeld laadt een montagelijn in Definitie.</li>
+        </ul>
+      </aside>
 
-      <div className="flex gap-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        {TABS.map((tab) => (
-          <button
-            key={tab.id}
-            type="button"
-            onClick={() => setPanel(tab.id)}
-            className={cn(
-              "h-11 shrink-0 rounded-full border px-4 text-sm",
-              panel === tab.id ? "border-accent bg-accent text-accent-fg" : "border-line bg-elevated text-muted hover:text-ink",
-            )}
-          >
-            {tab.label}
-          </button>
-        ))}
+      {viewPhase !== project.phase ? (
+        <p className="rounded-md border border-line bg-elevated px-4 py-3 text-sm text-ink">
+          Je kijkt naar {looking.label}. Officieel sta je in {phase.label}. Invullen mag; de officiële overgang is Beslispunt.
+        </p>
+      ) : null}
+
+      <PhaseBar
+        current={project.phase}
+        lookingAt={viewPhase}
+        onSelect={(id) => {
+          setViewPhase(id);
+          setPanel("fase");
+        }}
+      />
+
+      <div className="flex flex-col gap-2">
+        <div className="flex flex-wrap gap-1" aria-label="Hoofdacties">
+          {PRIMARY_TABS.map((tab) => (
+            <TabButton key={tab.id} id={tab.id} label={tab.label} panel={panel} setPanel={setPanel} />
+          ))}
+        </div>
+        <div className="flex flex-wrap items-center gap-1" aria-label="Registers">
+          <span className="px-2 font-mono text-[11px] uppercase tracking-wide text-subtle">Registers</span>
+          {REGISTER_TABS.map((tab) => (
+            <TabButton key={tab.id} id={tab.id} label={tab.label} panel={panel} setPanel={setPanel} />
+          ))}
+        </div>
       </div>
 
       {panel === "overzicht" ? <OverviewPanel project={project} onOpen={(tab) => setPanel(tab)} patch={patch} setProject={setProject} /> : null}
-      {panel === "fase" ? <PhasePanel project={project} patch={patch} setProject={setProject} /> : null}
+      {panel === "fase" ? <PhasePanel project={project} patch={patch} setProject={setProject} viewPhase={viewPhase} /> : null}
       {panel === "plan" ? <GanttBoard project={project} setProject={setProject} /> : null}
       {panel === "mensen" ? <StakeholdersPanel project={project} setProject={setProject} /> : null}
       {panel === "risicos" ? <RisksPanel project={project} setProject={setProject} /> : null}
