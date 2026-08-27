@@ -25,92 +25,35 @@ function Home() {
           </p>
           <DisplayTitle before="Damian" last="Vink." className="mt-4" />
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">
-            Project Engineer werktuigbouwkunde. Mechanisch ontwerp, naslag en een
-            marathonlogboek.
+            Project Engineer werktuigbouwkunde.
           </p>
         </section>
 
         <section className="reveal reveal-delay-1 border-t border-line py-14 sm:py-16">
-          <SectionTitle before="Wie ik" last="ben." />
-          <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted">
-            Achtergrond in werktuigbouwkunde en machinebouw.
-          </p>
-          <p className="mt-5">
-            <Link to="/over-mij" className="text-sm text-accent hover:underline">
-              Meer over mij →
-            </Link>
-          </p>
-        </section>
-
-        <section className="reveal reveal-delay-2 border-t border-line py-14 sm:py-16">
-          <SectionTitle before="Wat ik" last="doe." />
-          <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted">
-            Marathonvoorbereiding en projecten.
-          </p>
-          <div className="mt-8 grid gap-4 sm:grid-cols-2">
-            <Tile
-              href="/doe/marathon"
-              src="/img/marathon.webp"
-              alt="Hardloper op een verlichte weg in het donker"
-              titleBefore="Mara"
-              titleLast="thon."
-            />
-            <Tile
-              href="/doe/projecten"
-              src="/img/projecten.webp"
-              alt="Metaalwerkplaats met freesbank en werkstukken"
-              titleBefore="Projec"
-              titleLast="ten."
-            />
-          </div>
-        </section>
-
-        <section className="reveal reveal-delay-3 border-t border-line py-14 sm:py-16">
-          <SectionTitle before="Wat ik" last="heb." />
-          <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted">
-            Naslag tijdens ontwerp en een projectwerkplek tijdens de rit.
-          </p>
-          <div className="mt-8 grid gap-3">
-            <KnowledgeRow
+          <div className="grid gap-3">
+            <Door
               num="01"
-              title="Engineering toolkit"
+              title="Toolkit"
               body="Passingen, spiebanen, lagerpassingen, seegerringgroef, bevestigers en CAD-bronnen."
               href="/denk/toolkit"
-              link="Engineering toolkit"
+              link="Toolkit"
               meta="Werktuigbouwkunde · Machinebouw"
             />
-            <KnowledgeRow
+            <Door
               num="02"
-              title="Projectwerkplek"
+              title="Werkplek"
               body="Fasen, stakeholders, risico’s, issues en het beslispunt."
               href="/denk/project"
-              link="Projectwerkplek"
+              link="Werkplek"
               meta="Projectmanagement"
             />
-          </div>
-        </section>
-
-        <section className="reveal reveal-delay-3 border-t border-line py-14 sm:py-16">
-          <SectionTitle before="Wat ik" last="denk." />
-          <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted">
-            Artikelen en later een podcast.
-          </p>
-          <div className="mt-8 grid gap-3">
-            <KnowledgeRow
-              num="01"
-              title="Blog"
-              body="Artikelen. Nog geen stukken gepubliceerd."
-              href="/denk/blog"
-              link="Blog"
-              meta="Artikelen volgen."
-            />
-            <KnowledgeRow
-              num="02"
-              title="Podcast"
-              body="Afleveringen. Nog geen episodes gepubliceerd."
-              href="/denk/podcast"
-              link="Podcast"
-              meta="Afleveringen volgen."
+            <Door
+              num="03"
+              title="Marathon"
+              body="Trainingslogboek EDP Porto Marathon 2026."
+              href="/doe/marathon"
+              link="Marathon"
+              meta="Logboek"
             />
           </div>
         </section>
@@ -132,37 +75,7 @@ function Home() {
   );
 }
 
-function Tile({
-  href,
-  src,
-  alt,
-  titleBefore,
-  titleLast,
-}: {
-  href: string;
-  src: string;
-  alt: string;
-  titleBefore: string;
-  titleLast: string;
-}) {
-  return (
-    <Link to={href} className="group relative block overflow-hidden rounded-xl border border-line">
-      <img
-        src={src}
-        alt={alt}
-        width={953}
-        height={640}
-        className="aspect-[3/2] w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
-      />
-      <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-paper/90 to-transparent px-5 py-5 font-display text-2xl font-semibold tracking-tight text-ink">
-        {titleBefore}
-        <span className="text-accent">{titleLast}</span>
-      </span>
-    </Link>
-  );
-}
-
-function KnowledgeRow({
+function Door({
   num,
   title,
   body,
@@ -182,7 +95,7 @@ function KnowledgeRow({
       <div className="flex gap-4">
         <span className="font-mono text-sm text-accent">{num}</span>
         <div>
-          <h3 className="font-display text-xl font-semibold tracking-tight">{title}</h3>
+          <h2 className="font-display text-xl font-semibold tracking-tight">{title}</h2>
           <p className="mt-1 text-sm leading-relaxed text-muted">{body}</p>
         </div>
       </div>
