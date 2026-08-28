@@ -33,7 +33,7 @@ function Home() {
           <div className="grid gap-3">
             <Door
               num="01"
-              title="Toolkit"
+              title="Engineering toolkit"
               body="Eenheden, passingen, spiebanen, lagerpassingen, seegerringgroef, bevestigingsmateriaal en CAD-bronnen."
               href="/toolkit"
               link="Toolkit"
@@ -41,7 +41,7 @@ function Home() {
             />
             <Door
               num="02"
-              title="Project"
+              title="Projectwerkplek"
               body="Fasen, stakeholders, risico’s, issues en het beslispunt."
               href="/project"
               link="Project"
