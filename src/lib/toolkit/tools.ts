@@ -43,7 +43,7 @@ export const TOOLS = [
     id: "bevestigers",
     href: "/denk/toolkit/bevestigers",
     short: "Bouten",
-    title: "Bevestigers",
+    title: "Bevestigingsmateriaal",
     standard: "ISO 273 · VDI 2230",
     kind: "rekenhulp",
     related: ["bronnen"],

@@ -37,7 +37,7 @@ function Heb() {
               Engineering toolkit
             </h2>
             <p className="mt-1 text-sm text-muted">
-              Passingen, spiebanen, lagerpassingen, seegerringgroef, bevestigers
+              Passingen, spiebanen, lagerpassingen, seegerringgroef, bevestigingsmateriaal
               en CAD-bronnen.
             </p>
           </Link>
