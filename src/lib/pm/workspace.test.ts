@@ -4,15 +4,18 @@ import { planWeekCount } from "./activity.ts";
 import {
   acceptChange,
   applyActivityProgress,
+  applyGateDecision,
   emptyProject,
   gateBlockers,
   itemRef,
   nextAction,
+  nextPhase,
   overdueIssues,
   parseProject,
   parseWorkspace,
   phaseChecks,
   sampleProject,
+  selectPhaseView,
 } from "./model.ts";
 import { isBlankProject, isStockSample, isUntitled, pruneWorkspace, startNamedProject } from "./workspace-ops.ts";
 
@@ -201,5 +204,54 @@ describe("plan horizon", () => {
     const long = planWeekCount("2026-01-01", "2026-12-01", []);
     assert.ok(long > 16);
     assert.ok(long <= 40);
+  });
+});
+
+describe("phase view vs official phase", () => {
+  it("tapping afsluiting while official orientatie only changes lookingAt", () => {
+    const view = selectPhaseView("orientatie", "afsluiting");
+    assert.equal(view.official, "orientatie");
+    assert.equal(view.lookingAt, "afsluiting");
+  });
+
+  it("applyGateDecision go on empty project does not advance", () => {
+    const p = emptyProject();
+    const next = applyGateDecision(p, { advice: "go", decision: "go", who: "", notes: "" });
+    assert.equal(next.phase, "orientatie");
+    assert.equal(next.decisions.length, 0);
+    assert.ok(gateBlockers(p).length > 0);
+  });
+
+  it("applyGateDecision go on a project that passes gateBlockers advances via nextPhase", () => {
+    const p = emptyProject({
+      name: "Perscel",
+      sponsor: "Plant",
+      result: "Cel",
+      outcome: "Output",
+      goal: "Takt",
+    });
+    assert.deepEqual(gateBlockers(p), []);
+    const expected = nextPhase(p.phase);
+    assert.equal(expected, "voorbereiding");
+    const next = applyGateDecision(p, { advice: "go", decision: "go", who: "Plant", notes: "akkoord", date: "2026-08-27" });
+    assert.equal(next.phase, expected);
+    assert.equal(p.phase, "orientatie");
+    assert.equal(next.decisions.length, 1);
+    assert.equal(next.decisions[0].decision, "go");
+    assert.equal(next.decisions[0].from, "orientatie");
+  });
+
+  it("bijsturen does not advance", () => {
+    const p = emptyProject({
+      name: "Perscel",
+      sponsor: "Plant",
+      result: "Cel",
+      outcome: "Output",
+      goal: "Takt",
+    });
+    const next = applyGateDecision(p, { advice: "bijsturen", decision: "bijsturen", who: "Plant", notes: "wacht" });
+    assert.equal(next.phase, "orientatie");
+    assert.equal(next.decisions.length, 1);
+    assert.equal(next.decisions[0].decision, "bijsturen");
   });
 });

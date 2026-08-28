@@ -2,20 +2,34 @@ import { useMemo } from "react";
 import { PhaseIntro, patchList } from "@/components/pm/bits";
 import { Area, Card, Field, NumInput, Select, TextInput } from "@/components/pm/fields";
 import { Button } from "@/components/ui/button";
-import { euro, pert, uid, type Estimate, type Project } from "@/lib/pm/model";
+import { euro, pert, uid, type Estimate, type PhaseId, type Project } from "@/lib/pm/model";
 
 export function PhasePanel({
-  project, patch, setProject,
+  project, patch, setProject, viewPhase,
 }: {
   project: Project;
   patch: (p: Partial<Project>) => void;
   setProject: (p: Project | ((prev: Project) => Project)) => void;
+  viewPhase: PhaseId;
 }) {
-  if (project.phase === "orientatie") return <Orientatie project={project} patch={patch} />;
-  if (project.phase === "voorbereiding") return <Voorbereiding project={project} patch={patch} />;
-  if (project.phase === "definitie") return <Definitie project={project} patch={patch} setProject={setProject} />;
-  if (project.phase === "uitvoering") return <Uitvoering project={project} patch={patch} />;
-  return <Afsluiting project={project} patch={patch} />;
+  const lookingAhead = viewPhase !== project.phase;
+  const form =
+    viewPhase === "orientatie" ? <Orientatie project={project} patch={patch} /> :
+    viewPhase === "voorbereiding" ? <Voorbereiding project={project} patch={patch} /> :
+    viewPhase === "definitie" ? <Definitie project={project} patch={patch} setProject={setProject} /> :
+    viewPhase === "uitvoering" ? <Uitvoering project={project} patch={patch} /> :
+    <Afsluiting project={project} patch={patch} />;
+
+  return (
+    <div className="grid gap-4">
+      {lookingAhead ? (
+        <p className="rounded-md border border-line bg-elevated px-4 py-3 text-sm text-ink">
+          Je kunt deze fase al lezen en vullen. De officiële overgang gaat via Beslispunt.
+        </p>
+      ) : null}
+      {form}
+    </div>
+  );
 }
 
 function Orientatie({ project, patch }: { project: Project; patch: (p: Partial<Project>) => void }) {
