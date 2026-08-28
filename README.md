@@ -57,3 +57,4 @@ TanStack Start, React 19, Vite, Tailwind CSS v4.
 ## Bronnen
 
 Naslag in de toolkit is een werkblad, geen vervanging van ISO 286, DIN 6885 of SKF-catalogi.
+
