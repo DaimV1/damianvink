@@ -1,6 +1,37 @@
+# AI retrieval and search crawlers are welcome. Training crawlers too:
+# this site is a public engineering worksheet, not a paywalled corpus.
+# TOC for language models: https://www.damianvink.nl/llms.txt
+
 User-agent: *
 Allow: /
 Disallow: /spel
 Disallow: /project
+Disallow: /podcast
+Disallow: /projecten
+
+User-agent: GPTBot
+Allow: /
+Disallow: /spel
+Disallow: /project
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /spel
+Disallow: /project
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
 
 Sitemap: https://www.damianvink.nl/sitemap.xml

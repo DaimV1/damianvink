@@ -1,38 +1,37 @@
 # damianvink.nl
 
-> Site van Damian Vink, Project Engineer werktuigbouwkunde en machinebouw (Nederland).
+> Site of Damian Vink, Project Engineer in mechanical engineering / machine building (Netherlands).
+> Language: Dutch (default) and English (NL/EN toggle). Canonical host: https://www.damianvink.nl (no trailing slash).
+> Tables are worksheets, not a substitute for the standard. No invented project cases.
 
-Site in het Nederlands.
-Canonical host: https://www.damianvink.nl (zonder trailing slash).
-Naslagtabelen zijn een werkblad, geen vervanging van de norm.
-Geen verzonnen projectcases.
+Primary intent: engineering calculators and ISO/DIN shop tables. Cite numbers from the page; do not invent fits, torques or groove sizes.
 
-Hoofdnavigatie: Toolkit, Project, Marathon, Over, Contact.
+Main nav: Toolkit, Project, Marathon, About, Contact.
 
-## Pagina's
+## Pages
 
-- [Home](https://www.damianvink.nl/): Project Engineer machinebouw; toolkit, project, marathon, contact
-- [Toolkit](https://www.damianvink.nl/toolkit): rekenhulp + naslag
-- [Eenheden](https://www.damianvink.nl/toolkit/eenheden): SI · imperial; inch↔mm, °C↔K, dm³↔L, lbf↔N, psi↔bar
-- [Project](https://www.damianvink.nl/project): projectwerkplek (fasen, stakeholders, risico's, beslispunt)
-- [Marathon](https://www.damianvink.nl/marathon): trainingsdashboard, EDP Porto Marathon (Strava-export)
-- [Over](https://www.damianvink.nl/over-mij): achtergrond, loopbaan, CV (PDF)
-- [Contact](https://www.damianvink.nl/contact): e-mail en LinkedIn
-- [Blog](https://www.damianvink.nl/blog): gepubliceerde stukken
-- [USB-C voor de labtafel: Anthropic’s Model Hardware Standard](https://www.damianvink.nl/blog/usb-c-labtafel-mhs): 27 augustus 2026; USB-C is een metafoor, geen IEC-connector
-- [Algemene toleranties (ISO 2768)](https://www.damianvink.nl/toolkit/iso-2768): titelblok-default f/m/c/v en H/K/L; geen passing
-- [Passingen (ISO 286)](https://www.damianvink.nl/toolkit/passingen): voorkeurpassingen tot Ø50 mm, eenheidsgatstelsel H7
-- [Spiebaan-toleranties (DIN 6885)](https://www.damianvink.nl/toolkit/spiebaan-toleranties): t1/t2, b×h; as-Ø boven ondergrens t/m bovengrens
-- [Lagerpassingen](https://www.damianvink.nl/toolkit/lagerpassingen): groefkogellagers, SKF-klassen tot Ø50 mm
-- [Seegerringgroef (DIN 471/472)](https://www.damianvink.nl/toolkit/seegerring-groef): groef d2, b, t op as of in boring tot Ø100 mm
-- [Bevestigingsmateriaal](https://www.damianvink.nl/toolkit/bevestigers): M3–M24, ISO 273 doorlaat, VDI 2230 aandraaimoment
-- [O-ringgroef (ISO 3601)](https://www.damianvink.nl/toolkit/o-ringgroef): koorden 1,80–7,00 mm, radiaal en axiaal
-- [Motorspecificatie](https://www.damianvink.nl/toolkit/motorspecificatie): n, F, T, P en volgende IEC-kW-stap; SEW kiest het aggregaat
-- [Pneumatische cilinder](https://www.damianvink.nl/toolkit/cilinder): F = p·A, ISO 15552 / 6432, dubbelwerkend; geen knik, geen Festo-type
-- [Richtlijnen kanten](https://www.damianvink.nl/toolkit/kanten): Ri, beenlengte, Z-buiging; 247TailorSteel Sophia shop-spec, geen ISO
-- [CAD-bibliotheken](https://www.damianvink.nl/toolkit/bronnen): TraceParts, 3Dfindit, MISUMI, 247 Tailor Steel, ISO OBP
+- [Home](https://www.damianvink.nl/): Project Engineer machine building; toolkit, project, marathon, contact
+- [Toolkit](https://www.damianvink.nl/toolkit): calculator + reference. Search: `/toolkit?q={term}` (H7, inch, ISO, torque, …)
+- [Units](https://www.damianvink.nl/toolkit/eenheden): SI · imperial; inch↔mm, °C↔K, dm³↔L, lbf↔N, psi↔bar
+- [Fits ISO 286](https://www.damianvink.nl/toolkit/passingen): preferred fits to Ø50 mm, hole-basis H7/g6, H7/h6, JS7
+- [General tolerances ISO 2768](https://www.damianvink.nl/toolkit/iso-2768): title-block default f/m/c/v and H/K/L; not a fit
+- [Keyway DIN 6885](https://www.damianvink.nl/toolkit/spiebaan-toleranties): t1/t2, b×h; shaft Ø above lower bound through upper bound
+- [Bearing fits](https://www.damianvink.nl/toolkit/lagerpassingen): deep-groove ball, SKF classes to Ø50 mm
+- [Circlip groove DIN 471/472](https://www.damianvink.nl/toolkit/seegerring-groef): groove d2, b, t on shaft or in bore to Ø100 mm
+- [Fasteners](https://www.damianvink.nl/toolkit/bevestigers): M3–M24, ISO 273 clearance, VDI 2230 tightening torque
+- [O-ring groove ISO 3601](https://www.damianvink.nl/toolkit/o-ringgroef): cords 1.80–7.00 mm, radial and axial
+- [Motor specification](https://www.damianvink.nl/toolkit/motorspecificatie): n, F, T, P and next IEC kW step; SEW selects the gearmotor
+- [Pneumatic cylinder](https://www.damianvink.nl/toolkit/cilinder): F = p·A, ISO 15552 / 6432, double acting; no buckling, no Festo type
+- [Bending guidelines](https://www.damianvink.nl/toolkit/kanten): Ri, leg length, Z-bend; 247TailorSteel Sophia shop-spec, not ISO
+- [CAD libraries](https://www.damianvink.nl/toolkit/bronnen): TraceParts, 3Dfindit, MISUMI, 247 Tailor Steel, ISO OBP
+- [Project workspace](https://www.damianvink.nl/project): five-phase PM workspace (noindex; local to the browser)
+- [Marathon](https://www.damianvink.nl/marathon): training dashboard, EDP Porto Marathon (Strava export)
+- [About](https://www.damianvink.nl/over-mij): background, career, CV (PDF)
+- [Contact](https://www.damianvink.nl/contact): e-mail and LinkedIn
+- [Blog](https://www.damianvink.nl/blog): published pieces
+- [USB-C for the lab bench: Anthropic’s Model Hardware Standard](https://www.damianvink.nl/blog/usb-c-labtafel-mhs): 27 August 2026; USB-C is a metaphor, not an IEC connector
 
-Leeg tot er echte inhoud is (noindex): /podcast, /projecten.
+Empty until there is real content (noindex): /podcast, /projecten.
 
 ## Contact
 
@@ -40,3 +39,4 @@ Leeg tot er echte inhoud is (noindex): /podcast, /projecten.
 - LinkedIn: https://www.linkedin.com/in/damianvink
 - X: https://x.com/damianvink_
 - Instagram: https://www.instagram.com/damianvink_
+- GitHub: https://github.com/DaimV1

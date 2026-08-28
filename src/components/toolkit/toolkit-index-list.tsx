@@ -1,14 +1,22 @@
 import { Search, X } from "lucide-react";
-import { useMemo, useState } from "react";
-import { Link } from "@tanstack/react-router";
+import { useMemo } from "react";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { tx, useLocale } from "@/lib/i18n/locale";
 import { matchTools, TOOLS, toolBlurb, toolTitle } from "@/lib/toolkit/tools";
 
-export function ToolkitIndexList() {
+export function ToolkitIndexList({ query = "" }: { query?: string }) {
   const { locale } = useLocale();
-  const [query, setQuery] = useState("");
+  const navigate = useNavigate({ from: "/toolkit/" });
   const hits = useMemo(() => matchTools(query), [query]);
   const searching = query.trim().length > 0;
+
+  function setQuery(next: string) {
+    void navigate({
+      search: { q: next.trim() ? next : undefined },
+      replace: true,
+      resetScroll: false,
+    });
+  }
 
   return (
     <div>
