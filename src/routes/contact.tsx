@@ -23,7 +23,7 @@ function Contact() {
       <PageWrap>
         <Breadcrumb items={[{ label: "Contact" }]} />
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">Contact</p>
-        <DisplayTitle before="Con" last="tact." className="mt-3" />
+        <DisplayTitle text="Contact." accent="tact." className="mt-3" />
         <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">
           Vragen over engineering of samenwerking: e-mail of LinkedIn.
         </p>

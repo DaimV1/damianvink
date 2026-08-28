@@ -26,8 +26,8 @@ function EenhedenPage() {
         { href: "/toolkit", label: "Toolkit" },
         { label: "Eenheden" },
       ]}
-      before="Eenheden"
-      last="omrekenen."
+      title="Eenheden omrekenen."
+      accent="omrekenen."
       lede="Imperial naar metrisch en terug, plus SI onderling: lengte, volume, massa, kracht, druk, temperatuur, koppel, vermogen. Rekenhulp eerst; alle eenheden van de gekozen grootheid eronder."
     >
       <JsonLd

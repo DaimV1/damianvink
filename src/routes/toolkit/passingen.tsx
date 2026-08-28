@@ -26,8 +26,8 @@ function PassingenPage() {
         { href: "/toolkit", label: "Toolkit" },
         { label: "Passingen" },
       ]}
-      before="Passingen"
-      last="(ISO 286)."
+      title="Passingen (ISO 286)."
+      accent="(ISO 286)."
       lede={
         <>
           ISO 286, eenheidsgatstelsel. Rekenhulp eerst: nominale Ø en passing.

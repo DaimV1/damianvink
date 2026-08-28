@@ -24,7 +24,7 @@ function Projecten() {
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">
           Projecten
         </p>
-        <DisplayTitle before="Projec" last="ten." className="mt-3" />
+        <DisplayTitle text="Projecten." accent="ten." className="mt-3" />
         <p className="mt-5 text-lg leading-relaxed text-muted">
           Werk uit de machinebouw en werktuigbouwkunde.
         </p>

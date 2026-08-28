@@ -26,8 +26,8 @@ function MotorPage() {
         { href: "/toolkit", label: "Toolkit" },
         { label: "Motorspecificatie" },
       ]}
-      before="Motor"
-      last="specificatie."
+      title="Motorspecificatie."
+      accent="specificatie."
       lede="Berekent het bedrijfspunt van een horizontale aangedreven rol of trommel: n, F, T en P. SEW kiest het aggregaat. Geen cataloguskeuze, geen typecode."
     >
       <JsonLd

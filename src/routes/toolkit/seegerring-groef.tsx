@@ -26,8 +26,8 @@ function SeegerPage() {
         { href: "/toolkit", label: "Toolkit" },
         { label: "Seegerringgroef" },
       ]}
-      before="Seegerring"
-      last="groef."
+      title="Seegerringgroef."
+      accent="groef."
       lede="Borgringgroef op de as (DIN 471) of in de boring (DIN 472). Vul de nominale Ø in; de tabel markeert d₂, b en t."
     >
       <JsonLd

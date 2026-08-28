@@ -78,8 +78,8 @@ function Article() {
           Artikelen
         </p>
         <DisplayTitle
-          before="USB-C voor de labtafel: Anthropic’s Model Hardware"
-          last="Standard."
+          text="USB-C voor de labtafel: Anthropic’s Model Hardware Standard."
+          accent="Standard."
           className="mt-3 text-[clamp(1.65rem,4vw,3rem)]"
         />
         <p className="mt-5 font-mono text-xs uppercase tracking-[0.16em] text-accent">

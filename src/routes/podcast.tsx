@@ -24,7 +24,7 @@ function Podcast() {
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">
           Artikelen
         </p>
-        <DisplayTitle last="Podcast." className="mt-3" />
+        <DisplayTitle text="Podcast." className="mt-3" />
         <p className="mt-5 text-lg leading-relaxed text-muted">
           Nog geen afleveringen.
         </p>

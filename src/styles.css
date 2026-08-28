@@ -223,6 +223,10 @@
   background: var(--accent);
 }
 
+.week-bar.is-rest .wb-col {
+  background: color-mix(in oklab, var(--accent) 22%, var(--paper-muted));
+}
+
 .week-bar .wb-val {
   font-family: var(--font-mono);
   font-size: 0.6875rem;

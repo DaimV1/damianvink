@@ -26,8 +26,8 @@ function LagerPage() {
         { href: "/toolkit", label: "Toolkit" },
         { label: "Lagerpassingen" },
       ]}
-      before="Lager"
-      last="passingen."
+      title="Lagerpassingen."
+      accent="passingen."
       lede="Groefkogellagers: vast/los, SKF-klassen, ISO 286 tot Ø 50 mm. Kies rotatie en last; de aanbevolen as- en huisklasse volgt direct."
     >
       <JsonLd

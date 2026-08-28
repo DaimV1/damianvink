@@ -17,7 +17,9 @@
   "plan": {
     "name": "EDP Porto Marathon",
     "start": "2026-06-03",
-    "note": "Trainingsblok vanaf 3 juni 2026"
+    "race": "2026-11-08",
+    "distance_km": 42.195,
+    "note": "Opbouw vanaf 3 juni richting 8 november 2026. Lagere weken (W32) zijn herstel, geen uitval."
   },
   "weekly": [
     {
@@ -68,7 +70,8 @@
     {
       "label": "W32",
       "km": 13.0,
-      "start": "2026-08-03"
+      "start": "2026-08-03",
+      "herstel": true
     },
     {
       "label": "W33",

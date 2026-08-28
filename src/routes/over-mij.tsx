@@ -66,7 +66,7 @@ function OverMij() {
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">
           Over
         </p>
-        <DisplayTitle before="Over" last="mij." className="mt-3" />
+        <DisplayTitle text="Over mij." accent="mij." className="mt-3" />
         <div className="mt-8 space-y-4 text-lg leading-relaxed text-muted">
           <p className="text-ink">
             Ik ben Damian Vink, Project Engineer met een achtergrond in
@@ -85,7 +85,7 @@ function OverMij() {
           <p>
             Op deze site staan een engineering toolkit voor machinebouw
             (passingen, spiebanen, CAD-bronnen) en een trainingslogboek voor de
-            EDP Porto Marathon 2026.
+            EDP Porto Marathon op 8 november 2026.
           </p>
         </div>
 

@@ -21,8 +21,8 @@ function ToolkitIndex() {
   return (
     <ToolkitFrame
       crumbs={[{ label: "Toolkit" }]}
-      before="Engineering"
-      last="toolkit."
+      title="Engineering toolkit."
+      accent="toolkit."
       lede="Rekenhulp en naslag voor machinebouw: eenheden, passingen, spiebanen, lagers, seegerringgroeven, bevestigingsmateriaal, algemene toleranties, motorspecificatie, richtlijnen kanten en CAD-bronnen. Open een tool; de rekenhulp staat bovenaan, de tabel of bronnen eronder."
     >
       <JsonLd
