@@ -31,7 +31,6 @@ export const ISO_15552: readonly CylinderRow[] = [
   { series: "iso15552", bore: 320, rod: 63 },
 ];
 
-/** ISO 6432 round mini cylinders, basic rod. Ø 8–25 mm. */
 export const ISO_6432: readonly CylinderRow[] = [
   { series: "iso6432", bore: 8, rod: 4 },
   { series: "iso6432", bore: 10, rod: 4 },
@@ -41,9 +40,8 @@ export const ISO_6432: readonly CylinderRow[] = [
   { series: "iso6432", bore: 25, rod: 10 },
 ];
 
-export function catalog(series: SeriesId) {
-  return series === "iso15552" ? ISO_15552 : ISO_6432;
-}
+/** Mini first (Ø8–25), then profile (Ø32–320). Bore is the result; series follows. */
+export const CATALOG: readonly CylinderRow[] = [...ISO_6432, ...ISO_15552];
 
 export function pistonAreaMm2(bore: number) {
   return (Math.PI * bore * bore) / 4;
@@ -89,17 +87,15 @@ export function sizeCylinder({
   pBar,
   S,
   dir,
-  series,
 }: {
   loadN: number;
   pBar: number;
   S: number;
   dir: StrokeDir;
-  series: SeriesId;
 }): CylinderRow | null {
   if (!(loadN > 0) || !(pBar > 0) || !(S > 0)) return null;
   const need = loadN * S;
-  return catalog(series).find((row) => availableN(row, pBar, dir) >= need - 1e-9) ?? null;
+  return CATALOG.find((row) => availableN(row, pBar, dir) >= need - 1e-9) ?? null;
 }
 
 /**
