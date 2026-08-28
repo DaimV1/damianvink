@@ -21,6 +21,7 @@ import {
   ResultGrid,
   SelectInput,
 } from "./calc-ui";
+import { CirclipSection, SchemaPanel } from "./schema";
 
 export function SeegerCalc() {
   const { locale } = useLocale();
@@ -125,16 +126,30 @@ export function SeegerCalc() {
 
       <section className="mt-12">
         <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-          Doorsnede
+          {tx(locale, "Doorsnede", "Section")}
         </h2>
         <Note>
-          Links de groef in de as, rechts in de boring. Geen schaal. De
-          seegerring zit in de groef (accent).
+          {tx(
+            locale,
+            "Lengtedoorsnede van de gekozen inbouw. Groef is de inkeping; de ring zit erin (accent). Maatlijnen volgen d₁, d₂, b en t. Geen schaal.",
+            "Longitudinal section of the selected installation. The groove is the notch; the ring sits in it (accent). Dimension lines follow d₁, d₂, b and t. Not to scale.",
+          )}
         </Note>
-        <div className="mt-4 grid gap-6 lg:grid-cols-2">
-          <AsSchema active={kind === "as"} />
-          <BoreSchema active={kind === "boring"} />
-        </div>
+        <SchemaPanel
+          caption={
+            kind === "as"
+              ? tx(locale, "As · DIN 471 — groef op de buitenkant", "Shaft · DIN 471 — groove on the outside")
+              : tx(locale, "Boring · DIN 472 — groef op de binnenkant", "Bore · DIN 472 — groove on the inside")
+          }
+        >
+          <CirclipSection
+            kind={kind}
+            d1={row?.d1}
+            d2={result?.d2}
+            b={result?.b}
+            t={result?.t}
+          />
+        </SchemaPanel>
       </section>
 
       <section className="mt-10">
@@ -193,109 +208,5 @@ export function SeegerCalc() {
         </p>
       </section>
     </>
-  );
-}
-
-function AsSchema({ active }: { active: boolean }) {
-  return (
-    <figure className={active ? "text-ink" : "text-muted"}>
-      <svg
-        className="w-full max-w-md"
-        viewBox="0 0 320 220"
-        role="img"
-        aria-label="Doorsnede as met seegerringgroef: d1, d2, b en t"
-      >
-        <circle
-          cx="110"
-          cy="110"
-          r="78"
-          fill="none"
-          stroke="currentColor"
-          opacity="0.35"
-        />
-        <circle cx="110" cy="110" r="62" fill="none" stroke="currentColor" />
-        <rect
-          x="168"
-          y="100"
-          width="14"
-          height="20"
-          rx="1"
-          fill="var(--accent)"
-        />
-        <path
-          d="M172 96 v8 M172 124 v8"
-          stroke="currentColor"
-          fill="none"
-          opacity="0.5"
-        />
-        <text x="8" y="24" fill="currentColor" fontSize="13">
-          as — DIN 471
-        </text>
-        <text x="96" y="116" fill="currentColor" fontSize="13">
-          d₁
-        </text>
-        <text x="188" y="88" fill="currentColor" fontSize="13">
-          d₂
-        </text>
-        <text x="188" y="116" fill="currentColor" fontSize="13">
-          b
-        </text>
-        <text x="188" y="152" fill="currentColor" fontSize="13">
-          t
-        </text>
-        <text x="8" y="204" fill="currentColor" fontSize="12" opacity="0.75">
-          groef in de as, ring van buiten
-        </text>
-      </svg>
-    </figure>
-  );
-}
-
-function BoreSchema({ active }: { active: boolean }) {
-  return (
-    <figure className={active ? "text-ink" : "text-muted"}>
-      <svg
-        className="w-full max-w-md"
-        viewBox="0 0 320 220"
-        role="img"
-        aria-label="Doorsnede boring met seegerringgroef: d1, d2, b en t"
-      >
-        <circle
-          cx="110"
-          cy="110"
-          r="82"
-          fill="none"
-          stroke="currentColor"
-          opacity="0.35"
-        />
-        <circle cx="110" cy="110" r="52" fill="none" stroke="currentColor" />
-        <rect
-          x="154"
-          y="100"
-          width="14"
-          height="20"
-          rx="1"
-          fill="var(--accent)"
-        />
-        <text x="8" y="24" fill="currentColor" fontSize="13">
-          boring — DIN 472
-        </text>
-        <text x="96" y="116" fill="currentColor" fontSize="13">
-          d₁
-        </text>
-        <text x="180" y="88" fill="currentColor" fontSize="13">
-          d₂
-        </text>
-        <text x="180" y="116" fill="currentColor" fontSize="13">
-          b
-        </text>
-        <text x="180" y="152" fill="currentColor" fontSize="13">
-          t
-        </text>
-        <text x="8" y="204" fill="currentColor" fontSize="12" opacity="0.75">
-          groef in de boring, ring van binnen
-        </text>
-      </svg>
-    </figure>
   );
 }

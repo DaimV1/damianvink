@@ -19,6 +19,7 @@ import {
   ResultGrid,
   SelectInput,
 } from "./calc-ui";
+import { BoltSection, SchemaPanel } from "./schema";
 
 export function FastenerCalc() {
   const { locale } = useLocale();
@@ -120,13 +121,24 @@ export function FastenerCalc() {
 
       <section className="mt-12">
         <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-          Doorsnede
+          {tx(locale, "Doorsnede", "Section")}
         </h2>
         <Note>
-          Bout door twee platen. D is het doorlaatgat, d de draad, SW de
-          sleutelwijdte, k de kophoogte. Geen schaal.
+          {tx(
+            locale,
+            "Bout door twee platen. Maatlijnen: D doorlaat, d draad, k kophoogte, SW sleutelwijdte. Geen schaal.",
+            "Bolt through two plates. Dimensions: D clearance, d thread, k head height, SW wrench size. Not to scale.",
+          )}
         </Note>
-        <BoltSchema />
+        <SchemaPanel
+          caption={tx(
+            locale,
+            "Lengtedoorsnede · zeskant ISO 4014",
+            "Longitudinal section · hex ISO 4014",
+          )}
+        >
+          <BoltSection row={row} hole={hole ?? null} />
+        </SchemaPanel>
       </section>
 
       <section className="mt-10">
@@ -216,52 +228,5 @@ export function FastenerCalc() {
         </p>
       </section>
     </>
-  );
-}
-
-function BoltSchema() {
-  return (
-    <svg
-      className="mt-4 w-full max-w-xl text-ink"
-      viewBox="0 0 560 220"
-      role="img"
-      aria-label="Doorsnede: zeskantbout door twee platen met doorlaat D, draad d, kop k en SW"
-    >
-      <rect x="40" y="70" width="200" height="28" fill="none" stroke="currentColor" />
-      <rect x="40" y="98" width="200" height="28" fill="none" stroke="currentColor" opacity="0.45" />
-      <rect x="118" y="42" width="44" height="28" rx="2" fill="var(--accent)" />
-      <rect x="128" y="70" width="24" height="86" fill="var(--accent)" />
-      <rect x="118" y="156" width="44" height="16" rx="1" fill="none" stroke="currentColor" />
-      <text x="40" y="28" fill="currentColor" fontSize="13">
-        zeskant ISO 4014
-      </text>
-      <text x="172" y="58" fill="currentColor" fontSize="13">
-        k
-      </text>
-      <text x="172" y="88" fill="currentColor" fontSize="13">
-        D
-      </text>
-      <text x="172" y="128" fill="currentColor" fontSize="13">
-        d
-      </text>
-      <text x="172" y="170" fill="currentColor" fontSize="13">
-        SW
-      </text>
-      <text x="320" y="70" fill="currentColor" fontSize="13">
-        d — nominale draad (M)
-      </text>
-      <text x="320" y="94" fill="currentColor" fontSize="13">
-        D — doorlaatgat ISO 273
-      </text>
-      <text x="320" y="118" fill="currentColor" fontSize="13">
-        k — kophoogte zeskant
-      </text>
-      <text x="320" y="142" fill="currentColor" fontSize="13">
-        SW — sleutelwijdte
-      </text>
-      <text x="320" y="174" fill="var(--ink-muted)" fontSize="13">
-        middel = standaard machinaal
-      </text>
-    </svg>
   );
 }

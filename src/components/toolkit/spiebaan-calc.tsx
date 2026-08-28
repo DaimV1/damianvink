@@ -14,6 +14,7 @@ import {
   parseWholeMm,
   ResultGrid,
 } from "./calc-ui";
+import { KeywaySection, SchemaPanel } from "./schema";
 
 export function SpiebaanCalc() {
   const { locale } = useLocale();
@@ -92,49 +93,18 @@ export function SpiebaanCalc() {
 
       <section className="mt-12">
         <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-          Doorsnede
+          {tx(locale, "Doorsnede", "Section")}
         </h2>
-        <Note>t₁ in de as, t₂ in de naaf, b × h de spie. Geen schaal.</Note>
-        <svg
-          className="mt-4 w-full max-w-xl text-ink"
-          viewBox="0 0 560 240"
-          role="img"
-          aria-label="Dwarsdoorsnede: as, spie en naaf met t1, t2, b en h"
-        >
-          <circle cx="150" cy="130" r="88" fill="none" stroke="currentColor" opacity="0.35" />
-          <circle cx="150" cy="130" r="58" fill="none" stroke="currentColor" />
-          <rect x="139" y="56" width="22" height="36" rx="1.5" fill="var(--accent)" />
-          <text x="10" y="48" fill="currentColor" fontSize="13">
-            naaf
-          </text>
-          <text x="14" y="138" fill="currentColor" fontSize="13">
-            as
-          </text>
-          <text x="190" y="68" fill="currentColor" fontSize="13">
-            t₂
-          </text>
-          <text x="190" y="86" fill="currentColor" fontSize="13">
-            t₁
-          </text>
-          <text x="100" y="78" fill="currentColor" fontSize="13">
-            h
-          </text>
-          <text x="144" y="236" fill="currentColor" fontSize="13">
-            b
-          </text>
-          <text x="320" y="80" fill="currentColor" fontSize="13">
-            t₁ — groefdiepte in de as
-          </text>
-          <text x="320" y="104" fill="currentColor" fontSize="13">
-            t₂ — groefdiepte in de naaf
-          </text>
-          <text x="320" y="128" fill="currentColor" fontSize="13">
-            b × h — spiebreedte × hoogte
-          </text>
-          <text x="320" y="160" fill="var(--ink-muted)" fontSize="13">
-            DIN 6885-1, hoge vorm
-          </text>
-        </svg>
+        <Note>
+          {tx(
+            locale,
+            "Dwarsdoorsnede: t₁ in de as, t₂ in de naaf, b × h de spie. Maatlijnen volgen de gekozen rij. Geen schaal.",
+            "Cross-section: t₁ in the shaft, t₂ in the hub, b × h the key. Dimension lines follow the selected row. Not to scale.",
+          )}
+        </Note>
+        <SchemaPanel caption={tx(locale, "Dwarsdoorsnede · DIN 6885-1 hoge vorm", "Cross-section · DIN 6885-1 high type")}>
+          <KeywaySection row={row} />
+        </SchemaPanel>
       </section>
 
       <section className="mt-10">
