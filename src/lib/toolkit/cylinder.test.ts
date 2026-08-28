@@ -30,22 +30,33 @@ describe("pneumatische cilinder", () => {
       pBar: 6,
       S: 1.25,
       dir: "uit",
-      series: "iso15552",
     });
     assert.ok(pick);
     assert.equal(pick.bore, 63);
+    assert.equal(pick.series, "iso15552");
     const dMin = minPistonMm(1250, 6);
     assert.ok(dMin);
     assert.ok(dMin > 50 && dMin < 63);
   });
 
-  it("ISO 6432 cannot cover 1000 N at 6 bar S=1,25", () => {
+  it("100 N at 6 bar, S=1,25 uit → Ø20 ISO 6432", () => {
     const pick = sizeCylinder({
-      loadN: 1000,
+      loadN: 100,
       pBar: 6,
       S: 1.25,
       dir: "uit",
-      series: "iso6432",
+    });
+    assert.ok(pick);
+    assert.equal(pick.bore, 20);
+    assert.equal(pick.series, "iso6432");
+  });
+
+  it("above Ø320 returns null", () => {
+    const pick = sizeCylinder({
+      loadN: 1e6,
+      pBar: 6,
+      S: 1.25,
+      dir: "uit",
     });
     assert.equal(pick, null);
   });
@@ -56,14 +67,12 @@ describe("pneumatische cilinder", () => {
       pBar: 6,
       S: 1,
       dir: "uit",
-      series: "iso15552",
     });
     const inn = sizeCylinder({
       loadN: 450,
       pBar: 6,
       S: 1,
       dir: "in",
-      series: "iso15552",
     });
     assert.equal(uit?.bore, 32);
     assert.equal(inn?.bore, 40);

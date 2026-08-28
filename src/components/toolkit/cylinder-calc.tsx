@@ -1,13 +1,12 @@
 import { useMemo, useState } from "react";
 import {
-  catalog,
+  CATALOG,
   copyLine,
   cycleLiters,
   forcesAt,
   minPistonMm,
   seriesLabel,
   sizeCylinder,
-  type SeriesId,
   type StrokeDir,
 } from "@/lib/toolkit/cylinder";
 import { fmtNl } from "@/lib/utils";
@@ -73,7 +72,6 @@ export function CylinderCalc() {
   const [pBar, setPBar] = useState("6");
   const [S, setS] = useState("1,25");
   const [dir, setDir] = useState<StrokeDir>("uit");
-  const [series, setSeries] = useState<SeriesId>("iso15552");
   const [stroke, setStroke] = useState("100");
 
   const loadN = parseNum(load);
@@ -84,13 +82,13 @@ export function CylinderCalc() {
   const need = loadN != null && sFac != null ? loadN * sFac : null;
   const pick =
     loadN != null && p != null && sFac != null
-      ? sizeCylinder({ loadN, pBar: p, S: sFac, dir, series })
+      ? sizeCylinder({ loadN, pBar: p, S: sFac, dir })
       : null;
   const dMin = need != null && p != null ? minPistonMm(need, p) : null;
   const forces = pick && p != null ? forcesAt(pick, p) : null;
   const liters =
     pick && p != null && strokeMm != null ? cycleLiters(pick, p, strokeMm) : null;
-  const rows = p != null && p > 0 ? catalog(series) : [];
+  const rows = p != null && p > 0 ? CATALOG : [];
 
   const copy = useMemo(() => {
     if (!pick || !forces || loadN == null || p == null || sFac == null) return "";
@@ -135,12 +133,6 @@ export function CylinderCalc() {
               <option value="in">Binnenhalen (stangzijde)</option>
             </SelectInput>
           </Field>
-          <Field label="Serie">
-            <SelectInput value={series} onChange={(v) => setSeries(v as SeriesId)}>
-              <option value="iso15552">ISO 15552 (Ø32–320)</option>
-              <option value="iso6432">ISO 6432 mini (Ø8–25)</option>
-            </SelectInput>
-          </Field>
           <Field label="Slag (mm)">
             <QtyInput id="cyl-stroke" value={stroke} onChange={setStroke} intDigits={4} />
           </Field>
@@ -156,6 +148,7 @@ export function CylinderCalc() {
             <ResultGrid
               items={[
                 { label: "Boring / stang", value: `Ø${pick.bore} / ${pick.rod} mm` },
+                { label: "Norm", value: seriesLabel(pick.series) },
                 { label: "F_uit", value: `${fmtNl(forces.F_uit, 0)} N` },
                 { label: "F_in", value: `${fmtNl(forces.F_in, 0)} N` },
                 {
@@ -168,8 +161,8 @@ export function CylinderCalc() {
           </>
         ) : loadN != null && p != null && sFac != null && p > 0 && loadN > 0 ? (
           <p className="mt-5 text-sm text-muted">
-            Geen boring in {seriesLabel(series)} dekt {fmtNl(need ?? 0, 0)} N bij{" "}
-            {fmtNl(p, 1)} bar. Geen naburige serie gebruiken — open de catalogus.
+            Geen ISO-boring dekt {fmtNl(need ?? 0, 0)} N bij {fmtNl(p, 1)} bar
+            (max Ø320). Open de catalogus.
           </p>
         ) : (
           <p className="mt-5 text-sm text-muted">Vul last, druk en lastfactor in.</p>
@@ -190,6 +183,7 @@ export function CylinderCalc() {
               <tr>
                 <th>Ø</th>
                 <th>Stang</th>
+                <th>Norm</th>
                 <th>F_uit</th>
                 <th>F_in</th>
               </tr>
@@ -204,6 +198,7 @@ export function CylinderCalc() {
                   >
                     <th scope="row">{row.bore}</th>
                     <td>{row.rod}</td>
+                    <td>{seriesLabel(row.series)}</td>
                     <td>{f ? fmtNl(f.F_uit, 0) : "—"}</td>
                     <td>{f ? fmtNl(f.F_in, 0) : "—"}</td>
                   </tr>

@@ -62,6 +62,10 @@ function CilinderPage() {
             a: "Vuistregel voor wrijving en dynamiek. Geen normwaarde. Verhoog bij verticale last, stoppen op de stang, of onbekende wrijving. S = 1 is puur theoretisch.",
           },
           {
+            q: "ISO 15552 of 6432?",
+            a: "Volgt uit de boring. Ø8–25 is ISO 6432 (rond, mini). Ø32–320 is ISO 15552 (profiel). De kleinste boring die F·S haalt, wint.",
+          },
+          {
             q: "Kiest deze tool een Festo- of SMC-type?",
             a: "Nee. Alleen de ISO-boring en basisstang. Geen typecode, geen demping, geen sensorsleuf. Lange slag op drukstang: knik in de catalogus van de fabrikant.",
           },
