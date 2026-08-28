@@ -10,7 +10,7 @@ export const Route = createFileRoute("/denk/project")({
     pageHead({
       title: "Projectwerkplek — Damian Vink",
       description:
-        "Projectwerkplek voor machinebouw: weekstart, fasen, stakeholders, risico's en het beslispunt. Staat in de browser.",
+        "Persoonlijke projectwerkplek: maandag starten, fasevragen, beslispunt. Staat in deze browser; export bewaart een kopie.",
       path: "/denk/project",
       noindex: true,
     }),
@@ -31,7 +31,10 @@ function ProjectPage() {
           Project<span className="text-accent">werkplek.</span>
         </h1>
         <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">
-          Weekstart, fasen, registers en het beslispunt. Staat in deze browser.
+          Maandag: geef het project een naam, beantwoord de vragen van deze fase, kijk of het plan nog klopt.
+          Een fase is de vraag die nu openstaat — kader, opdracht, plan en baseline, stand, decharge.
+          Beslispunt is de enige officiële faseovergang. Staat in deze browser; export bewaart een kopie.
+          Voorbeeld laadt een montagelijn in Definitie.
         </p>
         <div className="mt-8">
           {store.ready ? (
