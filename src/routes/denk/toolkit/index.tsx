@@ -23,7 +23,7 @@ function ToolkitIndex() {
       crumbs={[{ label: "Toolkit" }]}
       before="Engineering"
       last="toolkit."
-      lede="Tabellen en links die ik tijdens ontwerp gebruik. Open een tool: de rekenhulp staat bovenaan, de naslag (tabel of bronnen) eronder. Wisselen gaat via de balk."
+      lede="Rekenhulp en naslag voor machinebouw: passingen, spiebanen, lagers, seegerringgroeven, bevestigers en CAD-bronnen. Open een tool; de rekenhulp staat bovenaan, de tabel of bronnen eronder."
     >
       <JsonLd
         data={softwareJsonLd({

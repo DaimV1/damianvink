@@ -20,14 +20,9 @@ function Projecten() {
   return (
     <SiteShell>
       <PageWrap>
-        <Breadcrumb
-          items={[
-            { href: "/doe", label: "Wat ik doe" },
-            { label: "Projecten" },
-          ]}
-        />
+        <Breadcrumb items={[{ label: "Projecten" }]} />
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">
-          Wat ik doe
+          Projecten
         </p>
         <DisplayTitle before="Projec" last="ten." className="mt-3" />
         <p className="mt-5 text-lg leading-relaxed text-muted">

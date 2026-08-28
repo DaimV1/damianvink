@@ -1,7 +1,7 @@
 export const SITE_ORIGIN = "https://www.damianvink.nl";
 export const SITE_NAME = "Damian Vink";
 export const DEFAULT_DESCRIPTION =
-  "Damian Vink, Project Engineer werktuigbouwkunde. Naslag: ISO 286-passingen, DIN 6885-spiebanen, CAD-bronnen. Marathonlogboek Porto 2026.";
+  "Damian Vink, Project Engineer werktuigbouwkunde. Engineering toolkit (ISO 286, DIN 6885, lagerpassingen) en contact.";
 
 export function absUrl(path: string) {
   if (path === "/") return `${SITE_ORIGIN}/`;

@@ -25,7 +25,7 @@ function Home() {
           </p>
           <DisplayTitle before="Damian" last="Vink." className="mt-4" />
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">
-            Project Engineer werktuigbouwkunde.
+            Ontwerp en projecten in machinebouw.
           </p>
         </section>
 
@@ -61,8 +61,7 @@ function Home() {
         <section className="border-t border-line py-14 sm:py-16">
           <SectionTitle before="Con" last="tact." />
           <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted">
-            Voor vragen over engineering, samenwerkingen of deze website: stuur
-            een bericht via e-mail, LinkedIn, X of Instagram.
+            Vragen over engineering of samenwerking: e-mail of LinkedIn.
           </p>
           <div className="mt-8 grid gap-3 sm:grid-cols-2">
             {SOCIALS.map((item) => (

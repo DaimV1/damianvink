@@ -140,7 +140,7 @@ function BronnenPage() {
       ]}
       before="CAD-biblio"
       last="theken."
-      lede="Sites waar ik CAD-modellen en specificaties vandaan haal. Kant- en plaatwerkrichtlijnen staan bij 247 Tailor Steel. Links openen in een nieuw tabblad."
+      lede="CAD-modellen, componenten, plaatwerk en norm-naslag. Kantlijnen bij 247 Tailor Steel. Links openen in een nieuw tabblad."
     >
       <JsonLd
         data={webPageJsonLd({
@@ -177,7 +177,7 @@ function BronnenPage() {
         ))}
       </div>
       <p className="mt-8 text-xs text-subtle">
-        Geen commerciële band. Links omdat ik ze zelf open tijdens het ontwerpen.
+        Geen commerciële band. Bronnen voor ontwerp in machinebouw; altijd de norm of catalogus nalopen.
       </p>
     </ToolkitFrame>
   );

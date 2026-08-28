@@ -48,14 +48,9 @@ function Marathon() {
   return (
     <SiteShell>
       <PageWrap wide>
-        <Breadcrumb
-          items={[
-            { href: "/doe", label: "Wat ik doe" },
-            { label: "Marathon" },
-          ]}
-        />
+        <Breadcrumb items={[{ label: "Marathon" }]} />
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">
-          Wat ik doe
+          Logboek
         </p>
         <DisplayTitle before="Mara" last="thon." className="mt-3" />
         <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted">

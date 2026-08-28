@@ -7,9 +7,9 @@ import { pageHead } from "@/lib/seo";
 export const Route = createFileRoute("/denk/")({
   head: () =>
     pageHead({
-      title: "Wat ik denk — Damian Vink",
+      title: "Artikelen — Damian Vink",
       description:
-        "Artikelen en later een podcast van Damian Vink over werktuigbouwkunde, ontwerp en projecten. Alleen stukken die hij zelf maakt.",
+        "Nog geen artikelen of podcast. Alleen stukken die er daadwerkelijk zijn.",
       path: "/denk",
     }),
   component: Denk,
@@ -19,13 +19,13 @@ function Denk() {
   return (
     <SiteShell>
       <PageWrap>
-        <Breadcrumb items={[{ label: "Wat ik denk" }]} />
+        <Breadcrumb items={[{ label: "Artikelen" }]} />
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">
-          Wat ik denk
+          Artikelen
         </p>
-        <DisplayTitle before="Wat ik" last="denk." className="mt-3" />
+        <DisplayTitle last="Artikelen." className="mt-3" />
         <p className="mt-5 text-lg leading-relaxed text-muted">
-          Artikelen en later een podcast. Alleen stukken die ik zelf maak.
+          Nog geen artikelen of podcast.
         </p>
         <div className="mt-10 space-y-3">
           <Link
@@ -35,7 +35,7 @@ function Denk() {
             <p className="font-mono text-xs text-accent">01</p>
             <h2 className="mt-1 font-display text-xl font-semibold">Blog</h2>
             <p className="mt-1 text-sm text-muted">
-              Artikelen. Nog geen stukken gepubliceerd.
+              Artikelen. Nog niets gepubliceerd.
             </p>
           </Link>
           <Link
@@ -45,7 +45,7 @@ function Denk() {
             <p className="font-mono text-xs text-accent">02</p>
             <h2 className="mt-1 font-display text-xl font-semibold">Podcast</h2>
             <p className="mt-1 text-sm text-muted">
-              Afleveringen. Nog geen episodes gepubliceerd.
+              Afleveringen. Nog niets gepubliceerd.
             </p>
           </Link>
         </div>

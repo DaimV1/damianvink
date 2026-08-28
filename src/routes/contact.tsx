@@ -25,8 +25,7 @@ function Contact() {
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">Contact</p>
         <DisplayTitle before="Con" last="tact." className="mt-3" />
         <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">
-          Voor vragen over engineering, samenwerkingen of deze website: stuur een
-          bericht via e-mail, LinkedIn, X of Instagram.
+          Vragen over engineering of samenwerking: e-mail of LinkedIn.
         </p>
         <div className="mt-10 grid gap-3">
           {SOCIALS.map((item) => {

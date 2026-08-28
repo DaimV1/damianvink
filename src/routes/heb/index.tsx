@@ -7,9 +7,9 @@ import { pageHead } from "@/lib/seo";
 export const Route = createFileRoute("/heb/")({
   head: () =>
     pageHead({
-      title: "Wat ik heb — Damian Vink",
+      title: "Toolkit en werkplek — Damian Vink",
       description:
-        "Twee toolkits van Damian Vink: engineering-naslag tijdens ontwerp (ISO 286, DIN 6885) en een projectwerkplek tijdens de rit.",
+        "Engineering toolkit (ISO 286, DIN 6885) en een projectwerkplek voor machinebouw.",
       path: "/heb",
     }),
   component: Heb,
@@ -19,14 +19,13 @@ function Heb() {
   return (
     <SiteShell>
       <PageWrap>
-        <Breadcrumb items={[{ label: "Wat ik heb" }]} />
+        <Breadcrumb items={[{ label: "Naslag" }]} />
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">
-          Wat ik heb
+          Naslag
         </p>
-        <DisplayTitle before="Wat ik" last="heb." className="mt-3" />
+        <DisplayTitle before="Toolkit en" last="werkplek." className="mt-3" />
         <p className="mt-5 text-lg leading-relaxed text-muted">
-          Twee toolkits: naslag tijdens ontwerp, en een projectwerkplek tijdens
-          de rit.
+          Rekenhulp en naslag voor machinebouw, plus een projectwerkplek.
         </p>
         <div className="mt-10 space-y-3">
           <Link

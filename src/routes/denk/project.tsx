@@ -10,7 +10,7 @@ export const Route = createFileRoute("/denk/project")({
     pageHead({
       title: "Projectwerkplek — Damian Vink",
       description:
-        "Persoonlijke projectwerkplek: maandag starten, fasevragen, beslispunt. Staat in deze browser; export bewaart een kopie.",
+        "Projectwerkplek voor machinebouw: maandag starten, fasevragen, beslispunt. Staat in deze browser; export bewaart een kopie.",
       path: "/denk/project",
       noindex: true,
     }),
