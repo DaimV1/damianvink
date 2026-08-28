@@ -22,7 +22,7 @@ export const TOOLS = [
   {
     id: "iso2768",
     href: "/denk/toolkit/iso-2768",
-    short: "2768",
+    short: "Toleranties",
     title: "Algemene toleranties",
     standard: "ISO 2768",
     kind: "rekenhulp",
