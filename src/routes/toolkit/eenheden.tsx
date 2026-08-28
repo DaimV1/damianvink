@@ -8,12 +8,12 @@ import { pageHead, softwareJsonLd } from "@/lib/seo";
 const DESCRIPTION =
   "Eenheden omrekenen: imperial ↔ metrisch en SI onderling. Inch naar mm, °C naar K, dm³ naar L, lbf naar N, psi naar bar, pk naar kW.";
 
-export const Route = createFileRoute("/denk/toolkit/eenheden")({
+export const Route = createFileRoute("/toolkit/eenheden")({
   head: () =>
     pageHead({
       title: "Eenheden omrekenen (SI · imperial) — Damian Vink",
       description: DESCRIPTION,
-      path: "/denk/toolkit/eenheden",
+      path: "/toolkit/eenheden",
     }),
   component: EenhedenPage,
 });
@@ -23,7 +23,7 @@ function EenhedenPage() {
     <ToolkitFrame
       active="eenheden"
       crumbs={[
-        { href: "/denk/toolkit", label: "Toolkit" },
+        { href: "/toolkit", label: "Toolkit" },
         { label: "Eenheden" },
       ]}
       before="Eenheden"
@@ -33,7 +33,7 @@ function EenhedenPage() {
       <JsonLd
         data={softwareJsonLd({
           name: "Eenheden omrekenen",
-          path: "/denk/toolkit/eenheden",
+          path: "/toolkit/eenheden",
           description: DESCRIPTION,
           featureList: [
             "inch ↔ mm",

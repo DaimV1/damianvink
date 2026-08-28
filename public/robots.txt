@@ -1,6 +1,6 @@
 User-agent: *
 Allow: /
 Disallow: /spel
-Disallow: /denk/project
+Disallow: /project
 
 Sitemap: https://www.damianvink.nl/sitemap.xml

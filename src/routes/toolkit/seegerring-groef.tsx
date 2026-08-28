@@ -8,12 +8,12 @@ import { pageHead, softwareJsonLd } from "@/lib/seo";
 const DESCRIPTION =
   "Seegerringgroef DIN 471 (as) en DIN 472 (boring). Groef d2, breedte b en diepte t tot Ø100 mm. Rekenhulp plus werkplaatstabel.";
 
-export const Route = createFileRoute("/denk/toolkit/seegerring-groef")({
+export const Route = createFileRoute("/toolkit/seegerring-groef")({
   head: () =>
     pageHead({
       title: "Seegerringgroef DIN 471 / DIN 472 — Damian Vink",
       description: DESCRIPTION,
-      path: "/denk/toolkit/seegerring-groef",
+      path: "/toolkit/seegerring-groef",
     }),
   component: SeegerPage,
 });
@@ -23,7 +23,7 @@ function SeegerPage() {
     <ToolkitFrame
       active="seeger"
       crumbs={[
-        { href: "/denk/toolkit", label: "Toolkit" },
+        { href: "/toolkit", label: "Toolkit" },
         { label: "Seegerringgroef" },
       ]}
       before="Seegerring"
@@ -33,7 +33,7 @@ function SeegerPage() {
       <JsonLd
         data={softwareJsonLd({
           name: "Seegerringgroef DIN 471/472",
-          path: "/denk/toolkit/seegerring-groef",
+          path: "/toolkit/seegerring-groef",
           description: DESCRIPTION,
           featureList: ["DIN 471", "DIN 472", "d2", "groefdiepte"],
         })}

@@ -4,39 +4,34 @@ import { PageWrap, SiteShell } from "@/components/site-shell";
 import { Breadcrumb } from "@/components/toolkit/tool-switcher";
 import { pageHead } from "@/lib/seo";
 
-export const Route = createFileRoute("/denk/podcast")({
+export const Route = createFileRoute("/projecten")({
   head: () =>
     pageHead({
-      title: "Podcast — Damian Vink",
+      title: "Projecten — Damian Vink",
       description:
-        "Nog geen afleveringen. Podcast over werktuigbouwkunde en projecten, als die er is.",
-      path: "/denk/podcast",
+        "Projecten uit de machinebouw en werktuigbouwkunde. Alleen cases met een echte toelichting.",
+      path: "/projecten",
       noindex: true,
     }),
-  component: Podcast,
+  component: Projecten,
 });
 
-function Podcast() {
+function Projecten() {
   return (
     <SiteShell>
       <PageWrap>
-        <Breadcrumb
-          items={[
-            { href: "/denk", label: "Artikelen" },
-            { label: "Podcast" },
-          ]}
-        />
+        <Breadcrumb items={[{ label: "Projecten" }]} />
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">
-          Artikelen
+          Projecten
         </p>
-        <DisplayTitle last="Podcast." className="mt-3" />
+        <DisplayTitle before="Projec" last="ten." className="mt-3" />
         <p className="mt-5 text-lg leading-relaxed text-muted">
-          Nog geen afleveringen.
+          Werk uit de machinebouw en werktuigbouwkunde.
         </p>
         <div className="mt-10 rounded-xl border border-dashed border-line-strong bg-elevated px-6 py-12 text-center">
-          <p className="font-display text-xl font-semibold">Nog geen afleveringen</p>
+          <p className="font-display text-xl font-semibold">Nog geen cases</p>
           <p className="mt-2 text-sm text-muted">
-            Hier komen afleveringen over werktuigbouwkunde en projecten, als ze er zijn.
+            Hier komen alleen projecten met een echte toelichting.
           </p>
         </div>
       </PageWrap>

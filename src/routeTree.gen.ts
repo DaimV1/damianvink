@@ -9,99 +9,95 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as OverMijRouteImport } from './routes/over-mij'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as SpelRouteImport } from './routes/spel'
-import { Route as DenkIndexRouteImport } from './routes/denk/index'
-import { Route as DenkBlogRouteImport } from './routes/denk/blog'
-import { Route as DenkProjectRouteImport } from './routes/denk/project'
-import { Route as DoeIndexRouteImport } from './routes/doe/index'
-import { Route as DoeMarathonRouteImport } from './routes/doe/marathon'
-import { Route as DoeProjectenRouteImport } from './routes/doe/projecten'
-import { Route as WeetIndexRouteImport } from './routes/weet/index'
-import { Route as WeetSplatRouteImport } from './routes/weet/$'
-import { Route as DenkToolkitIndexRouteImport } from './routes/denk/toolkit/index'
-import { Route as DenkToolkitBevestigersRouteImport } from './routes/denk/toolkit/bevestigers'
-import { Route as DenkToolkitBronnenRouteImport } from './routes/denk/toolkit/bronnen'
-import { Route as DenkToolkitIso2768RouteImport } from './routes/denk/toolkit/iso-2768'
-import { Route as DenkToolkitKantenRouteImport } from './routes/denk/toolkit/kanten'
-import { Route as DenkToolkitLagerpassingenRouteImport } from './routes/denk/toolkit/lagerpassingen'
-import { Route as DenkToolkitMotorspecificatieRouteImport } from './routes/denk/toolkit/motorspecificatie'
-import { Route as DenkToolkitORinggroefRouteImport } from './routes/denk/toolkit/o-ringgroef'
-import { Route as DenkToolkitPassingenRouteImport } from './routes/denk/toolkit/passingen'
-import { Route as DenkToolkitSeegerringGroefRouteImport } from './routes/denk/toolkit/seegerring-groef'
-import { Route as DenkToolkitSpiebaanTolerantiesRouteImport } from './routes/denk/toolkit/spiebaan-toleranties'
+import { Route as BlogIndexRouteImport } from './routes/blog/index'
+import { Route as BlogUsbCLabtafelMhsRouteImport } from './routes/blog/usb-c-labtafel-mhs'
+import { Route as MarathonRouteImport } from './routes/marathon'
+import { Route as PodcastRouteImport } from './routes/podcast'
+import { Route as ProjectRouteImport } from './routes/project'
+import { Route as ProjectenRouteImport } from './routes/projecten'
+import { Route as ToolkitIndexRouteImport } from './routes/toolkit/index'
+import { Route as ToolkitEenhedenRouteImport } from './routes/toolkit/eenheden'
+import { Route as ToolkitBevestigersRouteImport } from './routes/toolkit/bevestigers'
+import { Route as ToolkitBronnenRouteImport } from './routes/toolkit/bronnen'
+import { Route as ToolkitIso2768RouteImport } from './routes/toolkit/iso-2768'
+import { Route as ToolkitKantenRouteImport } from './routes/toolkit/kanten'
+import { Route as ToolkitLagerpassingenRouteImport } from './routes/toolkit/lagerpassingen'
+import { Route as ToolkitMotorspecificatieRouteImport } from './routes/toolkit/motorspecificatie'
+import { Route as ToolkitORinggroefRouteImport } from './routes/toolkit/o-ringgroef'
+import { Route as ToolkitPassingenRouteImport } from './routes/toolkit/passingen'
+import { Route as ToolkitSeegerringGroefRouteImport } from './routes/toolkit/seegerring-groef'
+import { Route as ToolkitSpiebaanTolerantiesRouteImport } from './routes/toolkit/spiebaan-toleranties'
 
 const IndexRoute = IndexRouteImport.update({ id: '/', path: '/', getParentRoute: () => rootRouteImport } as any)
 const OverMijRoute = OverMijRouteImport.update({ id: '/over-mij', path: '/over-mij', getParentRoute: () => rootRouteImport } as any)
 const ContactRoute = ContactRouteImport.update({ id: '/contact', path: '/contact', getParentRoute: () => rootRouteImport } as any)
 const SpelRoute = SpelRouteImport.update({ id: '/spel', path: '/spel', getParentRoute: () => rootRouteImport } as any)
-const DenkIndexRoute = DenkIndexRouteImport.update({ id: '/denk/', path: '/denk/', getParentRoute: () => rootRouteImport } as any)
-const DenkBlogRoute = DenkBlogRouteImport.update({ id: '/denk/blog', path: '/denk/blog', getParentRoute: () => rootRouteImport } as any)
-const DenkProjectRoute = DenkProjectRouteImport.update({ id: '/denk/project', path: '/denk/project', getParentRoute: () => rootRouteImport } as any)
-const DoeIndexRoute = DoeIndexRouteImport.update({ id: '/doe/', path: '/doe/', getParentRoute: () => rootRouteImport } as any)
-const DoeMarathonRoute = DoeMarathonRouteImport.update({ id: '/doe/marathon', path: '/doe/marathon', getParentRoute: () => rootRouteImport } as any)
-const DoeProjectenRoute = DoeProjectenRouteImport.update({ id: '/doe/projecten', path: '/doe/projecten', getParentRoute: () => rootRouteImport } as any)
-const WeetIndexRoute = WeetIndexRouteImport.update({ id: '/weet/', path: '/weet/', getParentRoute: () => rootRouteImport } as any)
-const WeetSplatRoute = WeetSplatRouteImport.update({ id: '/weet/$', path: '/weet/$', getParentRoute: () => rootRouteImport } as any)
-const DenkToolkitIndexRoute = DenkToolkitIndexRouteImport.update({ id: '/denk/toolkit/', path: '/denk/toolkit/', getParentRoute: () => rootRouteImport } as any)
-const DenkToolkitBevestigersRoute = DenkToolkitBevestigersRouteImport.update({ id: '/denk/toolkit/bevestigers', path: '/denk/toolkit/bevestigers', getParentRoute: () => rootRouteImport } as any)
-const DenkToolkitBronnenRoute = DenkToolkitBronnenRouteImport.update({ id: '/denk/toolkit/bronnen', path: '/denk/toolkit/bronnen', getParentRoute: () => rootRouteImport } as any)
-const DenkToolkitIso2768Route = DenkToolkitIso2768RouteImport.update({ id: '/denk/toolkit/iso-2768', path: '/denk/toolkit/iso-2768', getParentRoute: () => rootRouteImport } as any)
-const DenkToolkitKantenRoute = DenkToolkitKantenRouteImport.update({ id: '/denk/toolkit/kanten', path: '/denk/toolkit/kanten', getParentRoute: () => rootRouteImport } as any)
-const DenkToolkitLagerpassingenRoute = DenkToolkitLagerpassingenRouteImport.update({ id: '/denk/toolkit/lagerpassingen', path: '/denk/toolkit/lagerpassingen', getParentRoute: () => rootRouteImport } as any)
-const DenkToolkitMotorspecificatieRoute = DenkToolkitMotorspecificatieRouteImport.update({ id: '/denk/toolkit/motorspecificatie', path: '/denk/toolkit/motorspecificatie', getParentRoute: () => rootRouteImport } as any)
-const DenkToolkitORinggroefRoute = DenkToolkitORinggroefRouteImport.update({ id: '/denk/toolkit/o-ringgroef', path: '/denk/toolkit/o-ringgroef', getParentRoute: () => rootRouteImport } as any)
-const DenkToolkitPassingenRoute = DenkToolkitPassingenRouteImport.update({ id: '/denk/toolkit/passingen', path: '/denk/toolkit/passingen', getParentRoute: () => rootRouteImport } as any)
-const DenkToolkitSeegerringGroefRoute = DenkToolkitSeegerringGroefRouteImport.update({ id: '/denk/toolkit/seegerring-groef', path: '/denk/toolkit/seegerring-groef', getParentRoute: () => rootRouteImport } as any)
-const DenkToolkitSpiebaanTolerantiesRoute = DenkToolkitSpiebaanTolerantiesRouteImport.update({ id: '/denk/toolkit/spiebaan-toleranties', path: '/denk/toolkit/spiebaan-toleranties', getParentRoute: () => rootRouteImport } as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({ id: '/blog/', path: '/blog/', getParentRoute: () => rootRouteImport } as any)
+const BlogUsbCLabtafelMhsRoute = BlogUsbCLabtafelMhsRouteImport.update({ id: '/blog/usb-c-labtafel-mhs', path: '/blog/usb-c-labtafel-mhs', getParentRoute: () => rootRouteImport } as any)
+const MarathonRoute = MarathonRouteImport.update({ id: '/marathon', path: '/marathon', getParentRoute: () => rootRouteImport } as any)
+const PodcastRoute = PodcastRouteImport.update({ id: '/podcast', path: '/podcast', getParentRoute: () => rootRouteImport } as any)
+const ProjectRoute = ProjectRouteImport.update({ id: '/project', path: '/project', getParentRoute: () => rootRouteImport } as any)
+const ProjectenRoute = ProjectenRouteImport.update({ id: '/projecten', path: '/projecten', getParentRoute: () => rootRouteImport } as any)
+const ToolkitIndexRoute = ToolkitIndexRouteImport.update({ id: '/toolkit/', path: '/toolkit/', getParentRoute: () => rootRouteImport } as any)
+const ToolkitEenhedenRoute = ToolkitEenhedenRouteImport.update({ id: '/toolkit/eenheden', path: '/toolkit/eenheden', getParentRoute: () => rootRouteImport } as any)
+const ToolkitBevestigersRoute = ToolkitBevestigersRouteImport.update({ id: '/toolkit/bevestigers', path: '/toolkit/bevestigers', getParentRoute: () => rootRouteImport } as any)
+const ToolkitBronnenRoute = ToolkitBronnenRouteImport.update({ id: '/toolkit/bronnen', path: '/toolkit/bronnen', getParentRoute: () => rootRouteImport } as any)
+const ToolkitIso2768Route = ToolkitIso2768RouteImport.update({ id: '/toolkit/iso-2768', path: '/toolkit/iso-2768', getParentRoute: () => rootRouteImport } as any)
+const ToolkitKantenRoute = ToolkitKantenRouteImport.update({ id: '/toolkit/kanten', path: '/toolkit/kanten', getParentRoute: () => rootRouteImport } as any)
+const ToolkitLagerpassingenRoute = ToolkitLagerpassingenRouteImport.update({ id: '/toolkit/lagerpassingen', path: '/toolkit/lagerpassingen', getParentRoute: () => rootRouteImport } as any)
+const ToolkitMotorspecificatieRoute = ToolkitMotorspecificatieRouteImport.update({ id: '/toolkit/motorspecificatie', path: '/toolkit/motorspecificatie', getParentRoute: () => rootRouteImport } as any)
+const ToolkitORinggroefRoute = ToolkitORinggroefRouteImport.update({ id: '/toolkit/o-ringgroef', path: '/toolkit/o-ringgroef', getParentRoute: () => rootRouteImport } as any)
+const ToolkitPassingenRoute = ToolkitPassingenRouteImport.update({ id: '/toolkit/passingen', path: '/toolkit/passingen', getParentRoute: () => rootRouteImport } as any)
+const ToolkitSeegerringGroefRoute = ToolkitSeegerringGroefRouteImport.update({ id: '/toolkit/seegerring-groef', path: '/toolkit/seegerring-groef', getParentRoute: () => rootRouteImport } as any)
+const ToolkitSpiebaanTolerantiesRoute = ToolkitSpiebaanTolerantiesRouteImport.update({ id: '/toolkit/spiebaan-toleranties', path: '/toolkit/spiebaan-toleranties', getParentRoute: () => rootRouteImport } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/over-mij': typeof OverMijRoute
   '/contact': typeof ContactRoute
   '/spel': typeof SpelRoute
-  '/denk/blog': typeof DenkBlogRoute
-  '/denk/project': typeof DenkProjectRoute
-  '/doe/marathon': typeof DoeMarathonRoute
-  '/doe/projecten': typeof DoeProjectenRoute
-  '/weet/$': typeof WeetSplatRoute
-  '/denk/': typeof DenkIndexRoute
-  '/doe/': typeof DoeIndexRoute
-  '/weet/': typeof WeetIndexRoute
-  '/denk/toolkit/bevestigers': typeof DenkToolkitBevestigersRoute
-  '/denk/toolkit/bronnen': typeof DenkToolkitBronnenRoute
-  '/denk/toolkit/iso-2768': typeof DenkToolkitIso2768Route
-  '/denk/toolkit/kanten': typeof DenkToolkitKantenRoute
-  '/denk/toolkit/lagerpassingen': typeof DenkToolkitLagerpassingenRoute
-  '/denk/toolkit/motorspecificatie': typeof DenkToolkitMotorspecificatieRoute
-  '/denk/toolkit/o-ringgroef': typeof DenkToolkitORinggroefRoute
-  '/denk/toolkit/passingen': typeof DenkToolkitPassingenRoute
-  '/denk/toolkit/seegerring-groef': typeof DenkToolkitSeegerringGroefRoute
-  '/denk/toolkit/spiebaan-toleranties': typeof DenkToolkitSpiebaanTolerantiesRoute
-  '/denk/toolkit/': typeof DenkToolkitIndexRoute
+  '/blog/': typeof BlogIndexRoute
+  '/blog/usb-c-labtafel-mhs': typeof BlogUsbCLabtafelMhsRoute
+  '/marathon': typeof MarathonRoute
+  '/podcast': typeof PodcastRoute
+  '/project': typeof ProjectRoute
+  '/projecten': typeof ProjectenRoute
+  '/toolkit/': typeof ToolkitIndexRoute
+  '/toolkit/eenheden': typeof ToolkitEenhedenRoute
+  '/toolkit/bevestigers': typeof ToolkitBevestigersRoute
+  '/toolkit/bronnen': typeof ToolkitBronnenRoute
+  '/toolkit/iso-2768': typeof ToolkitIso2768Route
+  '/toolkit/kanten': typeof ToolkitKantenRoute
+  '/toolkit/lagerpassingen': typeof ToolkitLagerpassingenRoute
+  '/toolkit/motorspecificatie': typeof ToolkitMotorspecificatieRoute
+  '/toolkit/o-ringgroef': typeof ToolkitORinggroefRoute
+  '/toolkit/passingen': typeof ToolkitPassingenRoute
+  '/toolkit/seegerring-groef': typeof ToolkitSeegerringGroefRoute
+  '/toolkit/spiebaan-toleranties': typeof ToolkitSpiebaanTolerantiesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/over-mij': typeof OverMijRoute
   '/contact': typeof ContactRoute
   '/spel': typeof SpelRoute
-  '/denk/blog': typeof DenkBlogRoute
-  '/denk/project': typeof DenkProjectRoute
-  '/doe/marathon': typeof DoeMarathonRoute
-  '/doe/projecten': typeof DoeProjectenRoute
-  '/weet/$': typeof WeetSplatRoute
-  '/denk': typeof DenkIndexRoute
-  '/doe': typeof DoeIndexRoute
-  '/weet': typeof WeetIndexRoute
-  '/denk/toolkit/bevestigers': typeof DenkToolkitBevestigersRoute
-  '/denk/toolkit/bronnen': typeof DenkToolkitBronnenRoute
-  '/denk/toolkit/iso-2768': typeof DenkToolkitIso2768Route
-  '/denk/toolkit/kanten': typeof DenkToolkitKantenRoute
-  '/denk/toolkit/lagerpassingen': typeof DenkToolkitLagerpassingenRoute
-  '/denk/toolkit/motorspecificatie': typeof DenkToolkitMotorspecificatieRoute
-  '/denk/toolkit/o-ringgroef': typeof DenkToolkitORinggroefRoute
-  '/denk/toolkit/passingen': typeof DenkToolkitPassingenRoute
-  '/denk/toolkit/seegerring-groef': typeof DenkToolkitSeegerringGroefRoute
-  '/denk/toolkit/spiebaan-toleranties': typeof DenkToolkitSpiebaanTolerantiesRoute
-  '/denk/toolkit': typeof DenkToolkitIndexRoute
+  '/blog': typeof BlogIndexRoute
+  '/blog/usb-c-labtafel-mhs': typeof BlogUsbCLabtafelMhsRoute
+  '/marathon': typeof MarathonRoute
+  '/podcast': typeof PodcastRoute
+  '/project': typeof ProjectRoute
+  '/projecten': typeof ProjectenRoute
+  '/toolkit': typeof ToolkitIndexRoute
+  '/toolkit/eenheden': typeof ToolkitEenhedenRoute
+  '/toolkit/bevestigers': typeof ToolkitBevestigersRoute
+  '/toolkit/bronnen': typeof ToolkitBronnenRoute
+  '/toolkit/iso-2768': typeof ToolkitIso2768Route
+  '/toolkit/kanten': typeof ToolkitKantenRoute
+  '/toolkit/lagerpassingen': typeof ToolkitLagerpassingenRoute
+  '/toolkit/motorspecificatie': typeof ToolkitMotorspecificatieRoute
+  '/toolkit/o-ringgroef': typeof ToolkitORinggroefRoute
+  '/toolkit/passingen': typeof ToolkitPassingenRoute
+  '/toolkit/seegerring-groef': typeof ToolkitSeegerringGroefRoute
+  '/toolkit/spiebaan-toleranties': typeof ToolkitSpiebaanTolerantiesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -109,32 +105,31 @@ export interface FileRoutesById {
   '/over-mij': typeof OverMijRoute
   '/contact': typeof ContactRoute
   '/spel': typeof SpelRoute
-  '/denk/blog': typeof DenkBlogRoute
-  '/denk/project': typeof DenkProjectRoute
-  '/doe/marathon': typeof DoeMarathonRoute
-  '/doe/projecten': typeof DoeProjectenRoute
-  '/weet/$': typeof WeetSplatRoute
-  '/denk/': typeof DenkIndexRoute
-  '/doe/': typeof DoeIndexRoute
-  '/weet/': typeof WeetIndexRoute
-  '/denk/toolkit/bevestigers': typeof DenkToolkitBevestigersRoute
-  '/denk/toolkit/bronnen': typeof DenkToolkitBronnenRoute
-  '/denk/toolkit/iso-2768': typeof DenkToolkitIso2768Route
-  '/denk/toolkit/kanten': typeof DenkToolkitKantenRoute
-  '/denk/toolkit/lagerpassingen': typeof DenkToolkitLagerpassingenRoute
-  '/denk/toolkit/motorspecificatie': typeof DenkToolkitMotorspecificatieRoute
-  '/denk/toolkit/o-ringgroef': typeof DenkToolkitORinggroefRoute
-  '/denk/toolkit/passingen': typeof DenkToolkitPassingenRoute
-  '/denk/toolkit/seegerring-groef': typeof DenkToolkitSeegerringGroefRoute
-  '/denk/toolkit/spiebaan-toleranties': typeof DenkToolkitSpiebaanTolerantiesRoute
-  '/denk/toolkit/': typeof DenkToolkitIndexRoute
+  '/blog/': typeof BlogIndexRoute
+  '/blog/usb-c-labtafel-mhs': typeof BlogUsbCLabtafelMhsRoute
+  '/marathon': typeof MarathonRoute
+  '/podcast': typeof PodcastRoute
+  '/project': typeof ProjectRoute
+  '/projecten': typeof ProjectenRoute
+  '/toolkit/': typeof ToolkitIndexRoute
+  '/toolkit/eenheden': typeof ToolkitEenhedenRoute
+  '/toolkit/bevestigers': typeof ToolkitBevestigersRoute
+  '/toolkit/bronnen': typeof ToolkitBronnenRoute
+  '/toolkit/iso-2768': typeof ToolkitIso2768Route
+  '/toolkit/kanten': typeof ToolkitKantenRoute
+  '/toolkit/lagerpassingen': typeof ToolkitLagerpassingenRoute
+  '/toolkit/motorspecificatie': typeof ToolkitMotorspecificatieRoute
+  '/toolkit/o-ringgroef': typeof ToolkitORinggroefRoute
+  '/toolkit/passingen': typeof ToolkitPassingenRoute
+  '/toolkit/seegerring-groef': typeof ToolkitSeegerringGroefRoute
+  '/toolkit/spiebaan-toleranties': typeof ToolkitSpiebaanTolerantiesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/over-mij' | '/contact' | '/spel' | '/denk/blog' | '/denk/project' | '/doe/marathon' | '/doe/projecten' | '/weet/$' | '/denk/' | '/doe/' | '/weet/' | '/denk/toolkit/bevestigers' | '/denk/toolkit/bronnen' | '/denk/toolkit/iso-2768' | '/denk/toolkit/kanten' | '/denk/toolkit/lagerpassingen' | '/denk/toolkit/motorspecificatie' | '/denk/toolkit/o-ringgroef' | '/denk/toolkit/passingen' | '/denk/toolkit/seegerring-groef' | '/denk/toolkit/spiebaan-toleranties' | '/denk/toolkit/'
+  fullPaths: '/' | '/over-mij' | '/contact' | '/spel' | '/blog/' | '/blog/usb-c-labtafel-mhs' | '/marathon' | '/podcast' | '/project' | '/projecten' | '/toolkit/' | '/toolkit/eenheden' | '/toolkit/bevestigers' | '/toolkit/bronnen' | '/toolkit/iso-2768' | '/toolkit/kanten' | '/toolkit/lagerpassingen' | '/toolkit/motorspecificatie' | '/toolkit/o-ringgroef' | '/toolkit/passingen' | '/toolkit/seegerring-groef' | '/toolkit/spiebaan-toleranties'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/over-mij' | '/contact' | '/spel' | '/denk/blog' | '/denk/project' | '/doe/marathon' | '/doe/projecten' | '/weet/$' | '/denk' | '/doe' | '/weet' | '/denk/toolkit/bevestigers' | '/denk/toolkit/bronnen' | '/denk/toolkit/iso-2768' | '/denk/toolkit/kanten' | '/denk/toolkit/lagerpassingen' | '/denk/toolkit/motorspecificatie' | '/denk/toolkit/o-ringgroef' | '/denk/toolkit/passingen' | '/denk/toolkit/seegerring-groef' | '/denk/toolkit/spiebaan-toleranties' | '/denk/toolkit'
-  id: '__root__' | '/' | '/over-mij' | '/contact' | '/spel' | '/denk/blog' | '/denk/project' | '/doe/marathon' | '/doe/projecten' | '/weet/$' | '/denk/' | '/doe/' | '/weet/' | '/denk/toolkit/bevestigers' | '/denk/toolkit/bronnen' | '/denk/toolkit/iso-2768' | '/denk/toolkit/kanten' | '/denk/toolkit/lagerpassingen' | '/denk/toolkit/motorspecificatie' | '/denk/toolkit/o-ringgroef' | '/denk/toolkit/passingen' | '/denk/toolkit/seegerring-groef' | '/denk/toolkit/spiebaan-toleranties' | '/denk/toolkit/'
+  to: '/' | '/over-mij' | '/contact' | '/spel' | '/blog' | '/blog/usb-c-labtafel-mhs' | '/marathon' | '/podcast' | '/project' | '/projecten' | '/toolkit' | '/toolkit/eenheden' | '/toolkit/bevestigers' | '/toolkit/bronnen' | '/toolkit/iso-2768' | '/toolkit/kanten' | '/toolkit/lagerpassingen' | '/toolkit/motorspecificatie' | '/toolkit/o-ringgroef' | '/toolkit/passingen' | '/toolkit/seegerring-groef' | '/toolkit/spiebaan-toleranties'
+  id: '__root__' | '/' | '/over-mij' | '/contact' | '/spel' | '/blog/' | '/blog/usb-c-labtafel-mhs' | '/marathon' | '/podcast' | '/project' | '/projecten' | '/toolkit/' | '/toolkit/eenheden' | '/toolkit/bevestigers' | '/toolkit/bronnen' | '/toolkit/iso-2768' | '/toolkit/kanten' | '/toolkit/lagerpassingen' | '/toolkit/motorspecificatie' | '/toolkit/o-ringgroef' | '/toolkit/passingen' | '/toolkit/seegerring-groef' | '/toolkit/spiebaan-toleranties'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -142,25 +137,24 @@ export interface RootRouteChildren {
   OverMijRoute: typeof OverMijRoute
   ContactRoute: typeof ContactRoute
   SpelRoute: typeof SpelRoute
-  DenkBlogRoute: typeof DenkBlogRoute
-  DenkProjectRoute: typeof DenkProjectRoute
-  DoeMarathonRoute: typeof DoeMarathonRoute
-  DoeProjectenRoute: typeof DoeProjectenRoute
-  WeetSplatRoute: typeof WeetSplatRoute
-  DenkIndexRoute: typeof DenkIndexRoute
-  DoeIndexRoute: typeof DoeIndexRoute
-  WeetIndexRoute: typeof WeetIndexRoute
-  DenkToolkitBevestigersRoute: typeof DenkToolkitBevestigersRoute
-  DenkToolkitBronnenRoute: typeof DenkToolkitBronnenRoute
-  DenkToolkitIso2768Route: typeof DenkToolkitIso2768Route
-  DenkToolkitKantenRoute: typeof DenkToolkitKantenRoute
-  DenkToolkitLagerpassingenRoute: typeof DenkToolkitLagerpassingenRoute
-  DenkToolkitMotorspecificatieRoute: typeof DenkToolkitMotorspecificatieRoute
-  DenkToolkitORinggroefRoute: typeof DenkToolkitORinggroefRoute
-  DenkToolkitPassingenRoute: typeof DenkToolkitPassingenRoute
-  DenkToolkitSeegerringGroefRoute: typeof DenkToolkitSeegerringGroefRoute
-  DenkToolkitSpiebaanTolerantiesRoute: typeof DenkToolkitSpiebaanTolerantiesRoute
-  DenkToolkitIndexRoute: typeof DenkToolkitIndexRoute
+  BlogIndexRoute: typeof BlogIndexRoute
+  BlogUsbCLabtafelMhsRoute: typeof BlogUsbCLabtafelMhsRoute
+  MarathonRoute: typeof MarathonRoute
+  PodcastRoute: typeof PodcastRoute
+  ProjectRoute: typeof ProjectRoute
+  ProjectenRoute: typeof ProjectenRoute
+  ToolkitIndexRoute: typeof ToolkitIndexRoute
+  ToolkitEenhedenRoute: typeof ToolkitEenhedenRoute
+  ToolkitBevestigersRoute: typeof ToolkitBevestigersRoute
+  ToolkitBronnenRoute: typeof ToolkitBronnenRoute
+  ToolkitIso2768Route: typeof ToolkitIso2768Route
+  ToolkitKantenRoute: typeof ToolkitKantenRoute
+  ToolkitLagerpassingenRoute: typeof ToolkitLagerpassingenRoute
+  ToolkitMotorspecificatieRoute: typeof ToolkitMotorspecificatieRoute
+  ToolkitORinggroefRoute: typeof ToolkitORinggroefRoute
+  ToolkitPassingenRoute: typeof ToolkitPassingenRoute
+  ToolkitSeegerringGroefRoute: typeof ToolkitSeegerringGroefRoute
+  ToolkitSpiebaanTolerantiesRoute: typeof ToolkitSpiebaanTolerantiesRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -169,34 +163,29 @@ declare module '@tanstack/react-router' {
     '/over-mij': { id: '/over-mij'; path: '/over-mij'; fullPath: '/over-mij'; preLoaderRoute: typeof OverMijRouteImport; parentRoute: typeof rootRouteImport }
     '/contact': { id: '/contact'; path: '/contact'; fullPath: '/contact'; preLoaderRoute: typeof ContactRouteImport; parentRoute: typeof rootRouteImport }
     '/spel': { id: '/spel'; path: '/spel'; fullPath: '/spel'; preLoaderRoute: typeof SpelRouteImport; parentRoute: typeof rootRouteImport }
-    '/denk/': { id: '/denk/'; path: '/denk'; fullPath: '/denk/'; preLoaderRoute: typeof DenkIndexRouteImport; parentRoute: typeof rootRouteImport }
-    '/denk/blog': { id: '/denk/blog'; path: '/denk/blog'; fullPath: '/denk/blog'; preLoaderRoute: typeof DenkBlogRouteImport; parentRoute: typeof rootRouteImport }
-    '/denk/project': { id: '/denk/project'; path: '/denk/project'; fullPath: '/denk/project'; preLoaderRoute: typeof DenkProjectRouteImport; parentRoute: typeof rootRouteImport }
-    '/doe/': { id: '/doe/'; path: '/doe'; fullPath: '/doe/'; preLoaderRoute: typeof DoeIndexRouteImport; parentRoute: typeof rootRouteImport }
-    '/doe/marathon': { id: '/doe/marathon'; path: '/doe/marathon'; fullPath: '/doe/marathon'; preLoaderRoute: typeof DoeMarathonRouteImport; parentRoute: typeof rootRouteImport }
-    '/doe/projecten': { id: '/doe/projecten'; path: '/doe/projecten'; fullPath: '/doe/projecten'; preLoaderRoute: typeof DoeProjectenRouteImport; parentRoute: typeof rootRouteImport }
-    '/weet/': { id: '/weet/'; path: '/weet'; fullPath: '/weet/'; preLoaderRoute: typeof WeetIndexRouteImport; parentRoute: typeof rootRouteImport }
-    '/weet/$': { id: '/weet/$'; path: '/weet/$'; fullPath: '/weet/$'; preLoaderRoute: typeof WeetSplatRouteImport; parentRoute: typeof rootRouteImport }
-    '/denk/toolkit/': { id: '/denk/toolkit/'; path: '/denk/toolkit'; fullPath: '/denk/toolkit/'; preLoaderRoute: typeof DenkToolkitIndexRouteImport; parentRoute: typeof rootRouteImport }
-    '/denk/toolkit/bevestigers': { id: '/denk/toolkit/bevestigers'; path: '/denk/toolkit/bevestigers'; fullPath: '/denk/toolkit/bevestigers'; preLoaderRoute: typeof DenkToolkitBevestigersRouteImport; parentRoute: typeof rootRouteImport }
-    '/denk/toolkit/bronnen': { id: '/denk/toolkit/bronnen'; path: '/denk/toolkit/bronnen'; fullPath: '/denk/toolkit/bronnen'; preLoaderRoute: typeof DenkToolkitBronnenRouteImport; parentRoute: typeof rootRouteImport }
-    '/denk/toolkit/iso-2768': { id: '/denk/toolkit/iso-2768'; path: '/denk/toolkit/iso-2768'; fullPath: '/denk/toolkit/iso-2768'; preLoaderRoute: typeof DenkToolkitIso2768RouteImport; parentRoute: typeof rootRouteImport }
-    '/denk/toolkit/kanten': { id: '/denk/toolkit/kanten'; path: '/denk/toolkit/kanten'; fullPath: '/denk/toolkit/kanten'; preLoaderRoute: typeof DenkToolkitKantenRouteImport; parentRoute: typeof rootRouteImport }
-    '/denk/toolkit/lagerpassingen': { id: '/denk/toolkit/lagerpassingen'; path: '/denk/toolkit/lagerpassingen'; fullPath: '/denk/toolkit/lagerpassingen'; preLoaderRoute: typeof DenkToolkitLagerpassingenRouteImport; parentRoute: typeof rootRouteImport }
-    '/denk/toolkit/motorspecificatie': { id: '/denk/toolkit/motorspecificatie'; path: '/denk/toolkit/motorspecificatie'; fullPath: '/denk/toolkit/motorspecificatie'; preLoaderRoute: typeof DenkToolkitMotorspecificatieRouteImport; parentRoute: typeof rootRouteImport }
-    '/denk/toolkit/o-ringgroef': { id: '/denk/toolkit/o-ringgroef'; path: '/denk/toolkit/o-ringgroef'; fullPath: '/denk/toolkit/o-ringgroef'; preLoaderRoute: typeof DenkToolkitORinggroefRouteImport; parentRoute: typeof rootRouteImport }
-    '/denk/toolkit/passingen': { id: '/denk/toolkit/passingen'; path: '/denk/toolkit/passingen'; fullPath: '/denk/toolkit/passingen'; preLoaderRoute: typeof DenkToolkitPassingenRouteImport; parentRoute: typeof rootRouteImport }
-    '/denk/toolkit/seegerring-groef': { id: '/denk/toolkit/seegerring-groef'; path: '/denk/toolkit/seegerring-groef'; fullPath: '/denk/toolkit/seegerring-groef'; preLoaderRoute: typeof DenkToolkitSeegerringGroefRouteImport; parentRoute: typeof rootRouteImport }
-    '/denk/toolkit/spiebaan-toleranties': { id: '/denk/toolkit/spiebaan-toleranties'; path: '/denk/toolkit/spiebaan-toleranties'; fullPath: '/denk/toolkit/spiebaan-toleranties'; preLoaderRoute: typeof DenkToolkitSpiebaanTolerantiesRouteImport; parentRoute: typeof rootRouteImport }
+    '/blog/': { id: '/blog/'; path: '/blog'; fullPath: '/blog/'; preLoaderRoute: typeof BlogIndexRouteImport; parentRoute: typeof rootRouteImport }
+    '/blog/usb-c-labtafel-mhs': { id: '/blog/usb-c-labtafel-mhs'; path: '/blog/usb-c-labtafel-mhs'; fullPath: '/blog/usb-c-labtafel-mhs'; preLoaderRoute: typeof BlogUsbCLabtafelMhsRouteImport; parentRoute: typeof rootRouteImport }
+    '/marathon': { id: '/marathon'; path: '/marathon'; fullPath: '/marathon'; preLoaderRoute: typeof MarathonRouteImport; parentRoute: typeof rootRouteImport }
+    '/podcast': { id: '/podcast'; path: '/podcast'; fullPath: '/podcast'; preLoaderRoute: typeof PodcastRouteImport; parentRoute: typeof rootRouteImport }
+    '/project': { id: '/project'; path: '/project'; fullPath: '/project'; preLoaderRoute: typeof ProjectRouteImport; parentRoute: typeof rootRouteImport }
+    '/projecten': { id: '/projecten'; path: '/projecten'; fullPath: '/projecten'; preLoaderRoute: typeof ProjectenRouteImport; parentRoute: typeof rootRouteImport }
+    '/toolkit/': { id: '/toolkit/'; path: '/toolkit'; fullPath: '/toolkit/'; preLoaderRoute: typeof ToolkitIndexRouteImport; parentRoute: typeof rootRouteImport }
+    '/toolkit/eenheden': { id: '/toolkit/eenheden'; path: '/toolkit/eenheden'; fullPath: '/toolkit/eenheden'; preLoaderRoute: typeof ToolkitEenhedenRouteImport; parentRoute: typeof rootRouteImport }
+    '/toolkit/bevestigers': { id: '/toolkit/bevestigers'; path: '/toolkit/bevestigers'; fullPath: '/toolkit/bevestigers'; preLoaderRoute: typeof ToolkitBevestigersRouteImport; parentRoute: typeof rootRouteImport }
+    '/toolkit/bronnen': { id: '/toolkit/bronnen'; path: '/toolkit/bronnen'; fullPath: '/toolkit/bronnen'; preLoaderRoute: typeof ToolkitBronnenRouteImport; parentRoute: typeof rootRouteImport }
+    '/toolkit/iso-2768': { id: '/toolkit/iso-2768'; path: '/toolkit/iso-2768'; fullPath: '/toolkit/iso-2768'; preLoaderRoute: typeof ToolkitIso2768RouteImport; parentRoute: typeof rootRouteImport }
+    '/toolkit/kanten': { id: '/toolkit/kanten'; path: '/toolkit/kanten'; fullPath: '/toolkit/kanten'; preLoaderRoute: typeof ToolkitKantenRouteImport; parentRoute: typeof rootRouteImport }
+    '/toolkit/lagerpassingen': { id: '/toolkit/lagerpassingen'; path: '/toolkit/lagerpassingen'; fullPath: '/toolkit/lagerpassingen'; preLoaderRoute: typeof ToolkitLagerpassingenRouteImport; parentRoute: typeof rootRouteImport }
+    '/toolkit/motorspecificatie': { id: '/toolkit/motorspecificatie'; path: '/toolkit/motorspecificatie'; fullPath: '/toolkit/motorspecificatie'; preLoaderRoute: typeof ToolkitMotorspecificatieRouteImport; parentRoute: typeof rootRouteImport }
+    '/toolkit/o-ringgroef': { id: '/toolkit/o-ringgroef'; path: '/toolkit/o-ringgroef'; fullPath: '/toolkit/o-ringgroef'; preLoaderRoute: typeof ToolkitORinggroefRouteImport; parentRoute: typeof rootRouteImport }
+    '/toolkit/passingen': { id: '/toolkit/passingen'; path: '/toolkit/passingen'; fullPath: '/toolkit/passingen'; preLoaderRoute: typeof ToolkitPassingenRouteImport; parentRoute: typeof rootRouteImport }
+    '/toolkit/seegerring-groef': { id: '/toolkit/seegerring-groef'; path: '/toolkit/seegerring-groef'; fullPath: '/toolkit/seegerring-groef'; preLoaderRoute: typeof ToolkitSeegerringGroefRouteImport; parentRoute: typeof rootRouteImport }
+    '/toolkit/spiebaan-toleranties': { id: '/toolkit/spiebaan-toleranties'; path: '/toolkit/spiebaan-toleranties'; fullPath: '/toolkit/spiebaan-toleranties'; preLoaderRoute: typeof ToolkitSpiebaanTolerantiesRouteImport; parentRoute: typeof rootRouteImport }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute, OverMijRoute, ContactRoute, SpelRoute, DenkBlogRoute, DenkProjectRoute,
-  DoeMarathonRoute, DoeProjectenRoute, WeetSplatRoute, DenkIndexRoute, DoeIndexRoute, WeetIndexRoute,
-  DenkToolkitBevestigersRoute, DenkToolkitBronnenRoute, DenkToolkitIso2768Route, DenkToolkitKantenRoute, DenkToolkitLagerpassingenRoute,
-  DenkToolkitMotorspecificatieRoute, DenkToolkitORinggroefRoute, DenkToolkitPassingenRoute, DenkToolkitSeegerringGroefRoute,
-  DenkToolkitSpiebaanTolerantiesRoute, DenkToolkitIndexRoute,
+  IndexRoute, OverMijRoute, ContactRoute, SpelRoute, BlogIndexRoute, BlogUsbCLabtafelMhsRoute, MarathonRoute, PodcastRoute, ProjectRoute, ProjectenRoute, ToolkitIndexRoute, ToolkitEenhedenRoute, ToolkitBevestigersRoute, ToolkitBronnenRoute, ToolkitIso2768Route, ToolkitKantenRoute, ToolkitLagerpassingenRoute, ToolkitMotorspecificatieRoute, ToolkitORinggroefRoute, ToolkitPassingenRoute, ToolkitSeegerringGroefRoute, ToolkitSpiebaanTolerantiesRoute,
 }
 export const routeTree = rootRouteImport._addFileChildren(rootRouteChildren)._addFileTypes<FileRouteTypes>()
 

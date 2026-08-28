@@ -8,12 +8,12 @@ import { pageHead, softwareJsonLd } from "@/lib/seo";
 const DESCRIPTION =
   "DIN 6885-1 spiebaan-toleranties: t1, t2, b×h. Vul de as-Ø in; de tabel markeert de rij. P9 vaste zitting, N9/JS9 lichte zitting.";
 
-export const Route = createFileRoute("/denk/toolkit/spiebaan-toleranties")({
+export const Route = createFileRoute("/toolkit/spiebaan-toleranties")({
   head: () =>
     pageHead({
       title: "Spiebaan-toleranties DIN 6885 (t1/t2) — Damian Vink",
       description: DESCRIPTION,
-      path: "/denk/toolkit/spiebaan-toleranties",
+      path: "/toolkit/spiebaan-toleranties",
     }),
   component: SpiebaanPage,
 });
@@ -23,7 +23,7 @@ function SpiebaanPage() {
     <ToolkitFrame
       active="spiebaan"
       crumbs={[
-        { href: "/denk/toolkit", label: "Toolkit" },
+        { href: "/toolkit", label: "Toolkit" },
         { label: "Spiebaan-toleranties" },
       ]}
       before="Spiebaan-toleranties"
@@ -33,7 +33,7 @@ function SpiebaanPage() {
       <JsonLd
         data={softwareJsonLd({
           name: "Spiebaan-toleranties DIN 6885",
-          path: "/denk/toolkit/spiebaan-toleranties",
+          path: "/toolkit/spiebaan-toleranties",
           description: DESCRIPTION,
           featureList: ["t1", "t2", "P9", "N9/JS9", "DIN 6885-1"],
         })}

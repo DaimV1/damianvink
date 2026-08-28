@@ -8,12 +8,12 @@ import { pageHead, softwareJsonLd } from "@/lib/seo";
 const DESCRIPTION =
   "Richtlijnen kanten: inwendige radius Ri, minimale beenlengte en Z-buiging. Shop-spec 247TailorSteel Sophia, geen ISO of DIN.";
 
-export const Route = createFileRoute("/denk/toolkit/kanten")({
+export const Route = createFileRoute("/toolkit/kanten")({
   head: () =>
     pageHead({
       title: "Richtlijnen kanten 247TailorSteel — Damian Vink",
       description: DESCRIPTION,
-      path: "/denk/toolkit/kanten",
+      path: "/toolkit/kanten",
     }),
   component: KantenPage,
 });
@@ -23,7 +23,7 @@ function KantenPage() {
     <ToolkitFrame
       active="kanten"
       crumbs={[
-        { href: "/denk/toolkit", label: "Toolkit" },
+        { href: "/toolkit", label: "Toolkit" },
         { label: "Richtlijnen kanten" },
       ]}
       before="Richtlijnen"
@@ -33,7 +33,7 @@ function KantenPage() {
       <JsonLd
         data={softwareJsonLd({
           name: "Richtlijnen kanten 247TailorSteel",
-          path: "/denk/toolkit/kanten",
+          path: "/toolkit/kanten",
           description: DESCRIPTION,
           featureList: [
             "Ri",

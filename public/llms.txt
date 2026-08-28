@@ -7,34 +7,31 @@ Canonical host: https://www.damianvink.nl (zonder trailing slash).
 Naslagtabelen zijn een werkblad, geen vervanging van de norm.
 Geen verzonnen projectcases.
 
-Hoofdnavigatie: Toolkit, Werkplek, Marathon, Over, Contact.
+Hoofdnavigatie: Toolkit, Project, Marathon, Over, Contact.
 
 ## Pagina's
 
-- [Home](https://www.damianvink.nl/): Project Engineer machinebouw; toolkit, werkplek, marathon, contact
-- [Toolkit](https://www.damianvink.nl/denk/toolkit): rekenhulp + naslag
-- [Eenheden](https://www.damianvink.nl/denk/toolkit/eenheden): SI · imperial; inch↔mm, °C↔K, dm³↔L, lbf↔N, psi↔bar
-- [Werkplek](https://www.damianvink.nl/denk/project): projectwerkplek (fasen, stakeholders, risico's, beslispunt)
-- [Marathon](https://www.damianvink.nl/doe/marathon): trainingsdashboard, EDP Porto Marathon (Strava-export)
+- [Home](https://www.damianvink.nl/): Project Engineer machinebouw; toolkit, project, marathon, contact
+- [Toolkit](https://www.damianvink.nl/toolkit): rekenhulp + naslag
+- [Eenheden](https://www.damianvink.nl/toolkit/eenheden): SI · imperial; inch↔mm, °C↔K, dm³↔L, lbf↔N, psi↔bar
+- [Project](https://www.damianvink.nl/project): projectwerkplek (fasen, stakeholders, risico's, beslispunt)
+- [Marathon](https://www.damianvink.nl/marathon): trainingsdashboard, EDP Porto Marathon (Strava-export)
 - [Over](https://www.damianvink.nl/over-mij): achtergrond, loopbaan, CV (PDF)
 - [Contact](https://www.damianvink.nl/contact): e-mail en LinkedIn
-- [Artikelen](https://www.damianvink.nl/denk): blog; podcast volgt
-- [Blog](https://www.damianvink.nl/denk/blog): gepubliceerde stukken
-- [USB-C voor de labtafel: Anthropic’s Model Hardware Standard](https://www.damianvink.nl/denk/blog/usb-c-labtafel-mhs): 27 augustus 2026; USB-C is een metafoor, geen IEC-connector
-- [Algemene toleranties (ISO 2768)](https://www.damianvink.nl/denk/toolkit/iso-2768): titelblok-default f/m/c/v en H/K/L; geen passing
-- [Passingen (ISO 286)](https://www.damianvink.nl/denk/toolkit/passingen): voorkeurpassingen tot Ø50 mm, eenheidsgatstelsel H7
-- [Spiebaan-toleranties (DIN 6885)](https://www.damianvink.nl/denk/toolkit/spiebaan-toleranties): t1/t2, b×h; as-Ø boven ondergrens t/m bovengrens
-- [Lagerpassingen](https://www.damianvink.nl/denk/toolkit/lagerpassingen): groefkogellagers, SKF-klassen tot Ø50 mm
-- [Seegerringgroef (DIN 471/472)](https://www.damianvink.nl/denk/toolkit/seegerring-groef): groef d2, b, t op as of in boring tot Ø100 mm
-- [Bevestigingsmateriaal](https://www.damianvink.nl/denk/toolkit/bevestigers): M3–M24, ISO 273 doorlaat, VDI 2230 aandraaimoment
-- [O-ringgroef (ISO 3601)](https://www.damianvink.nl/denk/toolkit/o-ringgroef): koorden 1,80–7,00 mm, radiaal en axiaal
-- [Motorspecificatie](https://www.damianvink.nl/denk/toolkit/motorspecificatie): n, F, T, P en volgende IEC-kW-stap; SEW kiest het aggregaat
-- [Richtlijnen kanten](https://www.damianvink.nl/denk/toolkit/kanten): Ri, beenlengte, Z-buiging; 247TailorSteel Sophia shop-spec, geen ISO
-- [CAD-bibliotheken](https://www.damianvink.nl/denk/toolkit/bronnen): TraceParts, 3Dfindit, MISUMI, 247 Tailor Steel, ISO OBP
+- [Blog](https://www.damianvink.nl/blog): gepubliceerde stukken
+- [USB-C voor de labtafel: Anthropic’s Model Hardware Standard](https://www.damianvink.nl/blog/usb-c-labtafel-mhs): 27 augustus 2026; USB-C is een metafoor, geen IEC-connector
+- [Algemene toleranties (ISO 2768)](https://www.damianvink.nl/toolkit/iso-2768): titelblok-default f/m/c/v en H/K/L; geen passing
+- [Passingen (ISO 286)](https://www.damianvink.nl/toolkit/passingen): voorkeurpassingen tot Ø50 mm, eenheidsgatstelsel H7
+- [Spiebaan-toleranties (DIN 6885)](https://www.damianvink.nl/toolkit/spiebaan-toleranties): t1/t2, b×h; as-Ø boven ondergrens t/m bovengrens
+- [Lagerpassingen](https://www.damianvink.nl/toolkit/lagerpassingen): groefkogellagers, SKF-klassen tot Ø50 mm
+- [Seegerringgroef (DIN 471/472)](https://www.damianvink.nl/toolkit/seegerring-groef): groef d2, b, t op as of in boring tot Ø100 mm
+- [Bevestigingsmateriaal](https://www.damianvink.nl/toolkit/bevestigers): M3–M24, ISO 273 doorlaat, VDI 2230 aandraaimoment
+- [O-ringgroef (ISO 3601)](https://www.damianvink.nl/toolkit/o-ringgroef): koorden 1,80–7,00 mm, radiaal en axiaal
+- [Motorspecificatie](https://www.damianvink.nl/toolkit/motorspecificatie): n, F, T, P en volgende IEC-kW-stap; SEW kiest het aggregaat
+- [Richtlijnen kanten](https://www.damianvink.nl/toolkit/kanten): Ri, beenlengte, Z-buiging; 247TailorSteel Sophia shop-spec, geen ISO
+- [CAD-bibliotheken](https://www.damianvink.nl/toolkit/bronnen): TraceParts, 3Dfindit, MISUMI, 247 Tailor Steel, ISO OBP
 
-Oude paden blijven bereikbaar: /over-mij, /doe, /heb, /denk.
-Leeg tot er echte inhoud is (noindex): /denk/podcast, /doe/projecten.
-Oude paden /weet/… en /kennis/… verwijzen permanent door naar /denk/….
+Leeg tot er echte inhoud is (noindex): /podcast, /projecten.
 
 ## Contact
 

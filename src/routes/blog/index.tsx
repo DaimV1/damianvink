@@ -5,13 +5,13 @@ import { Breadcrumb } from "@/components/toolkit/tool-switcher";
 import { ARTICLES } from "@/lib/articles";
 import { pageHead } from "@/lib/seo";
 
-export const Route = createFileRoute("/denk/blog/")({
+export const Route = createFileRoute("/blog/")({
   head: () =>
     pageHead({
       title: "Blog — Damian Vink",
       description:
         "Artikelen over werktuigbouwkunde, ontwerp en machinebouw. Alleen stukken die er daadwerkelijk zijn.",
-      path: "/denk/blog",
+      path: "/blog",
     }),
   component: Blog,
 });
@@ -20,12 +20,7 @@ function Blog() {
   return (
     <SiteShell>
       <PageWrap>
-        <Breadcrumb
-          items={[
-            { href: "/denk", label: "Artikelen" },
-            { label: "Blog" },
-          ]}
-        />
+        <Breadcrumb items={[{ label: "Blog" }]} />
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">
           Artikelen
         </p>

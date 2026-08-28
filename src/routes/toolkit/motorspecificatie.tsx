@@ -8,12 +8,12 @@ import { pageHead, softwareJsonLd } from "@/lib/seo";
 const DESCRIPTION =
   "Motorspecificatie voor een aangedreven rol of trommel: n, F, T, P en de volgende IEC 60034 kW-stap. SEW kiest het aggregaat.";
 
-export const Route = createFileRoute("/denk/toolkit/motorspecificatie")({
+export const Route = createFileRoute("/toolkit/motorspecificatie")({
   head: () =>
     pageHead({
       title: "Motorspecificatie aandrijving — Damian Vink",
       description: DESCRIPTION,
-      path: "/denk/toolkit/motorspecificatie",
+      path: "/toolkit/motorspecificatie",
     }),
   component: MotorPage,
 });
@@ -23,7 +23,7 @@ function MotorPage() {
     <ToolkitFrame
       active="motor"
       crumbs={[
-        { href: "/denk/toolkit", label: "Toolkit" },
+        { href: "/toolkit", label: "Toolkit" },
         { label: "Motorspecificatie" },
       ]}
       before="Motor"
@@ -33,7 +33,7 @@ function MotorPage() {
       <JsonLd
         data={softwareJsonLd({
           name: "Motorspecificatie aandrijving",
-          path: "/denk/toolkit/motorspecificatie",
+          path: "/toolkit/motorspecificatie",
           description: DESCRIPTION,
           featureList: [
             "n_rol",
