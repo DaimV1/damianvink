@@ -1,8 +1,10 @@
 import type { ReactNode } from "react";
 import { DisplayTitle } from "@/components/display-title";
+import { JsonLd } from "@/components/json-ld";
 import { PageWrap, SiteShell } from "@/components/site-shell";
 import { RelatedTools } from "@/components/toolkit/related-tools";
 import { Breadcrumb, ToolSwitcher } from "@/components/toolkit/tool-switcher";
+import { breadcrumbJsonLd } from "@/lib/seo";
 import type { ToolId } from "@/lib/toolkit/tools";
 
 export function ToolkitFrame({
@@ -25,6 +27,11 @@ export function ToolkitFrame({
   return (
     <SiteShell subnav={<ToolSwitcher active={active} />}>
       <PageWrap wide>
+        <JsonLd
+          data={breadcrumbJsonLd(
+            crumbs.map((c) => ({ name: c.label, path: c.href })),
+          )}
+        />
         <Breadcrumb items={crumbs} />
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">
           {eyebrow}
