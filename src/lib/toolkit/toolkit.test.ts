@@ -14,7 +14,7 @@ import {
 import { GROOVE, squeeze } from "./oring.ts";
 import { lookupSeeger, seegerFor } from "./seeger.ts";
 import { lookupKanten } from "./kanten.ts";
-import { rangeHint } from "./tools.ts";
+import { rangeHint, matchTools, TOOLS } from "./tools.ts";
 
 describe("ISO 286 passingen", () => {
   it("H7/h6 at 20 mm is 0 to 34 µm clearance", () => {
@@ -281,5 +281,35 @@ describe("kanten", () => {
 
   it("unknown thickness → null, no neighbour", () => {
     assert.equal(lookupKanten(7, "staal", "haaks"), null);
+  });
+});
+
+describe("toolkit zoek", () => {
+  it("empty query returns every tool", () => {
+    assert.equal(matchTools("").length, TOOLS.length);
+    assert.equal(matchTools("   ").length, TOOLS.length);
+  });
+
+  it("ISO 286 hits passingen and lager, not seeger", () => {
+    const ids = matchTools("ISO 286").map((t) => t.id);
+    assert.ok(ids.includes("passingen"));
+    assert.ok(ids.includes("lager"));
+    assert.equal(ids.includes("seeger"), false);
+  });
+
+  it("H7 finds passingen via tags", () => {
+    assert.deepEqual(matchTools("h7").map((t) => t.id), ["passingen"]);
+  });
+
+  it("moment finds bevestigers", () => {
+    assert.ok(matchTools("moment").some((t) => t.id === "bevestigers"));
+  });
+
+  it("inch finds eenheden despite capital I", () => {
+    assert.ok(matchTools("INCH").some((t) => t.id === "eenheden"));
+  });
+
+  it("unknown term is empty", () => {
+    assert.equal(matchTools("xyzzy").length, 0);
   });
 });

@@ -9,6 +9,7 @@ export const TOOLS = [
     kind: "rekenhulp",
     related: ["motor", "bevestigers"],
     blurb: "Inch ↔ mm, °C ↔ K, dm³ ↔ L, lbf ↔ N, psi ↔ bar. SI en imperial.",
+    tags: ["omrekenen", "inch", "kelvin", "newton", "liter"],
   },
   {
     id: "passingen",
@@ -19,6 +20,7 @@ export const TOOLS = [
     kind: "rekenhulp",
     related: ["lager", "iso2768"],
     blurb: "Voorkeurpassingen tot Ø 50 mm. JS7 = ±IT7/2, niet afgerond.",
+    tags: ["h7", "g6", "h6", "js7", "speling", "overmaat", "boring"],
   },
   {
     id: "iso2768",
@@ -29,6 +31,7 @@ export const TOOLS = [
     kind: "rekenhulp",
     related: ["passingen"],
     blurb: "Titelblok-default f/m/c/v en H/K/L. Geen passing (dat is ISO 286).",
+    tags: ["titelblok", "algemeen", "maat"],
   },
   {
     id: "spiebaan",
@@ -39,6 +42,7 @@ export const TOOLS = [
     kind: "rekenhulp",
     related: ["passingen"],
     blurb: "Spiemaat, t₁/t₂. As-Ø: boven de ondergrens t/m de bovengrens.",
+    tags: ["spie", "naaf", "as"],
   },
   {
     id: "lager",
@@ -49,6 +53,7 @@ export const TOOLS = [
     kind: "rekenhulp",
     related: ["passingen"],
     blurb: "Groefkogellagers: vast/los, SKF-klassen tot Ø 50 mm.",
+    tags: ["kogel", "vast", "los"],
   },
   {
     id: "seeger",
@@ -59,6 +64,7 @@ export const TOOLS = [
     kind: "rekenhulp",
     related: ["oring"],
     blurb: "Groef d₂, breedte b en diepte t op as of in boring, tot Ø 100 mm.",
+    tags: ["borgveer", "circlip", "as", "boring"],
   },
   {
     id: "bevestigers",
@@ -69,6 +75,7 @@ export const TOOLS = [
     kind: "rekenhulp",
     related: ["bronnen"],
     blurb: "M3–M24: doorlaat, zeskant/inbus, aandraaimoment 8.8 / 10.9 / 12.9.",
+    tags: ["bout", "moer", "moment", "inbus", "m8"],
   },
   {
     id: "oring",
@@ -79,6 +86,7 @@ export const TOOLS = [
     kind: "rekenhulp",
     related: ["seeger"],
     blurb: "ISO-koorden 1,80–7,00 mm: groef t / b, radiaal en axiaal.",
+    tags: ["afdichting", "koord", "radiaal", "axiaal"],
   },
   {
     id: "motor",
@@ -90,6 +98,7 @@ export const TOOLS = [
     related: ["eenheden", "bronnen"],
     blurb:
       "Rollenbaan/band/helling/hijsen: n, F, T, P en volgende IEC-kW-stap. SEW kiest het aggregaat.",
+    tags: ["kw", "koppel", "iec", "aandrijving"],
   },
   {
     id: "kanten",
@@ -101,6 +110,7 @@ export const TOOLS = [
     related: ["bronnen"],
     blurb:
       "Haaks/scherp: Ri, minimale beenlengte w/s, Z-buiging. Shop-spec Sophia, geen ISO.",
+    tags: ["buigen", "plaat", "sophia", "zetwerk"],
   },
   {
     id: "bronnen",
@@ -111,10 +121,32 @@ export const TOOLS = [
     kind: "naslag",
     related: ["bevestigers", "kanten"],
     blurb: "3D-modellen, componenten, plaatwerk en naslag.",
+    tags: ["grabcad", "mcmaster", "model"],
   },
 ] as const;
 
 export type ToolId = (typeof TOOLS)[number]["id"];
+
+export function foldToolkitQuery(s: string) {
+  return s
+    .normalize("NFD")
+    .replace(/\p{M}/gu, "")
+    .replace(/ø/gi, "o")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+export function matchTools(query: string): (typeof TOOLS)[number][] {
+  const tokens = foldToolkitQuery(query).split(" ").filter(Boolean);
+  if (tokens.length === 0) return [...TOOLS];
+  return TOOLS.filter((tool) => {
+    const hay = foldToolkitQuery(
+      [tool.title, tool.short, tool.standard, tool.blurb, tool.kind, tool.id, ...tool.tags].join(" "),
+    );
+    return tokens.every((token) => hay.includes(token));
+  });
+}
 
 export const DIAMETER_KEY = "toolkit-diameter";
 
