@@ -1,5 +1,15 @@
 export const TOOLS = [
   {
+    id: "eenheden",
+    href: "/denk/toolkit/eenheden",
+    short: "Eenheden",
+    title: "Eenheden",
+    standard: "SI · imperial",
+    kind: "rekenhulp",
+    related: ["motor", "bevestigers"],
+    blurb: "Inch ↔ mm, °C ↔ K, dm³ ↔ L, lbf ↔ N, psi ↔ bar. SI en imperial.",
+  },
+  {
     id: "passingen",
     href: "/denk/toolkit/passingen",
     short: "Passingen",
@@ -76,7 +86,7 @@ export const TOOLS = [
     title: "Motorspecificatie",
     standard: "P = F·v",
     kind: "rekenhulp",
-    related: ["bronnen"],
+    related: ["eenheden", "bronnen"],
     blurb:
       "Rollenbaan/band/helling/hijsen: n, F, T, P en volgende IEC-kW-stap. SEW kiest het aggregaat.",
   },
@@ -123,7 +133,7 @@ export function readStoredDiameter({
   if (raw && /^\d{1,4}$/.test(raw) && inRange(raw, min, max)) return raw;
   if (inRange(fallback, min, max)) return fallback;
   return "";
-};
+}
 
 function inRange(raw: string, min?: number, max?: number) {
   const n = Number.parseInt(raw, 10);
