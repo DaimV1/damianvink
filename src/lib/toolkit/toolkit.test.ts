@@ -5,6 +5,11 @@ import { lookupFastener } from "./fastener.ts";
 import { FRICTION, scaleMa } from "./friction.ts";
 import { HOLE, bandIndex, computeFit } from "./iso286.ts";
 import { keyWidthTol, lookupKeyway } from "./keyway.ts";
+import {
+  copyLine,
+  nextIecKw,
+  sizeMotor,
+} from "./motor.ts";
 import { GROOVE, squeeze } from "./oring.ts";
 import { lookupSeeger, seegerFor } from "./seeger.ts";
 import { rangeHint } from "./tools.ts";
@@ -129,5 +134,61 @@ describe("bereikstop", () => {
     assert.match(rangeHint(6, 6, 7, 110) ?? "", /buiten/);
     assert.match(rangeHint(60, null, 4, 50) ?? "", /50/);
     assert.equal(rangeHint(20, 3, 4, 50), null);
+  });
+});
+
+describe("motor", () => {
+  const base = {
+    v_ms: 0.5,
+    D_m: 0.1,
+    mass_kg: 500,
+    duty: "rollenbaan" as const,
+    mu: 0.03,
+    eta: 0.85,
+    fb: 1.2,
+  };
+
+  it("horizontal roller: n, F, T, P and IEC 0.12 kW", () => {
+    const r = sizeMotor(base);
+    assert.ok(r);
+    assert.ok(Math.abs(r.n_rpm - 95.5) < 0.05);
+    assert.ok(Math.abs(r.F - 147) < 0.2);
+    assert.ok(Math.abs(r.T - 7.36) < 0.02);
+    assert.ok(Math.abs(r.P_as_kW - 0.074) < 0.002);
+    assert.ok(Math.abs(r.P_motor_kW - 0.104) < 0.002);
+    assert.equal(r.iecKw, 0.12);
+  });
+
+  it("zero speed → no row", () => {
+    assert.equal(sizeMotor({ ...base, v_ms: 0 }), null);
+  });
+
+  it("zero D → no row", () => {
+    assert.equal(sizeMotor({ ...base, D_m: 0 }), null);
+  });
+
+  it("hijsen F = m g, no μ", () => {
+    const r = sizeMotor({ ...base, duty: "hijsen", mu: 0.03 });
+    assert.ok(r);
+    assert.ok(Math.abs(r.F - 500 * 9.81) < 0.01);
+  });
+
+  it("i ≈ 1450 / n", () => {
+    const r = sizeMotor(base);
+    assert.ok(r && r.i != null);
+    assert.ok(Math.abs(r.i - 1450 / r.n_rpm) < 1e-9);
+  });
+
+  it("nextIecKw(0.104) === 0.12", () => {
+    assert.equal(nextIecKw(0.104), 0.12);
+  });
+
+  it("copy line contains P and n", () => {
+    const r = sizeMotor(base);
+    assert.ok(r);
+    const line = copyLine(r);
+    assert.match(line, /P=/);
+    assert.match(line, /n=/);
+    assert.match(line, /min/);
   });
 });
