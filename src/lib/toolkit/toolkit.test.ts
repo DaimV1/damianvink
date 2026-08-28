@@ -4,6 +4,7 @@ import { computeBearing, pickBearing } from "./bearing.ts";
 import { lookupFastener } from "./fastener.ts";
 import { FRICTION, scaleMa } from "./friction.ts";
 import { HOLE, bandIndex, computeFit } from "./iso286.ts";
+import { designation, lookupIso2768 } from "./iso2768.ts";
 import { keyWidthTol, lookupKeyway } from "./keyway.ts";
 import {
   copyLine,
@@ -190,5 +191,53 @@ describe("motor", () => {
     assert.match(line, /P=/);
     assert.match(line, /n=/);
     assert.match(line, /min/);
+  });
+});
+
+describe("iso2768", () => {
+  it("42 mm class m → ±0,3 linear", () => {
+    const r = lookupIso2768(42, "m", "K");
+    assert.ok(r);
+    assert.equal(r.linearTol, 0.3);
+  });
+
+  it("ISO 2768-mK returns K form", () => {
+    const r = lookupIso2768(42, "m", "K");
+    assert.ok(r);
+    assert.equal(r.callout, "ISO 2768-mK");
+    assert.equal(r.form, "K");
+    assert.equal(r.straightness, 0.2);
+    assert.equal(designation("m", "K"), "ISO 2768-mK");
+    assert.equal(designation("f", "H"), "ISO 2768-fH");
+  });
+
+  it("0,4 mm no row", () => {
+    assert.equal(lookupIso2768(0.4, "m", "K"), null);
+  });
+
+  it("6 mm f linear ±0,05", () => {
+    const r = lookupIso2768(6, "f", "K");
+    assert.ok(r);
+    assert.equal(r.linearTol, 0.05);
+  });
+
+  it("8 mm v linear ±1,0", () => {
+    const r = lookupIso2768(8, "v", "K");
+    assert.ok(r);
+    assert.equal(r.linearTol, 1.0);
+  });
+
+  it("v at 2 mm linear is empty", () => {
+    const r = lookupIso2768(2, "v", "K");
+    assert.ok(r);
+    assert.equal(r.linearTol, null);
+  });
+
+  it("circulaire uitloop K = 0,2 independent of size", () => {
+    const a = lookupIso2768(2, "m", "K");
+    const b = lookupIso2768(200, "m", "K");
+    assert.ok(a && b);
+    assert.equal(a.runout, 0.2);
+    assert.equal(b.runout, 0.2);
   });
 });
