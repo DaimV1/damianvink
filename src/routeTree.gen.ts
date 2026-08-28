@@ -21,6 +21,7 @@ import { Route as DenkToolkitIndexRouteImport } from './routes/denk/toolkit/inde
 import { Route as DenkToolkitBevestigersRouteImport } from './routes/denk/toolkit/bevestigers'
 import { Route as DenkToolkitBronnenRouteImport } from './routes/denk/toolkit/bronnen'
 import { Route as DenkToolkitIso2768RouteImport } from './routes/denk/toolkit/iso-2768'
+import { Route as DenkToolkitKantenRouteImport } from './routes/denk/toolkit/kanten'
 import { Route as DenkToolkitLagerpassingenRouteImport } from './routes/denk/toolkit/lagerpassingen'
 import { Route as DenkToolkitMotorspecificatieRouteImport } from './routes/denk/toolkit/motorspecificatie'
 import { Route as DenkToolkitORinggroefRouteImport } from './routes/denk/toolkit/o-ringgroef'
@@ -44,6 +45,7 @@ const DenkToolkitIndexRoute = DenkToolkitIndexRouteImport.update({ id: '/denk/to
 const DenkToolkitBevestigersRoute = DenkToolkitBevestigersRouteImport.update({ id: '/denk/toolkit/bevestigers', path: '/denk/toolkit/bevestigers', getParentRoute: () => rootRouteImport } as any)
 const DenkToolkitBronnenRoute = DenkToolkitBronnenRouteImport.update({ id: '/denk/toolkit/bronnen', path: '/denk/toolkit/bronnen', getParentRoute: () => rootRouteImport } as any)
 const DenkToolkitIso2768Route = DenkToolkitIso2768RouteImport.update({ id: '/denk/toolkit/iso-2768', path: '/denk/toolkit/iso-2768', getParentRoute: () => rootRouteImport } as any)
+const DenkToolkitKantenRoute = DenkToolkitKantenRouteImport.update({ id: '/denk/toolkit/kanten', path: '/denk/toolkit/kanten', getParentRoute: () => rootRouteImport } as any)
 const DenkToolkitLagerpassingenRoute = DenkToolkitLagerpassingenRouteImport.update({ id: '/denk/toolkit/lagerpassingen', path: '/denk/toolkit/lagerpassingen', getParentRoute: () => rootRouteImport } as any)
 const DenkToolkitMotorspecificatieRoute = DenkToolkitMotorspecificatieRouteImport.update({ id: '/denk/toolkit/motorspecificatie', path: '/denk/toolkit/motorspecificatie', getParentRoute: () => rootRouteImport } as any)
 const DenkToolkitORinggroefRoute = DenkToolkitORinggroefRouteImport.update({ id: '/denk/toolkit/o-ringgroef', path: '/denk/toolkit/o-ringgroef', getParentRoute: () => rootRouteImport } as any)
@@ -67,6 +69,7 @@ export interface FileRoutesByFullPath {
   '/denk/toolkit/bevestigers': typeof DenkToolkitBevestigersRoute
   '/denk/toolkit/bronnen': typeof DenkToolkitBronnenRoute
   '/denk/toolkit/iso-2768': typeof DenkToolkitIso2768Route
+  '/denk/toolkit/kanten': typeof DenkToolkitKantenRoute
   '/denk/toolkit/lagerpassingen': typeof DenkToolkitLagerpassingenRoute
   '/denk/toolkit/motorspecificatie': typeof DenkToolkitMotorspecificatieRoute
   '/denk/toolkit/o-ringgroef': typeof DenkToolkitORinggroefRoute
@@ -91,6 +94,7 @@ export interface FileRoutesByTo {
   '/denk/toolkit/bevestigers': typeof DenkToolkitBevestigersRoute
   '/denk/toolkit/bronnen': typeof DenkToolkitBronnenRoute
   '/denk/toolkit/iso-2768': typeof DenkToolkitIso2768Route
+  '/denk/toolkit/kanten': typeof DenkToolkitKantenRoute
   '/denk/toolkit/lagerpassingen': typeof DenkToolkitLagerpassingenRoute
   '/denk/toolkit/motorspecificatie': typeof DenkToolkitMotorspecificatieRoute
   '/denk/toolkit/o-ringgroef': typeof DenkToolkitORinggroefRoute
@@ -116,6 +120,7 @@ export interface FileRoutesById {
   '/denk/toolkit/bevestigers': typeof DenkToolkitBevestigersRoute
   '/denk/toolkit/bronnen': typeof DenkToolkitBronnenRoute
   '/denk/toolkit/iso-2768': typeof DenkToolkitIso2768Route
+  '/denk/toolkit/kanten': typeof DenkToolkitKantenRoute
   '/denk/toolkit/lagerpassingen': typeof DenkToolkitLagerpassingenRoute
   '/denk/toolkit/motorspecificatie': typeof DenkToolkitMotorspecificatieRoute
   '/denk/toolkit/o-ringgroef': typeof DenkToolkitORinggroefRoute
@@ -126,10 +131,10 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/over-mij' | '/contact' | '/spel' | '/denk/blog' | '/denk/project' | '/doe/marathon' | '/doe/projecten' | '/weet/$' | '/denk/' | '/doe/' | '/weet/' | '/denk/toolkit/bevestigers' | '/denk/toolkit/bronnen' | '/denk/toolkit/iso-2768' | '/denk/toolkit/lagerpassingen' | '/denk/toolkit/motorspecificatie' | '/denk/toolkit/o-ringgroef' | '/denk/toolkit/passingen' | '/denk/toolkit/seegerring-groef' | '/denk/toolkit/spiebaan-toleranties' | '/denk/toolkit/'
+  fullPaths: '/' | '/over-mij' | '/contact' | '/spel' | '/denk/blog' | '/denk/project' | '/doe/marathon' | '/doe/projecten' | '/weet/$' | '/denk/' | '/doe/' | '/weet/' | '/denk/toolkit/bevestigers' | '/denk/toolkit/bronnen' | '/denk/toolkit/iso-2768' | '/denk/toolkit/kanten' | '/denk/toolkit/lagerpassingen' | '/denk/toolkit/motorspecificatie' | '/denk/toolkit/o-ringgroef' | '/denk/toolkit/passingen' | '/denk/toolkit/seegerring-groef' | '/denk/toolkit/spiebaan-toleranties' | '/denk/toolkit/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/over-mij' | '/contact' | '/spel' | '/denk/blog' | '/denk/project' | '/doe/marathon' | '/doe/projecten' | '/weet/$' | '/denk' | '/doe' | '/weet' | '/denk/toolkit/bevestigers' | '/denk/toolkit/bronnen' | '/denk/toolkit/iso-2768' | '/denk/toolkit/lagerpassingen' | '/denk/toolkit/motorspecificatie' | '/denk/toolkit/o-ringgroef' | '/denk/toolkit/passingen' | '/denk/toolkit/seegerring-groef' | '/denk/toolkit/spiebaan-toleranties' | '/denk/toolkit'
-  id: '__root__' | '/' | '/over-mij' | '/contact' | '/spel' | '/denk/blog' | '/denk/project' | '/doe/marathon' | '/doe/projecten' | '/weet/$' | '/denk/' | '/doe/' | '/weet/' | '/denk/toolkit/bevestigers' | '/denk/toolkit/bronnen' | '/denk/toolkit/iso-2768' | '/denk/toolkit/lagerpassingen' | '/denk/toolkit/motorspecificatie' | '/denk/toolkit/o-ringgroef' | '/denk/toolkit/passingen' | '/denk/toolkit/seegerring-groef' | '/denk/toolkit/spiebaan-toleranties' | '/denk/toolkit/'
+  to: '/' | '/over-mij' | '/contact' | '/spel' | '/denk/blog' | '/denk/project' | '/doe/marathon' | '/doe/projecten' | '/weet/$' | '/denk' | '/doe' | '/weet' | '/denk/toolkit/bevestigers' | '/denk/toolkit/bronnen' | '/denk/toolkit/iso-2768' | '/denk/toolkit/kanten' | '/denk/toolkit/lagerpassingen' | '/denk/toolkit/motorspecificatie' | '/denk/toolkit/o-ringgroef' | '/denk/toolkit/passingen' | '/denk/toolkit/seegerring-groef' | '/denk/toolkit/spiebaan-toleranties' | '/denk/toolkit'
+  id: '__root__' | '/' | '/over-mij' | '/contact' | '/spel' | '/denk/blog' | '/denk/project' | '/doe/marathon' | '/doe/projecten' | '/weet/$' | '/denk/' | '/doe/' | '/weet/' | '/denk/toolkit/bevestigers' | '/denk/toolkit/bronnen' | '/denk/toolkit/iso-2768' | '/denk/toolkit/kanten' | '/denk/toolkit/lagerpassingen' | '/denk/toolkit/motorspecificatie' | '/denk/toolkit/o-ringgroef' | '/denk/toolkit/passingen' | '/denk/toolkit/seegerring-groef' | '/denk/toolkit/spiebaan-toleranties' | '/denk/toolkit/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -148,6 +153,7 @@ export interface RootRouteChildren {
   DenkToolkitBevestigersRoute: typeof DenkToolkitBevestigersRoute
   DenkToolkitBronnenRoute: typeof DenkToolkitBronnenRoute
   DenkToolkitIso2768Route: typeof DenkToolkitIso2768Route
+  DenkToolkitKantenRoute: typeof DenkToolkitKantenRoute
   DenkToolkitLagerpassingenRoute: typeof DenkToolkitLagerpassingenRoute
   DenkToolkitMotorspecificatieRoute: typeof DenkToolkitMotorspecificatieRoute
   DenkToolkitORinggroefRoute: typeof DenkToolkitORinggroefRoute
@@ -175,6 +181,7 @@ declare module '@tanstack/react-router' {
     '/denk/toolkit/bevestigers': { id: '/denk/toolkit/bevestigers'; path: '/denk/toolkit/bevestigers'; fullPath: '/denk/toolkit/bevestigers'; preLoaderRoute: typeof DenkToolkitBevestigersRouteImport; parentRoute: typeof rootRouteImport }
     '/denk/toolkit/bronnen': { id: '/denk/toolkit/bronnen'; path: '/denk/toolkit/bronnen'; fullPath: '/denk/toolkit/bronnen'; preLoaderRoute: typeof DenkToolkitBronnenRouteImport; parentRoute: typeof rootRouteImport }
     '/denk/toolkit/iso-2768': { id: '/denk/toolkit/iso-2768'; path: '/denk/toolkit/iso-2768'; fullPath: '/denk/toolkit/iso-2768'; preLoaderRoute: typeof DenkToolkitIso2768RouteImport; parentRoute: typeof rootRouteImport }
+    '/denk/toolkit/kanten': { id: '/denk/toolkit/kanten'; path: '/denk/toolkit/kanten'; fullPath: '/denk/toolkit/kanten'; preLoaderRoute: typeof DenkToolkitKantenRouteImport; parentRoute: typeof rootRouteImport }
     '/denk/toolkit/lagerpassingen': { id: '/denk/toolkit/lagerpassingen'; path: '/denk/toolkit/lagerpassingen'; fullPath: '/denk/toolkit/lagerpassingen'; preLoaderRoute: typeof DenkToolkitLagerpassingenRouteImport; parentRoute: typeof rootRouteImport }
     '/denk/toolkit/motorspecificatie': { id: '/denk/toolkit/motorspecificatie'; path: '/denk/toolkit/motorspecificatie'; fullPath: '/denk/toolkit/motorspecificatie'; preLoaderRoute: typeof DenkToolkitMotorspecificatieRouteImport; parentRoute: typeof rootRouteImport }
     '/denk/toolkit/o-ringgroef': { id: '/denk/toolkit/o-ringgroef'; path: '/denk/toolkit/o-ringgroef'; fullPath: '/denk/toolkit/o-ringgroef'; preLoaderRoute: typeof DenkToolkitORinggroefRouteImport; parentRoute: typeof rootRouteImport }
@@ -187,7 +194,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute, OverMijRoute, ContactRoute, SpelRoute, DenkBlogRoute, DenkProjectRoute,
   DoeMarathonRoute, DoeProjectenRoute, WeetSplatRoute, DenkIndexRoute, DoeIndexRoute, WeetIndexRoute,
-  DenkToolkitBevestigersRoute, DenkToolkitBronnenRoute, DenkToolkitIso2768Route, DenkToolkitLagerpassingenRoute,
+  DenkToolkitBevestigersRoute, DenkToolkitBronnenRoute, DenkToolkitIso2768Route, DenkToolkitKantenRoute, DenkToolkitLagerpassingenRoute,
   DenkToolkitMotorspecificatieRoute, DenkToolkitORinggroefRoute, DenkToolkitPassingenRoute, DenkToolkitSeegerringGroefRoute,
   DenkToolkitSpiebaanTolerantiesRoute, DenkToolkitIndexRoute,
 }
