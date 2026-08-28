@@ -111,45 +111,49 @@ export function EenhedenCalc() {
           </Field>
         </div>
 
-        <div className="mt-4 grid gap-4 sm:grid-cols-2">
-          <Field label="Van">
-            <SelectInput value={from.id} onChange={setFromId}>
-              {category.units.map((unit) => (
-                <option key={unit.id} value={unit.id}>
-                  {unit.symbol} — {unit.name}
-                </option>
-              ))}
-            </SelectInput>
-          </Field>
-          <Field label="Naar">
-            <SelectInput value={to.id} onChange={setToId}>
-              {category.units.map((unit) => (
-                <option key={unit.id} value={unit.id}>
-                  {unit.symbol} — {unit.name}
-                </option>
-              ))}
-            </SelectInput>
-          </Field>
-          <Field label={`Waarde (${from.symbol})`}>
-            <QtyInput
-              value={rawFromDisplay}
-              unit={from.symbol}
-              onChange={(v) => {
-                setEdited("from");
-                setRawFrom(sanitizeQtyInput(v));
-              }}
-            />
-          </Field>
-          <Field label={`Waarde (${to.symbol})`}>
-            <QtyInput
-              value={rawToDisplay}
-              unit={to.symbol}
-              onChange={(v) => {
-                setEdited("to");
-                setRawToEdit(sanitizeQtyInput(v));
-              }}
-            />
-          </Field>
+        <div className="mt-4 grid gap-6 sm:grid-cols-2 sm:gap-4">
+          <div className="flex flex-col gap-4">
+            <Field label="Van">
+              <SelectInput value={from.id} onChange={setFromId}>
+                {category.units.map((unit) => (
+                  <option key={unit.id} value={unit.id}>
+                    {unit.symbol} — {unit.name}
+                  </option>
+                ))}
+              </SelectInput>
+            </Field>
+            <Field label={`Waarde (${from.symbol})`}>
+              <QtyInput
+                value={rawFromDisplay}
+                unit={from.symbol}
+                onChange={(v) => {
+                  setEdited("from");
+                  setRawFrom(sanitizeQtyInput(v));
+                }}
+              />
+            </Field>
+          </div>
+          <div className="flex flex-col gap-4">
+            <Field label="Naar">
+              <SelectInput value={to.id} onChange={setToId}>
+                {category.units.map((unit) => (
+                  <option key={unit.id} value={unit.id}>
+                    {unit.symbol} — {unit.name}
+                  </option>
+                ))}
+              </SelectInput>
+            </Field>
+            <Field label={`Waarde (${to.symbol})`}>
+              <QtyInput
+                value={rawToDisplay}
+                unit={to.symbol}
+                onChange={(v) => {
+                  setEdited("to");
+                  setRawToEdit(sanitizeQtyInput(v));
+                }}
+              />
+            </Field>
+          </div>
         </div>
 
         <div className="mt-4">
