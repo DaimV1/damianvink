@@ -105,9 +105,18 @@ export function useProject() {
     setWorkspace((ws) => {
       const clean = pruneWorkspace(ws ?? emptyWorkspace());
       const existing = Object.values(clean.projects).find(isStockSample);
-      if (existing) return { ...clean, activeId: existing.id };
-      const active = clean.projects[clean.activeId];
       const sample = sampleProject();
+      if (existing) {
+        return {
+          ...clean,
+          activeId: existing.id,
+          projects: {
+            ...clean.projects,
+            [existing.id]: { ...sample, id: existing.id, updatedAt: isoNow() },
+          },
+        };
+      }
+      const active = clean.projects[clean.activeId];
       if (active && isUntitled(active)) {
         return pruneWorkspace({
           ...clean,

@@ -93,11 +93,33 @@ describe("pm workspace model", () => {
     assert.equal(nextAction(p), phaseChecks(p).find((c) => !c.done)?.label);
   });
 
-  it("builds a usable sample", () => {
+  it("builds a usable sample in oriëntatie", () => {
     const s = sampleProject();
     assert.ok(s.name);
+    assert.equal(s.phase, "orientatie");
+    assert.equal(s.spent, null);
+    assert.equal(s.percentDone, null);
     assert.ok(s.risks.length);
     assert.ok(s.activities.length);
+  });
+
+  it("empty stakeholder or risk row does not pass voorbereiding", () => {
+    const p = emptyProject({
+      name: "X",
+      sponsor: "Y",
+      phase: "voorbereiding",
+      why: "Ombouw",
+      authority: "5k",
+      stakeholders: [{ id: "s", name: "  ", influence: 3, interest: 3, note: "" }],
+      risks: [{
+        id: "r", source: "", event: "", effect: "",
+        probability: 3, impact: 3, euro: null, owner: "", measure: "",
+        response: "verkleinen", status: "open",
+      }],
+    });
+    const missing = phaseChecks(p).filter((c) => !c.done).map((c) => c.id);
+    assert.ok(missing.includes("people"));
+    assert.ok(missing.includes("risk"));
   });
 
   it("accepts a change onto the live plan", () => {

@@ -15,7 +15,7 @@ export function PhasePanel({
   const lookingAhead = viewPhase !== project.phase;
   const form =
     viewPhase === "orientatie" ? <Orientatie project={project} patch={patch} /> :
-    viewPhase === "voorbereiding" ? <Voorbereiding project={project} patch={patch} /> :
+    viewPhase === "voorbereiding" ? <Voorbereiding project={project} setProject={setProject} patch={patch} /> :
     viewPhase === "definitie" ? <Definitie project={project} patch={patch} setProject={setProject} /> :
     viewPhase === "uitvoering" ? <Uitvoering project={project} patch={patch} /> :
     <Afsluiting project={project} patch={patch} />;
@@ -59,15 +59,86 @@ function Orientatie({ project, patch }: { project: Project; patch: (p: Partial<P
   );
 }
 
-function Voorbereiding({ project, patch }: { project: Project; patch: (p: Partial<Project>) => void }) {
+function Voorbereiding({
+  project, patch, setProject,
+}: {
+  project: Project;
+  patch: (p: Partial<Project>) => void;
+  setProject: (p: Project | ((prev: Project) => Project)) => void;
+}) {
   return (
     <div className="grid gap-4">
-      <PhaseIntro title="Voorbereiding" body="Maak de opdracht scherp genoeg voor de eerste go/no-go. Stakeholders en eerste risico’s zet je in de registers." />
+      <PhaseIntro title="Voorbereiding" body="Maak de opdracht scherp genoeg voor de eerste go/no-go. Belanghebbende en eerste risico hieronder; de registers houden het volledige overzicht." />
       <Card title="Projectopdracht">
         <div className="grid gap-4">
           <Field label="Waarom" hint="Aanleiding en belang."><Area value={project.why} onChange={(e) => patch({ why: e.target.value })} /></Field>
           <Field label="Bevoegdheid PM"><Area value={project.authority} onChange={(e) => patch({ authority: e.target.value })} placeholder="Wat mag de PM zelf beslissen?" /></Field>
           <Field label="Resultaat (uit oriëntatie)" hint="Je kunt het hier aanscherpen."><Area value={project.result} onChange={(e) => patch({ result: e.target.value })} /></Field>
+        </div>
+      </Card>
+      <Card title="Belanghebbenden" action={
+        <Button variant="secondary" size="sm" onClick={() => setProject((p) => ({
+          ...p,
+          stakeholders: [...p.stakeholders, { id: uid(), name: "", influence: 3, interest: 3, note: "" }],
+        }))}>Toevoegen</Button>
+      }>
+        {project.stakeholders.length === 0 ? (
+          <p className="text-sm text-muted">Minstens één naam. Invloed en belang sturen de actie in het register Mensen.</p>
+        ) : null}
+        <div className="space-y-3">
+          {project.stakeholders.map((s) => (
+            <div key={s.id} className="grid gap-2 rounded-md border border-line p-3 sm:grid-cols-4">
+              <TextInput className="sm:col-span-2" placeholder="Naam" value={s.name} onChange={(e) => patchList(setProject, "stakeholders", s.id, { name: e.target.value })} />
+              <Select value={s.influence} onChange={(e) => patchList(setProject, "stakeholders", s.id, { influence: Number(e.target.value) as 1 | 2 | 3 | 4 | 5 })}>
+                <option value={1}>Invloed 1</option>
+                <option value={2}>Invloed 2</option>
+                <option value={3}>Invloed 3</option>
+                <option value={4}>Invloed 4</option>
+                <option value={5}>Invloed 5</option>
+              </Select>
+              <Select value={s.interest} onChange={(e) => patchList(setProject, "stakeholders", s.id, { interest: Number(e.target.value) as 1 | 2 | 3 | 4 | 5 })}>
+                <option value={1}>Belang 1</option>
+                <option value={2}>Belang 2</option>
+                <option value={3}>Belang 3</option>
+                <option value={4}>Belang 4</option>
+                <option value={5}>Belang 5</option>
+              </Select>
+            </div>
+          ))}
+        </div>
+      </Card>
+      <Card title="Eerste risico’s" action={
+        <Button variant="secondary" size="sm" onClick={() => setProject((p) => ({
+          ...p,
+          risks: [...p.risks, {
+            id: uid(), source: "", event: "", effect: "", probability: 3, impact: 3,
+            euro: null, owner: "", measure: "", response: "verkleinen", status: "open",
+          }],
+        }))}>Toevoegen</Button>
+      }>
+        {project.risks.length === 0 ? (
+          <p className="text-sm text-muted">Noem de gebeurtenis. Kans × impact en eigenaar komen in het register Risico’s verder.</p>
+        ) : null}
+        <div className="space-y-3">
+          {project.risks.map((r) => (
+            <div key={r.id} className="grid gap-2 rounded-md border border-line p-3 sm:grid-cols-4">
+              <TextInput className="sm:col-span-2" placeholder="Gebeurtenis" value={r.event} onChange={(e) => patchList(setProject, "risks", r.id, { event: e.target.value })} />
+              <Select value={r.probability} onChange={(e) => patchList(setProject, "risks", r.id, { probability: Number(e.target.value) as 1 | 2 | 3 | 4 | 5 })}>
+                <option value={1}>Kans 1</option>
+                <option value={2}>Kans 2</option>
+                <option value={3}>Kans 3</option>
+                <option value={4}>Kans 4</option>
+                <option value={5}>Kans 5</option>
+              </Select>
+              <Select value={r.impact} onChange={(e) => patchList(setProject, "risks", r.id, { impact: Number(e.target.value) as 1 | 2 | 3 | 4 | 5 })}>
+                <option value={1}>Impact 1</option>
+                <option value={2}>Impact 2</option>
+                <option value={3}>Impact 3</option>
+                <option value={4}>Impact 4</option>
+                <option value={5}>Impact 5</option>
+              </Select>
+            </div>
+          ))}
         </div>
       </Card>
     </div>
@@ -89,34 +160,34 @@ function Definitie({
 
   return (
     <div className="grid gap-4">
-      <PhaseIntro title="Definitie" body="Maak scope, schatting en budget rekenbaar. Bij go bevries je de baseline; wijzigingen rekenen daartegen." />
+      <PhaseIntro title="Definitie" body="Maak scope, schatting (dagen) en budget rekenbaar. Bij go bevries je de baseline; wijzigingen rekenen daartegen." />
       <Card title="Scope">
         <div className="grid gap-4 sm:grid-cols-2">
           <Field label="In scope"><Area value={project.scopeIn} onChange={(e) => patch({ scopeIn: e.target.value })} /></Field>
           <Field label="Buiten scope"><Area value={project.scopeOut} onChange={(e) => patch({ scopeOut: e.target.value })} /></Field>
         </div>
       </Card>
-      <Card title="3-punts schatting" action={
+      <Card title="3-punts schatting (dagen)" action={
         <Button variant="secondary" size="sm" onClick={() => setProject((p) => ({ ...p, estimates: [...p.estimates, { id: uid(), name: "", o: null, m: null, p: null }] }))}>Regel</Button>
       }>
         <div className="space-y-3">
-          {project.estimates.length === 0 ? <p className="text-sm text-muted">Nog geen stukken. Schat de grote brokken, niet elke taak.</p> : null}
+          {project.estimates.length === 0 ? <p className="text-sm text-muted">Nog geen stukken. Schat de grote brokken in dagen, niet elke taak.</p> : null}
           {project.estimates.map((est) => {
             const calc = pert(est);
             return (
               <div key={est.id} className="grid gap-2 rounded-md border border-line p-3 sm:grid-cols-6">
                 <TextInput className="sm:col-span-2" placeholder="Stuk werk" value={est.name} onChange={(e) => patchList(setProject, "estimates", est.id, { name: e.target.value })} />
-                <NumInput placeholder="Optimistisch" value={est.o} onValue={(o) => patchList(setProject, "estimates", est.id, { o } as Partial<Estimate>)} />
-                <NumInput placeholder="Meest waarschijnlijk" value={est.m} onValue={(m) => patchList(setProject, "estimates", est.id, { m } as Partial<Estimate>)} />
-                <NumInput placeholder="Pessimistisch" value={est.p} onValue={(p) => patchList(setProject, "estimates", est.id, { p } as Partial<Estimate>)} />
+                <NumInput placeholder="O (d)" value={est.o} onValue={(o) => patchList(setProject, "estimates", est.id, { o } as Partial<Estimate>)} />
+                <NumInput placeholder="M (d)" value={est.m} onValue={(m) => patchList(setProject, "estimates", est.id, { m } as Partial<Estimate>)} />
+                <NumInput placeholder="P (d)" value={est.p} onValue={(p) => patchList(setProject, "estimates", est.id, { p } as Partial<Estimate>)} />
                 <div className="flex items-center justify-between gap-2 text-xs text-muted">
-                  <span>{calc ? `μ ${calc.mu.toFixed(1)} · σ ${calc.sigma.toFixed(1)}` : "—"}</span>
+                  <span>{calc ? `μ ${calc.mu.toFixed(1)} d · σ ${calc.sigma.toFixed(1)} d` : "—"}</span>
                   <button type="button" className="text-subtle hover:text-ink" onClick={() => setProject((p) => ({ ...p, estimates: p.estimates.filter((x) => x.id !== est.id) }))}>weg</button>
                 </div>
               </div>
             );
           })}
-          {project.estimates.some((e) => pert(e)) ? <p className="text-sm text-muted">Som μ {total.mu.toFixed(1)} · gecombineerde σ {sigma.toFixed(1)}</p> : null}
+          {project.estimates.some((e) => pert(e)) ? <p className="text-sm text-muted">Som μ {total.mu.toFixed(1)} d · gecombineerde σ {sigma.toFixed(1)} d</p> : null}
         </div>
       </Card>
       <Card title="Geld en baseline">

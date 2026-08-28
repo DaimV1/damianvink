@@ -85,7 +85,9 @@ export function ProjectWorkspace({
   backupStale: boolean;
   lastExportAt?: string;
 }) {
-  const [panel, setPanel] = useState<WorkspaceTab | "templates">("fase");
+  const [panel, setPanel] = useState<WorkspaceTab | "templates">(
+    () => (project.name.trim() ? "overzicht" : "fase"),
+  );
   const [viewPhase, setViewPhase] = useState<PhaseId>(project.phase);
   const fileRef = useRef<HTMLInputElement>(null);
   const suggestedRag = inferredRag(project);
@@ -94,8 +96,13 @@ export function ProjectWorkspace({
   const untitled = !project.name.trim();
 
   useEffect(() => {
+    setPanel(project.name.trim() ? "overzicht" : "fase");
     setViewPhase(project.phase);
-  }, [project.phase, project.id]);
+  }, [project.id]);
+
+  useEffect(() => {
+    setViewPhase(project.phase);
+  }, [project.phase]);
 
   function onNew() {
     const name = window.prompt("Naam van het nieuwe project");
@@ -191,7 +198,7 @@ export function ProjectWorkspace({
           <li>Maandag: naam, vragen van deze fase, plan even nalopen.</li>
           <li>Een fase is de open vraag: kader, opdracht, plan/baseline, stand, decharge.</li>
           <li>Beslispunt is de enige officiële fasezet. Later fases zijn al leesbaar en invulbaar.</li>
-          <li>Staat in deze browser. Export bewaart een kopie. Voorbeeld laadt een montagelijn in Definitie.</li>
+          <li>Staat in deze browser. Export bewaart een kopie. Voorbeeld laadt een montagelijn in Oriëntatie.</li>
         </ul>
       </aside>
 
