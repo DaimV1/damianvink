@@ -60,6 +60,17 @@ export const TOOLS = [
     blurb: "ISO-koorden 1,80–7,00 mm: groef t / b, radiaal en axiaal.",
   },
   {
+    id: "motor",
+    href: "/denk/toolkit/motorspecificatie",
+    short: "Motor",
+    title: "Motorspecificatie",
+    standard: "P = F·v",
+    kind: "rekenhulp",
+    related: ["bronnen"],
+    blurb:
+      "Rollenbaan/band/helling/hijsen: n, F, T, P en volgende IEC-kW-stap. SEW kiest het aggregaat.",
+  },
+  {
     id: "bronnen",
     href: "/denk/toolkit/bronnen",
     short: "CAD",
