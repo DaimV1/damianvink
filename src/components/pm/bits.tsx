@@ -2,24 +2,41 @@ import type { PhaseId, Project, Rag } from "@/lib/pm/model";
 import { PHASES } from "@/lib/pm/model";
 import { cn } from "@/lib/utils";
 
-export function PhaseBar({ current, onSelect }: { current: PhaseId; onSelect?: (id: PhaseId) => void }) {
+export function PhaseBar({
+  current,
+  lookingAt,
+  onSelect,
+}: {
+  current: PhaseId;
+  lookingAt?: PhaseId;
+  onSelect?: (id: PhaseId) => void;
+}) {
+  const view = lookingAt ?? current;
   return (
-    <nav aria-label="Projectfasen" className="grid gap-2 sm:grid-cols-5">
+    <nav aria-label="Projectfasen" className="grid grid-cols-5 gap-2">
       {PHASES.map((p) => {
-        const on = p.id === current;
+        const official = p.id === current;
+        const looking = p.id === view && view !== current;
         return (
           <button
             key={p.id}
             type="button"
             onClick={() => onSelect?.(p.id)}
             className={cn(
-              "rounded-lg border px-3 py-3 text-left transition-colors",
-              on ? "border-accent bg-accent/10" : "border-line bg-elevated hover:border-line-strong",
+              "rounded-lg border px-2 py-2 text-left transition-colors sm:px-3 sm:py-3",
+              official
+                ? "border-accent bg-accent/10"
+                : looking
+                  ? "border-accent bg-elevated ring-2 ring-accent"
+                  : "border-line bg-elevated hover:border-line-strong",
             )}
           >
-            <span className="font-mono text-[11px] text-accent">{p.n}</span>
-            <strong className="mt-1 block text-sm font-medium text-ink">{p.label}</strong>
-            <span className="mt-1 block text-xs text-muted">{p.question}</span>
+            <span className="flex items-center justify-between gap-1">
+              <span className="font-mono text-[11px] text-accent">{p.n}</span>
+              {official ? <span className="font-mono text-[9px] uppercase tracking-wide text-accent">hier</span> : null}
+            </span>
+            <strong className="mt-1 block text-[11px] font-medium leading-tight text-ink sm:text-sm">{p.label}</strong>
+            <span className="mt-1 hidden text-xs text-muted sm:block">{p.question}</span>
           </button>
         );
       })}

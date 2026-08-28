@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Card, Field, Select, TextInput, Area } from "@/components/pm/fields";
 import { Button } from "@/components/ui/button";
 import {
-  PHASES, gateBlockers, gateBrief, nextPhase, openCount, riskScore, topRisks, uid,
+  PHASES, applyGateDecision, gateBlockers, gateBrief, nextPhase, openCount, riskScore, topRisks,
   type DecisionKind, type Project,
 } from "@/lib/pm/model";
 
@@ -23,17 +23,7 @@ export function GatePanel({
 
   function record(decision: DecisionKind) {
     if (decision === "go" && !canGo) return;
-    setProject((p) => ({
-      ...p,
-      decisions: [...p.decisions, {
-        id: uid(), from: p.phase, advice, decision, who,
-        date: new Date().toISOString().slice(0, 10), notes,
-      }],
-      phase: decision === "go" && nxt ? nxt : p.phase,
-      baselineFrozen: decision === "go" && p.phase === "definitie" ? true : p.baselineFrozen,
-      baselineEndDate: decision === "go" && p.phase === "definitie" ? p.endDate : p.baselineEndDate,
-      baselineBudget: decision === "go" && p.phase === "definitie" ? p.budget : p.baselineBudget,
-    }));
+    setProject((p) => applyGateDecision(p, { advice, decision, who, notes }));
     setNotes("");
   }
 
