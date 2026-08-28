@@ -6,12 +6,12 @@ import { ToolkitFrame } from "@/components/toolkit/toolkit-frame";
 import { pageHead, softwareJsonLd } from "@/lib/seo";
 
 const DESCRIPTION =
-  "Algemene toleranties ISO 2768: titelblok-default als een maat geen kader heeft. Lineair f/m/c/v, vorm H/K/L. Geen passing (ISO 286). Standaard ISO 2768-mK.";
+  "ISO 2768 algemene toleranties: lineair f/m/c/v en vorm H/K/L. Titelblok-default als een maat geen vakje heeft. Geen passing (ISO 286).";
 
 export const Route = createFileRoute("/denk/toolkit/iso-2768")({
   head: () =>
     pageHead({
-      title: "Algemene toleranties ISO 2768 — Damian Vink",
+      title: "Algemene toleranties ISO 2768-mK — Damian Vink",
       description: DESCRIPTION,
       path: "/denk/toolkit/iso-2768",
     }),
@@ -28,38 +28,34 @@ function Iso2768Page() {
       ]}
       before="Algemene"
       last="toleranties."
-      lede="Titelblok-default als een maat geen kader heeft. Geen passing (ISO 286). Standaard-aanduiding ISO 2768-mK."
+      lede="Titelblok-default als een maat geen vakje heeft. Geen passing (dat is ISO 286). Standaardaanduiding ISO 2768-mK."
     >
       <JsonLd
         data={softwareJsonLd({
           name: "Algemene toleranties ISO 2768",
           path: "/denk/toolkit/iso-2768",
           description: DESCRIPTION,
-          featureList: ["ISO 2768-mK", "f/m/c/v", "H/K/L", "lineair", "vorm"],
+          featureList: ["ISO 2768-1", "ISO 2768-2", "f/m/c/v", "H/K/L", "mK"],
         })}
       />
       <Iso2768Calc />
       <Faq
         items={[
           {
-            q: "Wat is ISO 2768-mK?",
-            a: "Titelblok-aanduiding: lineaire klasse m (gemiddeld) plus vormklasse K. Maten zonder kader vallen daaronder. Standaard op veel werktuigbouwkundige tekeningen.",
+            q: "Wat betekent ISO 2768-mK?",
+            a: "m is de middelste lineaire klasse (2768-1), K de middelste vormklasse (2768-2). Zet die aanduiding in of bij het titelblok.",
           },
           {
-            q: "Is dit een passing zoals ISO 286?",
-            a: "Nee. ISO 286 is H7/g6 en speling of overmaat. ISO 2768 is de algemene maattolerantie als er geen kader bij de maat staat.",
+            q: "Wanneer zet ik de afwijking naast de maat?",
+            a: "Onder 0,5 mm heeft de norm geen rij. De afwijking moet dan naast de nominale maat staan. Hetzelfde als een cel in de tabel leeg is (—).",
           },
           {
-            q: "Maat kleiner dan 0,5 mm?",
-            a: "Geen rij. De afwijking moet naast de maat op de tekening. Deze rekenhulp verzint geen naburige waarde.",
+            q: "Is dit een passing?",
+            a: "Nee. Passingen (H7/g6, speling, overmaat) staan onder ISO 286. ISO 2768 is de default als er geen vakje om de maat staat.",
           },
           {
-            q: "Geldt ISO 2768-2 (H/K/L) nog?",
-            a: "Deel 2 is in 2021 ingetrokken; opvolger is ISO 22081. De tabellen staan hier omdat tekeningen nog mK vragen.",
-          },
-          {
-            q: "Vervangt dit een kader op de tekening?",
-            a: "Nee. Kritieke maten (passing, groef, lager) krijgen een eigen tolerantie. ISO 2768 is alleen de default voor maten zonder kader.",
+            q: "2768-2 is ingetrokken. Waarom H/K/L?",
+            a: "Deel 2 is in 2021 ingetrokken; opvolger ISO 22081. Tekeningen zetten nog mK, daarom staat de oude tabel erbij. Geen vervanging van een getolereerde maat in een vakje.",
           },
         ]}
       />
