@@ -1,0 +1,484 @@
+import type { ReactNode } from "react";
+import { useId } from "react";
+import { tx, useLocale } from "@/lib/i18n/locale";
+import { fmtMm } from "@/lib/utils";
+import type { FastenerRow } from "@/lib/toolkit/fastener";
+import type { SeegerKind } from "@/lib/toolkit/seeger";
+
+const FONT = "IBM Plex Mono, ui-monospace, monospace";
+
+export function SchemaPanel({
+  caption,
+  children,
+}: {
+  caption: string;
+  children: ReactNode;
+}) {
+  return (
+    <figure className="mt-4 overflow-hidden rounded-lg border border-line bg-elevated">
+      <figcaption className="border-b border-line px-4 py-2 font-mono text-xs uppercase tracking-[0.14em] text-muted">
+        {caption}
+      </figcaption>
+      <div className="px-2 py-3 sm:px-4">{children}</div>
+    </figure>
+  );
+}
+
+function HatchDefs({ uid }: { uid: string }) {
+  return (
+    <defs>
+      <pattern
+        id={`${uid}-a`}
+        width="7"
+        height="7"
+        patternUnits="userSpaceOnUse"
+        patternTransform="rotate(45)"
+      >
+        <line x1="0" y1="0" x2="0" y2="7" stroke="currentColor" strokeWidth="0.9" opacity="0.32" />
+      </pattern>
+      <pattern
+        id={`${uid}-b`}
+        width="7"
+        height="7"
+        patternUnits="userSpaceOnUse"
+        patternTransform="rotate(-45)"
+      >
+        <line x1="0" y1="0" x2="0" y2="7" stroke="currentColor" strokeWidth="0.9" opacity="0.22" />
+      </pattern>
+    </defs>
+  );
+}
+
+function DimH({
+  x1,
+  x2,
+  y,
+  label,
+  side = "down",
+}: {
+  x1: number;
+  x2: number;
+  y: number;
+  label: string;
+  side?: "up" | "down";
+}) {
+  const a = Math.min(x1, x2);
+  const b = Math.max(x1, x2);
+  const mid = (a + b) / 2;
+  const tick = side === "down" ? 5 : -5;
+  const ty = y + (side === "down" ? 16 : -7);
+  return (
+    <g stroke="currentColor" fill="none" strokeWidth="1">
+      <line x1={a} y1={y} x2={b} y2={y} />
+      <line x1={a} y1={y - tick} x2={a} y2={y + tick} />
+      <line x1={b} y1={y - tick} x2={b} y2={y + tick} />
+      <text
+        x={mid}
+        y={ty}
+        textAnchor="middle"
+        fill="currentColor"
+        stroke="none"
+        fontSize="12"
+        fontFamily={FONT}
+      >
+        {label}
+      </text>
+    </g>
+  );
+}
+
+function DimV({
+  x,
+  y1,
+  y2,
+  label,
+  side = "left",
+}: {
+  x: number;
+  y1: number;
+  y2: number;
+  label: string;
+  side?: "left" | "right";
+}) {
+  const a = Math.min(y1, y2);
+  const b = Math.max(y1, y2);
+  const mid = (a + b) / 2;
+  const tick = side === "left" ? -5 : 5;
+  const txPos = x + (side === "left" ? -8 : 8);
+  return (
+    <g stroke="currentColor" fill="none" strokeWidth="1">
+      <line x1={x} y1={a} x2={x} y2={b} />
+      <line x1={x - 5} y1={a} x2={x + 5} y2={a} />
+      <line x1={x - 5} y1={b} x2={x + 5} y2={b} />
+      <text
+        x={txPos}
+        y={mid + 4}
+        textAnchor={side === "left" ? "end" : "start"}
+        fill="currentColor"
+        stroke="none"
+        fontSize="12"
+        fontFamily={FONT}
+      >
+        {label}
+      </text>
+    </g>
+  );
+}
+
+function Ext({ x1, y1, x2, y2 }: { x1: number; y1: number; x2: number; y2: number }) {
+  return (
+    <line
+      x1={x1}
+      y1={y1}
+      x2={x2}
+      y2={y2}
+      stroke="currentColor"
+      strokeWidth="0.75"
+      opacity="0.45"
+    />
+  );
+}
+
+export function BoltSection({
+  row,
+  hole,
+}: {
+  row: FastenerRow | null;
+  hole: number | null;
+}) {
+  const { locale } = useLocale();
+  const uid = useId().replace(/:/g, "");
+  const d = row ? `d M${row.d}` : "d";
+  const D = hole != null ? `D ${fmtMm(hole)}` : "D";
+  const k = row ? `k ${fmtMm(row.k)}` : "k";
+  const sw = row ? `SW ${fmtMm(row.sw)}` : "SW";
+  const plate = tx(locale, "plaat", "plate");
+
+  return (
+    <svg
+      className="w-full max-w-xl text-ink"
+      viewBox="0 0 460 300"
+      role="img"
+      aria-label={tx(
+        locale,
+        "Doorsnede: zeskantbout door twee platen, met kop k, doorlaat D, draad d en SW",
+        "Section: hex bolt through two plates, head k, clearance D, thread d and SW",
+      )}
+    >
+      <HatchDefs uid={uid} />
+      <line
+        x1="168"
+        y1="28"
+        x2="168"
+        y2="272"
+        stroke="currentColor"
+        strokeDasharray="4 5"
+        strokeWidth="0.8"
+        opacity="0.4"
+      />
+      {/* plates */}
+      <rect x="48" y="96" width="92" height="38" fill={`url(#${uid}-a)`} stroke="currentColor" />
+      <rect x="196" y="96" width="92" height="38" fill={`url(#${uid}-a)`} stroke="currentColor" />
+      <rect x="48" y="134" width="92" height="38" fill={`url(#${uid}-b)`} stroke="currentColor" />
+      <rect x="196" y="134" width="92" height="38" fill={`url(#${uid}-b)`} stroke="currentColor" />
+      <text x="64" y="120" fill="currentColor" fontSize="11" fontFamily={FONT} opacity="0.75">
+        {plate}
+      </text>
+      <text x="64" y="158" fill="currentColor" fontSize="11" fontFamily={FONT} opacity="0.75">
+        {plate}
+      </text>
+      {/* clearance D */}
+      <rect x="140" y="96" width="56" height="76" fill="var(--paper)" />
+      {/* shank d */}
+      <rect x="150" y="80" width="36" height="148" fill="var(--accent)" />
+      {/* hex head */}
+      <path d="M132 48 h72 l10 32 H122 Z" fill="var(--accent)" stroke="currentColor" strokeWidth="1" />
+      {/* nut */}
+      <path
+        d="M128 228 h80 l8 24 H120 Z"
+        fill="var(--paper)"
+        stroke="currentColor"
+        strokeWidth="1.2"
+      />
+      <rect x="150" y="228" width="36" height="24" fill="var(--accent)" />
+
+      <Ext x1={122} y1={48} x2={122} y2={40} />
+      <Ext x1={214} y1={48} x2={214} y2={40} />
+      <DimH x1={122} x2={214} y={36} label={sw} side="up" />
+
+      <Ext x1={304} y1={48} x2={318} y2={48} />
+      <Ext x1={304} y1={80} x2={318} y2={80} />
+      <DimV x={324} y1={48} y2={80} label={k} side="right" />
+
+      <Ext x1={140} y1={172} x2={140} y2={214} />
+      <Ext x1={196} y1={172} x2={196} y2={214} />
+      <DimH x1={140} x2={196} y={222} label={D} />
+
+      <Ext x1={150} y1={252} x2={150} y2={268} />
+      <Ext x1={186} y1={252} x2={186} y2={268} />
+      <DimH x1={150} x2={186} y={276} label={d} />
+    </svg>
+  );
+}
+
+export function KeywaySection({
+  row,
+}: {
+  row: { b: number; h: number; t1: number; t2: number } | null;
+}) {
+  const { locale } = useLocale();
+  const uid = useId().replace(/:/g, "");
+  const cx = 150;
+  const cy = 150;
+  const rHub = 112;
+  const rShaft = 74;
+  const bw = 30;
+  const t2 = 20;
+  const t1 = 26;
+  const keyTop = cy - rShaft - t2;
+  const keyBot = cy - rShaft + t1;
+  const keyL = cx - bw / 2;
+  const keyR = cx + bw / 2;
+  const t1l = row ? `t₁ ${fmtMm(row.t1)}` : "t₁";
+  const t2l = row ? `t₂ ${fmtMm(row.t2)}` : "t₂";
+  const bl = row ? `b ${row.b}` : "b";
+  const hl = row ? `h ${row.h}` : "h";
+
+  return (
+    <svg
+      className="w-full max-w-xl text-ink"
+      viewBox="0 0 420 310"
+      role="img"
+      aria-label={tx(
+        locale,
+        "Dwarsdoorsnede as, spie en naaf met t1, t2, b en h",
+        "Cross-section of shaft, key and hub with t1, t2, b and h",
+      )}
+    >
+      <HatchDefs uid={uid} />
+      <circle cx={cx} cy={cy} r={rHub} fill={`url(#${uid}-a)`} stroke="currentColor" />
+      <circle cx={cx} cy={cy} r={rShaft} fill="var(--paper)" stroke="none" />
+      <circle cx={cx} cy={cy} r={rShaft} fill={`url(#${uid}-b)`} stroke="currentColor" />
+      {/* key sits in both grooves */}
+      <rect
+        x={keyL}
+        y={keyTop}
+        width={bw}
+        height={t1 + t2}
+        rx="1.5"
+        fill="var(--accent)"
+        stroke="currentColor"
+        strokeWidth="1"
+      />
+      {/* groove walls */}
+      <line x1={keyL} y1={keyTop} x2={keyL} y2={keyBot} stroke="currentColor" strokeWidth="1.2" />
+      <line x1={keyR} y1={keyTop} x2={keyR} y2={keyBot} stroke="currentColor" strokeWidth="1.2" />
+      <text
+        x={cx}
+        y={cy + 5}
+        textAnchor="middle"
+        fill="currentColor"
+        fontSize="12"
+        fontFamily={FONT}
+      >
+        {tx(locale, "as", "shaft")}
+      </text>
+      <text
+        x={58}
+        y={cy - 48}
+        fill="currentColor"
+        fontSize="12"
+        fontFamily={FONT}
+      >
+        {tx(locale, "naaf", "hub")}
+      </text>
+
+      <Ext x1={keyR} y1={keyTop} x2={292} y2={keyTop} />
+      <Ext x1={keyR} y1={cy - rShaft} x2={292} y2={cy - rShaft} />
+      <DimV x={300} y1={keyTop} y2={cy - rShaft} label={t2l} side="right" />
+
+      <Ext x1={keyR} y1={cy - rShaft} x2={332} y2={cy - rShaft} />
+      <Ext x1={keyR} y1={keyBot} x2={332} y2={keyBot} />
+      <DimV x={340} y1={cy - rShaft} y2={keyBot} label={t1l} side="right" />
+
+      <Ext x1={keyL} y1={keyTop} x2={keyL} y2={36} />
+      <Ext x1={keyR} y1={keyTop} x2={keyR} y2={36} />
+      <DimH x1={keyL} x2={keyR} y={28} label={bl} side="up" />
+
+      <Ext x1={keyL} y1={keyTop} x2={48} y2={keyTop} />
+      <Ext x1={keyL} y1={keyBot} x2={48} y2={keyBot} />
+      <DimV x={40} y1={keyTop} y2={keyBot} label={hl} side="left" />
+    </svg>
+  );
+}
+
+export function CirclipSection({
+  kind,
+  d1,
+  d2,
+  b,
+  t,
+}: {
+  kind: SeegerKind;
+  d1?: number;
+  d2?: number;
+  b?: number;
+  t?: number;
+}) {
+  const { locale } = useLocale();
+  const uid = useId().replace(/:/g, "");
+  const asShaft = kind === "as";
+  const d1l = d1 != null ? `d₁ ${d1}` : "d₁";
+  const d2l = d2 != null ? `d₂ ${fmtMm(d2)}` : "d₂";
+  const bl = b != null ? `b ${fmtMm(b)}` : "b";
+  const tl = t != null ? `t ${fmtMm(t)}` : "t";
+
+  const bodyY = 70;
+  const bodyH = 110;
+  const bodyX = 50;
+  const bodyW = 250;
+  const grooveX = 168;
+  const grooveW = 22;
+  const grooveD = 16;
+
+  return (
+    <svg
+      className="w-full max-w-xl text-ink"
+      viewBox="0 0 460 250"
+      role="img"
+      aria-label={
+        asShaft
+          ? tx(locale, "Lengtedoorsnede as met seegerringgroef DIN 471", "Longitudinal section, shaft circlip groove DIN 471")
+          : tx(locale, "Lengtedoorsnede boring met seegerringgroef DIN 472", "Longitudinal section, bore circlip groove DIN 472")
+      }
+    >
+      <HatchDefs uid={uid} />
+      <line
+        x1={bodyX}
+        y1={bodyY + bodyH / 2}
+        x2={bodyX + bodyW}
+        y2={bodyY + bodyH / 2}
+        stroke="currentColor"
+        strokeDasharray="4 5"
+        strokeWidth="0.8"
+        opacity="0.4"
+      />
+
+      {asShaft ? (
+        <>
+          <rect
+            x={bodyX}
+            y={bodyY}
+            width={bodyW}
+            height={bodyH}
+            fill={`url(#${uid}-a)`}
+            stroke="currentColor"
+          />
+          {/* OD grooves: notches into the shaft */}
+          <rect x={grooveX} y={bodyY} width={grooveW} height={grooveD} fill="var(--paper)" />
+          <rect
+            x={grooveX}
+            y={bodyY + bodyH - grooveD}
+            width={grooveW}
+            height={grooveD}
+            fill="var(--paper)"
+          />
+          <rect x={grooveX + 3} y={bodyY + 2} width={grooveW - 6} height={grooveD - 2} fill="var(--accent)" />
+          <rect
+            x={grooveX + 3}
+            y={bodyY + bodyH - grooveD}
+            width={grooveW - 6}
+            height={grooveD - 2}
+            fill="var(--accent)"
+          />
+        </>
+      ) : (
+        <>
+          <rect
+            x={bodyX}
+            y={bodyY - 28}
+            width={bodyW}
+            height={bodyH + 56}
+            fill={`url(#${uid}-a)`}
+            stroke="currentColor"
+          />
+          <rect x={bodyX} y={bodyY} width={bodyW} height={bodyH} fill="var(--paper)" stroke="currentColor" />
+          {/* ID grooves: notches into the housing wall */}
+          <rect
+            x={grooveX}
+            y={bodyY - grooveD}
+            width={grooveW}
+            height={grooveD}
+            fill="var(--paper)"
+            stroke="currentColor"
+          />
+          <rect
+            x={grooveX}
+            y={bodyY + bodyH}
+            width={grooveW}
+            height={grooveD}
+            fill="var(--paper)"
+            stroke="currentColor"
+          />
+          <rect x={grooveX + 3} y={bodyY - grooveD} width={grooveW - 6} height={grooveD} fill="var(--accent)" />
+          <rect x={grooveX + 3} y={bodyY + bodyH} width={grooveW - 6} height={grooveD} fill="var(--accent)" />
+        </>
+      )}
+
+      <text x={bodyX + 8} y={bodyY + bodyH / 2 + 4} fill="currentColor" fontSize="12" fontFamily={FONT}>
+        {asShaft ? tx(locale, "as", "shaft") : tx(locale, "boring", "bore")}
+      </text>
+      <text
+        x={grooveX + grooveW + 8}
+        y={asShaft ? bodyY + 12 : bodyY - grooveD - 8}
+        fill="var(--accent)"
+        fontSize="11"
+        fontFamily={FONT}
+      >
+        {tx(locale, "ring", "ring")}
+      </text>
+
+      <Ext x1={bodyX} y1={asShaft ? bodyY : bodyY} x2={36} y2={asShaft ? bodyY : bodyY} />
+      <Ext x1={bodyX} y1={asShaft ? bodyY + bodyH : bodyY + bodyH} x2={36} y2={asShaft ? bodyY + bodyH : bodyY + bodyH} />
+      <DimV x={28} y1={bodyY} y2={bodyY + bodyH} label={d1l} side="left" />
+
+      {asShaft ? (
+        <>
+          <Ext x1={grooveX} y1={bodyY + grooveD} x2={328} y2={bodyY + grooveD} />
+          <Ext x1={grooveX} y1={bodyY + bodyH - grooveD} x2={328} y2={bodyY + bodyH - grooveD} />
+          <DimV x={336} y1={bodyY + grooveD} y2={bodyY + bodyH - grooveD} label={d2l} side="right" />
+        </>
+      ) : (
+        <>
+          <Ext x1={grooveX + grooveW} y1={bodyY - grooveD} x2={328} y2={bodyY - grooveD} />
+          <Ext x1={grooveX + grooveW} y1={bodyY + bodyH + grooveD} x2={328} y2={bodyY + bodyH + grooveD} />
+          <DimV x={336} y1={bodyY - grooveD} y2={bodyY + bodyH + grooveD} label={d2l} side="right" />
+        </>
+      )}
+
+      <Ext x1={grooveX} y1={asShaft ? bodyY : bodyY - grooveD} x2={grooveX} y2={28} />
+      <Ext x1={grooveX + grooveW} y1={asShaft ? bodyY : bodyY - grooveD} x2={grooveX + grooveW} y2={28} />
+      <DimH x1={grooveX} x2={grooveX + grooveW} y={20} label={bl} side="up" />
+
+      <Ext
+        x1={grooveX + grooveW}
+        y1={asShaft ? bodyY : bodyY - grooveD}
+        x2={380}
+        y2={asShaft ? bodyY : bodyY - grooveD}
+      />
+      <Ext
+        x1={grooveX + grooveW}
+        y1={asShaft ? bodyY + grooveD : bodyY}
+        x2={380}
+        y2={asShaft ? bodyY + grooveD : bodyY}
+      />
+      <DimV
+        x={388}
+        y1={asShaft ? bodyY : bodyY - grooveD}
+        y2={asShaft ? bodyY + grooveD : bodyY}
+        label={tl}
+        side="right"
+      />
+    </svg>
+  );
+}
