@@ -3,6 +3,8 @@ import { JsonLd } from "@/components/json-ld";
 import { Faq } from "@/components/toolkit/calc-ui";
 import { KantenCalc } from "@/components/toolkit/kanten-calc";
 import { ToolkitFrame } from "@/components/toolkit/toolkit-frame";
+import { toolkitCopy } from "@/lib/i18n/toolkit-pages";
+import { useLocale } from "@/lib/i18n/locale";
 import { pageHead, softwareJsonLd } from "@/lib/seo";
 
 const DESCRIPTION =
@@ -19,16 +21,18 @@ export const Route = createFileRoute("/toolkit/kanten")({
 });
 
 function KantenPage() {
+  const { locale } = useLocale();
+  const copy = toolkitCopy("kanten", locale);
   return (
     <ToolkitFrame
       active="kanten"
       crumbs={[
         { href: "/toolkit", label: "Toolkit" },
-        { label: "Richtlijnen kanten" },
+        { label: copy.crumb },
       ]}
-      title="Richtlijnen kanten."
-      accent="kanten."
-      lede="Inwendige radius, minimale beenlengte en Z-buiging volgens de Sophia-shop van 247TailorSteel. Geen ISO, geen DIN. Altijd hun pagina nalopen."
+      title={copy.title}
+      accent={copy.accent}
+      lede={copy.lede}
     >
       <JsonLd
         data={softwareJsonLd({
@@ -49,26 +53,7 @@ function KantenPage() {
         })}
       />
       <KantenCalc />
-      <Faq
-        items={[
-          {
-            q: "Is dit ISO of DIN?",
-            a: "Nee. Het is de aanleverspecificatie van 247TailorSteel Sophia. Andere shops hebben andere radii en beenlengtes. Open hun pagina; dit is een werkblad.",
-          },
-          {
-            q: "Wat zijn Ri, w, s en x?",
-            a: "Ri is de inwendige radius na kanten. w is de minimale beenlengte, s de bijbehorende maat op die rij, x de Z-maat voor een Z-buiging. Lege cel betekent: niet in hun tabel.",
-          },
-          {
-            q: "Waarom is alu 0,8 mm Ri leeg?",
-            a: "Op de 247-pagina staat daar een streepje. Dat is geen buurrij van staal 0,8 of alu 1,0 mm. Geen naburige waarde invullen.",
-          },
-          {
-            q: "Waarom 10 en 12 mm extra?",
-            a: "247 noteert dat die diktes niet over de volle plaatlengte kunnen. De tool toont de rij wél, met die kanttekening. Check de actuele pagina.",
-          },
-        ]}
-      />
+      <Faq items={copy.faq ?? []} />
     </ToolkitFrame>
   );
 }

@@ -187,47 +187,48 @@ export function itemRef(prefix: string, items: { id: string }[], id: string) {
 
 export function phaseChecks(project: Project) {
   const hasPlan = project.activities.length > 0 || project.estimates.some((e) => pert(e));
-  const map: Record<PhaseId, { id: string; label: string; done: boolean }[]> = {
+  const map: Record<PhaseId, { id: string; label: string; labelEn: string; done: boolean }[]> = {
     orientatie: [
-      { id: "result", label: "Resultaat ingevuld", done: Boolean(project.result.trim()) },
-      { id: "outcome", label: "Uitkomst ingevuld", done: Boolean(project.outcome.trim()) },
-      { id: "goal", label: "Doel ingevuld", done: Boolean(project.goal.trim()) },
-      { id: "form", label: "Werkvorm gekozen", done: Boolean(project.workform) },
+      { id: "result", label: "Resultaat ingevuld", labelEn: "Result filled", done: Boolean(project.result.trim()) },
+      { id: "outcome", label: "Uitkomst ingevuld", labelEn: "Outcome filled", done: Boolean(project.outcome.trim()) },
+      { id: "goal", label: "Doel ingevuld", labelEn: "Goal filled", done: Boolean(project.goal.trim()) },
+      { id: "form", label: "Werkvorm gekozen", labelEn: "Work form chosen", done: Boolean(project.workform) },
     ],
     voorbereiding: [
-      { id: "why", label: "Aanleiding scherp", done: Boolean(project.why.trim()) },
-      { id: "authority", label: "Bevoegdheid PM", done: Boolean(project.authority.trim()) },
-      { id: "people", label: "Minstens één belanghebbende", done: project.stakeholders.some((s) => s.name.trim()) },
-      { id: "risk", label: "Eerste risico benoemd", done: project.risks.some((r) => r.event.trim() || r.source.trim()) },
+      { id: "why", label: "Aanleiding scherp", labelEn: "Reason is sharp", done: Boolean(project.why.trim()) },
+      { id: "authority", label: "Bevoegdheid PM", labelEn: "PM authority", done: Boolean(project.authority.trim()) },
+      { id: "people", label: "Minstens één belanghebbende", labelEn: "At least one stakeholder", done: project.stakeholders.some((s) => s.name.trim()) },
+      { id: "risk", label: "Eerste risico benoemd", labelEn: "First risk named", done: project.risks.some((r) => r.event.trim() || r.source.trim()) },
     ],
     definitie: [
-      { id: "scope", label: "Scope in en uit", done: Boolean(project.scopeIn.trim() && project.scopeOut.trim()) },
-      { id: "plan", label: "Schatting of planregel", done: hasPlan },
-      { id: "money", label: "Budget en einddatum", done: project.budget != null && Boolean(project.endDate) },
-      { id: "base", label: "Baseline bevroren", done: project.baselineFrozen },
+      { id: "scope", label: "Scope in en uit", labelEn: "Scope in and out", done: Boolean(project.scopeIn.trim() && project.scopeOut.trim()) },
+      { id: "plan", label: "Schatting of planregel", labelEn: "Estimate or plan row", done: hasPlan },
+      { id: "money", label: "Budget en einddatum", labelEn: "Budget and end date", done: project.budget != null && Boolean(project.endDate) },
+      { id: "base", label: "Baseline bevroren", labelEn: "Baseline frozen", done: project.baselineFrozen },
     ],
     uitvoering: [
-      { id: "pct", label: "% klaar bijgewerkt", done: project.percentDone != null },
-      { id: "spent", label: "Besteed ingevuld", done: project.spent != null },
-      { id: "issues", label: "Open issues hebben een eigenaar", done: project.issues.filter((i) => i.status !== "dicht").every((i) => i.owner.trim()) },
+      { id: "pct", label: "% klaar bijgewerkt", labelEn: "% complete updated", done: project.percentDone != null },
+      { id: "spent", label: "Besteed ingevuld", labelEn: "Spent filled", done: project.spent != null },
+      { id: "issues", label: "Open issues hebben een eigenaar", labelEn: "Open issues have an owner", done: project.issues.filter((i) => i.status !== "dicht").every((i) => i.owner.trim()) },
     ],
     afsluiting: [
-      { id: "accepted", label: "Resultaat geaccepteerd", done: project.accepted },
-      { id: "handover", label: "Overdracht beschreven", done: Boolean(project.handover.trim()) },
-      { id: "lessons", label: "Les vastgelegd", done: Boolean(project.lessons.trim()) },
-      { id: "risks", label: "Geen open risico’s of benoemd in overdracht", done: openCount(project.risks) === 0 || Boolean(project.handover.trim()) },
+      { id: "accepted", label: "Resultaat geaccepteerd", labelEn: "Result accepted", done: project.accepted },
+      { id: "handover", label: "Overdracht beschreven", labelEn: "Handover described", done: Boolean(project.handover.trim()) },
+      { id: "lessons", label: "Les vastgelegd", labelEn: "Lesson recorded", done: Boolean(project.lessons.trim()) },
+      { id: "risks", label: "Geen open risico’s of benoemd in overdracht", labelEn: "No open risks, or named in handover", done: openCount(project.risks) === 0 || Boolean(project.handover.trim()) },
     ],
   };
   return map[project.phase];
 }
 
-export function nextAction(project: Project) {
-  if (!project.name.trim()) return "Geef het project een naam.";
-  if (!project.sponsor.trim()) return "Vul de opdrachtgever in.";
+export function nextAction(project: Project, locale: "nl" | "en" = "nl") {
+  const en = locale === "en";
+  if (!project.name.trim()) return en ? "Name the project." : "Geef het project een naam.";
+  if (!project.sponsor.trim()) return en ? "Fill in the sponsor." : "Vul de opdrachtgever in.";
   const missing = phaseChecks(project).find((c) => !c.done);
-  if (missing) return missing.label;
-  if (project.phase !== "afsluiting") return "Klaar voor het beslispunt.";
-  return "Vraag decharge.";
+  if (missing) return en ? missing.labelEn : missing.label;
+  if (project.phase !== "afsluiting") return en ? "Ready for the gate." : "Klaar voor het beslispunt.";
+  return en ? "Ask for discharge." : "Vraag decharge.";
 }
 
 export function gateBlockers(project: Project) {

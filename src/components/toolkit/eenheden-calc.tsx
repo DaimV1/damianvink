@@ -1,6 +1,7 @@
 import { ArrowLeftRight } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { tx, useLocale } from "@/lib/i18n/locale";
 import {
   CATEGORIES,
   categoryById,
@@ -12,12 +13,29 @@ import {
   unitById,
   type CategoryId,
 } from "@/lib/toolkit/units";
-import { CalcPanel, CopyResult, Field, Note, SelectInput } from "./calc-ui";
+import { CalcEyebrow,
+  CalcPanel, CopyResult, Field, Note, SelectInput } from "./calc-ui";
+
+const CAT_EN: Record<CategoryId, string> = {
+  lengte: "Length",
+  oppervlakte: "Area",
+  volume: "Volume",
+  massa: "Mass",
+  kracht: "Force",
+  druk: "Pressure",
+  temperatuur: "Temperature",
+  snelheid: "Speed",
+  koppel: "Torque",
+  vermogen: "Power",
+  energie: "Energy",
+  hoek: "Angle",
+};
 
 const controlClass =
   "h-12 w-full rounded-md border border-line-strong bg-paper px-3 font-mono text-base text-ink tabular-nums outline-none transition-[border-color,box-shadow] duration-150 focus:border-accent focus:ring-2 focus:ring-accent/30";
 
 export function EenhedenCalc() {
+  const { locale } = useLocale();
   const [catId, setCatId] = useState<CategoryId>("lengte");
   const [fromId, setFromId] = useState("in");
   const [toId, setToId] = useState("mm");
@@ -88,23 +106,24 @@ export function EenhedenCalc() {
   return (
     <>
       <CalcPanel>
-        <p className="font-mono text-xs uppercase tracking-[0.14em] text-muted">
-          Rekenhulp
-        </p>
+        <CalcEyebrow />
         <h2 className="mt-1 font-display text-2xl font-semibold tracking-tight text-ink">
-          Omrekenen
+          {tx(locale, "Omrekenen", "Convert")}
         </h2>
         <Note>
-          SI, metrisch en imperial. Temperatuur via kelvin; de rest lineair.
-          Komma en punt mogen allebei. Typ links of rechts; de andere kant volgt.
+          {tx(
+            locale,
+            "SI, metrisch en imperial. Temperatuur via kelvin; de rest lineair. Komma en punt mogen allebei. Typ links of rechts; de andere kant volgt.",
+            "SI, metric and imperial. Temperature via kelvin; the rest is linear. Comma and point both work. Type left or right; the other side follows.",
+          )}
         </Note>
 
         <div className="mt-6">
-          <Field label="Grootheid">
+          <Field label={tx(locale, "Grootheid", "Quantity")}>
             <SelectInput value={catId} onChange={(v) => pickCategory(v as CategoryId)}>
               {CATEGORIES.map((cat) => (
                 <option key={cat.id} value={cat.id}>
-                  {cat.label}
+                  {locale === "en" ? CAT_EN[cat.id] : cat.label}
                 </option>
               ))}
             </SelectInput>
@@ -113,7 +132,7 @@ export function EenhedenCalc() {
 
         <div className="mt-4 grid gap-6 sm:grid-cols-2 sm:gap-4">
           <div className="flex flex-col gap-4">
-            <Field label="Van">
+            <Field label={tx(locale, "Van", "From")}>
               <SelectInput value={from.id} onChange={setFromId}>
                 {category.units.map((unit) => (
                   <option key={unit.id} value={unit.id}>
@@ -122,7 +141,7 @@ export function EenhedenCalc() {
                 ))}
               </SelectInput>
             </Field>
-            <Field label={`Waarde (${from.symbol})`}>
+            <Field label={tx(locale, `Waarde (${from.symbol})`, `Value (${from.symbol})`)}>
               <QtyInput
                 value={rawFromDisplay}
                 unit={from.symbol}
@@ -134,7 +153,7 @@ export function EenhedenCalc() {
             </Field>
           </div>
           <div className="flex flex-col gap-4">
-            <Field label="Naar">
+            <Field label={tx(locale, "Naar", "To")}>
               <SelectInput value={to.id} onChange={setToId}>
                 {category.units.map((unit) => (
                   <option key={unit.id} value={unit.id}>
@@ -143,7 +162,7 @@ export function EenhedenCalc() {
                 ))}
               </SelectInput>
             </Field>
-            <Field label={`Waarde (${to.symbol})`}>
+            <Field label={tx(locale, `Waarde (${to.symbol})`, `Value (${to.symbol})`)}>
               <QtyInput
                 value={rawToDisplay}
                 unit={to.symbol}
@@ -159,7 +178,7 @@ export function EenhedenCalc() {
         <div className="mt-4">
           <Button type="button" variant="secondary" onClick={swap}>
             <ArrowLeftRight className="size-4" />
-            Wissel van/naar
+            {tx(locale, "Wissel van/naar", "Swap from/to")}
           </Button>
         </div>
 

@@ -9,7 +9,9 @@ import {
   type Strength,
 } from "@/lib/toolkit/fastener";
 import { fmtMm } from "@/lib/utils";
+import { tx, useLocale } from "@/lib/i18n/locale";
 import {
+  CalcEyebrow,
   CalcPanel,
   CopyResult,
   Field,
@@ -19,6 +21,7 @@ import {
 } from "./calc-ui";
 
 export function FastenerCalc() {
+  const { locale } = useLocale();
   const [size, setSize] = useState("8");
   const [klass, setKlass] = useState<Strength>("8.8");
   const [fit, setFit] = useState<FitSeries>("middel");
@@ -46,11 +49,9 @@ export function FastenerCalc() {
   return (
     <>
       <CalcPanel>
-        <p className="font-mono text-xs uppercase tracking-[0.14em] text-muted">
-          Rekenhulp
-        </p>
+        <CalcEyebrow />
         <h2 className="mt-1 font-display text-2xl font-semibold tracking-tight text-ink">
-          Bout bij M-maat
+          {tx(locale, "Bout bij M-maat", "Bolt at M size")}
         </h2>
         <Note>
           Grove draad ISO 262. Doorlaat ISO 273. Moment en voorspanning: VDI
@@ -58,7 +59,7 @@ export function FastenerCalc() {
           een VDI-berekening bij wisselende last.
         </Note>
         <div className="mt-6 grid gap-4 sm:grid-cols-3">
-          <Field label="Draad">
+          <Field label={tx(locale, "Draad", "Thread")}>
             <SelectInput value={size} onChange={setSize}>
               {FASTENERS.map((f) => (
                 <option key={f.d} value={String(f.d)}>
@@ -67,7 +68,7 @@ export function FastenerCalc() {
               ))}
             </SelectInput>
           </Field>
-          <Field label="Sterkteklasse">
+          <Field label={tx(locale, "Sterkteklasse", "Strength class")}>
             <SelectInput
               value={klass}
               onChange={(v) => setKlass(v as Strength)}
@@ -77,7 +78,7 @@ export function FastenerCalc() {
               <option value="12.9">12.9</option>
             </SelectInput>
           </Field>
-          <Field label="Doorlaat">
+          <Field label={tx(locale, "Doorlaat", "Clearance hole")}>
             <SelectInput value={fit} onChange={(v) => setFit(v as FitSeries)}>
               <option value="fijn">Fijn</option>
               <option value="middel">Middel</option>

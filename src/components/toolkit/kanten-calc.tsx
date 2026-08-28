@@ -13,7 +13,9 @@ import {
   type Kind,
   type Material,
 } from "@/lib/toolkit/kanten";
+import { tx, useLocale } from "@/lib/i18n/locale";
 import {
+  CalcEyebrow,
   CalcPanel,
   CopyResult,
   Field,
@@ -23,6 +25,7 @@ import {
 } from "./calc-ui";
 
 export function KantenCalc() {
+  const { locale } = useLocale();
   const [tRaw, setTRaw] = useState("2");
   const [material, setMaterial] = useState<Material>("staal");
   const [kind, setKind] = useState<Kind>("haaks");
@@ -33,18 +36,16 @@ export function KantenCalc() {
   return (
     <>
       <CalcPanel>
-        <p className="font-mono text-xs uppercase tracking-[0.14em] text-muted">
-          Rekenhulp
-        </p>
+        <CalcEyebrow />
         <h2 className="mt-1 font-display text-2xl font-semibold tracking-tight text-ink">
-          Kantlijn
+          {tx(locale, "Kantlijn", "Bend line")}
         </h2>
         <Note>
           Shop-spec van 247TailorSteel Sophia, geen ISO of DIN. Discrete
           diktes; een lege cel is geen buurrij. Changelog bron: 11-03-2026.
         </Note>
         <div className="mt-6 grid gap-4 sm:grid-cols-3">
-          <Field label="Dikte (mm)">
+          <Field label={tx(locale, "Dikte (mm)", "Thickness (mm)")}>
             <SelectInput value={tRaw} onChange={setTRaw}>
               {THICKNESSES.map((d) => (
                 <option key={d} value={String(d)}>
@@ -53,7 +54,7 @@ export function KantenCalc() {
               ))}
             </SelectInput>
           </Field>
-          <Field label="Materiaal">
+          <Field label={tx(locale, "Materiaal", "Material")}>
             <SelectInput
               value={material}
               onChange={(v) => setMaterial(v as Material)}
@@ -65,7 +66,7 @@ export function KantenCalc() {
               ))}
             </SelectInput>
           </Field>
-          <Field label="Kant">
+          <Field label={tx(locale, "Kant", "Bend")}>
             <SelectInput value={kind} onChange={(v) => setKind(v as Kind)}>
               {KINDS.map((k) => (
                 <option key={k.id} value={k.id}>

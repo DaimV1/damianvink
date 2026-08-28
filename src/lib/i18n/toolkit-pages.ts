@@ -108,6 +108,224 @@ const pages = {
       ],
     },
   },
+  iso2768: {
+    nl: {
+      title: "Algemene toleranties.",
+      accent: "toleranties.",
+      crumb: "Algemene toleranties",
+      lede: "Titelblok-default als een maat geen vakje heeft. Geen passing (dat is ISO 286). Standaardaanduiding ISO 2768-mK.",
+      faq: [
+        { q: "Wat betekent ISO 2768-mK?", a: "m is de middelste lineaire klasse (2768-1), K de middelste vormklasse (2768-2). Zet die aanduiding in of bij het titelblok." },
+        { q: "Wanneer zet ik de afwijking naast de maat?", a: "Onder 0,5 mm heeft de norm geen rij. De afwijking moet dan naast de nominale maat staan. Hetzelfde als een cel in de tabel leeg is (—)." },
+        { q: "Is dit een passing?", a: "Nee. Passingen (H7/g6, speling, overmaat) staan onder ISO 286. ISO 2768 is de default als er geen vakje om de maat staat." },
+        { q: "2768-2 is ingetrokken. Waarom H/K/L?", a: "Deel 2 is in 2021 ingetrokken; opvolger ISO 22081. Tekeningen zetten nog mK, daarom staat de oude tabel erbij. Geen vervanging van een getolereerde maat in een vakje." },
+      ],
+    },
+    en: {
+      title: "General tolerances.",
+      accent: "tolerances.",
+      crumb: "General tolerances",
+      lede: "Title-block default when a dimension has no box. Not a fit (that is ISO 286). Standard designation ISO 2768-mK.",
+      faq: [
+        { q: "What does ISO 2768-mK mean?", a: "m is the medium linear class (2768-1), K the medium geometrical class (2768-2). Put that designation in or next to the title block." },
+        { q: "When do I put the deviation next to the dimension?", a: "Below 0.5 mm the standard has no row. The deviation then sits next to the nominal size. Same if a table cell is empty (—)." },
+        { q: "Is this a fit?", a: "No. Fits (H7/g6, clearance, interference) are ISO 286. ISO 2768 is the default when there is no box around the dimension." },
+        { q: "2768-2 is withdrawn. Why H/K/L?", a: "Part 2 was withdrawn in 2021; successor ISO 22081. Drawings still use mK, so the old table stays. It does not replace a boxed, individually tolerated dimension." },
+      ],
+    },
+  },
+  spiebaan: {
+    nl: {
+      title: "Spiebaan-toleranties (DIN 6885).",
+      accent: "(DIN 6885).",
+      crumb: "Spiebaan-toleranties",
+      lede: "Parallelspieën en spiebanen volgens DIN 6885-1 (hoge vorm). Vul de as-Ø in; de tabel eronder markeert de bijbehorende rij.",
+      faq: [
+        { q: "Wat is t1 en t2 bij DIN 6885?", a: "t₁ is de groefdiepte in de as, t₂ in de naaf. b × h is de spiemaat." },
+        { q: "Welke breedtetolerantie is standaard?", a: "P9 in as en naaf: vaste zitting (DIN 6885-1:2021). Lichte zitting is N9 (as) / JS9 (naaf). H9/D10 is werkplaats-/UNI-conventie." },
+        { q: "Hoort Ø 6 mm in de tabel?", a: "Nee. DIN 6885-1: eerste rij is boven 6 mm tot en met 8 mm. Precies Ø 6 mm valt erbuiten." },
+        { q: "Wat is het verschil tussen DIN 6885-1 en 6885-2?", a: "DIN 6885-1 is de hoge vorm. DIN 6885-2 is de lage vorm, met een andere radiale positie van de spie." },
+      ],
+    },
+    en: {
+      title: "Keyway tolerances (DIN 6885).",
+      accent: "(DIN 6885).",
+      crumb: "Keyway tolerances",
+      lede: "Parallel keys and keyways per DIN 6885-1 (high type). Enter shaft Ø; the table below highlights the matching row.",
+      faq: [
+        { q: "What are t1 and t2 in DIN 6885?", a: "t₁ is groove depth in the shaft, t₂ in the hub. b × h is the key size." },
+        { q: "Which width tolerance is standard?", a: "P9 in shaft and hub: tight fit (DIN 6885-1:2021). Easy fit is N9 (shaft) / JS9 (hub). H9/D10 is a shop/UNI convention." },
+        { q: "Does Ø 6 mm belong in the table?", a: "No. DIN 6885-1: first row is above 6 mm through 8 mm. Exactly Ø 6 mm is outside." },
+        { q: "Difference between DIN 6885-1 and 6885-2?", a: "DIN 6885-1 is the high type. DIN 6885-2 is the low type, with a different radial key position." },
+      ],
+    },
+  },
+  lager: {
+    nl: {
+      title: "Lagerpassingen.",
+      accent: "passingen.",
+      crumb: "Lagerpassingen",
+      lede: "Groefkogellagers: vast/los, SKF-klassen, ISO 286 tot Ø 50 mm. Kies rotatie en last; de aanbevolen as- en huisklasse volgt direct.",
+      faq: [
+        { q: "Wanneer een vaste passing op de as?", a: "Als de binnenring draait t.o.v. de radiale last. Die ring vast, de andere los." },
+        { q: "Welke astolerantie bij groefkogel Ø 20 mm?", a: "Licht: j6. Normaal tot hoog: k5. Huis meestal H7, of K7 als de buitenring niet hoeft te schuiven. js5 geldt alleen tot en met 17 mm." },
+        { q: "Gedeeld huis?", a: "Geen grote overmaat. Duursma: G of H, maximaal K." },
+      ],
+    },
+    en: {
+      title: "Bearing fits.",
+      accent: "fits.",
+      crumb: "Bearing fits",
+      lede: "Deep-groove ball bearings: locating/non-locating, SKF classes, ISO 286 to Ø 50 mm. Pick rotation and load; recommended shaft and housing class follows.",
+      faq: [
+        { q: "When a tight fit on the shaft?", a: "When the inner ring rotates relative to the radial load. That ring tight, the other loose." },
+        { q: "Which shaft tolerance at deep-groove Ø 20 mm?", a: "Light: j6. Normal to heavy: k5. Housing usually H7, or K7 if the outer ring need not slide. js5 only through 17 mm." },
+        { q: "Split housing?", a: "No large interference. Duursma: G or H, K at most." },
+      ],
+    },
+  },
+  seeger: {
+    nl: {
+      title: "Seegerringgroef.",
+      accent: "groef.",
+      crumb: "Seegerringgroef",
+      lede: "Borgringgroef op de as (DIN 471) of in de boring (DIN 472). Vul de nominale Ø in; de tabel markeert d₂, b en t.",
+      faq: [
+        { q: "Wat is het verschil tussen DIN 471 en DIN 472?", a: "DIN 471 is de seegerring voor een as: groef aan de buitenkant, d₂ kleiner dan d₁. DIN 472 is voor een boring: groef aan de binnenkant, d₂ groter dan d₁." },
+        { q: "Hoe volgt t uit de tabel?", a: "t is de nominale groefdiepte: |d₁ − d₂| / 2. Bij Ø 20 mm as is d₂ = 19 mm, dus t = 0,5 mm." },
+        { q: "Zit er tolerantie op de groefdiepte?", a: "DIN geeft t als rekenmaat bij nominale d₁/d₂. De maattolerantie zit op d₂: h11 op de as, H11 in de boring. t wordt daardoor 0 / +IT11/2 (bij Ø 20 as: 0 / +0,065 mm). Dieper mag, ondieper niet — anders staat de ring bol. Breedte b is H13." },
+        { q: "Waarom ontbreekt Ø 23 mm?", a: "Seegerringen zijn nominale maten, geen bereik zoals bij spiebanen. Alleen de rijen in DIN 471/472 (en deze werkplaatstabel tot 100 mm) bestaan." },
+        { q: "Waar komt de tabel vandaan?", a: "Werkplaatstabel seegerringgroef, onder meer verspanen-metaal, gelijk aan DIN 471/472. n-min. (afstand tot de schouder) staat niet in die tabel — die haal je uit de norm als de last dat vraagt." },
+      ],
+    },
+    en: {
+      title: "Circlip groove.",
+      accent: "groove.",
+      crumb: "Circlip groove",
+      lede: "Retaining-ring groove on the shaft (DIN 471) or in the bore (DIN 472). Enter nominal Ø; the table highlights d₂, b and t.",
+      faq: [
+        { q: "Difference between DIN 471 and DIN 472?", a: "DIN 471 is the circlip for a shaft: groove on the outside, d₂ smaller than d₁. DIN 472 is for a bore: groove on the inside, d₂ larger than d₁." },
+        { q: "How does t follow from the table?", a: "t is nominal groove depth: |d₁ − d₂| / 2. At Ø 20 mm shaft, d₂ = 19 mm, so t = 0.5 mm." },
+        { q: "Is there a tolerance on groove depth?", a: "DIN gives t as a calculated size at nominal d₁/d₂. The dimensional tolerance is on d₂: h11 on the shaft, H11 in the bore. t therefore becomes 0 / +IT11/2 (Ø 20 shaft: 0 / +0.065 mm). Deeper is allowed, shallower is not — otherwise the ring dishes. Width b is H13." },
+        { q: "Why is Ø 23 mm missing?", a: "Circlips are nominal sizes, not ranges like keyways. Only the rows in DIN 471/472 (and this shop table to 100 mm) exist." },
+        { q: "Where does the table come from?", a: "Shop table for circlip grooves, among others verspanen-metaal, matching DIN 471/472. n-min. (distance to the shoulder) is not in that table — take it from the standard if the load requires it." },
+      ],
+    },
+  },
+  bevestigers: {
+    nl: {
+      title: "Bevestigingsmateriaal.",
+      accent: "materiaal.",
+      crumb: "Bevestigingsmateriaal",
+      lede: "Metrische bouten M3–M24: doorlaat ISO 273, zeskant en inbus, aandraaimoment 8.8 / 10.9 / 12.9. Kies de M-maat; de tabellen markeren de rij.",
+      faq: [
+        { q: "Welke doorlaat is standaard?", a: "Middel (ISO 273 medium). Fijn bij nauwkeurige uitlijning, grof bij plaatwerk of ruwe gaten." },
+        { q: "Aandraaimoment M8 8.8?", a: "27,3 N·m bij μ = 0,14, droog, 90 % Rp0,2 (VDI 2230-1 A1). Voorspanning 18 100 N. Gesmeerd is μ lager — moment omlaag." },
+        { q: "Zeskant of inbus?", a: "SW en k zijn ISO 4014/4017 (zeskant). s en dk zijn ISO 4762 (cilinderkop inbus). Zelfde M-draad, andere kop." },
+        { q: "Is dit een VDI-verbinding?", a: "Nee. Tabel A1 is een startwaarde voor statische, concentrische last. Wisselende last, klemverhouding en inbedlengte reken je in VDI 2230." },
+      ],
+    },
+    en: {
+      title: "Fasteners.",
+      accent: "teners.",
+      crumb: "Fasteners",
+      lede: "Metric bolts M3–M24: clearance hole ISO 273, hex and socket, tightening torque 8.8 / 10.9 / 12.9. Pick the M size; the tables highlight the row.",
+      faq: [
+        { q: "Which clearance hole is standard?", a: "Medium (ISO 273 medium). Fine for accurate alignment, coarse for sheet or rough holes." },
+        { q: "Tightening torque M8 8.8?", a: "27.3 N·m at μ = 0.14, dry, 90 % Rp0.2 (VDI 2230-1 A1). Preload 18 100 N. Lubricated μ is lower — torque down." },
+        { q: "Hex or socket?", a: "SW and k are ISO 4014/4017 (hex). s and dk are ISO 4762 (socket head). Same M thread, different head." },
+        { q: "Is this a VDI joint?", a: "No. Table A1 is a starting value for static, concentric load. Alternating load, clamp ratio and grip length you calculate in VDI 2230." },
+      ],
+    },
+  },
+  oring: {
+    nl: {
+      title: "O-ringgroef.",
+      accent: "groef.",
+      crumb: "O-ringgroef",
+      lede: "ISO-koorden 1,80–7,00 mm: groef t / b, schema radiaal en axiaal. Kies koord en inbouw; de tabel markeert de rij.",
+      faq: [
+        { q: "Wat is d₂?", a: "Koorddiameter volgens ISO 3601-1. Vijf groepen: 1,80 / 2,65 / 3,55 / 5,30 / 7,00 mm." },
+        { q: "Groef voor 2,65 mm radiaal statisch?", a: "t = 2,0 mm (+0,05), b = 3,6 mm (+0,25). Nominale samendrukking ongeveer 25 % — geen plus-mintolerantie." },
+      ],
+    },
+    en: {
+      title: "O-ring groove.",
+      accent: "groove.",
+      crumb: "O-ring groove",
+      lede: "ISO cords 1.80–7.00 mm: groove t / b, radial and axial layout. Pick cord and installation; the table highlights the row.",
+      faq: [
+        { q: "What is d₂?", a: "Cord diameter per ISO 3601-1. Five groups: 1.80 / 2.65 / 3.55 / 5.30 / 7.00 mm." },
+        { q: "Groove for 2.65 mm radial static?", a: "t = 2.0 mm (+0.05), b = 3.6 mm (+0.25). Nominal squeeze about 25 % — not a plus-minus tolerance." },
+      ],
+    },
+  },
+  motor: {
+    nl: {
+      title: "Motorspecificatie.",
+      accent: "specificatie.",
+      crumb: "Motorspecificatie",
+      lede: "Berekent het bedrijfspunt van een horizontale aangedreven rol of trommel: n, F, T en P. SEW kiest het aggregaat. Geen cataloguskeuze, geen typecode.",
+      faq: [
+        { q: "Wat zit er in P_motor?", a: "P_motor = P_as / η × f_b. η is het rendement van de aandrijflijn (standaard 0,85), f_b de bedrijfsfactor (standaard 1,2). P_as is F·v op de rol, in watt." },
+        { q: "Wat is de IEC-stap?", a: "De volgende cataloguswaarde uit de IEC 60034 kW-reeks, niet het berekende asvermogen. 0,104 kW wordt 0,12 kW. Boven 315 kW staat er geen stap in deze reeks." },
+        { q: "Kiest deze tool een SEW-type?", a: "Nee. Deze rekenhulp bepaalt n, F, T en P. SEW kiest het reductoraggregaat in Online Support of DriveConfigurator. Geen typecode, geen voorraadkeuze." },
+        { q: "Wat is i ≈ 1450 / n?", a: "Een familie-indicatie voor een 4-polige motor op 50 Hz (synchroon 1500, vollast rond 1450 min⁻¹). Geen gemeten toerental." },
+      ],
+    },
+    en: {
+      title: "Motor specification.",
+      accent: "specification.",
+      crumb: "Motor specification",
+      lede: "Operating point of a driven roller or drum: n, F, T and P. SEW selects the gearmotor. No catalogue pick, no type code.",
+      faq: [
+        { q: "What is in P_motor?", a: "P_motor = P_shaft / η × f_b. η is drivetrain efficiency (default 0.85), f_b the service factor (default 1.2). P_shaft is F·v at the roller, in watts." },
+        { q: "What is the IEC step?", a: "The next catalogue value from the IEC 60034 kW series, not the calculated shaft power. 0.104 kW becomes 0.12 kW. Above 315 kW there is no step in this series." },
+        { q: "Does this pick a SEW type?", a: "No. This calculator finds n, F, T and P. SEW selects the gearmotor in Online Support or DriveConfigurator. No type code, no stock pick." },
+        { q: "What is i ≈ 1450 / n?", a: "A family indication for a 4-pole motor at 50 Hz (synchronous 1500, full load around 1450 min⁻¹). Not a measured speed." },
+      ],
+    },
+  },
+  kanten: {
+    nl: {
+      title: "Richtlijnen kanten.",
+      accent: "kanten.",
+      crumb: "Richtlijnen kanten",
+      lede: "Inwendige radius, minimale beenlengte en Z-buiging volgens de Sophia-shop van 247TailorSteel. Geen ISO, geen DIN. Altijd hun pagina nalopen.",
+      faq: [
+        { q: "Is dit ISO of DIN?", a: "Nee. Het is de aanleverspecificatie van 247TailorSteel Sophia. Andere shops hebben andere radii en beenlengtes. Open hun pagina; dit is een werkblad." },
+        { q: "Wat zijn Ri, w, s en x?", a: "Ri is de inwendige radius na kanten. w is de minimale beenlengte, s de bijbehorende maat op die rij, x de Z-maat voor een Z-buiging. Lege cel betekent: niet in hun tabel." },
+        { q: "Waarom is alu 0,8 mm Ri leeg?", a: "Op de 247-pagina staat daar een streepje. Dat is geen buurrij van staal 0,8 of alu 1,0 mm. Geen naburige waarde invullen." },
+        { q: "Waarom 10 en 12 mm extra?", a: "247 noteert dat die diktes niet over de volle plaatlengte kunnen. De tool toont de rij wél, met die kanttekening. Check de actuele pagina." },
+      ],
+    },
+    en: {
+      title: "Bending guidelines.",
+      accent: "guidelines.",
+      crumb: "Bending guidelines",
+      lede: "Inside radius, minimum leg length and Z-bend per the 247TailorSteel Sophia shop. Not ISO, not DIN. Always check their page.",
+      faq: [
+        { q: "Is this ISO or DIN?", a: "No. It is 247TailorSteel Sophia’s intake spec. Other shops have other radii and leg lengths. Open their page; this is a worksheet." },
+        { q: "What are Ri, w, s and x?", a: "Ri is the inside radius after bending. w is minimum leg length, s the matching size on that row, x the Z dimension for a Z-bend. Empty cell: not in their table." },
+        { q: "Why is alu 0.8 mm Ri empty?", a: "The 247 page has a dash there. That is not a neighbour of steel 0.8 or alu 1.0 mm. Do not fill a neighbouring value." },
+        { q: "Why the 10 and 12 mm note?", a: "247 notes those thicknesses cannot run the full sheet length. The tool still shows the row, with that caveat. Check the current page." },
+      ],
+    },
+  },
+  bronnen: {
+    nl: {
+      title: "CAD-bibliotheken.",
+      accent: "theken.",
+      crumb: "CAD-bibliotheken",
+      lede: "CAD-modellen, componenten, plaatwerk en norm-naslag. Kantlijnen in de rekenhulp Richtlijnen kanten (247TailorSteel Sophia, shop-spec). Links openen in een nieuw tabblad.",
+    },
+    en: {
+      title: "CAD libraries.",
+      accent: "libraries.",
+      crumb: "CAD libraries",
+      lede: "CAD models, components, sheet metal and standards. Bend lines in the Bending guidelines calculator (247TailorSteel Sophia, shop-spec). Links open in a new tab.",
+    },
+  },
 } as const satisfies Record<string, Record<Locale, PageCopy>>;
 
 export function toolkitCopy<K extends keyof typeof pages>(id: K, locale: Locale): PageCopy {

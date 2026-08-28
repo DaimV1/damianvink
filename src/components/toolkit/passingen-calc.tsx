@@ -13,7 +13,9 @@ import {
 } from "@/lib/toolkit/iso286";
 import { readStoredDiameter, storeDiameter } from "@/lib/toolkit/tools";
 import { mmFromUm } from "@/lib/utils";
+import { tx, useLocale } from "@/lib/i18n/locale";
 import {
+  CalcEyebrow,
   CalcPanel,
   CopyResult,
   Field,
@@ -26,6 +28,7 @@ import {
 } from "./calc-ui";
 
 export function PassingenCalc() {
+  const { locale } = useLocale();
   const [diameter, setDiameter] = useState(() =>
     readStoredDiameter({ min: 4, max: 50 }),
   );
@@ -55,11 +58,9 @@ export function PassingenCalc() {
   return (
     <>
       <CalcPanel>
-        <p className="font-mono text-xs uppercase tracking-[0.14em] text-muted">
-          Rekenhulp
-        </p>
+        <CalcEyebrow />
         <h2 className="mt-1 font-display text-2xl font-semibold tracking-tight text-ink">
-          Nominale passing
+          {tx(locale, "Nominale passing", "Nominal fit")}
         </h2>
         <Note>
           Nominale Ø in hele millimeters. Tabellen: boven 3 t/m 50 mm. Zelfde
@@ -67,10 +68,10 @@ export function PassingenCalc() {
           omgezet naar 205.
         </Note>
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
-          <Field label="Nominale Ø (mm)">
+          <Field label={tx(locale, "Nominale Ø (mm)", "Nominal Ø (mm)")}>
             <NumInput id="fit-diameter" value={diameter} onChange={onDia} />
           </Field>
-          <Field label="Passing">
+          <Field label={tx(locale, "Passing", "Fit")}>
             <SelectInput value={fitId} onChange={setFitId}>
               {FITS.map((f) => (
                 <option key={f.id} value={f.id}>

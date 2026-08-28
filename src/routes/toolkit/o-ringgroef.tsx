@@ -3,6 +3,8 @@ import { JsonLd } from "@/components/json-ld";
 import { Faq } from "@/components/toolkit/calc-ui";
 import { OringCalc } from "@/components/toolkit/oring-calc";
 import { ToolkitFrame } from "@/components/toolkit/toolkit-frame";
+import { toolkitCopy } from "@/lib/i18n/toolkit-pages";
+import { useLocale } from "@/lib/i18n/locale";
 import { pageHead, softwareJsonLd } from "@/lib/seo";
 
 const DESCRIPTION =
@@ -19,16 +21,18 @@ export const Route = createFileRoute("/toolkit/o-ringgroef")({
 });
 
 function OringPage() {
+  const { locale } = useLocale();
+  const copy = toolkitCopy("oring", locale);
   return (
     <ToolkitFrame
       active="oring"
       crumbs={[
         { href: "/toolkit", label: "Toolkit" },
-        { label: "O-ringgroef" },
+        { label: copy.crumb },
       ]}
-      title="O-ringgroef."
-      accent="groef."
-      lede="ISO-koorden 1,80–7,00 mm: groef t / b, schema radiaal en axiaal. Kies koord en inbouw; de tabel markeert de rij."
+      title={copy.title}
+      accent={copy.accent}
+      lede={copy.lede}
     >
       <JsonLd
         data={softwareJsonLd({
@@ -39,18 +43,7 @@ function OringPage() {
         })}
       />
       <OringCalc />
-      <Faq
-        items={[
-          {
-            q: "Wat is d₂?",
-            a: "Koorddiameter volgens ISO 3601-1. Vijf groepen: 1,80 / 2,65 / 3,55 / 5,30 / 7,00 mm.",
-          },
-          {
-            q: "Groef voor 2,65 mm radiaal statisch?",
-            a: "t = 2,0 mm (+0,05), b = 3,6 mm (+0,25). Nominale samendrukking ongeveer 25 % — geen plus-mintolerantie.",
-          },
-        ]}
-      />
+      <Faq items={copy.faq ?? []} />
     </ToolkitFrame>
   );
 }

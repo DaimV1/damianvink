@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { fmtMm } from "@/lib/utils";
+import { tx, useLocale } from "@/lib/i18n/locale";
 import {
   ANGULAR,
   ANGULAR_LABELS,
@@ -20,6 +21,7 @@ import {
 } from "@/lib/toolkit/iso2768";
 import { readStoredDiameter, storeDiameter } from "@/lib/toolkit/tools";
 import {
+  CalcEyebrow,
   CalcPanel,
   CopyResult,
   Field,
@@ -38,6 +40,7 @@ function parseLen(raw: string): number | null {
 }
 
 export function Iso2768Calc() {
+  const { locale } = useLocale();
   const [len, setLen] = useState(() => readStoredDiameter({ min: 0, max: 4000, fallback: "42" }));
   const [linear, setLinear] = useState<LinearClass>("m");
   const [form, setForm] = useState<FormClass>("K");
@@ -72,18 +75,16 @@ export function Iso2768Calc() {
   return (
     <>
       <CalcPanel>
-        <p className="font-mono text-xs uppercase tracking-[0.14em] text-muted">
-          Rekenhulp
-        </p>
+        <CalcEyebrow />
         <h2 className="mt-1 font-display text-2xl font-semibold tracking-tight text-ink">
-          Nominale lengte
+          {tx(locale, "Nominale lengte", "Nominal length")}
         </h2>
         <Note>
           Titelblok-default als een maat geen vakje heeft. Geen passing (dat is
           ISO 286). Standaardaanduiding ISO 2768-mK.
         </Note>
         <div className="mt-6 grid gap-4 sm:grid-cols-3">
-          <Field label="Nominale lengte (mm)">
+          <Field label={tx(locale, "Nominale lengte (mm)", "Nominal length (mm)")}>
             <NumInput
               value={len}
               onChange={(v) => {
@@ -92,7 +93,7 @@ export function Iso2768Calc() {
               }}
             />
           </Field>
-          <Field label="Lineair (2768-1)">
+          <Field label={tx(locale, "Lineair (2768-1)", "Linear (2768-1)")}>
             <SelectInput value={linear} onChange={(v) => setLinear(v as LinearClass)}>
               <option value="f">f fijn</option>
               <option value="m">m middel</option>
@@ -100,7 +101,7 @@ export function Iso2768Calc() {
               <option value="v">v zeer grof</option>
             </SelectInput>
           </Field>
-          <Field label="Vorm (2768-2)">
+          <Field label={tx(locale, "Vorm (2768-2)", "Geometrical (2768-2)")}>
             <SelectInput value={form} onChange={(v) => setForm(v as FormClass)}>
               <option value="H">H</option>
               <option value="K">K</option>

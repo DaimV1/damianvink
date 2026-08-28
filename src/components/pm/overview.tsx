@@ -14,6 +14,7 @@ import {
 } from "@/lib/pm/model";
 import { Card, Field, NumInput, TextInput } from "@/components/pm/fields";
 import { Button } from "@/components/ui/button";
+import { tx, useLocale } from "@/lib/i18n/locale";
 
 export type WorkspaceTab =
   | "overzicht"
@@ -45,13 +46,14 @@ export function OverviewPanel({
   const weekWork = (project.activities ?? []).filter((a) => overlapsWeek(weekStart, a.start, a.end));
   const suggested = inferredRag(project);
   const slip = baselineSlip(project);
+  const { locale } = useLocale();
 
   return (
     <div className="grid gap-4">
-      <Card title="Deze week">
-        <p className="text-sm text-ink">{nextAction(project)}</p>
+      <Card title={tx(locale, "Deze week", "This week")}>
+        <p className="text-sm text-ink">{nextAction(project, locale)}</p>
         <p className="mt-2 text-sm text-muted">
-          {project.result || "Nog geen resultaat geformuleerd."} Harde constraint: {project.constraint}.
+          {project.result || tx(locale, "Nog geen resultaat geformuleerd.", "No result formulated yet.")} {tx(locale, "Harde constraint:", "Hard constraint:")} {project.constraint}.
         </p>
         {slip.late || slip.over || suggested !== project.rag ? (
           <p className="mt-2 text-sm text-ink">
@@ -61,33 +63,33 @@ export function OverviewPanel({
           </p>
         ) : null}
         <div className="mt-4 grid gap-3 sm:grid-cols-3">
-          <Field label="% klaar">
+          <Field label={tx(locale, "% klaar", "% complete")}>
             <NumInput min={0} max={100} value={project.percentDone} onValue={(percentDone) => patch({ percentDone })} />
           </Field>
-          <Field label="Besteed">
+          <Field label={tx(locale, "Besteed", "Spent")}>
             <NumInput value={project.spent} onValue={(spent) => patch({ spent })} />
           </Field>
-          <Field label="Einddatum">
+          <Field label={tx(locale, "Einddatum", "End date")}>
             <TextInput type="date" value={project.endDate} onChange={(e) => patch({ endDate: e.target.value })} />
           </Field>
         </div>
         <div className="mt-4 flex flex-wrap gap-2">
-          <Button size="sm" onClick={() => onOpen("fase")}>Naar fasewerk</Button>
-          <Button size="sm" variant="secondary" onClick={() => onOpen("poort")}>Beslispunt</Button>
+          <Button size="sm" onClick={() => onOpen("fase")}>{tx(locale, "Naar fasewerk", "To phase work")}</Button>
+          <Button size="sm" variant="secondary" onClick={() => onOpen("poort")}>{tx(locale, "Beslispunt", "Gate")}</Button>
         </div>
       </Card>
 
       {late.length ? (
-        <Card title="Verlopen issues">
+        <Card title={tx(locale, "Verlopen issues", "Overdue issues")}>
           <ul className="space-y-3">
             {late.map((issue) => (
               <li key={issue.id} className="flex flex-wrap items-end gap-2">
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm text-ink">{issue.title || "Naamloos"}</p>
+                  <p className="text-sm text-ink">{issue.title || tx(locale, "Naamloos", "Untitled")}</p>
                   <p className="font-mono text-xs text-accent">{issue.due}</p>
                 </div>
                 <TextInput
-                  placeholder="Eigenaar"
+                  placeholder={tx(locale, "Eigenaar", "Owner")}
                   value={issue.owner}
                   onChange={(e) =>
                     setProject((p) => ({
@@ -107,7 +109,7 @@ export function OverviewPanel({
                     }))
                   }
                 >
-                  sluiten
+                  {tx(locale, "sluiten", "close")}
                 </button>
               </li>
             ))}
@@ -116,19 +118,19 @@ export function OverviewPanel({
       ) : null}
 
       <div className="grid gap-4 lg:grid-cols-2">
-        <Card title="Fasecheck">
+        <Card title={tx(locale, "Fasecheck", "Phase check")}>
           <ul className="space-y-2 text-sm">
             {checks.map((c) => (
               <li key={c.id} className="flex items-start gap-2">
                 <span className="font-mono text-xs text-accent">{c.done ? "ok" : "\u2014"}</span>
-                <span className={c.done ? "text-muted" : "text-ink"}>{c.label}</span>
+                <span className={c.done ? "text-muted" : "text-ink"}>{locale === "en" ? c.labelEn : c.label}</span>
               </li>
             ))}
           </ul>
         </Card>
-        <Card title="Plan deze week">
+        <Card title={tx(locale, "Plan deze week", "Plan this week")}>
           {weekWork.length === 0 ? (
-            <p className="text-sm text-muted">Nog geen activiteiten in deze week. Zet ze onder Plan.</p>
+            <p className="text-sm text-muted">{tx(locale, "Nog geen activiteiten in deze week. Zet ze onder Plan.", "No activities in this week yet. Put them under Plan.")}</p>
           ) : (
             <ul className="space-y-3">
               {weekWork.map((a) => (
@@ -150,14 +152,14 @@ export function OverviewPanel({
             </ul>
           )}
           <button type="button" className="mt-3 text-sm text-accent hover:underline" onClick={() => onOpen("plan")}>
-            Open plan
+            {tx(locale, "Open plan", "Open plan")}
           </button>
         </Card>
       </div>
 
       <div className="grid gap-4 lg:grid-cols-3">
-        <Card title="Toprisico’s">
-          {risks.length === 0 ? <p className="text-sm text-muted">Geen open risico’s.</p> : (
+        <Card title={tx(locale, "Toprisico’s", "Top risks")}>
+          {risks.length === 0 ? <p className="text-sm text-muted">{tx(locale, "Geen open risico’s.", "No open risks.")}</p> : (
             <ul className="space-y-2 text-sm">
               {risks.map((r) => (
                 <li key={r.id}>
@@ -172,7 +174,7 @@ export function OverviewPanel({
           </button>
         </Card>
         <Card title="Issues">
-          {issues.length === 0 ? <p className="text-sm text-muted">Geen open issues.</p> : (
+          {issues.length === 0 ? <p className="text-sm text-muted">{tx(locale, "Geen open issues.", "No open issues.")}</p> : (
             <ul className="space-y-2 text-sm">
               {issues.map((i) => (
                 <li key={i.id}>
@@ -186,8 +188,8 @@ export function OverviewPanel({
             {openCount(project.issues)} open
           </button>
         </Card>
-        <Card title="Wijzigingen">
-          {changes.length === 0 ? <p className="text-sm text-muted">Geen open wijzigingen.</p> : (
+        <Card title={tx(locale, "Wijzigingen", "Changes")}>
+          {changes.length === 0 ? <p className="text-sm text-muted">{tx(locale, "Geen open wijzigingen.", "No open changes.")}</p> : (
             <ul className="space-y-2 text-sm">
               {changes.map((c) => (
                 <li key={c.id}>{c.title || "Naamloos"} · {c.advice}</li>

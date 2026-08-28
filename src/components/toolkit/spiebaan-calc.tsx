@@ -2,7 +2,9 @@ import { useMemo, useState } from "react";
 import { KEYWAYS, lookupKeyway } from "@/lib/toolkit/keyway";
 import { readStoredDiameter, storeDiameter } from "@/lib/toolkit/tools";
 import { fmtMm } from "@/lib/utils";
+import { tx, useLocale } from "@/lib/i18n/locale";
 import {
+  CalcEyebrow,
   CalcPanel,
   CopyResult,
   Field,
@@ -14,6 +16,7 @@ import {
 } from "./calc-ui";
 
 export function SpiebaanCalc() {
+  const { locale } = useLocale();
   const [diameter, setDiameter] = useState(() =>
     readStoredDiameter({ min: 7, max: 110 }),
   );
@@ -42,18 +45,16 @@ export function SpiebaanCalc() {
   return (
     <>
       <CalcPanel>
-        <p className="font-mono text-xs uppercase tracking-[0.14em] text-muted">
-          Rekenhulp
-        </p>
+        <CalcEyebrow />
         <h2 className="mt-1 font-display text-2xl font-semibold tracking-tight text-ink">
-          Spie bij as-Ø
+          {tx(locale, "Spie bij as-Ø", "Key at shaft Ø")}
         </h2>
         <Note>
           As-Ø in hele mm. DIN 6885-1: boven de ondergrens tot en met de
           bovengrens. De eerste rij is boven 6 t/m 8 — Ø 6 mm valt erbuiten.
         </Note>
         <div className="mt-6 max-w-xs">
-          <Field label="As-Ø (mm)">
+          <Field label={tx(locale, "As-Ø (mm)", "Shaft Ø (mm)")}>
             <NumInput id="spie-diameter" value={diameter} onChange={onDia} />
           </Field>
         </div>

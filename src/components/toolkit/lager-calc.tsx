@@ -2,7 +2,9 @@ import { useMemo, useState } from "react";
 import { computeBearing } from "@/lib/toolkit/bearing";
 import { readStoredDiameter, storeDiameter } from "@/lib/toolkit/tools";
 import { mmFromUm } from "@/lib/utils";
+import { tx, useLocale } from "@/lib/i18n/locale";
 import {
+  CalcEyebrow,
   CalcPanel,
   CopyResult,
   Field,
@@ -14,6 +16,7 @@ import {
 } from "./calc-ui";
 
 export function LagerCalc() {
+  const { locale } = useLocale();
   const [diameter, setDiameter] = useState(() =>
     readStoredDiameter({ min: 4, max: 50 }),
   );
@@ -72,28 +75,26 @@ export function LagerCalc() {
   return (
     <>
       <CalcPanel>
-        <p className="font-mono text-xs uppercase tracking-[0.14em] text-muted">
-          Rekenhulp
-        </p>
+        <CalcEyebrow />
         <h2 className="mt-1 font-display text-2xl font-semibold tracking-tight text-ink">
-          Groefkogellager
+          {tx(locale, "Groefkogellager", "Deep-groove bearing")}
         </h2>
         <Note>
           As-Ø in hele mm (4 t/m 50). Lastkeuze valt weg bij stilstaande
           binnenring. Klassen volgens SKF; µm → mm volgens ISO 286-2.
         </Note>
         <div className="mt-6 grid gap-4 sm:grid-cols-3">
-          <Field label="As-Ø (mm)">
+          <Field label={tx(locale, "As-Ø (mm)", "Shaft Ø (mm)")}>
             <NumInput id="lager-diameter" value={diameter} onChange={onDia} />
           </Field>
-          <Field label="Rotatie">
+          <Field label={tx(locale, "Rotatie", "Rotation")}>
             <SelectInput value={rot} onChange={setRot}>
               <option value="binnen">Binnenring draait (as)</option>
               <option value="buiten">Buitenring draait (naaf)</option>
               <option value="stil">Binnenring stil</option>
             </SelectInput>
           </Field>
-          <Field label="Last">
+          <Field label={tx(locale, "Last", "Load")}>
             <SelectInput value={load} onChange={setLoad} disabled={stil}>
               <option value="licht">Licht, P ≤ 0,05 C</option>
               <option value="normaal">Normaal tot hoog, P {'>'} 0,05 C</option>

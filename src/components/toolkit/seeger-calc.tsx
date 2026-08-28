@@ -9,7 +9,9 @@ import {
   type SeegerKind,
 } from "@/lib/toolkit/seeger";
 import { readStoredDiameter, storeDiameter } from "@/lib/toolkit/tools";
+import { tx, useLocale } from "@/lib/i18n/locale";
 import {
+  CalcEyebrow,
   CalcPanel,
   CopyResult,
   Field,
@@ -21,6 +23,7 @@ import {
 } from "./calc-ui";
 
 export function SeegerCalc() {
+  const { locale } = useLocale();
   const [diameter, setDiameter] = useState(() =>
     readStoredDiameter({ min: 3, max: 100 }),
   );
@@ -51,11 +54,9 @@ export function SeegerCalc() {
   return (
     <>
       <CalcPanel>
-        <p className="font-mono text-xs uppercase tracking-[0.14em] text-muted">
-          Rekenhulp
-        </p>
+        <CalcEyebrow />
         <h2 className="mt-1 font-display text-2xl font-semibold tracking-tight text-ink">
-          Groef bij Ø
+          {tx(locale, "Groef bij Ø", "Groove at Ø")}
         </h2>
         <Note>
           Nominale seegerringmaten, geen bereik. As = DIN 471 (d₂ h11, kleiner
@@ -65,10 +66,10 @@ export function SeegerCalc() {
           ondieper niet).
         </Note>
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
-          <Field label="Ø d₁ (mm)">
+          <Field label={tx(locale, "Ø d₁ (mm)", "Ø d₁ (mm)")}>
             <NumInput id="seeger-diameter" value={diameter} onChange={onDia} />
           </Field>
-          <Field label="Inbouw">
+          <Field label={tx(locale, "Inbouw", "Installation")}>
             <SelectInput
               value={kind}
               onChange={(v) => setKind(v as SeegerKind)}

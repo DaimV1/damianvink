@@ -7,7 +7,9 @@ import {
   type OringKind,
 } from "@/lib/toolkit/oring";
 import { fmtMm } from "@/lib/utils";
+import { tx, useLocale } from "@/lib/i18n/locale";
 import {
+  CalcEyebrow,
   CalcPanel,
   CopyResult,
   Field,
@@ -17,6 +19,7 @@ import {
 } from "./calc-ui";
 
 export function OringCalc() {
+  const { locale } = useLocale();
   const [d2, setD2] = useState("2.65");
   const [kind, setKind] = useState<OringKind>("radial");
   const d2n = parseFloat(d2);
@@ -47,18 +50,16 @@ export function OringCalc() {
   return (
     <>
       <CalcPanel>
-        <p className="font-mono text-xs uppercase tracking-[0.14em] text-muted">
-          Rekenhulp
-        </p>
+        <CalcEyebrow />
         <h2 className="mt-1 font-display text-2xl font-semibold tracking-tight text-ink">
-          Groef bij koord
+          {tx(locale, "Groef bij koord", "Groove at cord")}
         </h2>
         <Note>
           ISO-koorden A–E. t +0,05 mm, b +0,25 mm (Dichtomatik). Samendrukking =
           (d₂ − t)/d₂: nominale compressie, geen plus-mintolerantie.
         </Note>
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
-          <Field label="Koord d₂">
+          <Field label={tx(locale, "Koord d₂", "Cord d₂")}>
             <SelectInput value={d2} onChange={setD2}>
               {D2_OPTIONS.map((opt) => (
                 <option key={opt.value} value={String(opt.value)}>
@@ -67,7 +68,7 @@ export function OringCalc() {
               ))}
             </SelectInput>
           </Field>
-          <Field label="Inbouw">
+          <Field label={tx(locale, "Inbouw", "Installation")}>
             <SelectInput value={kind} onChange={(v) => setKind(v as OringKind)}>
               <option value="radial">Radiaal, statisch</option>
               <option value="axial">Axiaal, statisch</option>
