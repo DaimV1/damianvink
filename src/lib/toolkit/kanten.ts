@@ -197,9 +197,9 @@ const BL_SCHERP_STAAL_ALU: Record<number, Ws> = {
   };
 const BL_SCHERP_RVS: Record<number, Ws> = {
     0.63: { w: null, s: null },
+    0.8: { w: 10, s: 9.9 },
     0.88: { w: null, s: null },
     0.9: { w: null, s: null },
-    0.8: { w: 10, s: 9.9 },
     1: { w: 10, s: 10.1 },
     1.25: { w: 10, s: 10.2 },
     1.5: { w: 10, s: 10.4 },
