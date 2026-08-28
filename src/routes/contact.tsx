@@ -3,6 +3,7 @@ import { ArrowUpRight } from "lucide-react";
 import { DisplayTitle } from "@/components/display-title";
 import { PageWrap, SiteShell } from "@/components/site-shell";
 import { Breadcrumb } from "@/components/toolkit/tool-switcher";
+import { tx, useLocale } from "@/lib/i18n/locale";
 import { pageHead } from "@/lib/seo";
 import { SOCIALS } from "@/lib/socials";
 
@@ -18,6 +19,7 @@ export const Route = createFileRoute("/contact")({
 });
 
 function Contact() {
+  const { locale } = useLocale();
   return (
     <SiteShell>
       <PageWrap>
@@ -25,7 +27,11 @@ function Contact() {
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">Contact</p>
         <DisplayTitle text="Contact." accent="tact." className="mt-3" />
         <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">
-          Vragen over engineering of samenwerking: e-mail of LinkedIn.
+          {tx(
+            locale,
+            "Vragen over engineering of samenwerking: e-mail of LinkedIn.",
+            "Questions about engineering or working together: email or LinkedIn.",
+          )}
         </p>
         <div className="mt-10 grid gap-3">
           {SOCIALS.map((item) => {

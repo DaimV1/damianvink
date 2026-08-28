@@ -6,6 +6,7 @@ import {
 } from "@tanstack/react-router";
 import { AuthProvider } from "@/lib/auth/provider";
 import { ThemeProvider } from "@/lib/theme";
+import { LocaleProvider, tx, useLocale } from "@/lib/i18n/locale";
 import { PreviewHostBridge } from "@/components/preview-host-bridge";
 import { JsonLd } from "@/components/json-ld";
 import { PageWrap, SiteShell } from "@/components/site-shell";
@@ -19,7 +20,7 @@ import {
 } from "@/lib/seo";
 import appCss from "../styles.css?url";
 
-const THEME_BOOT = `(function(){var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);else if(window.matchMedia("(prefers-color-scheme: light)").matches)document.documentElement.setAttribute("data-theme","light");else document.documentElement.setAttribute("data-theme","dark");})();`;
+const THEME_BOOT = `(function(){var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);else if(window.matchMedia("(prefers-color-scheme: light)").matches)document.documentElement.setAttribute("data-theme","light");else document.documentElement.setAttribute("data-theme","dark");var l=localStorage.getItem("locale");if(l==="en"||l==="nl")document.documentElement.lang=l;})();`;
 
 export const Route = createRootRoute({
   head: () => ({
@@ -67,13 +68,10 @@ function RootDocument() {
         <PreviewHostBridge />
         <AuthProvider>
           <ThemeProvider>
-            <a
-              href="#inhoud"
-              className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-accent focus:px-3 focus:py-2 focus:text-accent-fg"
-            >
-              Ga naar inhoud
-            </a>
-            <Outlet />
+            <LocaleProvider>
+              <SkipLink />
+              <Outlet />
+            </LocaleProvider>
           </ThemeProvider>
         </AuthProvider>
         <Scripts />
@@ -82,16 +80,34 @@ function RootDocument() {
   );
 }
 
+function SkipLink() {
+  const { locale } = useLocale();
+  return (
+    <a
+      href="#inhoud"
+      className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-accent focus:px-3 focus:py-2 focus:text-accent-fg"
+    >
+      {tx(locale, "Ga naar inhoud", "Skip to content")}
+    </a>
+  );
+}
+
 function NotFound() {
+  const { locale } = useLocale();
   return (
     <SiteShell>
       <PageWrap>
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">404</p>
         <h1 className="mt-3 font-display text-4xl font-semibold tracking-tight">
-          Pagina niet <span className="text-accent">gevonden.</span>
+          {tx(locale, "Pagina niet ", "Page not ")}
+          <span className="text-accent">{tx(locale, "gevonden.", "found.")}</span>
         </h1>
         <p className="mt-3 max-w-md text-muted">
-          Dit pad bestaat niet. Terwijl je hier bent: Vink vliegt door.
+          {tx(
+            locale,
+            "Dit pad bestaat niet. Terwijl je hier bent: Vink vliegt door.",
+            "This path does not exist. While you are here: Vink keeps flying.",
+          )}
         </p>
         <div className="mt-6 flex flex-wrap gap-4">
           <a href="/" className="text-sm text-accent hover:underline">
@@ -101,14 +117,18 @@ function NotFound() {
             Toolkit
           </a>
           <a href="/spel" className="text-sm text-accent hover:underline">
-            Vink vliegt
+            {tx(locale, "Vink vliegt", "Vink flies")}
           </a>
         </div>
         <div className="mt-10">
           <VinkRun />
         </div>
         <p className="mt-4 text-xs text-subtle">
-          Eigen runner. Zelfde Vink, zelfde raster. Geen Chrome-sprites.
+          {tx(
+            locale,
+            "Eigen runner. Zelfde Vink, zelfde raster. Geen Chrome-sprites.",
+            "Own runner. Same Vink, same grid. No Chrome sprites.",
+          )}
         </p>
       </PageWrap>
     </SiteShell>

@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowUpRight } from "lucide-react";
 import { DisplayTitle, SectionTitle } from "@/components/display-title";
 import { PageWrap, SiteShell } from "@/components/site-shell";
+import { tx, useLocale } from "@/lib/i18n/locale";
 import { DEFAULT_DESCRIPTION, pageHead } from "@/lib/seo";
 import { SOCIALS } from "@/lib/socials";
 
@@ -16,16 +17,17 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
+  const { locale } = useLocale();
   return (
     <SiteShell>
       <PageWrap wide>
         <section className="reveal pb-16 pt-6 sm:pb-24 sm:pt-10">
           <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">
-            Project Engineer · Werktuigbouwkunde
+            {tx(locale, "Project Engineer · Werktuigbouwkunde", "Project Engineer · Mechanical engineering")}
           </p>
           <DisplayTitle text="Damian Vink." accent="Vink." className="mt-4" />
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">
-            Ontwerp en projecten in machinebouw.
+            {tx(locale, "Ontwerp en projecten in machinebouw.", "Design and projects in machine building.")}
           </p>
         </section>
 
@@ -34,26 +36,38 @@ function Home() {
             <Door
               num="01"
               title="Engineering toolkit"
-              body="Eenheden, passingen, spiebanen, lagerpassingen, seegerringgroef, bevestigingsmateriaal en CAD-bronnen."
+              body={tx(
+                locale,
+                "Eenheden, passingen, spiebanen, lagerpassingen, seegerringgroef, bevestigingsmateriaal en CAD-bronnen.",
+                "Units, fits, keyways, bearing fits, circlip grooves, fasteners and CAD libraries.",
+              )}
               href="/toolkit"
               link="Toolkit"
-              meta="Werktuigbouwkunde · Machinebouw"
+              meta={tx(locale, "Werktuigbouwkunde · Machinebouw", "Mechanical engineering · Machine building")}
             />
             <Door
               num="02"
-              title="Projectwerkplek"
-              body="Fasen, stakeholders, risico’s, issues en het beslispunt."
+              title={tx(locale, "Projectwerkplek", "Project workspace")}
+              body={tx(
+                locale,
+                "Fasen, stakeholders, risico’s, issues en het beslispunt.",
+                "Phases, stakeholders, risks, issues and the decision gate.",
+              )}
               href="/project"
               link="Project"
-              meta="Projectmanagement"
+              meta={tx(locale, "Projectmanagement", "Project management")}
             />
             <Door
               num="03"
               title="Marathon"
-              body="Trainingslogboek EDP Porto Marathon, 8 november 2026."
+              body={tx(
+                locale,
+                "Trainingslogboek EDP Porto Marathon, 8 november 2026.",
+                "Training log, EDP Porto Marathon, 8 November 2026.",
+              )}
               href="/marathon"
               link="Marathon"
-              meta="Logboek"
+              meta={tx(locale, "Logboek", "Log")}
             />
           </div>
         </section>
@@ -61,7 +75,11 @@ function Home() {
         <section className="border-t border-line py-14 sm:py-16">
           <SectionTitle text="Contact." accent="tact." />
           <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted">
-            Vragen over engineering of samenwerking: e-mail of LinkedIn.
+            {tx(
+              locale,
+              "Vragen over engineering of samenwerking: e-mail of LinkedIn.",
+              "Questions about engineering or working together: email or LinkedIn.",
+            )}
           </p>
           <div className="mt-8 grid gap-3 sm:grid-cols-2">
             {SOCIALS.map((item) => (

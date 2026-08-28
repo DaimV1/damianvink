@@ -12,6 +12,7 @@ import { DisplayTitle } from "@/components/display-title";
 import { PageWrap, SiteShell } from "@/components/site-shell";
 import { Breadcrumb } from "@/components/toolkit/tool-switcher";
 import strava from "@/data/strava.json";
+import { tx, useLocale } from "@/lib/i18n/locale";
 import { pageHead } from "@/lib/seo";
 import { fmtNl } from "@/lib/utils";
 
@@ -37,8 +38,8 @@ function longestFromCumulative(points: { km: number }[]) {
   return max;
 }
 
-function fmtLongDate(iso: string) {
-  return new Date(`${iso}T12:00:00`).toLocaleDateString("nl-NL", {
+function fmtLongDate(iso: string, locale: "nl" | "en") {
+  return new Date(`${iso}T12:00:00`).toLocaleDateString(locale === "en" ? "en-GB" : "nl-NL", {
     weekday: "long",
     day: "numeric",
     month: "long",
@@ -53,6 +54,7 @@ function weeksBetween(fromIso: string, toIso: string) {
 }
 
 function Marathon() {
+  const { locale } = useLocale();
   const all = strava.totals_all;
   const plan = strava.totals;
   const longest = longestFromCumulative(strava.cumulative);
@@ -67,37 +69,41 @@ function Marathon() {
       <PageWrap wide>
         <Breadcrumb items={[{ label: "Marathon" }]} />
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">
-          Logboek
+          {tx(locale, "Logboek", "Log")}
         </p>
         <DisplayTitle text="Marathon." accent="thon." className="mt-3" />
         <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted">
-          Opbouw naar de EDP Porto Marathon op {fmtLongDate(raceDate)}. Cijfers
-          komen uit een Strava-export (bijgewerkt {strava.updated}). Namen in de
-          tabel zijn het plan; de kilometers zijn wat er gelopen is.
+          {tx(
+            locale,
+            `Opbouw naar de EDP Porto Marathon op ${fmtLongDate(raceDate, locale)}. Cijfers komen uit een Strava-export (bijgewerkt ${strava.updated}). Namen in de tabel zijn het plan; de kilometers zijn wat er gelopen is.`,
+            `Build-up to the EDP Porto Marathon on ${fmtLongDate(raceDate, locale)}. Figures come from a Strava export (updated ${strava.updated}). Names in the table are the plan; kilometres are what was run.`,
+          )}
         </p>
 
         <section className="mt-10">
           <h2 className="font-display text-xl font-semibold tracking-tight">
-            Wedstrijd
+            {tx(locale, "Wedstrijd", "Race")}
           </h2>
           <div className="mt-5 grid grid-cols-2 gap-3 lg:grid-cols-4">
-            <Kpi label="Wedstrijd" value="Porto" unit="EDP Marathon" />
-            <Kpi label="Datum" value="8 nov" unit="2026" />
-            <Kpi label="Afstand" value={fmtNl(strava.plan.distance_km, 3)} unit="km" />
-            <Kpi label="Nog" value={String(weeksLeft)} unit="weken" />
+            <Kpi label={tx(locale, "Wedstrijd", "Race")} value="Porto" unit="EDP Marathon" />
+            <Kpi label={tx(locale, "Datum", "Date")} value={tx(locale, "8 nov", "8 Nov")} unit="2026" />
+            <Kpi label={tx(locale, "Afstand", "Distance")} value={fmtNl(strava.plan.distance_km, 3)} unit="km" />
+            <Kpi label={tx(locale, "Nog", "Left")} value={String(weeksLeft)} unit={tx(locale, "weken", "weeks")} />
           </div>
           <p className="mt-3 text-sm text-muted">
-            Blok vanaf {fmtLongDate(strava.plan.start)}. Geen doeltijd vastgelegd;
-            het kader is uitlopen in Porto. W32 is een herstelweek, geen dip
-            zonder reden.
+            {tx(
+              locale,
+              `Blok vanaf ${fmtLongDate(strava.plan.start, locale)}. Geen doeltijd vastgelegd; het kader is uitlopen in Porto. W32 is een herstelweek, geen dip zonder reden.`,
+              `Block from ${fmtLongDate(strava.plan.start, locale)}. No target time; the frame is finishing in Porto. W32 is a recovery week, not a dip without a reason.`,
+            )}
           </p>
         </section>
 
         <section className="mt-10">
           <h2 className="font-display text-xl font-semibold tracking-tight">
-            Totaaloverzicht
+            {tx(locale, "Totaaloverzicht", "Totals")}
           </h2>
-          <p className="mt-1 text-sm text-muted">Alle hardloopsessies in de Strava-export.</p>
+          <p className="mt-1 text-sm text-muted">{tx(locale, "Alle hardloopsessies in de Strava-export.", "All running sessions in the Strava export.")}</p>
           <div className="mt-5 grid grid-cols-2 gap-3 lg:grid-cols-4">
             <Kpi label="Afstand" value={fmtNl(all.distance_km, 1)} unit="km" />
             <Kpi label="Activiteiten" value={String(all.activities)} unit="stuks" />

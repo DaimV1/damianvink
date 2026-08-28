@@ -17,21 +17,22 @@ import {
   type PhaseId,
   type Project,
 } from "@/lib/pm/model";
+import { tx, useLocale } from "@/lib/i18n/locale";
 import { cn } from "@/lib/utils";
 
-const PRIMARY_TABS: { id: WorkspaceTab | "templates"; label: string }[] = [
-  { id: "overzicht", label: "Weekstart" },
-  { id: "fase", label: "Fasewerk" },
-  { id: "plan", label: "Plan" },
-  { id: "poort", label: "Beslispunt" },
+const PRIMARY_TABS: { id: WorkspaceTab | "templates"; nl: string; en: string }[] = [
+  { id: "overzicht", nl: "Weekstart", en: "Week start" },
+  { id: "fase", nl: "Fasewerk", en: "Phase work" },
+  { id: "plan", nl: "Plan", en: "Plan" },
+  { id: "poort", nl: "Beslispunt", en: "Gate" },
 ];
 
-const REGISTER_TABS: { id: WorkspaceTab | "templates"; label: string }[] = [
-  { id: "mensen", label: "Mensen" },
-  { id: "risicos", label: "Risico’s" },
-  { id: "issues", label: "Issues" },
-  { id: "wijzigingen", label: "Wijzigingen" },
-  { id: "templates", label: "Templates" },
+const REGISTER_TABS: { id: WorkspaceTab | "templates"; nl: string; en: string }[] = [
+  { id: "mensen", nl: "Mensen", en: "People" },
+  { id: "risicos", nl: "Risico’s", en: "Risks" },
+  { id: "issues", nl: "Issues", en: "Issues" },
+  { id: "wijzigingen", nl: "Wijzigingen", en: "Changes" },
+  { id: "templates", nl: "Templates", en: "Templates" },
 ];
 
 function TabButton({
@@ -94,6 +95,7 @@ export function ProjectWorkspace({
   const phase = PHASES.find((p) => p.id === project.phase)!;
   const looking = PHASES.find((p) => p.id === viewPhase)!;
   const untitled = !project.name.trim();
+  const { locale } = useLocale();
 
   useEffect(() => {
     setPanel(project.name.trim() ? "overzicht" : "fase");
@@ -105,7 +107,7 @@ export function ProjectWorkspace({
   }, [project.phase]);
 
   function onNew() {
-    const name = window.prompt("Naam van het nieuwe project");
+    const name = window.prompt(tx(locale, "Naam van het nieuwe project", "Name of the new project"));
     if (name == null) return;
     createProject(name.trim() || undefined);
   }
@@ -129,14 +131,14 @@ export function ProjectWorkspace({
           >
             {list.map((item) => (
               <option key={item.id} value={item.id}>
-                {item.name || "Naamloos project"}
+              {item.name || tx(locale, "Naamloos project", "Untitled project")}
               </option>
             ))}
           </select>
         </label>
         <div className="flex flex-wrap gap-2">
-          <Button variant="secondary" size="sm" onClick={onNew}>Nieuw</Button>
-          <Button variant="secondary" size="sm" onClick={loadSample}>Voorbeeld</Button>
+          <Button variant="secondary" size="sm" onClick={onNew}>{tx(locale, "Nieuw", "New")}</Button>
+          <Button variant="secondary" size="sm" onClick={loadSample}>{tx(locale, "Voorbeeld", "Sample")}</Button>
           <Button variant="ghost" size="sm" onClick={exportJson}>Export</Button>
           <Button variant="ghost" size="sm" onClick={() => fileRef.current?.click()}>Import</Button>
           <input
@@ -156,22 +158,26 @@ export function ProjectWorkspace({
       <header className="rounded-lg border border-line bg-elevated p-5">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="min-w-0 flex-1">
-            <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">Projectwerkplek</p>
+            <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">
+              {tx(locale, "Projectwerkplek", "Project workspace")}
+            </p>
             <TextInput
-              aria-label="Projectnaam"
-              placeholder="Naam van het project"
+              aria-label={tx(locale, "Projectnaam", "Project name")}
+              placeholder={tx(locale, "Naam van het project", "Project name")}
               value={project.name}
               onChange={(e) => patch({ name: e.target.value })}
               className="mt-2 h-auto border-transparent bg-transparent px-0 py-1 font-display text-2xl font-semibold tracking-tight"
             />
             {untitled ? (
-              <p className="mt-2 text-sm text-ink">Geef eerst een naam, daarna de vragen van fase 01.</p>
+              <p className="mt-2 text-sm text-ink">
+                {tx(locale, "Geef eerst een naam, daarna de vragen van fase 01.", "Name it first, then the phase 01 questions.")}
+              </p>
             ) : null}
             <div className="mt-3 grid gap-3 sm:grid-cols-2">
-              <Field label="Opdrachtgever">
-                <TextInput value={project.sponsor} onChange={(e) => patch({ sponsor: e.target.value })} placeholder="Wie is eigenaar van de business case?" />
+              <Field label={tx(locale, "Opdrachtgever", "Sponsor")}>
+                <TextInput value={project.sponsor} onChange={(e) => patch({ sponsor: e.target.value })} placeholder={tx(locale, "Wie is eigenaar van de business case?", "Who owns the business case?")} />
               </Field>
-              <Field label="Projectmanager">
+              <Field label={tx(locale, "Projectmanager", "Project manager")}>
                 <TextInput value={project.manager} onChange={(e) => patch({ manager: e.target.value })} />
               </Field>
             </div>
@@ -179,9 +185,9 @@ export function ProjectWorkspace({
           <RagBadge value={project.rag} suggested={suggestedRag} onChange={(rag) => patch({ rag })} />
         </div>
         <dl className="mt-5 grid gap-3 sm:grid-cols-4">
-          <Stat label="Fase" value={phase.label} />
-          <Stat label="Klaar" value={project.percentDone == null ? "\u2014" : `${project.percentDone}%`} />
-          <Stat label="Einddatum" value={project.endDate || "\u2014"} />
+          <Stat label={tx(locale, "Fase", "Phase")} value={locale === "en" ? phase.labelEn : phase.label} />
+          <Stat label={tx(locale, "Klaar", "Done")} value={project.percentDone == null ? "\u2014" : `${project.percentDone}%`} />
+          <Stat label={tx(locale, "Einddatum", "End date")} value={project.endDate || "\u2014"} />
           <Stat label="Budget" value={`${euro(project.spent)} / ${euro(project.budget)}`} />
         </dl>
         <p className="mt-4 text-sm text-ink">
@@ -204,7 +210,11 @@ export function ProjectWorkspace({
 
       {viewPhase !== project.phase ? (
         <p className="rounded-md border border-line bg-elevated px-4 py-3 text-sm text-ink">
-          Je kijkt naar {looking.label}. Officieel sta je in {phase.label}. Invullen mag; de officiële overgang is Beslispunt.
+          {tx(
+            locale,
+            `Je kijkt naar ${looking.label}. Officieel sta je in ${phase.label}. Invullen mag; de officiële overgang is Beslispunt.`,
+            `You are viewing ${looking.labelEn}. Officially you are in ${phase.labelEn}. Filling in is allowed; the official change is the Gate.`,
+          )}
         </p>
       ) : null}
 
@@ -218,15 +228,17 @@ export function ProjectWorkspace({
       />
 
       <div className="flex flex-col gap-2">
-        <div className="flex flex-wrap gap-1" aria-label="Hoofdacties">
+        <div className="flex flex-wrap gap-1" aria-label={tx(locale, "Hoofdacties", "Main actions")}>
           {PRIMARY_TABS.map((tab) => (
-            <TabButton key={tab.id} id={tab.id} label={tab.label} panel={panel} setPanel={setPanel} />
+            <TabButton key={tab.id} id={tab.id} label={tx(locale, tab.nl, tab.en)} panel={panel} setPanel={setPanel} />
           ))}
         </div>
         <div className="flex flex-wrap items-center gap-1" aria-label="Registers">
-          <span className="px-2 font-mono text-[11px] uppercase tracking-wide text-subtle">Registers</span>
+          <span className="px-2 font-mono text-[11px] uppercase tracking-wide text-subtle">
+            {tx(locale, "Registers", "Registers")}
+          </span>
           {REGISTER_TABS.map((tab) => (
-            <TabButton key={tab.id} id={tab.id} label={tab.label} panel={panel} setPanel={setPanel} />
+            <TabButton key={tab.id} id={tab.id} label={tx(locale, tab.nl, tab.en)} panel={panel} setPanel={setPanel} />
           ))}
         </div>
       </div>

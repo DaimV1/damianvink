@@ -3,6 +3,8 @@ import { JsonLd } from "@/components/json-ld";
 import { PassingenCalc } from "@/components/toolkit/passingen-calc";
 import { Faq } from "@/components/toolkit/calc-ui";
 import { ToolkitFrame } from "@/components/toolkit/toolkit-frame";
+import { toolkitCopy } from "@/lib/i18n/toolkit-pages";
+import { useLocale } from "@/lib/i18n/locale";
 import { pageHead, softwareJsonLd } from "@/lib/seo";
 
 const DESCRIPTION =
@@ -19,21 +21,18 @@ export const Route = createFileRoute("/toolkit/passingen")({
 });
 
 function PassingenPage() {
+  const { locale } = useLocale();
+  const copy = toolkitCopy("passingen", locale);
   return (
     <ToolkitFrame
       active="passingen"
       crumbs={[
         { href: "/toolkit", label: "Toolkit" },
-        { label: "Passingen" },
+        { label: copy.crumb },
       ]}
-      title="Passingen (ISO 286)."
-      accent="(ISO 286)."
-      lede={
-        <>
-          ISO 286, eenheidsgatstelsel. Rekenhulp eerst: nominale Ø en passing.
-          Daaronder de tabellen. Diameters: boven 3 mm tot en met 50 mm.
-        </>
-      }
+      title={copy.title}
+      accent={copy.accent}
+      lede={copy.lede}
     >
       <JsonLd
         data={softwareJsonLd({
@@ -44,30 +43,7 @@ function PassingenPage() {
         })}
       />
       <PassingenCalc />
-      <Faq
-        items={[
-          {
-            q: "Wat is het eenheidsgatstelsel in ISO 286?",
-            a: "Het gat krijgt een H-afwijking (ondermaat 0). De as (c, d, f, g, h, k, n, p, s) bepaalt of de passing los, overgang of vast is.",
-          },
-          {
-            q: "Wat betekent H7/g6?",
-            a: "Losse passing: gat H7, as g6. Altijd speling. Typisch voor glijdende of nauwkeurig verschuifbare delen.",
-          },
-          {
-            q: "Waarom staan 30–40 mm en 40–50 mm apart?",
-            a: "IT-graden zijn gelijk voor 30–50 mm (H7 = 25 µm). De fundamentele afwijking van c wijzigt bij 40 mm, daarom staat H11/c11 in twee rijen.",
-          },
-          {
-            q: "Is H7/p6 altijd overmaat?",
-            a: "Nee. Tot 18 mm is de maximale speling 0 µm (lijnpassing mogelijk). Vanaf 18–30 mm is max. speling negatief: altijd interferentie.",
-          },
-          {
-            q: "Zijn de waarden in mm of µm?",
-            a: "Tabellen en rekenhulp staan in mm, omgerekend uit ISO 286 (µm). JS7 toont vier decimalen waar IT7 oneven is.",
-          },
-        ]}
-      />
+      <Faq items={copy.faq ?? []} />
     </ToolkitFrame>
   );
 }

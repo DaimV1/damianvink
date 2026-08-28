@@ -9,8 +9,10 @@ import {
   sizeCylinder,
   type StrokeDir,
 } from "@/lib/toolkit/cylinder";
+import { tx, useLocale } from "@/lib/i18n/locale";
 import { fmtNl } from "@/lib/utils";
 import {
+  CalcEyebrow,
   CalcPanel,
   CopyResult,
   Field,
@@ -68,6 +70,7 @@ function QtyInput({
 }
 
 export function CylinderCalc() {
+  const { locale } = useLocale();
   const [load, setLoad] = useState("1000");
   const [pBar, setPBar] = useState("6");
   const [S, setS] = useState("1,25");
@@ -106,34 +109,34 @@ export function CylinderCalc() {
   return (
     <>
       <CalcPanel>
-        <p className="font-mono text-xs uppercase tracking-[0.14em] text-muted">
-          Rekenhulp
-        </p>
+        <CalcEyebrow />
         <h2 className="mt-1 font-display text-2xl font-semibold tracking-tight text-ink">
-          Boring bij last en druk
+          {tx(locale, "Boring bij last en druk", "Bore from load and pressure")}
         </h2>
         <Note>
-          F = p·A, manometerdruk. Dubbelwerkend. Theoretisch, zonder wrijving.
-          Stangdiameter is de ISO-basisstang, geen vergroting. Festo of SMC kiest
-          het type — dit is geen cataloguscode en geen knikberekening.
+          {tx(
+            locale,
+            "F = p·A, manometerdruk. Dubbelwerkend. Theoretisch, zonder wrijving. Stangdiameter is de ISO-basisstang, geen vergroting. Festo of SMC kiest het type — dit is geen cataloguscode en geen knikberekening.",
+            "F = p·A, gauge pressure. Double acting. Theoretical, no friction. Rod diameter is the ISO basic rod, not oversized. Festo or SMC picks the type — not a catalogue code and not a buckling check.",
+          )}
         </Note>
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
-          <Field label="Last F (N)">
+          <Field label={tx(locale, "Last F (N)", "Load F (N)")}>
             <QtyInput id="cyl-load" value={load} onChange={setLoad} />
           </Field>
-          <Field label="Druk p (bar)">
+          <Field label={tx(locale, "Druk p (bar)", "Pressure p (bar)")}>
             <QtyInput id="cyl-p" value={pBar} onChange={setPBar} intDigits={2} />
           </Field>
-          <Field label="Lastfactor S">
+          <Field label={tx(locale, "Lastfactor S", "Load factor S")}>
             <QtyInput id="cyl-s" value={S} onChange={setS} intDigits={2} />
           </Field>
-          <Field label="Richting">
+          <Field label={tx(locale, "Richting", "Direction")}>
             <SelectInput value={dir} onChange={(v) => setDir(v as StrokeDir)}>
-              <option value="uit">Uitgaan (zuiger)</option>
-              <option value="in">Binnenhalen (stangzijde)</option>
+              <option value="uit">{tx(locale, "Uitgaan (zuiger)", "Extend (piston)")}</option>
+              <option value="in">{tx(locale, "Binnenhalen (stangzijde)", "Retract (rod side)")}</option>
             </SelectInput>
           </Field>
-          <Field label="Slag (mm)">
+          <Field label={tx(locale, "Slag (mm)", "Stroke (mm)")}>
             <QtyInput id="cyl-stroke" value={stroke} onChange={setStroke} intDigits={4} />
           </Field>
         </div>
@@ -147,12 +150,12 @@ export function CylinderCalc() {
             </p>
             <ResultGrid
               items={[
-                { label: "Boring / stang", value: `Ø${pick.bore} / ${pick.rod} mm` },
-                { label: "Norm", value: seriesLabel(pick.series) },
+                { label: tx(locale, "Boring / stang", "Bore / rod"), value: `Ø${pick.bore} / ${pick.rod} mm` },
+                { label: tx(locale, "Norm", "Standard"), value: seriesLabel(pick.series) },
                 { label: "F_uit", value: `${fmtNl(forces.F_uit, 0)} N` },
                 { label: "F_in", value: `${fmtNl(forces.F_in, 0)} N` },
                 {
-                  label: "Lucht / cyclus",
+                  label: tx(locale, "Lucht / cyclus", "Air / cycle"),
                   value: liters != null ? `${fmtNl(liters, 2)} NL` : "—",
                 },
               ]}
@@ -161,29 +164,39 @@ export function CylinderCalc() {
           </>
         ) : loadN != null && p != null && sFac != null && p > 0 && loadN > 0 ? (
           <p className="mt-5 text-sm text-muted">
-            Geen ISO-boring dekt {fmtNl(need ?? 0, 0)} N bij {fmtNl(p, 1)} bar
-            (max Ø320). Open de catalogus.
+            {tx(
+              locale,
+              `Geen ISO-boring dekt ${fmtNl(need ?? 0, 0)} N bij ${fmtNl(p, 1)} bar (max Ø320). Open de catalogus.`,
+              `No ISO bore covers ${fmtNl(need ?? 0, 0)} N at ${fmtNl(p, 1)} bar (max Ø320). Open the catalogue.`,
+            )}
           </p>
         ) : (
-          <p className="mt-5 text-sm text-muted">Vul last, druk en lastfactor in.</p>
+          <p className="mt-5 text-sm text-muted">{tx(locale, "Vul last, druk en lastfactor in.", "Enter load, pressure and load factor.")}</p>
         )}
       </CalcPanel>
 
       <section className="mt-12">
         <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-          Theoretische kracht bij {p != null && p > 0 ? `${fmtNl(p, 1)} bar` : "druk"}
+          {tx(
+            locale,
+            `Theoretische kracht bij ${p != null && p > 0 ? `${fmtNl(p, 1)} bar` : "druk"}`,
+            `Theoretical force at ${p != null && p > 0 ? `${fmtNl(p, 1)} bar` : "pressure"}`,
+          )}
         </h2>
         <Note>
-          F_uit = p·A_zuiger, F_in = p·A_ring. Geen wrijving. Stang = ISO-basis.
-          Actieve rij is de gekozen boring.
+          {tx(
+            locale,
+            "F_uit = p·A_zuiger, F_in = p·A_ring. Geen wrijving. Stang = ISO-basis. Actieve rij is de gekozen boring.",
+            "F_extend = p·A_piston, F_retract = p·A_annulus. No friction. Rod = ISO basic. Active row is the selected bore.",
+          )}
         </Note>
         <div className="table-scroll mt-4">
           <table className="ref-table">
             <thead>
               <tr>
                 <th>Ø</th>
-                <th>Stang</th>
-                <th>Norm</th>
+                <th>{tx(locale, "Stang", "Rod")}</th>
+                <th>{tx(locale, "Norm", "Standard")}</th>
                 <th>F_uit</th>
                 <th>F_in</th>
               </tr>

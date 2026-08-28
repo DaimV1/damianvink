@@ -1,9 +1,11 @@
 import { Search, X } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { matchTools, TOOLS } from "@/lib/toolkit/tools";
+import { tx, useLocale } from "@/lib/i18n/locale";
+import { matchTools, TOOLS, toolBlurb, toolTitle } from "@/lib/toolkit/tools";
 
 export function ToolkitIndexList() {
+  const { locale } = useLocale();
   const [query, setQuery] = useState("");
   const hits = useMemo(() => matchTools(query), [query]);
   const searching = query.trim().length > 0;
@@ -19,7 +21,7 @@ export function ToolkitIndexList() {
           htmlFor="toolkit-zoek"
           className="mb-2 block font-mono text-xs uppercase tracking-[0.16em] text-muted"
         >
-          Zoek
+          {tx(locale, "Zoek", "Search")}
         </label>
         <div className="relative">
           <Search
@@ -31,7 +33,7 @@ export function ToolkitIndexList() {
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Zoek H7, moment, inch, ISO…"
+            placeholder={tx(locale, "Zoek H7, moment, inch, ISO…", "Search H7, torque, inch, ISO…")}
             autoComplete="off"
             autoCorrect="off"
             spellCheck={false}
@@ -43,7 +45,7 @@ export function ToolkitIndexList() {
               type="button"
               onClick={() => setQuery("")}
               className="absolute right-2 top-1/2 flex size-8 -translate-y-1/2 items-center justify-center rounded-md text-muted hover:bg-muted-bg hover:text-ink"
-              aria-label="Zoekterm wissen"
+              aria-label={tx(locale, "Zoekterm wissen", "Clear search")}
             >
               <X className="size-4" aria-hidden="true" />
             </button>
@@ -52,15 +54,18 @@ export function ToolkitIndexList() {
       </form>
       <p className="mt-3 font-mono text-xs text-muted" aria-live="polite">
         {searching
-          ? `${hits.length} van ${TOOLS.length} tools`
-          : `${TOOLS.length} tools`}
+          ? tx(locale, `${hits.length} van ${TOOLS.length} tools`, `${hits.length} of ${TOOLS.length} tools`)
+          : tx(locale, `${TOOLS.length} tools`, `${TOOLS.length} tools`)}
       </p>
 
       <div id="toolkit-lijst" className="mt-4 grid gap-3">
         {hits.length === 0 ? (
           <p className="rounded-lg border border-dashed border-line-strong bg-elevated px-5 py-10 text-center text-sm text-muted">
-            Geen tools voor “{query.trim()}”. Probeer een norm, eenheid of
-            trefwoord.
+            {tx(
+              locale,
+              `Geen tools voor “${query.trim()}”. Probeer een norm, eenheid of trefwoord.`,
+              `No tools for “${query.trim()}”. Try a standard, unit or keyword.`,
+            )}
           </p>
         ) : (
           hits.map((tool) => {
@@ -76,11 +81,13 @@ export function ToolkitIndexList() {
                     {String(n).padStart(2, "0")} · {tool.standard}
                   </span>
                   <strong className="mt-1 block font-display text-lg font-semibold tracking-tight text-ink">
-                    {tool.title}
+                    {toolTitle(tool, locale)}
                   </strong>
-                  <small className="mt-1 block text-sm text-muted">{tool.blurb}</small>
+                  <small className="mt-1 block text-sm text-muted">{toolBlurb(tool, locale)}</small>
                   <small className="mt-2 block font-mono text-xs uppercase tracking-[0.12em] text-subtle">
-                    {tool.kind === "naslag" ? "Naslag" : "Rekenhulp + naslag"}
+                    {tool.kind === "naslag"
+                      ? tx(locale, "Naslag", "Reference")
+                      : tx(locale, "Rekenhulp + naslag", "Calculator + reference")}
                   </small>
                 </span>
                 <span aria-hidden="true" className="text-accent">

@@ -3,6 +3,7 @@ import { useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { JsonLd } from "@/components/json-ld";
 import { faqJsonLd } from "@/lib/seo";
+import { tx, useLocale } from "@/lib/i18n/locale";
 import { cn } from "@/lib/utils";
 
 export function CalcPanel({
@@ -146,9 +147,14 @@ export function CopyResult({ text }: { text: string }) {
       }}
     >
       {done ? <Check className="size-4" /> : <Copy className="size-4" />}
-      {done ? "Gekopieerd" : "Kopieer resultaat"}
+      {done ? <CopyLabel done /> : <CopyLabel done={false} />}
     </Button>
   );
+}
+
+function CopyLabel({ done }: { done: boolean }) {
+  const { locale } = useLocale();
+  return <>{done ? tx(locale, "Gekopieerd", "Copied") : tx(locale, "Kopieer resultaat", "Copy result")}</>;
 }
 
 export function KindDot({ kind }: { kind: "los" | "overgang" | "lijn" | "vast" }) {
@@ -166,6 +172,15 @@ export function KindDot({ kind }: { kind: "los" | "overgang" | "lijn" | "vast" }
   );
 }
 
+export function CalcEyebrow() {
+  const { locale } = useLocale();
+  return (
+    <p className="font-mono text-xs uppercase tracking-[0.14em] text-muted">
+      {tx(locale, "Rekenhulp", "Calculator")}
+    </p>
+  );
+}
+
 export function Note({ children }: { children: ReactNode }) {
   return <p className="mt-3 text-sm leading-relaxed text-muted">{children}</p>;
 }
@@ -175,11 +190,12 @@ export function Faq({
 }: {
   items: { q: string; a: string }[];
 }) {
+  const { locale } = useLocale();
   return (
     <section className="mt-12">
       <JsonLd data={faqJsonLd(items)} />
       <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-        Vragen
+        {tx(locale, "Vragen", "Questions")}
       </h2>
       <div className="mt-4 divide-y divide-line overflow-hidden rounded-lg border border-line bg-elevated">
         {items.map((item) => (

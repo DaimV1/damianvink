@@ -1,11 +1,11 @@
 import type { Activity } from "@/lib/pm/activity";
 
 export const PHASES = [
-  { id: "orientatie", n: "01", label: "Oriëntatie", question: "Moet dit een project zijn?", result: "Kader en werkvorm" },
-  { id: "voorbereiding", n: "02", label: "Voorbereiding", question: "Mag het van start?", result: "Projectopdracht voor go/no-go" },
-  { id: "definitie", n: "03", label: "Definitie", question: "Hoe gaan we het doen?", result: "Plan en baseline" },
-  { id: "uitvoering", n: "04", label: "Uitvoering", question: "Blijven we binnen de afspraak?", result: "Stand, issues en wijzigingen" },
-  { id: "afsluiting", n: "05", label: "Afsluiting", question: "Kunnen we decharge geven?", result: "Overdracht en evaluatie" },
+  { id: "orientatie", n: "01", label: "Oriëntatie", labelEn: "Framing", question: "Moet dit een project zijn?", questionEn: "Should this be a project?", result: "Kader en werkvorm", resultEn: "Frame and work form" },
+  { id: "voorbereiding", n: "02", label: "Voorbereiding", labelEn: "Preparation", question: "Mag het van start?", questionEn: "May it start?", result: "Projectopdracht voor go/no-go", resultEn: "Project brief for go/no-go" },
+  { id: "definitie", n: "03", label: "Definitie", labelEn: "Definition", question: "Hoe gaan we het doen?", questionEn: "How will we do it?", result: "Plan en baseline", resultEn: "Plan and baseline" },
+  { id: "uitvoering", n: "04", label: "Uitvoering", labelEn: "Delivery", question: "Blijven we binnen de afspraak?", questionEn: "Are we still on the agreement?", result: "Stand, issues en wijzigingen", resultEn: "Status, issues and changes" },
+  { id: "afsluiting", n: "05", label: "Afsluiting", labelEn: "Close-out", question: "Kunnen we decharge geven?", questionEn: "Can we grant discharge?", result: "Overdracht en evaluatie", resultEn: "Handover and lessons" },
 ] as const;
 
 export type PhaseId = (typeof PHASES)[number]["id"];
