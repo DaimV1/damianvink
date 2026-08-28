@@ -17,7 +17,7 @@ export const TOOLS = [
     standard: "ISO 2768",
     kind: "rekenhulp",
     related: ["passingen"],
-    blurb: "Titelblok-default als een maat geen kader heeft. Geen passing (ISO 286).",
+    blurb: "Titelblok-default f/m/c/v en H/K/L. Geen passing (dat is ISO 286).",
   },
   {
     id: "spiebaan",
@@ -101,7 +101,7 @@ export function readStoredDiameter({
   if (raw && /^\d{1,4}$/.test(raw) && inRange(raw, min, max)) return raw;
   if (inRange(fallback, min, max)) return fallback;
   return "";
-}
+};
 
 function inRange(raw: string, min?: number, max?: number) {
   const n = Number.parseInt(raw, 10);
