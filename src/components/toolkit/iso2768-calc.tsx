@@ -243,7 +243,6 @@ function dash(v: number | null) {
 
 function LinearTable({
   active,
-  klass: _klass,
 }: {
   active: number | null;
   klass: LinearClass;
@@ -284,7 +283,6 @@ function LinearTable({
 
 function RadiusTable({
   active,
-  klass: _klass,
 }: {
   active: number | null;
   klass: LinearClass;
@@ -307,8 +305,8 @@ function RadiusTable({
             {RADIUS_LABELS.map((label, i) => (
               <tr key={label} className={i === active ? "is-active" : ""}>
                 <th scope="row">{label}</th>
-                <td>±{fmtMm(RADIUS.fm[i], 1)}</td>
-                <td>±{fmtMm(RADIUS.cv[i], 1)}</td>
+                <td>±{fmtMm(RADIUS.fm[i] ?? 0, 1)}</td>
+                <td>±{fmtMm(RADIUS.cv[i] ?? 0, 1)}</td>
               </tr>
             ))}
           </tbody>
@@ -320,7 +318,6 @@ function RadiusTable({
 
 function AngleTable({
   active,
-  klass: _klass,
 }: {
   active: number | null;
   klass: LinearClass;
@@ -344,9 +341,9 @@ function AngleTable({
             {ANGULAR_LABELS.map((label, i) => (
               <tr key={label} className={i === active ? "is-active" : ""}>
                 <th scope="row">{label}</th>
-                <td>±{fmtAngle(ANGULAR.f[i])}</td>
-                <td>±{fmtAngle(ANGULAR.c[i])}</td>
-                <td>±{fmtAngle(ANGULAR.v[i])}</td>
+                <td>±{fmtAngle(ANGULAR.f[i] ?? ANGULAR.f[0])}</td>
+                <td>±{fmtAngle(ANGULAR.c[i] ?? ANGULAR.c[0])}</td>
+                <td>±{fmtAngle(ANGULAR.v[i] ?? ANGULAR.v[0])}</td>
               </tr>
             ))}
           </tbody>
@@ -358,7 +355,6 @@ function AngleTable({
 
 function StraightTable({
   active,
-  klass: _klass,
 }: {
   active: number | null;
   klass: FormClass;
@@ -383,9 +379,9 @@ function StraightTable({
             {STRAIGHTNESS_LABELS.map((label, i) => (
               <tr key={label} className={i === active ? "is-active" : ""}>
                 <th scope="row">{label}</th>
-                <td>{fmtMm(STRAIGHTNESS.H[i], 2)}</td>
-                <td>{fmtMm(STRAIGHTNESS.K[i], 2)}</td>
-                <td>{fmtMm(STRAIGHTNESS.L[i], 2)}</td>
+                <td>{fmtMm(STRAIGHTNESS.H[i] ?? 0, 2)}</td>
+                <td>{fmtMm(STRAIGHTNESS.K[i] ?? 0, 2)}</td>
+                <td>{fmtMm(STRAIGHTNESS.L[i] ?? 0, 2)}</td>
               </tr>
             ))}
           </tbody>
@@ -399,7 +395,6 @@ function FormTable({
   title,
   data,
   active,
-  klass: _klass,
 }: {
   title: string;
   data: { H: readonly number[]; K: readonly number[]; L: readonly number[] };
@@ -426,9 +421,9 @@ function FormTable({
             {FORM_RANGE_LABELS.map((label, i) => (
               <tr key={label} className={i === active ? "is-active" : ""}>
                 <th scope="row">{label}</th>
-                <td>{fmtMm(data.H[i], 1)}</td>
-                <td>{fmtMm(data.K[i], 1)}</td>
-                <td>{fmtMm(data.L[i], 1)}</td>
+                <td>{fmtMm(data.H[i] ?? 0, 1)}</td>
+                <td>{fmtMm(data.K[i] ?? 0, 1)}</td>
+                <td>{fmtMm(data.L[i] ?? 0, 1)}</td>
               </tr>
             ))}
           </tbody>
