@@ -191,7 +191,7 @@ export function ProjectWorkspace({
           <Stat label="Budget" value={`${euro(project.spent)} / ${euro(project.budget)}`} />
         </dl>
         <p className="mt-4 text-sm text-ink">
-          Weekstart: {nextAction(project)}
+          Weekstart: {nextAction(project, locale)}
         </p>
         <p className="mt-1 text-sm text-muted">
           Open: {openCount(project.issues)} issues · {openCount(project.changes)} wijzigingen · {project.risks.filter((r) => r.status !== "dicht").length} risico’s

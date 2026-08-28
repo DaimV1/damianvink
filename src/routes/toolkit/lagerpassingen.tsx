@@ -3,6 +3,8 @@ import { JsonLd } from "@/components/json-ld";
 import { Faq } from "@/components/toolkit/calc-ui";
 import { LagerCalc } from "@/components/toolkit/lager-calc";
 import { ToolkitFrame } from "@/components/toolkit/toolkit-frame";
+import { toolkitCopy } from "@/lib/i18n/toolkit-pages";
+import { useLocale } from "@/lib/i18n/locale";
 import { pageHead, softwareJsonLd } from "@/lib/seo";
 
 const DESCRIPTION =
@@ -19,16 +21,18 @@ export const Route = createFileRoute("/toolkit/lagerpassingen")({
 });
 
 function LagerPage() {
+  const { locale } = useLocale();
+  const copy = toolkitCopy("lager", locale);
   return (
     <ToolkitFrame
       active="lager"
       crumbs={[
         { href: "/toolkit", label: "Toolkit" },
-        { label: "Lagerpassingen" },
+        { label: copy.crumb },
       ]}
-      title="Lagerpassingen."
-      accent="passingen."
-      lede="Groefkogellagers: vast/los, SKF-klassen, ISO 286 tot Ø 50 mm. Kies rotatie en last; de aanbevolen as- en huisklasse volgt direct."
+      title={copy.title}
+      accent={copy.accent}
+      lede={copy.lede}
     >
       <JsonLd
         data={softwareJsonLd({
@@ -39,22 +43,7 @@ function LagerPage() {
         })}
       />
       <LagerCalc />
-      <Faq
-        items={[
-          {
-            q: "Wanneer een vaste passing op de as?",
-            a: "Als de binnenring draait t.o.v. de radiale last. Die ring vast, de andere los.",
-          },
-          {
-            q: "Welke astolerantie bij groefkogel Ø 20 mm?",
-            a: "Licht: j6. Normaal tot hoog: k5. Huis meestal H7, of K7 als de buitenring niet hoeft te schuiven. js5 geldt alleen tot en met 17 mm.",
-          },
-          {
-            q: "Gedeeld huis?",
-            a: "Geen grote overmaat. Duursma: G of H, maximaal K.",
-          },
-        ]}
-      />
+      <Faq items={copy.faq ?? []} />
     </ToolkitFrame>
   );
 }

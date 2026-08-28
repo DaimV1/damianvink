@@ -12,7 +12,9 @@ import {
   type SpeedUnit,
 } from "@/lib/toolkit/motor";
 import { fmtNl } from "@/lib/utils";
+import { tx, useLocale } from "@/lib/i18n/locale";
 import {
+  CalcEyebrow,
   CalcPanel,
   CopyResult,
   Field,
@@ -35,6 +37,7 @@ function fmtInput(n: number) {
 }
 
 export function MotorCalc() {
+  const { locale } = useLocale();
   const [speed, setSpeed] = useState("30");
   const [speedUnit, setSpeedUnit] = useState<SpeedUnit>("m/min");
   const [diameterMm, setDiameterMm] = useState("100");
@@ -105,11 +108,9 @@ export function MotorCalc() {
   return (
     <>
       <CalcPanel>
-        <p className="font-mono text-xs uppercase tracking-[0.14em] text-muted">
-          Rekenhulp
-        </p>
+        <CalcEyebrow />
         <h2 className="mt-1 font-display text-2xl font-semibold tracking-tight text-ink">
-          Bedrijfspunt van de rol
+          {tx(locale, "Bedrijfspunt van de rol", "Roller operating point")}
         </h2>
         <Note>
           Horizontale aangedreven rol of trommel. Berekent n, F, T en P. SEW
@@ -117,7 +118,7 @@ export function MotorCalc() {
           g = 9,81 m/s².
         </Note>
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
-          <Field label="Transportsnelheid">
+          <Field label={tx(locale, "Transportsnelheid", "Conveyor speed")}>
             <div className="flex gap-2">
               <NumInput id="motor-speed" value={speed} onChange={setSpeed} />
               <SelectInput value={speedUnit} onChange={onUnit}>
@@ -126,17 +127,17 @@ export function MotorCalc() {
               </SelectInput>
             </div>
           </Field>
-          <Field label="Roldiameter (mm)">
+          <Field label={tx(locale, "Roldiameter (mm)", "Roller diameter (mm)")}>
             <NumInput
               id="motor-diameter"
               value={diameterMm}
               onChange={setDiameterMm}
             />
           </Field>
-          <Field label="Massa (kg)">
+          <Field label={tx(locale, "Massa (kg)", "Mass (kg)")}>
             <NumInput id="motor-mass" value={mass} onChange={setMass} />
           </Field>
-          <Field label="Bedrijf">
+          <Field label={tx(locale, "Bedrijf", "Duty")}>
             <SelectInput value={duty} onChange={onDuty}>
               <option value="rollenbaan">Rollenbaan (μ = 0,03)</option>
               <option value="band">Band (μ = 0,10)</option>
@@ -150,7 +151,7 @@ export function MotorCalc() {
             </Field>
           ) : null}
           {showAlpha ? (
-            <Field label="Helling α (°)">
+            <Field label={tx(locale, "Helling α (°)", "Incline α (°)")}>
               <NumInput id="motor-alpha" value={alpha} onChange={setAlpha} />
             </Field>
           ) : null}
@@ -161,18 +162,18 @@ export function MotorCalc() {
             Geavanceerd (η, f_b, μ, a)
           </summary>
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
-            <Field label="Rendement η">
+            <Field label={tx(locale, "Rendement η", "Efficiency η")}>
               <NumInput id="motor-eta" value={eta} onChange={setEta} />
             </Field>
-            <Field label="Bedrijfsfactor f_b">
+            <Field label={tx(locale, "Bedrijfsfactor f_b", "Service factor f_b")}>
               <NumInput id="motor-fb" value={fb} onChange={setFb} />
             </Field>
             {showMuAdvanced ? (
-              <Field label="μ (overschrijven)">
+              <Field label={tx(locale, "μ (overschrijven)", "μ (override)")}>
                 <NumInput id="motor-mu-adv" value={mu} onChange={setMu} />
               </Field>
             ) : null}
-            <Field label="Versnelling a (m/s²)">
+            <Field label={tx(locale, "Versnelling a (m/s²)", "Acceleration a (m/s²)")}>
               <NumInput id="motor-accel" value={accel} onChange={setAccel} />
             </Field>
           </div>
