@@ -6,8 +6,18 @@ export const TOOLS = [
     title: "Passingen",
     standard: "ISO 286",
     kind: "rekenhulp",
-    related: ["lager"],
+    related: ["lager", "iso2768"],
     blurb: "Voorkeurpassingen tot Ø 50 mm. JS7 = ±IT7/2, niet afgerond.",
+  },
+  {
+    id: "iso2768",
+    href: "/denk/toolkit/iso-2768",
+    short: "2768",
+    title: "Algemene toleranties",
+    standard: "ISO 2768",
+    kind: "rekenhulp",
+    related: ["passingen"],
+    blurb: "Titelblok-default f/m/c/v en H/K/L. Geen passing (dat is ISO 286).",
   },
   {
     id: "spiebaan",
@@ -102,7 +112,7 @@ export function readStoredDiameter({
   if (raw && /^\d{1,4}$/.test(raw) && inRange(raw, min, max)) return raw;
   if (inRange(fallback, min, max)) return fallback;
   return "";
-}
+};
 
 function inRange(raw: string, min?: number, max?: number) {
   const n = Number.parseInt(raw, 10);
