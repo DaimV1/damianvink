@@ -18,6 +18,7 @@ import { Route as ProjectenRouteImport } from './routes/projecten'
 import { Route as ToolkitIndexRouteImport } from './routes/toolkit/index'
 import { Route as ToolkitEenhedenRouteImport } from './routes/toolkit/eenheden'
 import { Route as ToolkitBevestigersRouteImport } from './routes/toolkit/bevestigers'
+import { Route as ToolkitCilinderRouteImport } from './routes/toolkit/cilinder'
 import { Route as ToolkitBronnenRouteImport } from './routes/toolkit/bronnen'
 import { Route as ToolkitIso2768RouteImport } from './routes/toolkit/iso-2768'
 import { Route as ToolkitKantenRouteImport } from './routes/toolkit/kanten'
@@ -41,6 +42,7 @@ const ProjectenRoute = ProjectenRouteImport.update({ id: '/projecten', path: '/p
 const ToolkitIndexRoute = ToolkitIndexRouteImport.update({ id: '/toolkit/', path: '/toolkit/', getParentRoute: () => rootRouteImport } as any)
 const ToolkitEenhedenRoute = ToolkitEenhedenRouteImport.update({ id: '/toolkit/eenheden', path: '/toolkit/eenheden', getParentRoute: () => rootRouteImport } as any)
 const ToolkitBevestigersRoute = ToolkitBevestigersRouteImport.update({ id: '/toolkit/bevestigers', path: '/toolkit/bevestigers', getParentRoute: () => rootRouteImport } as any)
+const ToolkitCilinderRoute = ToolkitCilinderRouteImport.update({ id: '/toolkit/cilinder', path: '/toolkit/cilinder', getParentRoute: () => rootRouteImport } as any)
 const ToolkitBronnenRoute = ToolkitBronnenRouteImport.update({ id: '/toolkit/bronnen', path: '/toolkit/bronnen', getParentRoute: () => rootRouteImport } as any)
 const ToolkitIso2768Route = ToolkitIso2768RouteImport.update({ id: '/toolkit/iso-2768', path: '/toolkit/iso-2768', getParentRoute: () => rootRouteImport } as any)
 const ToolkitKantenRoute = ToolkitKantenRouteImport.update({ id: '/toolkit/kanten', path: '/toolkit/kanten', getParentRoute: () => rootRouteImport } as any)
@@ -65,6 +67,7 @@ export interface FileRoutesByFullPath {
   '/toolkit/': typeof ToolkitIndexRoute
   '/toolkit/eenheden': typeof ToolkitEenhedenRoute
   '/toolkit/bevestigers': typeof ToolkitBevestigersRoute
+  '/toolkit/cilinder': typeof ToolkitCilinderRoute
   '/toolkit/bronnen': typeof ToolkitBronnenRoute
   '/toolkit/iso-2768': typeof ToolkitIso2768Route
   '/toolkit/kanten': typeof ToolkitKantenRoute
@@ -89,6 +92,7 @@ export interface FileRoutesByTo {
   '/toolkit': typeof ToolkitIndexRoute
   '/toolkit/eenheden': typeof ToolkitEenhedenRoute
   '/toolkit/bevestigers': typeof ToolkitBevestigersRoute
+  '/toolkit/cilinder': typeof ToolkitCilinderRoute
   '/toolkit/bronnen': typeof ToolkitBronnenRoute
   '/toolkit/iso-2768': typeof ToolkitIso2768Route
   '/toolkit/kanten': typeof ToolkitKantenRoute
@@ -114,6 +118,7 @@ export interface FileRoutesById {
   '/toolkit/': typeof ToolkitIndexRoute
   '/toolkit/eenheden': typeof ToolkitEenhedenRoute
   '/toolkit/bevestigers': typeof ToolkitBevestigersRoute
+  '/toolkit/cilinder': typeof ToolkitCilinderRoute
   '/toolkit/bronnen': typeof ToolkitBronnenRoute
   '/toolkit/iso-2768': typeof ToolkitIso2768Route
   '/toolkit/kanten': typeof ToolkitKantenRoute
@@ -126,10 +131,10 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/over-mij' | '/contact' | '/spel' | '/blog/' | '/blog/usb-c-labtafel-mhs' | '/marathon' | '/podcast' | '/project' | '/projecten' | '/toolkit/' | '/toolkit/eenheden' | '/toolkit/bevestigers' | '/toolkit/bronnen' | '/toolkit/iso-2768' | '/toolkit/kanten' | '/toolkit/lagerpassingen' | '/toolkit/motorspecificatie' | '/toolkit/o-ringgroef' | '/toolkit/passingen' | '/toolkit/seegerring-groef' | '/toolkit/spiebaan-toleranties'
+  fullPaths: '/' | '/over-mij' | '/contact' | '/spel' | '/blog/' | '/blog/usb-c-labtafel-mhs' | '/marathon' | '/podcast' | '/project' | '/projecten' | '/toolkit/' | '/toolkit/eenheden' | '/toolkit/bevestigers' | '/toolkit/cilinder' | '/toolkit/bronnen' | '/toolkit/iso-2768' | '/toolkit/kanten' | '/toolkit/lagerpassingen' | '/toolkit/motorspecificatie' | '/toolkit/o-ringgroef' | '/toolkit/passingen' | '/toolkit/seegerring-groef' | '/toolkit/spiebaan-toleranties'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/over-mij' | '/contact' | '/spel' | '/blog' | '/blog/usb-c-labtafel-mhs' | '/marathon' | '/podcast' | '/project' | '/projecten' | '/toolkit' | '/toolkit/eenheden' | '/toolkit/bevestigers' | '/toolkit/bronnen' | '/toolkit/iso-2768' | '/toolkit/kanten' | '/toolkit/lagerpassingen' | '/toolkit/motorspecificatie' | '/toolkit/o-ringgroef' | '/toolkit/passingen' | '/toolkit/seegerring-groef' | '/toolkit/spiebaan-toleranties'
-  id: '__root__' | '/' | '/over-mij' | '/contact' | '/spel' | '/blog/' | '/blog/usb-c-labtafel-mhs' | '/marathon' | '/podcast' | '/project' | '/projecten' | '/toolkit/' | '/toolkit/eenheden' | '/toolkit/bevestigers' | '/toolkit/bronnen' | '/toolkit/iso-2768' | '/toolkit/kanten' | '/toolkit/lagerpassingen' | '/toolkit/motorspecificatie' | '/toolkit/o-ringgroef' | '/toolkit/passingen' | '/toolkit/seegerring-groef' | '/toolkit/spiebaan-toleranties'
+  to: '/' | '/over-mij' | '/contact' | '/spel' | '/blog' | '/blog/usb-c-labtafel-mhs' | '/marathon' | '/podcast' | '/project' | '/projecten' | '/toolkit' | '/toolkit/eenheden' | '/toolkit/bevestigers' | '/toolkit/cilinder' | '/toolkit/bronnen' | '/toolkit/iso-2768' | '/toolkit/kanten' | '/toolkit/lagerpassingen' | '/toolkit/motorspecificatie' | '/toolkit/o-ringgroef' | '/toolkit/passingen' | '/toolkit/seegerring-groef' | '/toolkit/spiebaan-toleranties'
+  id: '__root__' | '/' | '/over-mij' | '/contact' | '/spel' | '/blog/' | '/blog/usb-c-labtafel-mhs' | '/marathon' | '/podcast' | '/project' | '/projecten' | '/toolkit/' | '/toolkit/eenheden' | '/toolkit/bevestigers' | '/toolkit/cilinder' | '/toolkit/bronnen' | '/toolkit/iso-2768' | '/toolkit/kanten' | '/toolkit/lagerpassingen' | '/toolkit/motorspecificatie' | '/toolkit/o-ringgroef' | '/toolkit/passingen' | '/toolkit/seegerring-groef' | '/toolkit/spiebaan-toleranties'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -146,6 +151,7 @@ export interface RootRouteChildren {
   ToolkitIndexRoute: typeof ToolkitIndexRoute
   ToolkitEenhedenRoute: typeof ToolkitEenhedenRoute
   ToolkitBevestigersRoute: typeof ToolkitBevestigersRoute
+  ToolkitCilinderRoute: typeof ToolkitCilinderRoute
   ToolkitBronnenRoute: typeof ToolkitBronnenRoute
   ToolkitIso2768Route: typeof ToolkitIso2768Route
   ToolkitKantenRoute: typeof ToolkitKantenRoute
@@ -172,6 +178,7 @@ declare module '@tanstack/react-router' {
     '/toolkit/': { id: '/toolkit/'; path: '/toolkit'; fullPath: '/toolkit/'; preLoaderRoute: typeof ToolkitIndexRouteImport; parentRoute: typeof rootRouteImport }
     '/toolkit/eenheden': { id: '/toolkit/eenheden'; path: '/toolkit/eenheden'; fullPath: '/toolkit/eenheden'; preLoaderRoute: typeof ToolkitEenhedenRouteImport; parentRoute: typeof rootRouteImport }
     '/toolkit/bevestigers': { id: '/toolkit/bevestigers'; path: '/toolkit/bevestigers'; fullPath: '/toolkit/bevestigers'; preLoaderRoute: typeof ToolkitBevestigersRouteImport; parentRoute: typeof rootRouteImport }
+    '/toolkit/cilinder': { id: '/toolkit/cilinder'; path: '/toolkit/cilinder'; fullPath: '/toolkit/cilinder'; preLoaderRoute: typeof ToolkitCilinderRouteImport; parentRoute: typeof rootRouteImport }
     '/toolkit/bronnen': { id: '/toolkit/bronnen'; path: '/toolkit/bronnen'; fullPath: '/toolkit/bronnen'; preLoaderRoute: typeof ToolkitBronnenRouteImport; parentRoute: typeof rootRouteImport }
     '/toolkit/iso-2768': { id: '/toolkit/iso-2768'; path: '/toolkit/iso-2768'; fullPath: '/toolkit/iso-2768'; preLoaderRoute: typeof ToolkitIso2768RouteImport; parentRoute: typeof rootRouteImport }
     '/toolkit/kanten': { id: '/toolkit/kanten'; path: '/toolkit/kanten'; fullPath: '/toolkit/kanten'; preLoaderRoute: typeof ToolkitKantenRouteImport; parentRoute: typeof rootRouteImport }
@@ -185,7 +192,7 @@ declare module '@tanstack/react-router' {
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute, OverMijRoute, ContactRoute, SpelRoute, BlogIndexRoute, BlogUsbCLabtafelMhsRoute, MarathonRoute, PodcastRoute, ProjectRoute, ProjectenRoute, ToolkitIndexRoute, ToolkitEenhedenRoute, ToolkitBevestigersRoute, ToolkitBronnenRoute, ToolkitIso2768Route, ToolkitKantenRoute, ToolkitLagerpassingenRoute, ToolkitMotorspecificatieRoute, ToolkitORinggroefRoute, ToolkitPassingenRoute, ToolkitSeegerringGroefRoute, ToolkitSpiebaanTolerantiesRoute,
+  IndexRoute, OverMijRoute, ContactRoute, SpelRoute, BlogIndexRoute, BlogUsbCLabtafelMhsRoute, MarathonRoute, PodcastRoute, ProjectRoute, ProjectenRoute, ToolkitIndexRoute, ToolkitEenhedenRoute, ToolkitBevestigersRoute, ToolkitCilinderRoute, ToolkitBronnenRoute, ToolkitIso2768Route, ToolkitKantenRoute, ToolkitLagerpassingenRoute, ToolkitMotorspecificatieRoute, ToolkitORinggroefRoute, ToolkitPassingenRoute, ToolkitSeegerringGroefRoute, ToolkitSpiebaanTolerantiesRoute,
 }
 export const routeTree = rootRouteImport._addFileChildren(rootRouteChildren)._addFileTypes<FileRouteTypes>()
 
