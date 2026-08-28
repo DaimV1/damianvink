@@ -4,6 +4,7 @@ import { DisplayTitle } from "@/components/display-title";
 import { JsonLd } from "@/components/json-ld";
 import { PageWrap, SiteShell } from "@/components/site-shell";
 import { Breadcrumb } from "@/components/toolkit/tool-switcher";
+import { tx, useLocale } from "@/lib/i18n/locale";
 import { ARTICLES } from "@/lib/articles";
 import { articleJsonLd, pageHead } from "@/lib/seo";
 
@@ -57,6 +58,7 @@ function P({ children }: { children: ReactNode }) {
 }
 
 function Article() {
+  const { locale } = useLocale();
   return (
     <SiteShell>
       <JsonLd
@@ -75,8 +77,13 @@ function Article() {
           ]}
         />
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">
-          Artikelen
+          {tx(locale, "Artikelen", "Articles")}
         </p>
+        {locale === "en" ? (
+          <p className="mt-4 rounded-md border border-line bg-elevated px-4 py-3 text-sm text-muted">
+            This article is in Dutch.
+          </p>
+        ) : null}
         <DisplayTitle
           text="USB-C voor de labtafel: Anthropic’s Model Hardware Standard."
           accent="Standard."

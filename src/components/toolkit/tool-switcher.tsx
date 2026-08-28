@@ -1,8 +1,10 @@
 import { Link } from "@tanstack/react-router";
-import { TOOLS, type ToolId } from "@/lib/toolkit/tools";
+import { tx, useLocale } from "@/lib/i18n/locale";
+import { TOOLS, type ToolId, toolShort } from "@/lib/toolkit/tools";
 import { cn } from "@/lib/utils";
 
 export function ToolSwitcher({ active }: { active?: ToolId }) {
+  const { locale } = useLocale();
   return (
     <div className="border-b border-line bg-paper">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
@@ -24,7 +26,7 @@ export function ToolSwitcher({ active }: { active?: ToolId }) {
                     : "border-line bg-elevated text-muted hover:border-line-strong hover:text-ink",
                 )}
               >
-                {tool.short}
+                {toolShort(tool, locale)}
               </Link>
             );
           })}
@@ -39,8 +41,9 @@ export function Breadcrumb({
 }: {
   items: { href?: string; label: string }[];
 }) {
+  const { locale } = useLocale();
   return (
-    <nav className="mb-6 flex flex-wrap items-center gap-2 text-sm text-muted" aria-label="Broodkruimel">
+    <nav className="mb-6 flex flex-wrap items-center gap-2 text-sm text-muted" aria-label={tx(locale, "Broodkruimel", "Breadcrumb")}>
       <a href="/" className="hover:text-ink">
         Home
       </a>

@@ -2,23 +2,25 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { Menu, Moon, Sun, X } from "lucide-react";
 import { useState } from "react";
 import { VinkMark } from "@/components/vink-mark";
+import { tx, useLocale } from "@/lib/i18n/locale";
 import { useTheme } from "@/lib/theme";
 import { cn } from "@/lib/utils";
-
-const NAV = [
-  { to: "/toolkit", label: "Toolkit", match: "/toolkit" },
-  { to: "/project", label: "Project", match: "/project" },
-  { to: "/marathon", label: "Marathon", match: "/marathon" },
-  { to: "/over-mij", label: "Over", match: "/over-mij" },
-  { to: "/contact", label: "Contact", match: "/contact" },
-] as const;
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const { theme, toggle } = useTheme();
+  const { locale, toggle: toggleLocale } = useLocale();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
-  function isActive(item: (typeof NAV)[number]) {
+  const nav = [
+    { to: "/toolkit", label: "Toolkit", match: "/toolkit" },
+    { to: "/project", label: tx(locale, "Project", "Project"), match: "/project" },
+    { to: "/marathon", label: "Marathon", match: "/marathon" },
+    { to: "/over-mij", label: tx(locale, "Over", "About"), match: "/over-mij" },
+    { to: "/contact", label: "Contact", match: "/contact" },
+  ] as const;
+
+  function isActive(item: (typeof nav)[number]) {
     if (item.to === "/toolkit") return pathname.startsWith("/toolkit");
     if (item.to === "/project") return pathname === "/project" || pathname.startsWith("/project/");
     if (item.to === "/marathon") return pathname.startsWith("/marathon");
@@ -36,10 +38,10 @@ export function SiteHeader() {
           </Link>
         </div>
 
-        <nav className="hidden items-center gap-0.5 whitespace-nowrap lg:flex" aria-label="Hoofdmenu">
-          {NAV.map((item) => (
+        <nav className="hidden items-center gap-0.5 whitespace-nowrap lg:flex" aria-label={tx(locale, "Hoofdmenu", "Main menu")}>
+          {nav.map((item) => (
             <Link
-              key={item.label}
+              key={item.to}
               to={item.to}
               aria-current={isActive(item) ? "page" : undefined}
               className={cn(
@@ -56,10 +58,21 @@ export function SiteHeader() {
         <div className="flex items-center gap-1">
           <button
             type="button"
+            onClick={toggleLocale}
+            className="grid size-11 place-items-center rounded-md text-ink transition-colors duration-150 hover:bg-muted-bg"
+            aria-label={locale === "nl" ? "Switch to English" : "Schakel naar Nederlands"}
+            title={locale === "nl" ? "English" : "Nederlands"}
+          >
+            <span className="font-mono text-xs font-medium tracking-wide">
+              {locale === "nl" ? "EN" : "NL"}
+            </span>
+          </button>
+          <button
+            type="button"
             onClick={toggle}
             className="relative grid size-11 place-items-center rounded-md text-ink transition-colors duration-150 hover:bg-muted-bg"
-            aria-label="Thema wisselen"
-            title="Thema wisselen"
+            aria-label={tx(locale, "Thema wisselen", "Toggle theme")}
+            title={tx(locale, "Thema wisselen", "Toggle theme")}
           >
             <Sun
               className={cn(
@@ -79,7 +92,7 @@ export function SiteHeader() {
             className="grid size-11 place-items-center rounded-md text-ink hover:bg-muted-bg lg:hidden"
             aria-expanded={open}
             aria-controls="mobile-nav"
-            aria-label={open ? "Menu sluiten" : "Menu"}
+            aria-label={open ? tx(locale, "Menu sluiten", "Close menu") : tx(locale, "Menu", "Menu")}
             onClick={() => setOpen((v) => !v)}
           >
             {open ? <X className="size-5" /> : <Menu className="size-5" />}
@@ -88,11 +101,11 @@ export function SiteHeader() {
       </div>
 
       {open ? (
-        <nav id="mobile-nav" className="border-t border-line px-4 py-3 lg:hidden" aria-label="Mobiel menu">
+        <nav id="mobile-nav" className="border-t border-line px-4 py-3 lg:hidden" aria-label={tx(locale, "Mobiel menu", "Mobile menu")}>
           <div className="flex flex-col">
-            {NAV.map((item) => (
+            {nav.map((item) => (
               <Link
-                key={item.label}
+                key={item.to}
                 to={item.to}
                 className="flex min-h-11 items-center text-base text-ink"
                 onClick={() => setOpen(false)}

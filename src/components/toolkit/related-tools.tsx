@@ -1,7 +1,9 @@
 import { Link } from "@tanstack/react-router";
-import { TOOLS, type ToolId } from "@/lib/toolkit/tools";
+import { tx, useLocale } from "@/lib/i18n/locale";
+import { TOOLS, type ToolId, toolKindLabel, toolTitle } from "@/lib/toolkit/tools";
 
 export function RelatedTools({ active }: { active: ToolId }) {
+  const { locale } = useLocale();
   const current = TOOLS.find((tool) => tool.id === active);
   if (!current) return null;
   const related = current.related
@@ -10,8 +12,10 @@ export function RelatedTools({ active }: { active: ToolId }) {
   if (related.length === 0) return null;
 
   return (
-    <aside className="mt-12 border-t border-line pt-8" aria-label="Gerelateerde tools">
-      <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">Ook in de toolkit</p>
+    <aside className="mt-12 border-t border-line pt-8" aria-label={tx(locale, "Gerelateerde tools", "Related tools")}>
+      <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">
+        {tx(locale, "Ook in de toolkit", "Also in the toolkit")}
+      </p>
       <ul className="mt-4 grid gap-3 sm:grid-cols-2">
         {related.map((tool) => (
           <li key={tool.id}>
@@ -20,10 +24,10 @@ export function RelatedTools({ active }: { active: ToolId }) {
               className="block rounded-lg border border-line bg-elevated p-4 transition-colors duration-150 hover:border-line-strong"
             >
               <strong className="block font-display text-base font-semibold tracking-tight text-ink">
-                {tool.title}
+                {toolTitle(tool, locale)}
               </strong>
               <small className="mt-1 block text-sm text-muted">
-                {tool.standard} · {tool.kind === "naslag" ? "Naslag" : "Rekenhulp"}
+                {tool.standard} · {toolKindLabel(tool, locale)}
               </small>
             </Link>
           </li>

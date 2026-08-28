@@ -3,6 +3,8 @@ import { JsonLd } from "@/components/json-ld";
 import { Faq } from "@/components/toolkit/calc-ui";
 import { CylinderCalc } from "@/components/toolkit/cylinder-calc";
 import { ToolkitFrame } from "@/components/toolkit/toolkit-frame";
+import { toolkitCopy } from "@/lib/i18n/toolkit-pages";
+import { useLocale } from "@/lib/i18n/locale";
 import { pageHead, softwareJsonLd } from "@/lib/seo";
 
 const DESCRIPTION =
@@ -19,16 +21,18 @@ export const Route = createFileRoute("/toolkit/cilinder")({
 });
 
 function CilinderPage() {
+  const { locale } = useLocale();
+  const copy = toolkitCopy("cilinder", locale);
   return (
     <ToolkitFrame
       active="cilinder"
       crumbs={[
         { href: "/toolkit", label: "Toolkit" },
-        { label: "Cilinder" },
+        { label: copy.crumb },
       ]}
-      title="Pneumatische cilinder."
-      accent="cilinder."
-      lede="Berekent de ISO-boring bij last en druk. F = p·A, dubbelwerkend. Festo of SMC kiest het type. Geen knikberekening."
+      title={copy.title}
+      accent={copy.accent}
+      lede={copy.lede}
     >
       <JsonLd
         data={softwareJsonLd({
@@ -47,30 +51,7 @@ function CilinderPage() {
         })}
       />
       <CylinderCalc />
-      <Faq
-        items={[
-          {
-            q: "Wat is F = p·A?",
-            a: "Theoretische kracht: druk (manometer, in N/mm²) maal zuigeroppervlak. 1 bar = 0,1 N/mm². Geen wrijving, geen afdichtingverlies.",
-          },
-          {
-            q: "6 bar of 6 bar absoluut?",
-            a: "Manometerdruk (overdruk). 6 bar op de reduceerventiel is 6 bar gauge. Luchtverbruik per cyclus gebruikt p+1 als benadering van absoluut.",
-          },
-          {
-            q: "Waarom lastfactor 1,25?",
-            a: "Vuistregel voor wrijving en dynamiek. Geen normwaarde. Verhoog bij verticale last, stoppen op de stang, of onbekende wrijving. S = 1 is puur theoretisch.",
-          },
-          {
-            q: "ISO 15552 of 6432?",
-            a: "Volgt uit de boring. Ø8–25 is ISO 6432 (rond, mini). Ø32–320 is ISO 15552 (profiel). De kleinste boring die F·S haalt, wint.",
-          },
-          {
-            q: "Kiest deze tool een Festo- of SMC-type?",
-            a: "Nee. Alleen de ISO-boring en basisstang. Geen typecode, geen demping, geen sensorsleuf. Lange slag op drukstang: knik in de catalogus van de fabrikant.",
-          },
-        ]}
-      />
+      <Faq items={copy.faq ?? []} />
     </ToolkitFrame>
   );
 }

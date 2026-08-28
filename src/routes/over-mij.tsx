@@ -3,6 +3,7 @@ import { DisplayTitle } from "@/components/display-title";
 import { PageWrap, SiteShell } from "@/components/site-shell";
 import { Breadcrumb } from "@/components/toolkit/tool-switcher";
 import { buttonVariants } from "@/components/ui/button";
+import { tx, useLocale } from "@/lib/i18n/locale";
 import { pageHead } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
@@ -59,39 +60,53 @@ const LOOPBAAN = [
 ];
 
 function OverMij() {
+  const { locale } = useLocale();
   return (
     <SiteShell>
       <PageWrap>
-        <Breadcrumb items={[{ label: "Over" }]} />
+        <Breadcrumb items={[{ label: tx(locale, "Over", "About") }]} />
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">
-          Over
+          {tx(locale, "Over", "About")}
         </p>
-        <DisplayTitle text="Over mij." accent="mij." className="mt-3" />
+        <DisplayTitle
+          text={tx(locale, "Over mij.", "About me.")}
+          accent={tx(locale, "mij.", "me.")}
+          className="mt-3"
+        />
         <div className="mt-8 space-y-4 text-lg leading-relaxed text-muted">
           <p className="text-ink">
-            Ik ben Damian Vink, Project Engineer met een achtergrond in
-            werktuigbouwkunde en machinebouw.
+            {tx(
+              locale,
+              "Ik ben Damian Vink, Project Engineer met een achtergrond in werktuigbouwkunde en machinebouw.",
+              "I am Damian Vink, a project engineer with a background in mechanical engineering and machine building.",
+            )}
           </p>
           <p>
-            Ik houd ervan om technische vraagstukken te vertalen naar praktische,
-            goed doordachte oplossingen.
+            {tx(
+              locale,
+              "Ik houd ervan om technische vraagstukken te vertalen naar praktische, goed doordachte oplossingen.",
+              "I like turning technical problems into practical, well-considered solutions.",
+            )}
           </p>
           <p>
-            In mijn werk combineer ik technisch ontwerp met
-            projectverantwoordelijkheid. Daarbij ben ik graag betrokken bij het
-            hele proces: van het eerste idee en ontwerp tot de technische
-            uitwerking en realisatie.
+            {tx(
+              locale,
+              "In mijn werk combineer ik technisch ontwerp met projectverantwoordelijkheid. Daarbij ben ik graag betrokken bij het hele proces: van het eerste idee en ontwerp tot de technische uitwerking en realisatie.",
+              "I combine mechanical design with project ownership, from the first idea through detailing and realisation.",
+            )}
           </p>
           <p>
-            Op deze site staan een engineering toolkit voor machinebouw
-            (passingen, spiebanen, CAD-bronnen) en een trainingslogboek voor de
-            EDP Porto Marathon op 8 november 2026.
+            {tx(
+              locale,
+              "Op deze site staan een engineering toolkit voor machinebouw (passingen, spiebanen, CAD-bronnen) en een trainingslogboek voor de EDP Porto Marathon op 8 november 2026.",
+              "This site has an engineering toolkit for machine building (fits, keyways, CAD libraries) and a training log for the EDP Porto Marathon on 8 November 2026.",
+            )}
           </p>
         </div>
 
         <section className="mt-14">
           <h2 className="font-display text-2xl font-semibold tracking-tight">
-            Loopbaan
+            {tx(locale, "Loopbaan", "Career")}
           </h2>
           <ol className="mt-6 space-y-0">
             {LOOPBAAN.map((item) => (
@@ -109,9 +124,23 @@ function OverMij() {
                 <p className="font-mono text-xs text-muted">
                   {item.when}
                   <span className="mx-2 text-subtle">·</span>
-                  {item.kind}
+                  {tx(
+                    locale,
+                    item.kind,
+                    item.kind === "Werk"
+                      ? "Work"
+                      : item.kind === "Opleiding"
+                        ? "Education"
+                        : "Work",
+                  )}
                 </p>
-                <h3 className="mt-1 font-medium text-ink">{item.title}</h3>
+                <h3 className="mt-1 font-medium text-ink">
+                  {locale === "en" && item.title === "Afstudeerstagiair"
+                    ? "Graduation intern"
+                    : locale === "en" && item.title === "Stagiair"
+                      ? "Intern"
+                      : item.title}
+                </h3>
                 <p className="text-sm text-muted">{item.org}</p>
               </li>
             ))}
@@ -123,10 +152,14 @@ function OverMij() {
             Curriculum vitae
           </h2>
           <p className="mt-2 text-sm leading-relaxed text-muted">
-            Overzicht van opleiding, werkervaring en technische achtergrond.
+            {tx(
+              locale,
+              "Overzicht van opleiding, werkervaring en technische achtergrond.",
+              "Education, work experience and technical background.",
+            )}
           </p>
           <a href="/cv.pdf" download className={cn(buttonVariants({ variant: "secondary" }), "mt-5")}>
-            Download CV (PDF)
+            {tx(locale, "Download CV (PDF)", "Download CV (PDF)")}
           </a>
         </section>
       </PageWrap>

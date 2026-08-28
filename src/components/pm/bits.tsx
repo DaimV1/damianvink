@@ -1,5 +1,6 @@
 import type { PhaseId, Project, Rag } from "@/lib/pm/model";
 import { PHASES } from "@/lib/pm/model";
+import { tx, useLocale } from "@/lib/i18n/locale";
 import { cn } from "@/lib/utils";
 
 export function PhaseBar({
@@ -11,9 +12,10 @@ export function PhaseBar({
   lookingAt?: PhaseId;
   onSelect?: (id: PhaseId) => void;
 }) {
+  const { locale } = useLocale();
   const view = lookingAt ?? current;
   return (
-    <nav aria-label="Projectfasen" className="grid grid-cols-5 gap-2">
+    <nav aria-label={tx(locale, "Projectfasen", "Project phases")} className="grid grid-cols-5 gap-2">
       {PHASES.map((p) => {
         const official = p.id === current;
         const looking = p.id === view && view !== current;
@@ -33,10 +35,10 @@ export function PhaseBar({
           >
             <span className="flex items-center justify-between gap-1">
               <span className="font-mono text-[11px] text-accent">{p.n}</span>
-              {official ? <span className="font-mono text-[9px] uppercase tracking-wide text-accent">hier</span> : null}
+              {official ? <span className="font-mono text-[9px] uppercase tracking-wide text-accent">{tx(locale, "hier", "here")}</span> : null}
             </span>
-            <strong className="mt-1 block text-[11px] font-medium leading-tight text-ink sm:text-sm">{p.label}</strong>
-            <span className="mt-1 hidden text-xs text-muted sm:block">{p.question}</span>
+            <strong className="mt-1 block text-[11px] font-medium leading-tight text-ink sm:text-sm">{locale === "en" ? p.labelEn : p.label}</strong>
+            <span className="mt-1 hidden text-xs text-muted sm:block">{locale === "en" ? p.questionEn : p.question}</span>
           </button>
         );
       })}
@@ -65,9 +67,11 @@ export function Stat({ label, value }: { label: string; value: string }) {
 export function RagBadge({
   value, suggested, onChange,
 }: { value: Rag; suggested: Rag; onChange: (r: Rag) => void }) {
+  const { locale } = useLocale();
+  const ragLabel = { groen: tx(locale, "groen", "green"), oranje: tx(locale, "oranje", "amber"), rood: tx(locale, "rood", "red") };
   return (
     <div className="text-right">
-      <p className="text-xs text-subtle">Stand</p>
+      <p className="text-xs text-subtle">{tx(locale, "Stand", "Status")}</p>
       <div className="mt-1 flex gap-1">
         {(["groen", "oranje", "rood"] as const).map((r) => (
           <button
@@ -79,7 +83,7 @@ export function RagBadge({
               value === r ? "bg-accent text-accent-fg" : "border border-line text-muted",
             )}
           >
-            {r}
+            {ragLabel[r]}
           </button>
         ))}
       </div>
