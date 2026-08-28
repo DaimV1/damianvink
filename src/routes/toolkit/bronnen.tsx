@@ -7,12 +7,12 @@ import { pageHead, webPageJsonLd } from "@/lib/seo";
 const DESCRIPTION =
   "CAD-bibliotheken en naslag voor machinebouw: TraceParts, 3Dfindit, MISUMI, 247 Tailor Steel, SKF, Fabory, ISO OBP.";
 
-export const Route = createFileRoute("/denk/toolkit/bronnen")({
+export const Route = createFileRoute("/toolkit/bronnen")({
   head: () =>
     pageHead({
       title: "CAD-bibliotheken machinebouw — Damian Vink",
       description: DESCRIPTION,
-      path: "/denk/toolkit/bronnen",
+      path: "/toolkit/bronnen",
     }),
   component: BronnenPage,
 });
@@ -135,7 +135,7 @@ function BronnenPage() {
     <ToolkitFrame
       active="bronnen"
       crumbs={[
-        { href: "/denk/toolkit", label: "Toolkit" },
+        { href: "/toolkit", label: "Toolkit" },
         { label: "CAD-bibliotheken" },
       ]}
       before="CAD-biblio"
@@ -145,7 +145,7 @@ function BronnenPage() {
       <JsonLd
         data={webPageJsonLd({
           name: "CAD-bibliotheken machinebouw",
-          path: "/denk/toolkit/bronnen",
+          path: "/toolkit/bronnen",
           description: DESCRIPTION,
         })}
       />

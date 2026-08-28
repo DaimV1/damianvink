@@ -8,12 +8,12 @@ import { pageHead, softwareJsonLd } from "@/lib/seo";
 const DESCRIPTION =
   "Bevestigingsmateriaal M3–M24: doorlaat ISO 273, zeskant en inbus, aandraaimoment 8.8 / 10.9 / 12.9 volgens VDI 2230.";
 
-export const Route = createFileRoute("/denk/toolkit/bevestigers")({
+export const Route = createFileRoute("/toolkit/bevestigers")({
   head: () =>
     pageHead({
       title: "Bevestigingsmateriaal ISO 273 / VDI 2230 — Damian Vink",
       description: DESCRIPTION,
-      path: "/denk/toolkit/bevestigers",
+      path: "/toolkit/bevestigers",
     }),
   component: FastenerPage,
 });
@@ -23,7 +23,7 @@ function FastenerPage() {
     <ToolkitFrame
       active="bevestigers"
       crumbs={[
-        { href: "/denk/toolkit", label: "Toolkit" },
+        { href: "/toolkit", label: "Toolkit" },
         { label: "Bevestigingsmateriaal" },
       ]}
       before="Bevestigings"
@@ -33,7 +33,7 @@ function FastenerPage() {
       <JsonLd
         data={softwareJsonLd({
           name: "Bevestigingsmateriaal ISO 273 / VDI 2230",
-          path: "/denk/toolkit/bevestigers",
+          path: "/toolkit/bevestigers",
           description: DESCRIPTION,
           featureList: ["ISO 273", "VDI 2230", "M3-M24", "aandraaimoment"],
         })}

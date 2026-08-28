@@ -5,13 +5,13 @@ import { PageWrap, SiteShell } from "@/components/site-shell";
 import { pageHead } from "@/lib/seo";
 import { useProject } from "@/lib/pm/use-project";
 
-export const Route = createFileRoute("/denk/project")({
+export const Route = createFileRoute("/project")({
   head: () =>
     pageHead({
       title: "Projectwerkplek — Damian Vink",
       description:
         "Projectwerkplek voor machinebouw: maandag starten, fasevragen, beslispunt. Staat in deze browser; export bewaart een kopie.",
-      path: "/denk/project",
+      path: "/project",
       noindex: true,
     }),
   component: ProjectPage,
@@ -23,9 +23,9 @@ function ProjectPage() {
   return (
     <SiteShell>
       <PageWrap wide>
-        <Breadcrumb items={[{ label: "Werkplek" }]} />
+        <Breadcrumb items={[{ label: "Project" }]} />
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">
-          Werkplek
+          Project
         </p>
         <h1 className="mt-3 font-display text-[clamp(2rem,5vw,3.25rem)] font-semibold leading-[1.08] tracking-[-0.03em]">
           Project<span className="text-accent">werkplek.</span>

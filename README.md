@@ -24,25 +24,29 @@ Custom domain: `www.damianvink.nl` (apex 308’t naar www).
 
 ## Findability
 
-- `public/robots.txt` — sitemap-verwijzing, `/spel` en `/denk/project` uitgesloten
+- `public/robots.txt` — sitemap-verwijzing, `/spel` en `/project` uitgesloten
 - `public/sitemap.xml` — indexeerbare pagina’s, www, geen trailing slash
 - `public/llms.txt` — korte inhoudsopgave voor AI-crawlers
-- `/weet/*` en `/kennis/*` — permanente redirects naar `/denk/*`
 
 ## Pagina’s
 
 - `/` — home
 - `/over-mij` — loopbaan + CV
-- `/doe/marathon` — trainingslogboek Porto 2026
-- `/denk/toolkit` — engineering toolkit
-- `/denk/toolkit/eenheden` — SI · imperial omrekenen
-- `/denk/toolkit/passingen` — ISO 286
-- `/denk/toolkit/spiebaan-toleranties` — DIN 6885
-- `/denk/toolkit/lagerpassingen` — SKF / ISO 286
-- `/denk/toolkit/seegerring-groef` — DIN 471 / 472
-- `/denk/toolkit/bevestigers` — ISO 273 / VDI 2230
-- `/denk/toolkit/o-ringgroef` — ISO 3601
-- `/denk/toolkit/bronnen` — CAD-bibliotheken
+- `/marathon` — trainingslogboek Porto 2026
+- `/toolkit` — engineering toolkit
+- `/toolkit/eenheden` — SI · imperial omrekenen
+- `/toolkit/passingen` — ISO 286
+- `/toolkit/iso-2768` — ISO 2768
+- `/toolkit/spiebaan-toleranties` — DIN 6885
+- `/toolkit/lagerpassingen` — SKF / ISO 286
+- `/toolkit/seegerring-groef` — DIN 471 / 472
+- `/toolkit/bevestigers` — ISO 273 / VDI 2230
+- `/toolkit/o-ringgroef` — ISO 3601
+- `/toolkit/motorspecificatie` — P = F·v
+- `/toolkit/kanten` — 247TailorSteel
+- `/toolkit/bronnen` — CAD-bibliotheken
+- `/project` — projectwerkplek
+- `/blog` — artikelen
 - `/contact` — e-mail en socials
 - `/spel` — easter egg (noindex)
 

@@ -8,12 +8,12 @@ import { pageHead, softwareJsonLd } from "@/lib/seo";
 const DESCRIPTION =
   "ISO 286 voorkeurpassingen tot Ø50 mm. H7/g6, H7/h6, JS7. Rekenhulp voor speling en overmaat plus naslagtabel, eenheidsgatstelsel.";
 
-export const Route = createFileRoute("/denk/toolkit/passingen")({
+export const Route = createFileRoute("/toolkit/passingen")({
   head: () =>
     pageHead({
       title: "Passingen ISO 286 (H7/g6, JS7) — Damian Vink",
       description: DESCRIPTION,
-      path: "/denk/toolkit/passingen",
+      path: "/toolkit/passingen",
     }),
   component: PassingenPage,
 });
@@ -23,7 +23,7 @@ function PassingenPage() {
     <ToolkitFrame
       active="passingen"
       crumbs={[
-        { href: "/denk/toolkit", label: "Toolkit" },
+        { href: "/toolkit", label: "Toolkit" },
         { label: "Passingen" },
       ]}
       before="Passingen"
@@ -38,7 +38,7 @@ function PassingenPage() {
       <JsonLd
         data={softwareJsonLd({
           name: "Passingen ISO 286",
-          path: "/denk/toolkit/passingen",
+          path: "/toolkit/passingen",
           description: DESCRIPTION,
           featureList: ["H7/g6", "H7/h6", "JS7", "speling", "overmaat", "eenheidsgatstelsel"],
         })}

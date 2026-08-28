@@ -35,23 +35,23 @@ function Home() {
               num="01"
               title="Toolkit"
               body="Eenheden, passingen, spiebanen, lagerpassingen, seegerringgroef, bevestigingsmateriaal en CAD-bronnen."
-              href="/denk/toolkit"
+              href="/toolkit"
               link="Toolkit"
               meta="Werktuigbouwkunde · Machinebouw"
             />
             <Door
               num="02"
-              title="Werkplek"
+              title="Project"
               body="Fasen, stakeholders, risico’s, issues en het beslispunt."
-              href="/denk/project"
-              link="Werkplek"
+              href="/project"
+              link="Project"
               meta="Projectmanagement"
             />
             <Door
               num="03"
               title="Marathon"
               body="Trainingslogboek EDP Porto Marathon 2026."
-              href="/doe/marathon"
+              href="/marathon"
               link="Marathon"
               meta="Logboek"
             />

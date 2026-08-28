@@ -6,9 +6,9 @@ import { useTheme } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
 const NAV = [
-  { to: "/denk/toolkit", label: "Toolkit", match: "/denk/toolkit" },
-  { to: "/denk/project", label: "Werkplek", match: "/denk/project" },
-  { to: "/doe/marathon", label: "Marathon", match: "/doe/marathon" },
+  { to: "/toolkit", label: "Toolkit", match: "/toolkit" },
+  { to: "/project", label: "Project", match: "/project" },
+  { to: "/marathon", label: "Marathon", match: "/marathon" },
   { to: "/over-mij", label: "Over", match: "/over-mij" },
   { to: "/contact", label: "Contact", match: "/contact" },
 ] as const;
@@ -19,9 +19,9 @@ export function SiteHeader() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   function isActive(item: (typeof NAV)[number]) {
-    if (item.to === "/denk/toolkit") return pathname.startsWith("/denk/toolkit");
-    if (item.to === "/denk/project") return pathname.startsWith("/denk/project");
-    if (item.to === "/doe/marathon") return pathname.startsWith("/doe/marathon");
+    if (item.to === "/toolkit") return pathname.startsWith("/toolkit");
+    if (item.to === "/project") return pathname === "/project" || pathname.startsWith("/project/");
+    if (item.to === "/marathon") return pathname.startsWith("/marathon");
     return pathname === item.match || pathname.startsWith(item.match + "/");
   }
 

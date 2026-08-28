@@ -15,13 +15,13 @@ import strava from "@/data/strava.json";
 import { pageHead } from "@/lib/seo";
 import { fmtNl } from "@/lib/utils";
 
-export const Route = createFileRoute("/doe/marathon")({
+export const Route = createFileRoute("/marathon")({
   head: () =>
     pageHead({
       title: "Marathon — Damian Vink",
       description:
         "Trainingslogboek EDP Porto Marathon 2026 van Damian Vink. Strava-export: weekvolume, cumulatieve kilometers en recente runs.",
-      path: "/doe/marathon",
+      path: "/marathon",
     }),
   component: Marathon,
 });

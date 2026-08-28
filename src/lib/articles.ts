@@ -10,7 +10,7 @@ export type Article = {
 export const ARTICLES: Article[] = [
   {
     slug: "usb-c-labtafel-mhs",
-    href: "/denk/blog/usb-c-labtafel-mhs",
+    href: "/blog/usb-c-labtafel-mhs",
     title: "USB-C voor de labtafel: Anthropic’s Model Hardware Standard",
     date: "2026-08-27",
     dateLabel: "27 augustus 2026",

@@ -13,7 +13,7 @@ const OPUS = "https://www.anthropic.com/news/claude-opus-5";
 const FABLE = "https://www.anthropic.com/news/claude-fable-5-mythos-5";
 const HELIX = "https://www.figure.ai/news/helix-02";
 
-export const Route = createFileRoute("/denk/blog/usb-c-labtafel-mhs")({
+export const Route = createFileRoute("/blog/usb-c-labtafel-mhs")({
   head: () =>
     pageHead({
       title: `${POST.title} — Damian Vink`,
@@ -70,8 +70,7 @@ function Article() {
       <PageWrap>
         <Breadcrumb
           items={[
-            { href: "/denk", label: "Artikelen" },
-            { href: "/denk/blog", label: "Blog" },
+            { href: "/blog", label: "Blog" },
             { label: POST.title },
           ]}
         />

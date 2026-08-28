@@ -2,7 +2,7 @@
 export const TOOLS = [
   {
     id: "eenheden",
-    href: "/denk/toolkit/eenheden",
+    href: "/toolkit/eenheden",
     short: "Eenheden",
     title: "Eenheden",
     standard: "SI · imperial",
@@ -12,7 +12,7 @@ export const TOOLS = [
   },
   {
     id: "passingen",
-    href: "/denk/toolkit/passingen",
+    href: "/toolkit/passingen",
     short: "Passingen",
     title: "Passingen",
     standard: "ISO 286",
@@ -22,7 +22,7 @@ export const TOOLS = [
   },
   {
     id: "iso2768",
-    href: "/denk/toolkit/iso-2768",
+    href: "/toolkit/iso-2768",
     short: "Toleranties",
     title: "Algemene toleranties",
     standard: "ISO 2768",
@@ -32,7 +32,7 @@ export const TOOLS = [
   },
   {
     id: "spiebaan",
-    href: "/denk/toolkit/spiebaan-toleranties",
+    href: "/toolkit/spiebaan-toleranties",
     short: "Spiebaan",
     title: "Spiebaan-toleranties",
     standard: "DIN 6885",
@@ -42,7 +42,7 @@ export const TOOLS = [
   },
   {
     id: "lager",
-    href: "/denk/toolkit/lagerpassingen",
+    href: "/toolkit/lagerpassingen",
     short: "Lager",
     title: "Lagerpassingen",
     standard: "SKF · ISO 286",
@@ -52,7 +52,7 @@ export const TOOLS = [
   },
   {
     id: "seeger",
-    href: "/denk/toolkit/seegerring-groef",
+    href: "/toolkit/seegerring-groef",
     short: "Seeger",
     title: "Seegerringgroef",
     standard: "DIN 471 / 472",
@@ -62,7 +62,7 @@ export const TOOLS = [
   },
   {
     id: "bevestigers",
-    href: "/denk/toolkit/bevestigers",
+    href: "/toolkit/bevestigers",
     short: "Bouten",
     title: "Bevestigingsmateriaal",
     standard: "ISO 273 · VDI 2230",
@@ -72,7 +72,7 @@ export const TOOLS = [
   },
   {
     id: "oring",
-    href: "/denk/toolkit/o-ringgroef",
+    href: "/toolkit/o-ringgroef",
     short: "O-ring",
     title: "O-ringgroef",
     standard: "ISO 3601",
@@ -82,7 +82,7 @@ export const TOOLS = [
   },
   {
     id: "motor",
-    href: "/denk/toolkit/motorspecificatie",
+    href: "/toolkit/motorspecificatie",
     short: "Motor",
     title: "Motorspecificatie",
     standard: "P = F·v",
@@ -93,7 +93,7 @@ export const TOOLS = [
   },
   {
     id: "kanten",
-    href: "/denk/toolkit/kanten",
+    href: "/toolkit/kanten",
     short: "Kanten",
     title: "Richtlijnen kanten",
     standard: "247TailorSteel",
@@ -104,7 +104,7 @@ export const TOOLS = [
   },
   {
     id: "bronnen",
-    href: "/denk/toolkit/bronnen",
+    href: "/toolkit/bronnen",
     short: "CAD",
     title: "CAD-bibliotheken",
     standard: "Bronnen",
