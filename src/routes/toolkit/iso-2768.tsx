@@ -26,8 +26,8 @@ function Iso2768Page() {
         { href: "/toolkit", label: "Toolkit" },
         { label: "Algemene toleranties" },
       ]}
-      before="Algemene"
-      last="toleranties."
+      title="Algemene toleranties."
+      accent="toleranties."
       lede="Titelblok-default als een maat geen vakje heeft. Geen passing (dat is ISO 286). Standaardaanduiding ISO 2768-mK."
     >
       <JsonLd

@@ -26,8 +26,8 @@ function SpiebaanPage() {
         { href: "/toolkit", label: "Toolkit" },
         { label: "Spiebaan-toleranties" },
       ]}
-      before="Spiebaan-toleranties"
-      last="(DIN 6885)."
+      title="Spiebaan-toleranties (DIN 6885)."
+      accent="(DIN 6885)."
       lede="Parallelspieën en spiebanen volgens DIN 6885-1 (hoge vorm). Vul de as-Ø in; de tabel eronder markeert de bijbehorende rij."
     >
       <JsonLd

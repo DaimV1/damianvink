@@ -20,7 +20,7 @@ function Spel() {
       <PageWrap>
         <Breadcrumb items={[{ label: "Vink" }]} />
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">Spel</p>
-        <DisplayTitle last="Vink." className="mt-3" />
+        <DisplayTitle text="Vink." className="mt-3" />
         <p className="mt-5 text-lg leading-relaxed text-muted">
           Eigen minigame. Tik of spatie om te vliegen, door de opening. Record
           blijft in deze browser.

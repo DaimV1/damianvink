@@ -138,8 +138,8 @@ function BronnenPage() {
         { href: "/toolkit", label: "Toolkit" },
         { label: "CAD-bibliotheken" },
       ]}
-      before="CAD-biblio"
-      last="theken."
+      title="CAD-bibliotheken."
+      accent="theken."
       lede="CAD-modellen, componenten, plaatwerk en norm-naslag. Kantlijnen in de rekenhulp Richtlijnen kanten (247TailorSteel Sophia, shop-spec). Links openen in een nieuw tabblad."
     >
       <JsonLd

@@ -26,8 +26,8 @@ function KantenPage() {
         { href: "/toolkit", label: "Toolkit" },
         { label: "Richtlijnen kanten" },
       ]}
-      before="Richtlijnen"
-      last="kanten."
+      title="Richtlijnen kanten."
+      accent="kanten."
       lede="Inwendige radius, minimale beenlengte en Z-buiging volgens de Sophia-shop van 247TailorSteel. Geen ISO, geen DIN. Altijd hun pagina nalopen."
     >
       <JsonLd

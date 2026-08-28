@@ -23,7 +23,7 @@ function Home() {
           <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">
             Project Engineer · Werktuigbouwkunde
           </p>
-          <DisplayTitle before="Damian" last="Vink." className="mt-4" />
+          <DisplayTitle text="Damian Vink." accent="Vink." className="mt-4" />
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">
             Ontwerp en projecten in machinebouw.
           </p>
@@ -50,7 +50,7 @@ function Home() {
             <Door
               num="03"
               title="Marathon"
-              body="Trainingslogboek EDP Porto Marathon 2026."
+              body="Trainingslogboek EDP Porto Marathon, 8 november 2026."
               href="/marathon"
               link="Marathon"
               meta="Logboek"
@@ -59,7 +59,7 @@ function Home() {
         </section>
 
         <section className="border-t border-line py-14 sm:py-16">
-          <SectionTitle before="Con" last="tact." />
+          <SectionTitle text="Contact." accent="tact." />
           <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted">
             Vragen over engineering of samenwerking: e-mail of LinkedIn.
           </p>

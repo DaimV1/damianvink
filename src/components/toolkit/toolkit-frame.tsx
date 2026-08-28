@@ -9,16 +9,16 @@ export function ToolkitFrame({
   active,
   crumbs,
   eyebrow = "Engineering toolkit",
-  before,
-  last,
+  title,
+  accent,
   lede,
   children,
 }: {
   active?: ToolId;
   crumbs: { href?: string; label: string }[];
   eyebrow?: string;
-  before?: string;
-  last: string;
+  title: string;
+  accent: string;
   lede: ReactNode;
   children: ReactNode;
 }) {
@@ -29,7 +29,7 @@ export function ToolkitFrame({
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">
           {eyebrow}
         </p>
-        <DisplayTitle before={before} last={last} className="mt-3" />
+        <DisplayTitle text={title} accent={accent} className="mt-3" />
         <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted">{lede}</p>
         <div className="mt-10">{children}</div>
         {active ? <RelatedTools active={active} /> : null}

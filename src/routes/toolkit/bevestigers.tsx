@@ -26,8 +26,8 @@ function FastenerPage() {
         { href: "/toolkit", label: "Toolkit" },
         { label: "Bevestigingsmateriaal" },
       ]}
-      before="Bevestigings"
-      last="materiaal."
+      title="Bevestigingsmateriaal."
+      accent="materiaal."
       lede="Metrische bouten M3–M24: doorlaat ISO 273, zeskant en inbus, aandraaimoment 8.8 / 10.9 / 12.9. Kies de M-maat; de tabellen markeren de rij."
     >
       <JsonLd

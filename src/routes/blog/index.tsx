@@ -24,7 +24,7 @@ function Blog() {
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">
           Artikelen
         </p>
-        <DisplayTitle last="Blog." className="mt-3" />
+        <DisplayTitle text="Blog." className="mt-3" />
         <p className="mt-5 text-lg leading-relaxed text-muted">
           Stukken over werktuigbouwkunde en ontwerp.
         </p>

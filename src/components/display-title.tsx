@@ -1,13 +1,17 @@
 import { cn } from "@/lib/utils";
 
+/**
+ * Full title stays one string in the DOM (screen readers / crawlers).
+ * `accent` is a suffix of `text` and is only colored — no extra space.
+ */
 export function DisplayTitle({
-  before,
-  last,
+  text,
+  accent,
   as: Tag = "h1",
   className,
 }: {
-  before?: string;
-  last: string;
+  text: string;
+  accent?: string;
   as?: "h1" | "h2" | "h3";
   className?: string;
 }) {
@@ -18,25 +22,18 @@ export function DisplayTitle({
         className,
       )}
     >
-      {before ? (
-        <>
-          {before}{" "}
-          <span className="text-accent">{last}</span>
-        </>
-      ) : (
-        <span className="text-accent">{last}</span>
-      )}
+      <TitleParts text={text} accent={accent} />
     </Tag>
   );
 }
 
 export function SectionTitle({
-  before,
-  last,
+  text,
+  accent,
   className,
 }: {
-  before?: string;
-  last: string;
+  text: string;
+  accent?: string;
   className?: string;
 }) {
   return (
@@ -46,13 +43,18 @@ export function SectionTitle({
         className,
       )}
     >
-      {before ? (
-        <>
-          {before} <span className="text-accent">{last}</span>
-        </>
-      ) : (
-        <span className="text-accent">{last}</span>
-      )}
+      <TitleParts text={text} accent={accent} />
     </h2>
+  );
+}
+
+function TitleParts({ text, accent }: { text: string; accent?: string }) {
+  const tail = accent && text.endsWith(accent) ? accent : text;
+  const head = text.slice(0, text.length - tail.length);
+  return (
+    <>
+      {head}
+      <span className="text-accent">{tail}</span>
+    </>
   );
 }

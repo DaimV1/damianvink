@@ -20,7 +20,7 @@ export const Route = createFileRoute("/marathon")({
     pageHead({
       title: "Marathon — Damian Vink",
       description:
-        "Trainingslogboek EDP Porto Marathon 2026 van Damian Vink. Strava-export: weekvolume, cumulatieve kilometers en recente runs.",
+        "Trainingslogboek EDP Porto Marathon, 8 november 2026. Strava-export: weekvolume, herstelweken en recente runs.",
       path: "/marathon",
     }),
   component: Marathon,
@@ -37,6 +37,21 @@ function longestFromCumulative(points: { km: number }[]) {
   return max;
 }
 
+function fmtLongDate(iso: string) {
+  return new Date(`${iso}T12:00:00`).toLocaleDateString("nl-NL", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
+
+function weeksBetween(fromIso: string, toIso: string) {
+  const from = Date.parse(`${fromIso}T12:00:00`);
+  const to = Date.parse(`${toIso}T12:00:00`);
+  return Math.max(0, Math.round((to - from) / (7 * 86400000)));
+}
+
 function Marathon() {
   const all = strava.totals_all;
   const plan = strava.totals;
@@ -44,6 +59,8 @@ function Marathon() {
   const weekMax = Math.max(...strava.weekly.map((w) => w.km), 1);
   const weekSum = strava.weekly.reduce((s, w) => s + w.km, 0);
   const last = strava.cumulative[strava.cumulative.length - 1];
+  const raceDate = strava.plan.race;
+  const weeksLeft = weeksBetween(strava.updated, raceDate);
 
   return (
     <SiteShell>
@@ -52,12 +69,29 @@ function Marathon() {
         <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">
           Logboek
         </p>
-        <DisplayTitle before="Mara" last="thon." className="mt-3" />
+        <DisplayTitle text="Marathon." accent="thon." className="mt-3" />
         <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted">
-          Trainingsdata uit een Strava-export. Eerst het totaal van alle
-          hardloopsessies in die export, daaronder het trainingsblok richting de
-          EDP Porto Marathon (runs vanaf 3 juni 2026).
+          Opbouw naar de EDP Porto Marathon op {fmtLongDate(raceDate)}. Cijfers
+          komen uit een Strava-export (bijgewerkt {strava.updated}). Namen in de
+          tabel zijn het plan; de kilometers zijn wat er gelopen is.
         </p>
+
+        <section className="mt-10">
+          <h2 className="font-display text-xl font-semibold tracking-tight">
+            Wedstrijd
+          </h2>
+          <div className="mt-5 grid grid-cols-2 gap-3 lg:grid-cols-4">
+            <Kpi label="Wedstrijd" value="Porto" unit="EDP Marathon" />
+            <Kpi label="Datum" value="8 nov" unit="2026" />
+            <Kpi label="Afstand" value={fmtNl(strava.plan.distance_km, 3)} unit="km" />
+            <Kpi label="Nog" value={String(weeksLeft)} unit="weken" />
+          </div>
+          <p className="mt-3 text-sm text-muted">
+            Blok vanaf {fmtLongDate(strava.plan.start)}. Geen doeltijd vastgelegd;
+            het kader is uitlopen in Porto. W32 is een herstelweek, geen dip
+            zonder reden.
+          </p>
+        </section>
 
         <section className="mt-10">
           <h2 className="font-display text-xl font-semibold tracking-tight">
@@ -93,16 +127,17 @@ function Marathon() {
             {strava.weekly.map((w, i) => {
               const pct = Math.max(8, Math.round((w.km / weekMax) * 100));
               const now = i === strava.weekly.length - 1;
+              const rest = "herstel" in w && w.herstel;
               return (
                 <div
                   key={w.label}
-                  className={`week-bar ${now ? "is-now" : ""}`}
+                  className={`week-bar ${now ? "is-now" : ""} ${rest ? "is-rest" : ""}`}
                   style={{ ["--h" as string]: `${pct}%` }}
-                  title={`${w.label}: ${fmtNl(w.km, 1)} km`}
+                  title={`${w.label}: ${fmtNl(w.km, 1)} km${rest ? " · herstelweek" : ""}`}
                 >
                   <span className="wb-val">{fmtNl(w.km, 1)}</span>
                   <span className="wb-col" />
-                  <span className="wb-lab">{w.label}</span>
+                  <span className="wb-lab">{rest ? `${w.label}*` : w.label}</span>
                 </div>
               );
             })}
@@ -110,7 +145,7 @@ function Marathon() {
           <p className="mt-3 text-xs text-subtle">
             {strava.weekly.length} weken · plantsom {fmtNl(plan.distance_km, 1)} km
             (som van de weekstaven {fmtNl(weekSum, 1)} km door afronding op 1
-            decimaal).
+            decimaal). * herstelweek.
           </p>
 
           <h3 className="mt-10 font-display text-lg font-semibold">
@@ -161,6 +196,9 @@ function Marathon() {
           <h2 className="font-display text-xl font-semibold tracking-tight">
             Recente trainingen in het plan
           </h2>
+          <p className="mt-1 text-sm text-muted">
+            Kolom Training is de sessienaam uit het plan; Afstand is gelopen.
+          </p>
           <div className="table-scroll mt-4">
             <table className="ref-table">
               <thead>
