@@ -37,7 +37,7 @@ const RODIN =
 const HOEKMAN = "https://www.hoekman-rvs.nl/toleranties-cnc-kanten-iso-2768";
 
 export function Iso2768Calc() {
-  const [length, setLength] = useState(() => readStoredDiameter({ fallback: "20" }));
+  const [length, setLength] = useState(() => readStoredDiameter({ min: 0, max: 4000, fallback: "42" }));
   const [linear, setLinear] = useState<LinearClass>("m");
   const [form, setForm] = useState<FormClass>("K");
 
@@ -54,12 +54,12 @@ export function Iso2768Calc() {
     if (!result || !result.ok) return "";
     return [
       `${result.designation} · L ${fmtNl(L)} mm`,
-      `Lineair  ${fmtPlusMinus(result.linear)} mm`,
-      `Radii / afschuining  ${fmtPlusMinus(result.radii)} mm`,
-      `Hoek (kortste zijde)  ${result.angular ? `±${result.angular}` : "—"}`,
-      `Rechtheid / vlakheid  ${fmtForm(result.straightness)} mm`,
-      `Haaksheid  ${fmtForm(result.perpendicularity)} mm`,
-      `Symmetrie  ${fmtForm(result.symmetry)} mm`,
+      `Lineair  ${result.linear != null ? `${fmtPlusMinus(result.linear)} mm` : "geen tabelwaarde"}`,
+      `Radii / afschuining  ${result.radii != null ? `${fmtPlusMinus(result.radii)} mm` : "geen tabelwaarde"}`,
+      `Hoek  ${result.angular ? `±${result.angular}` : "geen tabelwaarde"}`,
+      `Rechtheid / vlakheid  ${result.straightness != null ? `${fmtForm(result.straightness)} mm` : "geen tabelwaarde"}`,
+      `Haaksheid  ${result.perpendicularity != null ? `${fmtForm(result.perpendicularity)} mm` : "geen tabelwaarde"}`,
+      `Symmetrie  ${result.symmetry != null ? `${fmtForm(result.symmetry)} mm` : "geen tabelwaarde"}`,
       `Circulaire uitloop  ${fmtForm(result.runout)} mm`,
     ].join("\n");
   }, [L, result]);
@@ -118,26 +118,45 @@ export function Iso2768Calc() {
             <p className="mt-5 font-mono text-sm text-ink">{result.designation}</p>
             <ResultGrid
               items={[
-                { label: "Lineair", value: `${fmtPlusMinus(result.linear)} mm` },
                 {
-                  label: "Radii / afschuining",
-                  value: `${fmtPlusMinus(result.radii)} mm`,
+                  label: "Lineair ±",
+                  value:
+                    result.linear != null
+                      ? `${fmtPlusMinus(result.linear)} mm`
+                      : "geen tabelwaarde",
                 },
                 {
-                  label: "Hoek (kortste zijde)",
-                  value: result.angular ? `±${result.angular}` : "—",
+                  label: "Radii / afschuining ±",
+                  value:
+                    result.radii != null
+                      ? `${fmtPlusMinus(result.radii)} mm`
+                      : "geen tabelwaarde",
                 },
+                {
+                  label: "Hoek ±",
+                  value: result.angular ? `±${result.angular}` : "geen tabelwaarde",
+                },
+                { label: "Tekening", value: result.designation },
                 {
                   label: "Rechtheid / vlakheid",
-                  value: `${fmtForm(result.straightness)} mm`,
+                  value:
+                    result.straightness != null
+                      ? `${fmtForm(result.straightness)} mm`
+                      : "geen tabelwaarde",
                 },
                 {
                   label: "Haaksheid",
-                  value: `${fmtForm(result.perpendicularity)} mm`,
+                  value:
+                    result.perpendicularity != null
+                      ? `${fmtForm(result.perpendicularity)} mm`
+                      : "geen tabelwaarde",
                 },
                 {
                   label: "Symmetrie",
-                  value: `${fmtForm(result.symmetry)} mm`,
+                  value:
+                    result.symmetry != null
+                      ? `${fmtForm(result.symmetry)} mm`
+                      : "geen tabelwaarde",
                 },
                 {
                   label: "Circulaire uitloop",
@@ -174,7 +193,7 @@ export function Iso2768Calc() {
                 >
                   <th scope="row">{band.label}</th>
                   {(["f", "m", "c", "v"] as LinearClass[]).map((k) => (
-                    <td key={k}>{fmtPlusMinus(LINEAR[k][i])}</td>
+                    <td key={k}>{fmtPlusMinus(LINEAR[k][i] ?? null)}</td>
                   ))}
                 </tr>
               ))}
@@ -204,8 +223,8 @@ export function Iso2768Calc() {
                   className={result?.ok && result.radiiBand === i ? "is-active" : ""}
                 >
                   <th scope="row">{band.label}</th>
-                  <td>{fmtPlusMinus(RADII.f[i])}</td>
-                  <td>{fmtPlusMinus(RADII.c[i])}</td>
+                  <td>{fmtPlusMinus(RADII.f[i] ?? null)}</td>
+                  <td>{fmtPlusMinus(RADII.c[i] ?? null)}</td>
                 </tr>
               ))}
             </tbody>
@@ -267,9 +286,9 @@ export function Iso2768Calc() {
                   className={result?.ok && result.straightBand === i ? "is-active" : ""}
                 >
                   <th scope="row">{band.label}</th>
-                  <td>{fmtForm(STRAIGHT.H[i])}</td>
-                  <td>{fmtForm(STRAIGHT.K[i])}</td>
-                  <td>{fmtForm(STRAIGHT.L[i])}</td>
+                  <td>{fmtForm(STRAIGHT.H[i] ?? null)}</td>
+                  <td>{fmtForm(STRAIGHT.K[i] ?? null)}</td>
+                  <td>{fmtForm(STRAIGHT.L[i] ?? null)}</td>
                 </tr>
               ))}
             </tbody>
@@ -298,9 +317,9 @@ export function Iso2768Calc() {
                   className={result?.ok && result.perpBand === i ? "is-active" : ""}
                 >
                   <th scope="row">{band.label}</th>
-                  <td>{fmtForm(PERP.H[i])}</td>
-                  <td>{fmtForm(PERP.K[i])}</td>
-                  <td>{fmtForm(PERP.L[i])}</td>
+                  <td>{fmtForm(PERP.H[i] ?? null)}</td>
+                  <td>{fmtForm(PERP.K[i] ?? null)}</td>
+                  <td>{fmtForm(PERP.L[i] ?? null)}</td>
                 </tr>
               ))}
             </tbody>
@@ -329,9 +348,9 @@ export function Iso2768Calc() {
                   className={result?.ok && result.symmBand === i ? "is-active" : ""}
                 >
                   <th scope="row">{band.label}</th>
-                  <td>{fmtForm(SYMM.H[i])}</td>
-                  <td>{fmtForm(SYMM.K[i])}</td>
-                  <td>{fmtForm(SYMM.L[i])}</td>
+                  <td>{fmtForm(SYMM.H[i] ?? null)}</td>
+                  <td>{fmtForm(SYMM.K[i] ?? null)}</td>
+                  <td>{fmtForm(SYMM.L[i] ?? null)}</td>
                 </tr>
               ))}
             </tbody>
