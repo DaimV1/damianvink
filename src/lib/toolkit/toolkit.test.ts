@@ -13,6 +13,7 @@ import {
 } from "./motor.ts";
 import { GROOVE, squeeze } from "./oring.ts";
 import { lookupSeeger, seegerFor } from "./seeger.ts";
+import { lookupKanten } from "./kanten.ts";
 import { rangeHint } from "./tools.ts";
 
 describe("ISO 286 passingen", () => {
@@ -239,5 +240,46 @@ describe("iso2768", () => {
     assert.ok(a && b);
     assert.equal(a.runout, 0.2);
     assert.equal(b.runout, 0.2);
+  });
+});
+
+describe("kanten", () => {
+  it("2 mm staal haaks → Ri 1,88, w 12, s 9,10", () => {
+    const r = lookupKanten(2, "staal", "haaks");
+    assert.ok(r);
+    assert.equal(r.ri, 1.88);
+    assert.equal(r.w, 12);
+    assert.equal(r.s, 9.1);
+  });
+
+  it("3 mm RVS haaks → s 15,12", () => {
+    const r = lookupKanten(3, "rvs", "haaks");
+    assert.ok(r);
+    assert.equal(r.s, 15.12);
+  });
+
+  it("0,8 mm alu haaks Ri is empty, not a neighbour", () => {
+    const r = lookupKanten(0.8, "alu", "haaks");
+    assert.ok(r);
+    assert.equal(r.ri, null);
+    assert.equal(r.w, 8);
+    assert.equal(r.s, 5.7);
+  });
+
+  it("scherp hoogsterkte has no Ri column", () => {
+    const r = lookupKanten(2, "hoogsterkte", "scherp");
+    assert.ok(r);
+    assert.equal(r.ri, null);
+  });
+
+  it("hoogsterkte haaks Ri only at 8/10/12", () => {
+    assert.equal(lookupKanten(6, "hoogsterkte", "haaks")?.ri, null);
+    assert.equal(lookupKanten(8, "hoogsterkte", "haaks")?.ri, 8);
+    assert.equal(lookupKanten(10, "hoogsterkte", "haaks")?.ri, 8.23);
+    assert.equal(lookupKanten(12, "hoogsterkte", "haaks")?.ri, 7.02);
+  });
+
+  it("unknown thickness → null, no neighbour", () => {
+    assert.equal(lookupKanten(7, "staal", "haaks"), null);
   });
 });

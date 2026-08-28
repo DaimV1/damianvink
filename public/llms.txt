@@ -28,6 +28,7 @@ Hoofdnavigatie: Toolkit, Werkplek, Marathon, Over, Contact.
 - [Bevestigingsmateriaal](https://www.damianvink.nl/denk/toolkit/bevestigers): M3–M24, ISO 273 doorlaat, VDI 2230 aandraaimoment
 - [O-ringgroef (ISO 3601)](https://www.damianvink.nl/denk/toolkit/o-ringgroef): koorden 1,80–7,00 mm, radiaal en axiaal
 - [Motorspecificatie](https://www.damianvink.nl/denk/toolkit/motorspecificatie): n, F, T, P en volgende IEC-kW-stap; SEW kiest het aggregaat
+- [Richtlijnen kanten](https://www.damianvink.nl/denk/toolkit/kanten): Ri, beenlengte, Z-buiging; 247TailorSteel Sophia shop-spec, geen ISO
 - [CAD-bibliotheken](https://www.damianvink.nl/denk/toolkit/bronnen): TraceParts, 3Dfindit, MISUMI, 247 Tailor Steel, ISO OBP
 
 Oude paden blijven bereikbaar: /over-mij, /doe, /heb, /denk.

@@ -87,9 +87,9 @@ const GROUPS = [
     title: "Plaatwerk",
     links: [
       {
-        href: "https://www.247tailorsteel.com/nl",
+        href: "https://247tailorsteel.com/nl/aanleverspecificaties/richtlijnen-voor-kanten",
         name: "247TailorSteel",
-        note: "Kantlijnen, radii, materiaaldiktes. Ontwerprichtlijnen + DXF-upload.",
+        note: "Kantlijnen, radii, materiaaldiktes. Rekenhulp op deze site onder Richtlijnen kanten; altijd hun pagina nalopen.",
       },
     ],
   },
@@ -140,7 +140,7 @@ function BronnenPage() {
       ]}
       before="CAD-biblio"
       last="theken."
-      lede="CAD-modellen, componenten, plaatwerk en norm-naslag. Kantlijnen bij 247 Tailor Steel. Links openen in een nieuw tabblad."
+      lede="CAD-modellen, componenten, plaatwerk en norm-naslag. Kantlijnen in de rekenhulp Richtlijnen kanten (247TailorSteel Sophia, shop-spec). Links openen in een nieuw tabblad."
     >
       <JsonLd
         data={webPageJsonLd({

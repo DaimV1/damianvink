@@ -81,13 +81,24 @@ export const TOOLS = [
       "Rollenbaan/band/helling/hijsen: n, F, T, P en volgende IEC-kW-stap. SEW kiest het aggregaat.",
   },
   {
+    id: "kanten",
+    href: "/denk/toolkit/kanten",
+    short: "Kanten",
+    title: "Richtlijnen kanten",
+    standard: "247TailorSteel",
+    kind: "rekenhulp",
+    related: ["bronnen"],
+    blurb:
+      "Haaks/scherp: Ri, minimale beenlengte w/s, Z-buiging. Shop-spec Sophia, geen ISO.",
+  },
+  {
     id: "bronnen",
     href: "/denk/toolkit/bronnen",
     short: "CAD",
     title: "CAD-bibliotheken",
     standard: "Bronnen",
     kind: "naslag",
-    related: ["bevestigers"],
+    related: ["bevestigers", "kanten"],
     blurb: "3D-modellen, componenten, plaatwerk en naslag.",
   },
 ] as const;
