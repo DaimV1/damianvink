@@ -134,60 +134,49 @@ describe("bereikstop", () => {
 });
 
 describe("iso2768", () => {
-  it("42 mm class m is linear ±0.3", () => {
+  it("42 mm class m → ±0,3 linear", () => {
     const r = lookupIso2768(42, "m", "K");
-    assert.equal(r.ok, true);
-    if (!r.ok) return;
-    assert.equal(r.linear, 0.3);
+    assert.ok(r);
+    assert.equal(r.linearTol, 0.3);
   });
 
-  it("ISO 2768-mK returns K form; 42 mm K straightness 0.2", () => {
+  it("ISO 2768-mK returns K form", () => {
     const r = lookupIso2768(42, "m", "K");
-    assert.equal(r.ok, true);
-    if (!r.ok) return;
-    assert.equal(r.designation, "ISO 2768-mK");
-    assert.equal(r.formClass, "K");
+    assert.ok(r);
+    assert.equal(r.callout, "ISO 2768-mK");
+    assert.equal(r.form, "K");
     assert.equal(r.straightness, 0.2);
-  });
-
-  it("0.4 mm has no row", () => {
-    assert.equal(lookupIso2768(0.4, "m", "K").ok, false);
-  });
-
-  it("6 mm f linear ±0.05", () => {
-    const r = lookupIso2768(6, "f", "H");
-    assert.equal(r.ok, true);
-    if (!r.ok) return;
-    assert.equal(r.linear, 0.05);
-  });
-
-  it("8 mm v linear ±1.0", () => {
-    const r = lookupIso2768(8, "v", "K");
-    assert.equal(r.ok, true);
-    if (!r.ok) return;
-    assert.equal(r.linear, 1.0);
-  });
-
-  it("designations ISO 2768-mK and ISO 2768-fH", () => {
     assert.equal(designation("m", "K"), "ISO 2768-mK");
     assert.equal(designation("f", "H"), "ISO 2768-fH");
-    const mk = lookupIso2768(42, "m", "K");
-    const fh = lookupIso2768(42, "f", "H");
-    assert.equal(mk.ok && mk.designation, "ISO 2768-mK");
-    assert.equal(fh.ok && fh.designation, "ISO 2768-fH");
+  });
+
+  it("0,4 mm no row", () => {
+    assert.equal(lookupIso2768(0.4, "m", "K"), null);
+  });
+
+  it("6 mm f linear ±0,05", () => {
+    const r = lookupIso2768(6, "f", "K");
+    assert.ok(r);
+    assert.equal(r.linearTol, 0.05);
+  });
+
+  it("8 mm v linear ±1,0", () => {
+    const r = lookupIso2768(8, "v", "K");
+    assert.ok(r);
+    assert.equal(r.linearTol, 1.0);
   });
 
   it("v at 2 mm linear is empty", () => {
     const r = lookupIso2768(2, "v", "K");
-    assert.equal(r.ok, true);
-    if (!r.ok) return;
-    assert.equal(r.linear, null);
+    assert.ok(r);
+    assert.equal(r.linearTol, null);
   });
 
-  it("circular runout K is 0.2", () => {
-    const r = lookupIso2768(42, "m", "K");
-    assert.equal(r.ok, true);
-    if (!r.ok) return;
-    assert.equal(r.runout, 0.2);
+  it("circulaire uitloop K = 0,2 independent of size", () => {
+    const a = lookupIso2768(2, "m", "K");
+    const b = lookupIso2768(200, "m", "K");
+    assert.ok(a && b);
+    assert.equal(a.runout, 0.2);
+    assert.equal(b.runout, 0.2);
   });
 });
