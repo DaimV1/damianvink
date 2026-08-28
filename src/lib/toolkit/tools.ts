@@ -7,7 +7,7 @@ export const TOOLS = [
     title: "Eenheden",
     standard: "SI · imperial",
     kind: "rekenhulp",
-    related: ["motor", "bevestigers"],
+    related: ["motor", "bevestigers", "cilinder"],
     blurb: "Inch ↔ mm, °C ↔ K, dm³ ↔ L, lbf ↔ N, psi ↔ bar. SI en imperial.",
     tags: ["omrekenen", "inch", "kelvin", "newton", "liter"],
   },
@@ -95,10 +95,22 @@ export const TOOLS = [
     title: "Motorspecificatie",
     standard: "P = F·v",
     kind: "rekenhulp",
-    related: ["eenheden", "bronnen"],
+    related: ["eenheden", "bronnen", "cilinder"],
     blurb:
       "Rollenbaan/band/helling/hijsen: n, F, T, P en volgende IEC-kW-stap. SEW kiest het aggregaat.",
     tags: ["kw", "koppel", "iec", "aandrijving"],
+  },
+  {
+    id: "cilinder",
+    href: "/toolkit/cilinder",
+    short: "Cilinder",
+    title: "Pneumatische cilinder",
+    standard: "ISO 15552 · 6432",
+    kind: "rekenhulp",
+    related: ["motor", "eenheden"],
+    blurb:
+      "F = p·A, dubbelwerkend. ISO-boring bij last en 6 bar. Geen knik, geen Festo-type.",
+    tags: ["pneumatiek", "festo", "smc", "bar", "zuiger", "kracht"],
   },
   {
     id: "kanten",

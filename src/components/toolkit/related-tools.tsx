@@ -3,7 +3,7 @@ import { TOOLS, type ToolId } from "@/lib/toolkit/tools";
 
 export function RelatedTools({ active }: { active: ToolId }) {
   const current = TOOLS.find((tool) => tool.id === active);
-  if (!current || current.related.length === 0) return null;
+  if (!current) return null;
   const related = current.related
     .map((id) => TOOLS.find((tool) => tool.id === id))
     .filter((tool): tool is (typeof TOOLS)[number] => Boolean(tool));
