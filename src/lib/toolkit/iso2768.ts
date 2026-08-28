@@ -211,12 +211,12 @@ export function lookupIso2768(
     angularIndex: ai,
     straightIndex: si,
     formRangeIndex: fi,
-    linearTol: li == null ? null : LINEAR[linear][li],
-    radiusTol: ri == null ? null : radiusTable[ri],
-    angularTol: ai == null ? null : ANGULAR[linear][ai],
-    straightness: si == null ? null : STRAIGHTNESS[form][si],
-    perpendicularity: fi == null ? null : PERPENDICULARITY[form][fi],
-    symmetry: fi == null ? null : SYMMETRY[form][fi],
+    linearTol: li == null ? null : (LINEAR[linear][li] ?? null),
+    radiusTol: ri == null ? null : (radiusTable[ri] ?? null),
+    angularTol: ai == null ? null : (ANGULAR[linear][ai] ?? null),
+    straightness: si == null ? null : (STRAIGHTNESS[form][si] ?? null),
+    perpendicularity: fi == null ? null : (PERPENDICULARITY[form][fi] ?? null),
+    symmetry: fi == null ? null : (SYMMETRY[form][fi] ?? null),
     runout: RUNOUT[form],
   };
 }

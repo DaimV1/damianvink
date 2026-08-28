@@ -101,7 +101,7 @@ export function readStoredDiameter({
   if (raw && /^\d{1,4}$/.test(raw) && inRange(raw, min, max)) return raw;
   if (inRange(fallback, min, max)) return fallback;
   return "";
-};
+}
 
 function inRange(raw: string, min?: number, max?: number) {
   const n = Number.parseInt(raw, 10);
