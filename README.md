@@ -35,6 +35,7 @@ Custom domain: `www.damianvink.nl` (apex 308’t naar www).
 - `/over-mij` — loopbaan + CV
 - `/doe/marathon` — trainingslogboek Porto 2026
 - `/denk/toolkit` — engineering toolkit
+- `/denk/toolkit/eenheden` — SI · imperial omrekenen
 - `/denk/toolkit/passingen` — ISO 286
 - `/denk/toolkit/spiebaan-toleranties` — DIN 6885
 - `/denk/toolkit/lagerpassingen` — SKF / ISO 286
