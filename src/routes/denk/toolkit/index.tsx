@@ -5,7 +5,7 @@ import { pageHead, softwareJsonLd } from "@/lib/seo";
 import { TOOLS } from "@/lib/toolkit/tools";
 
 const DESCRIPTION =
-  "Engineering toolkit: ISO 286-passingen, DIN 6885-spiebanen, SKF-lagerpassingen, seegerringgroef DIN 471/472, VDI 2230-bevestigingsmateriaal, ISO 2768 algemene toleranties, O-ringgroef ISO 3601 en CAD-bronnen. Rekenhulp bovenaan, naslag eronder.";
+  "Engineering toolkit: ISO 286-passingen, ISO 2768 algemene toleranties, DIN 6885-spiebanen, SKF-lagerpassingen, seegerringgroef DIN 471/472, VDI 2230-bevestigingsmateriaal, O-ringgroef ISO 3601 en CAD-bronnen. Rekenhulp bovenaan, naslag eronder.";
 
 export const Route = createFileRoute("/denk/toolkit/")({
   head: () =>
@@ -23,7 +23,7 @@ function ToolkitIndex() {
       crumbs={[{ label: "Toolkit" }]}
       before="Engineering"
       last="toolkit."
-      lede="Rekenhulp en naslag voor machinebouw: passingen, spiebanen, lagers, seegerringgroeven, bevestigingsmateriaal, algemene toleranties en CAD-bronnen. Open een tool; de rekenhulp staat bovenaan, de tabel of bronnen eronder."
+      lede="Rekenhulp en naslag voor machinebouw: passingen, algemene toleranties (ISO 2768), spiebanen, lagers, seegerringgroeven, bevestigingsmateriaal en CAD-bronnen. Open een tool; de rekenhulp staat bovenaan, de tabel of bronnen eronder."
     >
       <JsonLd
         data={softwareJsonLd({
