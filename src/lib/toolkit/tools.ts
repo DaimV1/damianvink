@@ -1,3 +1,4 @@
+/** Switcher uses `short`; ISO 2768 is labeled Toleranties. */
 export const TOOLS = [
   {
     id: "eenheden",
