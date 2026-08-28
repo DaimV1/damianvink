@@ -13,6 +13,7 @@ Hoofdnavigatie: Toolkit, Werkplek, Marathon, Over, Contact.
 
 - [Home](https://www.damianvink.nl/): Project Engineer machinebouw; toolkit, werkplek, marathon, contact
 - [Toolkit](https://www.damianvink.nl/denk/toolkit): rekenhulp + naslag
+- [Eenheden](https://www.damianvink.nl/denk/toolkit/eenheden): SI · imperial; inch↔mm, °C↔K, dm³↔L, lbf↔N, psi↔bar
 - [Werkplek](https://www.damianvink.nl/denk/project): projectwerkplek (fasen, stakeholders, risico's, beslispunt)
 - [Marathon](https://www.damianvink.nl/doe/marathon): trainingsdashboard, EDP Porto Marathon (Strava-export)
 - [Over](https://www.damianvink.nl/over-mij): achtergrond, loopbaan, CV (PDF)
