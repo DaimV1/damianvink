@@ -17,6 +17,9 @@ Hoofdnavigatie: Toolkit, Werkplek, Marathon, Over, Contact.
 - [Marathon](https://www.damianvink.nl/doe/marathon): trainingsdashboard, EDP Porto Marathon (Strava-export)
 - [Over](https://www.damianvink.nl/over-mij): achtergrond, loopbaan, CV (PDF)
 - [Contact](https://www.damianvink.nl/contact): e-mail en LinkedIn
+- [Artikelen](https://www.damianvink.nl/denk): blog; podcast volgt
+- [Blog](https://www.damianvink.nl/denk/blog): gepubliceerde stukken
+- [USB-C voor de labtafel: Anthropic’s Model Hardware Standard](https://www.damianvink.nl/denk/blog/usb-c-labtafel-mhs): 27 augustus 2026; USB-C is een metafoor, geen IEC-connector
 - [Passingen (ISO 286)](https://www.damianvink.nl/denk/toolkit/passingen): voorkeurpassingen tot Ø50 mm, eenheidsgatstelsel H7
 - [Spiebaan-toleranties (DIN 6885)](https://www.damianvink.nl/denk/toolkit/spiebaan-toleranties): t1/t2, b×h; as-Ø boven ondergrens t/m bovengrens
 - [Lagerpassingen](https://www.damianvink.nl/denk/toolkit/lagerpassingen): groefkogellagers, SKF-klassen tot Ø50 mm
@@ -26,7 +29,7 @@ Hoofdnavigatie: Toolkit, Werkplek, Marathon, Over, Contact.
 - [CAD-bibliotheken](https://www.damianvink.nl/denk/toolkit/bronnen): TraceParts, 3Dfindit, MISUMI, 247 Tailor Steel, ISO OBP
 
 Oude paden blijven bereikbaar: /over-mij, /doe, /heb, /denk.
-Leeg tot er echte inhoud is (noindex): /denk/blog, /denk/podcast, /doe/projecten.
+Leeg tot er echte inhoud is (noindex): /denk/podcast, /doe/projecten.
 Oude paden /weet/… en /kennis/… verwijzen permanent door naar /denk/….
 
 ## Contact
