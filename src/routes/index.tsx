@@ -34,7 +34,7 @@ function Home() {
             <Door
               num="01"
               title="Toolkit"
-              body="Passingen, spiebanen, lagerpassingen, seegerringgroef, bevestigingsmateriaal en CAD-bronnen."
+              body="Eenheden, passingen, spiebanen, lagerpassingen, seegerringgroef, bevestigingsmateriaal en CAD-bronnen."
               href="/denk/toolkit"
               link="Toolkit"
               meta="Werktuigbouwkunde · Machinebouw"
