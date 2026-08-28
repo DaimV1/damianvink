@@ -12,14 +12,7 @@ import {
   unitById,
   type CategoryId,
 } from "@/lib/toolkit/units";
-import {
-  CalcPanel,
-  CopyResult,
-  Field,
-  Note,
-  ResultGrid,
-  SelectInput,
-} from "./calc-ui";
+import { CalcPanel, CopyResult, Field, Note, SelectInput } from "./calc-ui";
 
 const controlClass =
   "h-12 w-full rounded-md border border-line-strong bg-paper px-3 font-mono text-base text-ink tabular-nums outline-none transition-[border-color,box-shadow] duration-150 focus:border-accent focus:ring-2 focus:ring-accent/30";
@@ -28,42 +21,69 @@ export function EenhedenCalc() {
   const [catId, setCatId] = useState<CategoryId>("lengte");
   const [fromId, setFromId] = useState("in");
   const [toId, setToId] = useState("mm");
-  const [raw, setRaw] = useState("1");
+  const [rawFrom, setRawFrom] = useState("80");
+  const [edited, setEdited] = useState<"from" | "to">("from");
+  const [rawToEdit, setRawToEdit] = useState("");
 
   const category = categoryById(catId);
   const from = unitById(category, fromId);
   const to = unitById(category, toId);
-  const value = parseQty(raw);
+
+  const fromValue = parseQty(rawFrom);
+  const toTyped = parseQty(rawToEdit);
+
+  const fromShown =
+    edited === "to" && toTyped != null ? convert(toTyped, to, from) : fromValue;
+  const toShown =
+    edited === "from" && fromValue != null ? convert(fromValue, from, to) : toTyped;
+
+  const rawFromDisplay =
+    edited === "from" ? rawFrom : fromShown == null ? "" : formatQty(fromShown);
+  const rawToDisplay =
+    edited === "to" ? rawToEdit : toShown == null ? "" : formatQty(toShown);
 
   function pickCategory(next: CategoryId) {
     const cat = categoryById(next);
     setCatId(next);
     setFromId(cat.defaultFrom);
     setToId(cat.defaultTo);
+    setEdited("from");
   }
 
-  const result = value != null ? convert(value, from, to) : null;
+  function swap() {
+    setFromId(to.id);
+    setToId(from.id);
+    if (edited === "from") {
+      setRawFrom(rawToDisplay);
+    } else {
+      setRawToEdit(rawFromDisplay);
+      setEdited("to");
+    }
+  }
+
+  const sourceValue = edited === "from" ? fromValue : toTyped;
+  const sourceUnit = edited === "from" ? from : to;
 
   const table = useMemo(() => {
-    if (value == null) return [];
+    if (sourceValue == null) return [];
     return category.units.map((unit) => ({
       unit,
-      value: convert(value, from, unit),
+      value: convert(sourceValue, sourceUnit, unit),
     }));
-  }, [category, from, value]);
+  }, [category, sourceUnit, sourceValue]);
 
   const copy = useMemo(() => {
-    if (result == null || value == null) return "";
+    if (fromShown == null || toShown == null) return "";
     const lines = [
-      `${formatQty(value)} ${from.symbol} = ${formatQty(result)} ${to.symbol}`,
+      `${formatQty(fromShown)} ${from.symbol} = ${formatQty(toShown)} ${to.symbol}`,
       factorLine(from, to) ?? category.note,
     ];
     for (const row of table) {
-      if (row.unit.id === from.id) continue;
+      if (row.unit.id === from.id || row.unit.id === to.id) continue;
       lines.push(`${formatQty(row.value)} ${row.unit.symbol}`);
     }
     return lines.join("\n");
-  }, [category.note, from, result, table, to, value]);
+  }, [category.note, from, fromShown, table, to, toShown]);
 
   return (
     <>
@@ -75,11 +95,11 @@ export function EenhedenCalc() {
           Omrekenen
         </h2>
         <Note>
-          SI, metrisch en imperial in één richting. Temperatuur via kelvin;
-          de rest lineair. Komma en punt mogen allebei.
+          SI, metrisch en imperial. Temperatuur via kelvin; de rest lineair.
+          Komma en punt mogen allebei. Typ links of rechts; de andere kant volgt.
         </Note>
 
-        <div className="mt-6 grid gap-4 sm:grid-cols-2">
+        <div className="mt-6">
           <Field label="Grootheid">
             <SelectInput value={catId} onChange={(v) => pickCategory(v as CategoryId)}>
               {CATEGORIES.map((cat) => (
@@ -89,18 +109,9 @@ export function EenhedenCalc() {
               ))}
             </SelectInput>
           </Field>
-          <Field label="Waarde">
-            <input
-              type="text"
-              inputMode="decimal"
-              autoComplete="off"
-              spellCheck={false}
-              value={raw}
-              onFocus={(e) => e.currentTarget.select()}
-              onChange={(e) => setRaw(sanitizeQtyInput(e.target.value))}
-              className={controlClass}
-            />
-          </Field>
+        </div>
+
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <Field label="Van">
             <SelectInput value={from.id} onChange={setFromId}>
               {category.units.map((unit) => (
@@ -119,36 +130,37 @@ export function EenhedenCalc() {
               ))}
             </SelectInput>
           </Field>
+          <Field label={`Waarde (${from.symbol})`}>
+            <QtyInput
+              value={rawFromDisplay}
+              unit={from.symbol}
+              onChange={(v) => {
+                setEdited("from");
+                setRawFrom(sanitizeQtyInput(v));
+              }}
+            />
+          </Field>
+          <Field label={`Waarde (${to.symbol})`}>
+            <QtyInput
+              value={rawToDisplay}
+              unit={to.symbol}
+              onChange={(v) => {
+                setEdited("to");
+                setRawToEdit(sanitizeQtyInput(v));
+              }}
+            />
+          </Field>
         </div>
 
         <div className="mt-4">
-          <Button
-            type="button"
-            variant="secondary"
-            onClick={() => {
-              setFromId(to.id);
-              setToId(from.id);
-            }}
-          >
+          <Button type="button" variant="secondary" onClick={swap}>
             <ArrowLeftRight className="size-4" />
             Wissel van/naar
           </Button>
         </div>
 
-        {result != null && value != null ? (
+        {fromShown != null && toShown != null ? (
           <>
-            <ResultGrid
-              items={[
-                {
-                  label: `${from.symbol} → ${to.symbol}`,
-                  value: `${formatQty(result)} ${to.symbol}`,
-                },
-                {
-                  label: "Invoer",
-                  value: `${formatQty(value)} ${from.symbol}`,
-                },
-              ]}
-            />
             {factorLine(from, to) ? (
               <p className="mt-4 font-mono text-sm text-muted">{factorLine(from, to)}</p>
             ) : (
@@ -177,8 +189,9 @@ export function EenhedenCalc() {
             </thead>
             <tbody>
               {category.units.map((unit) => {
-                const shown = value != null ? convert(value, from, unit) : null;
-                const active = unit.id === to.id;
+                const shown =
+                  sourceValue == null ? null : convert(sourceValue, sourceUnit, unit);
+                const active = unit.id === to.id || unit.id === from.id;
                 return (
                   <tr key={unit.id} className={active ? "is-active" : ""}>
                     <th scope="row">
@@ -199,6 +212,34 @@ export function EenhedenCalc() {
         </p>
       </section>
     </>
+  );
+}
+
+function QtyInput({
+  value,
+  unit,
+  onChange,
+}: {
+  value: string;
+  unit: string;
+  onChange: (v: string) => void;
+}) {
+  return (
+    <div className="relative">
+      <input
+        type="text"
+        inputMode="decimal"
+        autoComplete="off"
+        spellCheck={false}
+        value={value}
+        onFocus={(e) => e.currentTarget.select()}
+        onChange={(e) => onChange(e.target.value)}
+        className={`${controlClass} pr-16`}
+      />
+      <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center font-mono text-sm text-muted">
+        {unit}
+      </span>
+    </div>
   );
 }
 
