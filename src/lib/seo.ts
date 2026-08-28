@@ -19,7 +19,7 @@ export function pageHead({
   description: string;
   path: string;
   noindex?: boolean;
-  ogType?: "website" | "profile";
+  ogType?: "website" | "profile" | "article";
 }) {
   const url = absUrl(path);
   return {
@@ -134,5 +134,31 @@ export function webPageJsonLd({
     inLanguage: "nl-NL",
     isPartOf: { "@type": "WebSite", name: SITE_NAME, url: `${SITE_ORIGIN}/` },
     author: { "@type": "Person", name: SITE_NAME, url: `${SITE_ORIGIN}/` },
+  };
+}
+
+export function articleJsonLd({
+  headline,
+  path,
+  description,
+  datePublished,
+}: {
+  headline: string;
+  path: string;
+  description: string;
+  datePublished: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline,
+    url: absUrl(path),
+    description,
+    datePublished,
+    dateModified: datePublished,
+    inLanguage: "nl-NL",
+    author: { "@type": "Person", name: SITE_NAME, url: `${SITE_ORIGIN}/` },
+    publisher: { "@type": "Person", name: SITE_NAME, url: `${SITE_ORIGIN}/` },
+    mainEntityOfPage: absUrl(path),
   };
 }
