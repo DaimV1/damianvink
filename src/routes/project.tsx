@@ -34,7 +34,7 @@ function ProjectPage() {
           Maandag: geef het project een naam, beantwoord de vragen van deze fase, kijk of het plan nog klopt.
           Een fase is de vraag die nu openstaat — kader, opdracht, plan en baseline, stand, decharge.
           Beslispunt is de enige officiële faseovergang. Staat in deze browser; export bewaart een kopie.
-          Voorbeeld laadt een montagelijn in Definitie.
+          Voorbeeld laadt een montagelijn in Oriëntatie.
         </p>
         <div className="mt-8">
           {store.ready ? (
