@@ -1,5 +1,33 @@
 import { BANDS, HOLE, SHAFT, bandIndex } from "./iso286.ts";
 
+/** Housing classes in SKF-style chart order: clearance → interference. */
+export const HOUSING_CHART = [
+  "F8",
+  "G7",
+  "H8",
+  "H7",
+  "H6",
+  "JS7",
+  "J7",
+  "K7",
+  "M7",
+  "N7",
+] as const;
+
+/** Shaft classes in SKF-style chart order: clearance → interference. */
+export const SHAFT_CHART = [
+  "f7",
+  "g6",
+  "h6",
+  "js5",
+  "j5",
+  "j6",
+  "k5",
+  "k6",
+  "n6",
+  "p6",
+] as const;
+
 export function pickBearing(d: number, rot: string, load: string) {
   let shaft: string;
   let hole: string;

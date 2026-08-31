@@ -14,6 +14,7 @@ import {
   ResultGrid,
   SelectInput,
 } from "./calc-ui";
+import { BearingFitChart, SchemaPanel } from "./schema";
 
 export function LagerCalc() {
   const { locale } = useLocale();
@@ -122,6 +123,37 @@ export function LagerCalc() {
           </>
         )}
       </CalcPanel>
+
+      <section className="mt-12">
+        <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
+          {tx(locale, "Tolerantievelden", "Tolerance zones")}
+        </h2>
+        <Note>
+          {tx(
+            locale,
+            "ISO 286 voor de gekozen Ø-band. Boven: huis (gat), onder: as. Positief = groter dan nominaal. Accent = aanbevolen klasse; lichter = alternatief huis.",
+            "ISO 286 for the selected Ø band. Top: housing (hole), bottom: shaft. Positive = larger than nominal. Accent = recommended class; lighter = alternative housing.",
+          )}
+        </Note>
+        <SchemaPanel
+          caption={
+            result
+              ? tx(
+                  locale,
+                  `Band ${result.band.label} mm · as ${result.shaft} · huis ${result.hole}${result.holeAlt ? ` / ${result.holeAlt}` : ""}`,
+                  `Band ${result.band.label} mm · shaft ${result.shaft} · housing ${result.hole}${result.holeAlt ? ` / ${result.holeAlt}` : ""}`,
+                )
+              : tx(locale, "Band boven 18 t/m 30 mm — vul een Ø in", "Band over 18 through 30 mm — enter an Ø")
+          }
+        >
+          <BearingFitChart
+            bandIndex={result?.i ?? 3}
+            shaft={result?.shaft}
+            hole={result?.hole}
+            holeAlt={result?.holeAlt}
+          />
+        </SchemaPanel>
+      </section>
 
       <section className="mt-12">
         <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
