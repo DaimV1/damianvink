@@ -294,7 +294,7 @@ const pages = {
       lede: "Inwendige radius, minimale beenlengte en Z-buiging volgens de Sophia-shop van 247TailorSteel. Geen ISO, geen DIN. Altijd hun pagina nalopen.",
       faq: [
         { q: "Is dit ISO of DIN?", a: "Nee. Het is de aanleverspecificatie van 247TailorSteel Sophia. Andere shops hebben andere radii en beenlengtes. Open hun pagina; dit is een werkblad." },
-        { q: "Wat zijn Ri, w, s en x?", a: "Ri is de inwendige radius na kanten. w is de minimale beenlengte, s de bijbehorende maat op die rij, x de Z-maat voor een Z-buiging. Lege cel betekent: niet in hun tabel." },
+        { q: "Wat zijn Ri, w, s en x?", a: "Ri is de inwendige radius na kanten. w is groefwijdte van de matrijs, s de minimale beenlengte (opleg op de matrijs), x de Z-maat voor een Z-buiging. Lege cel betekent: niet in hun tabel." },
         { q: "Waarom is alu 0,8 mm Ri leeg?", a: "Op de 247-pagina staat daar een streepje. Dat is geen buurrij van staal 0,8 of alu 1,0 mm. Geen naburige waarde invullen." },
         { q: "Waarom 10 en 12 mm extra?", a: "247 noteert dat die diktes niet over de volle plaatlengte kunnen. De tool toont de rij wél, met die kanttekening. Check de actuele pagina." },
       ],
@@ -306,7 +306,7 @@ const pages = {
       lede: "Inside radius, minimum leg length and Z-bend per the 247TailorSteel Sophia shop. Not ISO, not DIN. Always check their page.",
       faq: [
         { q: "Is this ISO or DIN?", a: "No. It is 247TailorSteel Sophia’s intake spec. Other shops have other radii and leg lengths. Open their page; this is a worksheet." },
-        { q: "What are Ri, w, s and x?", a: "Ri is the inside radius after bending. w is minimum leg length, s the matching size on that row, x the Z dimension for a Z-bend. Empty cell: not in their table." },
+        { q: "What are Ri, w, s and x?", a: "Ri is the inside radius after bending. w is die groove width, s the minimum leg length (overlay on the die), x the Z dimension for a Z-bend. Empty cell: not in their table." },
         { q: "Why is alu 0.8 mm Ri empty?", a: "The 247 page has a dash there. That is not a neighbour of steel 0.8 or alu 1.0 mm. Do not fill a neighbouring value." },
         { q: "Why the 10 and 12 mm note?", a: "247 notes those thicknesses cannot run the full sheet length. The tool still shows the row, with that caveat. Check the current page." },
       ],
