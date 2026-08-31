@@ -155,9 +155,9 @@ export const TOOLS = [
     kind: "rekenhulp",
     related: ["bronnen"],
     blurb:
-      "Haaks/scherp: Ri, minimale beenlengte w/s, Z-buiging. Shop-spec Sophia, geen ISO.",
+      "Haaks/scherp: Ri, min. beenlengte s, groefwijdte w, Z-buiging. Shop-spec Sophia, geen ISO.",
     blurbEn:
-      "Square/acute: Ri, minimum leg length w/s, Z-bend. Sophia shop-spec, not ISO.",
+      "Square/acute: Ri, min. leg length s, groove width w, Z-bend. Sophia shop-spec, not ISO.",
     tags: ["buigen", "plaat", "sophia", "zetwerk", "bending", "sheet"],
   },
   {
