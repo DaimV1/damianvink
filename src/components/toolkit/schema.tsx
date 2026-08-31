@@ -2,6 +2,8 @@ import type { ReactNode } from "react";
 import { useId } from "react";
 import { tx, useLocale } from "@/lib/i18n/locale";
 import { fmtMm } from "@/lib/utils";
+import { HOLE, SHAFT } from "@/lib/toolkit/iso286";
+import { HOUSING_CHART, SHAFT_CHART } from "@/lib/toolkit/bearing";
 import type { FastenerRow } from "@/lib/toolkit/fastener";
 import type { SeegerKind } from "@/lib/toolkit/seeger";
 
@@ -479,6 +481,237 @@ export function CirclipSection({
         label={tl}
         side="right"
       />
+    </svg>
+  );
+}
+
+function ZoneBar({
+  x,
+  zeroY,
+  labelY,
+  hi,
+  lo,
+  scale,
+  label,
+  active,
+  alt,
+}: {
+  x: number;
+  zeroY: number;
+  labelY: number;
+  hi: number;
+  lo: number;
+  scale: number;
+  label: string;
+  active: boolean;
+  alt?: boolean;
+}) {
+  const y1 = zeroY - hi * scale;
+  const y2 = zeroY - lo * scale;
+  const top = Math.min(y1, y2);
+  const h = Math.max(Math.abs(y2 - y1), 2);
+  const fill = active
+    ? "var(--accent)"
+    : alt
+      ? "color-mix(in oklab, var(--accent) 45%, transparent)"
+      : "color-mix(in oklab, var(--ink) 38%, transparent)";
+  return (
+    <g>
+      <rect
+        x={x - 5}
+        y={top}
+        width={10}
+        height={h}
+        rx={1}
+        fill={fill}
+        stroke={active ? "currentColor" : "none"}
+        strokeWidth={active ? 1 : 0}
+      />
+      <text
+        x={x}
+        y={labelY}
+        textAnchor="middle"
+        fill={active ? "var(--accent)" : "currentColor"}
+        fontSize="9"
+        fontFamily={FONT}
+        fontWeight={active ? 500 : 400}
+      >
+        {label}
+      </text>
+    </g>
+  );
+}
+
+export function BearingFitChart({
+  bandIndex,
+  shaft,
+  hole,
+  holeAlt,
+}: {
+  bandIndex: number;
+  shaft?: string;
+  hole?: string;
+  holeAlt?: string | null;
+}) {
+  const { locale } = useLocale();
+  const uid = useId().replace(/:/g, "");
+  const i = bandIndex >= 0 ? bandIndex : 3;
+
+  const ums: number[] = [];
+  for (const k of HOUSING_CHART) {
+    ums.push(HOLE[k].ES[i], HOLE[k].EI[i]);
+  }
+  for (const k of SHAFT_CHART) {
+    ums.push(SHAFT[k].es[i], SHAFT[k].ei[i]);
+  }
+  const maxAbs = Math.max(12, ...ums.map((n) => Math.abs(n)));
+  const scale = 52 / maxAbs;
+
+  const chartX = 188;
+  const chartW = 460;
+  const stepH = chartW / HOUSING_CHART.length;
+  const stepS = chartW / SHAFT_CHART.length;
+  const houseZero = 92;
+  const shaftZero = 268;
+
+  return (
+    <svg
+      className="w-full text-ink"
+      viewBox="0 0 680 360"
+      role="img"
+      aria-label={tx(
+        locale,
+        "Tolerantievelden voor lagerhuis en as, ISO 286, aanbevolen klasse gemarkeerd",
+        "Tolerance zones for housing and shaft, ISO 286, recommended class highlighted",
+      )}
+    >
+      <HatchDefs uid={uid} />
+      <rect
+        x="24"
+        y="22"
+        width="140"
+        height="36"
+        rx="4"
+        fill={`url(#${uid}-a)`}
+        stroke="currentColor"
+      />
+      <text x="94" y="45" textAnchor="middle" fill="currentColor" fontSize="12" fontFamily={FONT}>
+        {tx(locale, "Lagerhuis", "Housing")}
+      </text>
+      <rect
+        x="24"
+        y="302"
+        width="140"
+        height="36"
+        rx="4"
+        fill={`url(#${uid}-b)`}
+        stroke="currentColor"
+      />
+      <text x="94" y="325" textAnchor="middle" fill="currentColor" fontSize="12" fontFamily={FONT}>
+        {tx(locale, "As", "Shaft")}
+      </text>
+      <rect
+        x="44"
+        y="66"
+        width="100"
+        height="88"
+        rx="8"
+        fill="color-mix(in oklab, var(--accent) 22%, var(--paper))"
+        stroke="currentColor"
+      />
+      <rect
+        x="56"
+        y="206"
+        width="76"
+        height="88"
+        rx="8"
+        fill="var(--paper-muted)"
+        stroke="currentColor"
+      />
+      <circle
+        cx="94"
+        cy="180"
+        r="28"
+        fill="color-mix(in oklab, var(--accent) 40%, var(--paper))"
+        stroke="currentColor"
+      />
+      <circle cx="84" cy="170" r="8" fill="var(--paper)" opacity="0.5" />
+      <text
+        x="16"
+        y="190"
+        fill="currentColor"
+        fontSize="10"
+        fontFamily={FONT}
+        transform="rotate(-90 16 190)"
+        opacity="0.7"
+      >
+        {tx(locale, "Tolerantievelden", "Tolerance zones")}
+      </text>
+
+      <line
+        x1={chartX}
+        y1={houseZero}
+        x2={chartX + chartW}
+        y2={houseZero}
+        stroke="currentColor"
+        strokeWidth="1"
+      />
+      <text
+        x={chartX - 8}
+        y={houseZero + 4}
+        textAnchor="end"
+        fill="currentColor"
+        fontSize="10"
+        fontFamily={FONT}
+      >
+        +0
+      </text>
+      {HOUSING_CHART.map((k, idx) => (
+        <ZoneBar
+          key={k}
+          x={chartX + stepH * (idx + 0.5)}
+          zeroY={houseZero}
+          labelY={houseZero + 66}
+          hi={HOLE[k].ES[i]}
+          lo={HOLE[k].EI[i]}
+          scale={scale}
+          label={k}
+          active={k === hole}
+          alt={k === holeAlt}
+        />
+      ))}
+
+      <line
+        x1={chartX}
+        y1={shaftZero}
+        x2={chartX + chartW}
+        y2={shaftZero}
+        stroke="currentColor"
+        strokeWidth="1"
+      />
+      <text
+        x={chartX - 8}
+        y={shaftZero + 4}
+        textAnchor="end"
+        fill="currentColor"
+        fontSize="10"
+        fontFamily={FONT}
+      >
+        +0
+      </text>
+      {SHAFT_CHART.map((k, idx) => (
+        <ZoneBar
+          key={k}
+          x={chartX + stepS * (idx + 0.5)}
+          zeroY={shaftZero}
+          labelY={shaftZero - 58}
+          hi={SHAFT[k].es[i]}
+          lo={SHAFT[k].ei[i]}
+          scale={scale}
+          label={k}
+          active={k === shaft}
+        />
+      ))}
     </svg>
   );
 }
