@@ -53,12 +53,6 @@ export const Route = createRootRoute({
       { rel: "preconnect", href: "https://www.googletagmanager.com" },
       { rel: "preconnect", href: "https://www.google-analytics.com" },
     ],
-    scripts: [
-      {
-        async: true,
-        src: `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`,
-      },
-    ],
   }),
   errorComponent: AppErrorComponent,
   notFoundComponent: NotFound,
@@ -69,11 +63,15 @@ function RootDocument() {
   return (
     <html lang="nl" data-theme="dark" suppressHydrationWarning>
       <head>
+        <script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+        />
+        <script dangerouslySetInnerHTML={{ __html: GA_BOOT_SCRIPT }} />
         <HeadContent />
       </head>
       <body className="antialiased">
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOT }} />
-        <script dangerouslySetInnerHTML={{ __html: GA_BOOT_SCRIPT }} />
         <JsonLd data={personJsonLd} />
         <JsonLd data={websiteJsonLd} />
         <PreviewHostBridge />

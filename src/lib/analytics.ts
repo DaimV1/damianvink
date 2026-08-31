@@ -7,7 +7,11 @@ declare global {
   }
 }
 
-export const GA_BOOT_SCRIPT = `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;gtag('js',new Date());gtag('config','${GA_MEASUREMENT_ID}',{anonymize_ip:true,send_page_view:false});`;
+/** Official Google tag snippet (inline config). */
+export const GA_BOOT_SCRIPT = `window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${GA_MEASUREMENT_ID}');`;
 
 export function trackPageview(path: string) {
   if (typeof window === "undefined" || typeof window.gtag !== "function") return;
