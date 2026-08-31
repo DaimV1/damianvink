@@ -81,8 +81,8 @@ export function KantenCalc() {
             <ResultGrid
               items={[
                 { label: "Ri (inwendig)", value: `${dashMm(row.ri)} mm` },
-                { label: "w min. beenlengte", value: `${dashMm(row.w)} mm` },
-                { label: "s", value: `${dashMm(row.s)} mm` },
+                { label: "s min. beenlengte", value: `${dashMm(row.s)} mm` },
+                { label: "w groefwijdte", value: `${dashMm(row.w)} mm` },
                 { label: "x (Z-buiging)", value: `${dashMm(row.x)} mm` },
               ]}
             />
@@ -263,8 +263,12 @@ function GroupTable({
         {title}
       </h2>
       <Note>
-        Staal en aluminium delen deze kolom op de 247-pagina. w is de minimale
-        beenlengte; {mode === "ws" ? "s de bijbehorende maat" : "x de Z-maat"}.
+        Staal en aluminium delen deze kolom op de 247-pagina. w is groefwijdte;
+        {" "}
+        {mode === "ws"
+          ? "s is minimale beenlengte (opleg op de matrijs)"
+          : "x is de Z-maat"}
+        .
       </Note>
       <div className="table-scroll mt-4">
         <table className="ref-table">
@@ -281,8 +285,8 @@ function GroupTable({
               <th />
               {groups.map((g) => (
                 <Fragment key={g.id}>
-                  <th>w</th>
-                  <th>{mode === "ws" ? "s" : "x"}</th>
+                  <th>w (groef)</th>
+                  <th>{mode === "ws" ? "s (been)" : "x"}</th>
                 </Fragment>
               ))}
             </tr>

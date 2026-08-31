@@ -122,6 +122,7 @@ const RI_SCHERP: Record<Material, Record<number, number | null>> = {
   hoogsterkte: {},
 };
 
+/** 247TailorSteel: w = groefwijdte, s = minimale beenlengte (opleg). */
 type Ws = { w: number | null; s: number | null };
 type Wx = { w: number | null; x: number | null };
 
@@ -410,7 +411,7 @@ export function copyLine(row: KantenRow) {
         : row.material === "alu"
           ? "alu"
           : "staal";
-  return `Ri=${dashMm(row.ri)} mm, w=${dashMm(row.w)} mm, s=${dashMm(row.s)} mm, ${dashMm(row.t)} mm ${mat} ${row.kind}`;
+  return `Ri=${dashMm(row.ri)} mm, s=${dashMm(row.s)} mm (min. been), w=${dashMm(row.w)} mm (groef), ${dashMm(row.t)} mm ${mat} ${row.kind}`;
 }
 
 export const RI_T_HAAKS = [0.8, 1, 1.25, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10, 12] as const;
