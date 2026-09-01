@@ -135,7 +135,9 @@ export function PassingenCalc() {
               <tr>
                 <th>Ø (mm)</th>
                 {FITS.map((f) => (
-                  <th key={f.id}>{f.id}</th>
+                  <th key={f.id} className="normal-case">
+                    {f.id}
+                  </th>
                 ))}
               </tr>
             </thead>
@@ -225,7 +227,9 @@ export function PassingenCalc() {
               <tr>
                 <th>Ø (mm)</th>
                 {SHAFT_FIELDS.map((k) => (
-                  <th key={k}>{k}</th>
+                  <th key={k} className="normal-case">
+                    {k}
+                  </th>
                 ))}
               </tr>
             </thead>
