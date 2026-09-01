@@ -56,7 +56,6 @@ export const personJsonLd = {
   url: `${SITE_ORIGIN}/`,
   jobTitle: "Project Engineer",
   description: DEFAULT_DESCRIPTION,
-  email: "mailto:damianvink@live.nl",
   nationality: "NL",
   knowsLanguage: ["nl", "en"],
   worksFor: {

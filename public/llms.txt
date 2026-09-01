@@ -20,14 +20,16 @@ Main nav: Toolkit, Project, Marathon, About, Contact.
 - [Circlip groove DIN 471/472](https://www.damianvink.nl/toolkit/seegerring-groef): groove d2, b, t on shaft or in bore to Ø100 mm
 - [Fasteners](https://www.damianvink.nl/toolkit/bevestigers): M3–M24, ISO 273 clearance, VDI 2230 tightening torque
 - [O-ring groove ISO 3601](https://www.damianvink.nl/toolkit/o-ringgroef): cords 1.80–7.00 mm, radial and axial
-- [Motor specification](https://www.damianvink.nl/toolkit/motorspecificatie): n, F, T, P and next IEC kW step; SEW selects the gearmotor
+- [Motor specification](https://www.damianvink.nl/toolkit/motorspecificatie): n, F, T, P and next IEC kW step
 - [Pneumatic cylinder](https://www.damianvink.nl/toolkit/cilinder): F = p·A, ISO 15552 / 6432, double acting; no buckling, no Festo type
 - [Bending guidelines](https://www.damianvink.nl/toolkit/kanten): Ri, leg length, Z-bend; 247TailorSteel Sophia shop-spec, not ISO
+- [Buckling calculation](https://www.damianvink.nl/toolkit/knikberekening): Euler F_cr, critical stress, slenderness λ; four end conditions
 - [CAD libraries](https://www.damianvink.nl/toolkit/bronnen): TraceParts, 3Dfindit, MISUMI, 247 Tailor Steel, ISO OBP
+- [Macro library](https://www.damianvink.nl/toolkit/macros): downloadable VBA macros for SolidWorks 2024 and Inventor 2024
 - [Project workspace](https://www.damianvink.nl/project): five-phase PM workspace (noindex; local to the browser)
 - [Marathon](https://www.damianvink.nl/marathon): training dashboard, EDP Porto Marathon (Strava export)
 - [About](https://www.damianvink.nl/over-mij): background, career, CV (PDF)
-- [Contact](https://www.damianvink.nl/contact): e-mail and LinkedIn
+- [Contact](https://www.damianvink.nl/contact): LinkedIn and other channels
 - [Blog](https://www.damianvink.nl/blog): published pieces
 - [USB-C for the lab bench: Anthropic’s Model Hardware Standard](https://www.damianvink.nl/blog/usb-c-labtafel-mhs): 27 August 2026; USB-C is a metaphor, not an IEC connector
 
@@ -35,7 +37,6 @@ Empty until there is real content (noindex): /podcast, /projecten.
 
 ## Contact
 
-- E-mail: damianvink@live.nl
 - LinkedIn: https://www.linkedin.com/in/damianvink
 - X: https://x.com/damianvink_
 - Instagram: https://www.instagram.com/damianvink_

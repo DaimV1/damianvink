@@ -158,8 +158,13 @@ function OverMij() {
               "Education, work experience and technical background.",
             )}
           </p>
-          <a href="/cv.pdf" download className={cn(buttonVariants({ variant: "secondary" }), "mt-5")}>
-            {tx(locale, "Download CV (PDF)", "Download CV (PDF)")}
+          <a
+            href="/cv.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cn(buttonVariants({ variant: "secondary" }), "mt-5")}
+          >
+            {tx(locale, "Bekijk CV (PDF)", "View CV (PDF)")}
           </a>
         </section>
       </PageWrap>

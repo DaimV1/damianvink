@@ -12,7 +12,7 @@ export const Route = createFileRoute("/contact")({
     pageHead({
       title: "Contact — Damian Vink",
       description:
-        "Contact met Damian Vink, Project Engineer werktuigbouwkunde. Mail damianvink@live.nl of stuur een bericht via LinkedIn.",
+        "Contact met Damian Vink, Project Engineer werktuigbouwkunde. Stuur een bericht via LinkedIn of de andere kanalen.",
       path: "/contact",
     }),
   component: Contact,
