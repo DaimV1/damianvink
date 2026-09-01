@@ -97,8 +97,8 @@ export function LagerCalc() {
         <Note>
           {tx(
             locale,
-            "As-Ø in hele mm (4 t/m 50). Lastkeuze valt weg bij stilstaande binnenring. Klassen volgens SKF; µm → mm volgens ISO 286-2.",
-            "Shaft Ø in whole mm (4 through 50). Load choice drops away for a stationary inner ring. Classes per SKF; µm → mm per ISO 286-2.",
+            "As-Ø in hele mm (4 t/m 50). Klassen volgens SKF; µm → mm volgens ISO 286-2.",
+            "Shaft Ø in whole mm (4 through 50). Classes per SKF; µm → mm per ISO 286-2.",
           )}
         </Note>
         <div className="mt-6 grid gap-4 sm:grid-cols-3">
