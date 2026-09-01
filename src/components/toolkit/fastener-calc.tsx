@@ -18,6 +18,7 @@ import {
   Note,
   ResultGrid,
   SelectInput,
+  SourceBadge,
 } from "./calc-ui";
 import { BoltSection, SchemaPanel } from "./schema";
 
@@ -184,6 +185,13 @@ export function FastenerCalc() {
         <Note>
           Grove draad, μ = 0,14, 90 % Rp0,2, droog. Fv in N, Ma in N·m.
         </Note>
+        <SourceBadge>
+          {tx(
+            locale,
+            "Bron: Würth's weergave van VDI 2230-1 tabel A1, niet de primaire norm zelf.",
+            "Source: Würth's rendering of VDI 2230-1 table A1, not the primary standard.",
+          )}
+        </SourceBadge>
         <div className="table-scroll mt-4">
           <table className="ref-table">
             <thead>
