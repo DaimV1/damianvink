@@ -159,8 +159,9 @@ function DimAligned({
   const ax2 = x2 + px * offset;
   const ay2 = y2 + py * offset;
   const tick = 5;
-  const mx = (ax1 + ax2) / 2 + px * 12;
-  const my = (ay1 + ay2) / 2 + py * 12;
+  const mx = (ax1 + ax2) / 2 + px * 16;
+  const my = (ay1 + ay2) / 2 + py * 16;
+  const labelW = label.length * 7 + 8;
   return (
     <g>
       <Ext x1={x1} y1={y1} x2={ax1} y2={ay1} />
@@ -170,6 +171,8 @@ function DimAligned({
         <line x1={ax1 - px * tick} y1={ay1 - py * tick} x2={ax1 + px * tick} y2={ay1 + py * tick} />
         <line x1={ax2 - px * tick} y1={ay2 - py * tick} x2={ax2 + px * tick} y2={ay2 + py * tick} />
       </g>
+      {/* backing plate so the label stays legible over the leg it runs beside */}
+      <rect x={mx - labelW / 2} y={my - 13} width={labelW} height={17} fill="var(--paper-elevated)" />
       <text
         x={mx}
         y={my}
