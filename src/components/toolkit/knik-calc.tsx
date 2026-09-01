@@ -247,13 +247,13 @@ export function KnikCalc() {
 
       <section className="mt-12">
         <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-          {tx(locale, "Doorsnede", "Section")}
+          {tx(locale, "Knikvorm", "Buckling shape")}
         </h2>
         <Note>
           {tx(
             locale,
-            "De vier klassieke Euler-gevallen. k bepaalt de knik-lengte L_eff = k · L; de gemarkeerde vorm is de gekozen inklemming. Geen schaal.",
-            "The four classic Euler cases. k sets the buckling length L_eff = k · L; the highlighted shape is the selected end condition. Not to scale.",
+            "De knikvorm bij de gekozen inklemming. k bepaalt de knik-lengte L_eff = k · L. Geen schaal.",
+            "The buckling shape for the selected end condition. k sets the buckling length L_eff = k · L. Not to scale.",
           )}
         </Note>
         <SchemaPanel

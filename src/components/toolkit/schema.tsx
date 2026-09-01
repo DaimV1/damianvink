@@ -659,31 +659,31 @@ export function BendSection({
   );
 }
 
-function bucklePath(cx: number, y0: number, y1: number, amp: number, shape: (t: number) => number) {
+function bucklePathH(x0: number, x1: number, cy: number, amp: number, shape: (t: number) => number) {
   const N = 24;
   const pts: string[] = [];
   for (let i = 0; i <= N; i++) {
     const t = i / N;
-    const y = y0 + (y1 - y0) * t;
-    const x = cx + amp * shape(t);
+    const x = x0 + (x1 - x0) * t;
+    const y = cy - amp * shape(t);
     pts.push(`${i === 0 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)}`);
   }
   return pts.join(" ");
 }
 
-function GroundHatch({ x, y, dir }: { x: number; y: number; dir: 1 | -1 }) {
-  const w = 26;
+function GroundHatchH({ x, y, dir }: { x: number; y: number; dir: 1 | -1 }) {
+  const h = 30;
   const n = 4;
   const ticks = [];
   for (let i = 0; i <= n; i++) {
-    const tx0 = x - w / 2 + (i * w) / n;
+    const ty = y - h / 2 + (i * h) / n;
     ticks.push(
       <line
         key={i}
-        x1={tx0}
-        y1={y}
-        x2={tx0 - 6}
-        y2={y + dir * 9}
+        x1={x}
+        y1={ty}
+        x2={x + dir * 9}
+        y2={ty - 7}
         stroke="currentColor"
         strokeWidth="1"
         opacity="0.55"
@@ -692,13 +692,13 @@ function GroundHatch({ x, y, dir }: { x: number; y: number; dir: 1 | -1 }) {
   }
   return (
     <g>
-      <line x1={x - w / 2} y1={y} x2={x + w / 2} y2={y} stroke="currentColor" strokeWidth="1.3" />
+      <line x1={x} y1={y - h / 2} x2={x} y2={y + h / 2} stroke="currentColor" strokeWidth="1.3" />
       {ticks}
     </g>
   );
 }
 
-function BuckleSupport({
+function BuckleSupportH({
   kind,
   x,
   y,
@@ -710,103 +710,86 @@ function BuckleSupport({
   dir: 1 | -1;
 }) {
   if (kind === "free") return null;
-  if (kind === "fixed") return <GroundHatch x={x} y={y} dir={dir} />;
+  if (kind === "fixed") return <GroundHatchH x={x} y={y} dir={dir} />;
   return (
     <>
-      <circle cx={x} cy={y} r="3.5" fill="var(--paper)" stroke="currentColor" strokeWidth="1.2" />
-      <GroundHatch x={x} y={y + dir * 10} dir={dir} />
+      <circle cx={x} cy={y} r="4" fill="var(--paper)" stroke="currentColor" strokeWidth="1.2" />
+      <GroundHatchH x={x + dir * 11} y={y} dir={dir} />
     </>
   );
 }
 
 const BUCKLE_CASES: {
   id: EndConditionId;
-  bottom: "pin" | "fixed";
-  top: "pin" | "fixed" | "free";
+  near: "pin" | "fixed";
+  far: "pin" | "fixed" | "free";
   shape: (t: number) => number;
 }[] = [
-  { id: "hh", bottom: "pin", top: "pin", shape: (t) => Math.sin(Math.PI * t) },
-  { id: "fc", bottom: "fixed", top: "free", shape: (t) => 1 - Math.cos((Math.PI / 2) * t) },
-  { id: "ff", bottom: "fixed", top: "fixed", shape: (t) => (1 - Math.cos(2 * Math.PI * t)) / 2 },
-  { id: "fp", bottom: "fixed", top: "pin", shape: (t) => Math.sin(Math.PI * t) * (1 - 0.3 * t) },
+  { id: "hh", near: "pin", far: "pin", shape: (t) => Math.sin(Math.PI * t) },
+  { id: "fc", near: "fixed", far: "free", shape: (t) => 1 - Math.cos((Math.PI / 2) * t) },
+  { id: "ff", near: "fixed", far: "fixed", shape: (t) => (1 - Math.cos(2 * Math.PI * t)) / 2 },
+  { id: "fp", near: "fixed", far: "pin", shape: (t) => Math.sin(Math.PI * t) * (1 - 0.3 * t) },
 ];
 
+/** Only the selected case, drawn as a horizontal beam (load applied at the far/right end). */
 export function BucklingModes({ active }: { active: EndConditionId }) {
   const { locale } = useLocale();
-  const y0 = 208;
-  const y1 = 50;
-  const amp = 16;
-  const slots = [90, 250, 410, 570];
+  const c = BUCKLE_CASES.find((entry) => entry.id === active) ?? BUCKLE_CASES[0];
+  const cond = END_CONDITIONS.find((e) => e.id === c.id);
+  const x0 = 90;
+  const x1 = 560;
+  const cy = 108;
+  const amp = 34;
+  const d = bucklePathH(x0, x1, cy, amp, c.shape);
 
   return (
     <svg
-      className="w-full text-ink"
-      viewBox="0 0 640 250"
+      className="w-full max-w-2xl text-ink"
+      viewBox="0 0 640 200"
       role="img"
-      aria-label={tx(
-        locale,
-        "Vier Euler-knikvormen: scharnier-scharnier, ingeklemd-vrij, ingeklemd-ingeklemd en ingeklemd-scharnier, gekozen gedeelte gemarkeerd",
-        "Four Euler buckling modes: pinned-pinned, fixed-free, fixed-fixed and fixed-pinned, selected case highlighted",
-      )}
+      aria-label={
+        cond
+          ? tx(
+              locale,
+              `Knikvorm ${cond.label}, horizontale staaf, last aan het verre uiteinde`,
+              `Buckling mode ${cond.labelEn}, horizontal strut, load at the far end`,
+            )
+          : ""
+      }
     >
-      {BUCKLE_CASES.map((c, idx) => {
-        const cx = slots[idx];
-        const cond = END_CONDITIONS.find((e) => e.id === c.id);
-        const isActive = c.id === active;
-        const d = bucklePath(cx, y0, y1, amp, c.shape);
-        return (
-          <g key={c.id}>
-            <line
-              x1={cx}
-              y1={y0}
-              x2={cx}
-              y2={y1}
-              stroke="currentColor"
-              strokeWidth="0.75"
-              strokeDasharray="3 4"
-              opacity="0.3"
-            />
-            <path
-              d={d}
-              fill="none"
-              stroke={isActive ? "var(--accent)" : "currentColor"}
-              strokeWidth={isActive ? 2.5 : 1.4}
-              strokeLinecap="round"
-              opacity={isActive ? 1 : 0.4}
-            />
-            <BuckleSupport kind={c.bottom} x={cx} y={y0} dir={1} />
-            <BuckleSupport kind={c.top} x={cx} y={y1} dir={-1} />
-            {c.top !== "free" ? (
-              <>
-                <line x1={cx} y1={y1 - 22} x2={cx} y2={y1 - 4} stroke="currentColor" strokeWidth="1.2" opacity="0.7" />
-                <path d={`M${cx - 3},${y1 - 9} L${cx},${y1 - 3} L${cx + 3},${y1 - 9}`} fill="none" stroke="currentColor" strokeWidth="1.2" opacity="0.7" />
-              </>
-            ) : null}
-            <text
-              x={cx}
-              y={228}
-              textAnchor="middle"
-              fill={isActive ? "var(--accent)" : "currentColor"}
-              fontSize="11"
-              fontFamily={FONT}
-              fontWeight={isActive ? 500 : 400}
-            >
-              {cond ? tx(locale, cond.label, cond.labelEn) : c.id}
-            </text>
-            <text
-              x={cx}
-              y={242}
-              textAnchor="middle"
-              fill={isActive ? "var(--accent)" : "currentColor"}
-              fontSize="10"
-              fontFamily={FONT}
-              opacity="0.8"
-            >
-              k = {cond ? cond.k : ""}
-            </text>
-          </g>
-        );
-      })}
+      <line
+        x1={x0}
+        y1={cy}
+        x2={x1}
+        y2={cy}
+        stroke="currentColor"
+        strokeWidth="0.75"
+        strokeDasharray="3 4"
+        opacity="0.3"
+      />
+      <path
+        d={d}
+        fill="none"
+        stroke="var(--accent)"
+        strokeWidth="3"
+        strokeLinecap="round"
+      />
+      <BuckleSupportH kind={c.near} x={x0} y={cy} dir={-1} />
+      <BuckleSupportH kind={c.far} x={x1} y={cy} dir={1} />
+      <line x1={x1 + 30} y1={cy} x2={x1 + 6} y2={cy} stroke="currentColor" strokeWidth="1.4" opacity="0.75" />
+      <path
+        d={`M${x1 + 12},${cy - 4} L${x1 + 6},${cy} L${x1 + 12},${cy + 4}`}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.4"
+        opacity="0.75"
+      />
+      <text x={(x0 + x1) / 2} y={172} textAnchor="middle" fill="var(--accent)" fontSize="13" fontFamily={FONT} fontWeight={500}>
+        {cond ? tx(locale, cond.label, cond.labelEn) : ""}
+      </text>
+      <text x={(x0 + x1) / 2} y={190} textAnchor="middle" fill="currentColor" fontSize="11" fontFamily={FONT} opacity="0.75">
+        k = {cond ? cond.k : ""}
+      </text>
     </svg>
   );
 }
