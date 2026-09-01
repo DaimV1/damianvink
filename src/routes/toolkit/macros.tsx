@@ -66,6 +66,15 @@ function groups(locale: Locale) {
             "Saves every open document that has unsaved changes.",
           ),
         },
+        {
+          file: "/macros/solidworks-flat-pattern-dxf.bas",
+          name: tx(locale, "Exporteer vlak patroon naar DXF", "Export flat pattern to DXF"),
+          note: tx(
+            locale,
+            "Slaat het vlakke patroon van een plaatwerk-part op als .dxf.",
+            "Saves a sheet metal part's flat pattern as .dxf.",
+          ),
+        },
       ],
     },
     {
@@ -110,6 +119,15 @@ function groups(locale: Locale) {
             locale,
             "Exporteert elke geopende, al opgeslagen tekening naar PDF.",
             "Exports every open, already-saved drawing to PDF.",
+          ),
+        },
+        {
+          file: "/macros/inventor-flat-pattern-dxf.bas",
+          name: tx(locale, "Exporteer vlak patroon naar DXF", "Export flat pattern to DXF"),
+          note: tx(
+            locale,
+            "Slaat het vlakke patroon van een plaatwerk-part op als .dxf.",
+            "Saves a sheet metal part's flat pattern as .dxf.",
           ),
         },
       ],

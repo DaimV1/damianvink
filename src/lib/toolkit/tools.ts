@@ -174,7 +174,7 @@ export const TOOLS = [
     standard: "247TailorSteel",
     kind: "rekenhulp",
     group: "aand",
-    related: ["bronnen"],
+    related: ["bronnen", "macros"],
     blurb:
       "Haaks/scherp: Ri, min. beenlengte s, groefwijdte w, Z-buiging. Shop-spec Sophia, geen ISO.",
     blurbEn:
@@ -223,7 +223,7 @@ export const TOOLS = [
     standard: "SolidWorks · Inventor",
     kind: "naslag",
     group: "eh",
-    related: ["bronnen"],
+    related: ["bronnen", "kanten"],
     blurb:
       "Downloadbare VBA-macro's voor SolidWorks 2024 en Inventor 2024: STEP-export, batch opslaan, eigenschappen tonen.",
     blurbEn:
