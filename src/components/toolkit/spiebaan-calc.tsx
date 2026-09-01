@@ -26,7 +26,7 @@ export function SpiebaanCalc() {
   const row = parsed.status === "ok" ? lookupKeyway(d) : null;
   const rangeLabel = (over: number, to: number) => `boven ${over} t/m ${to}`;
   const rangeLabelDisplay = (over: number, to: number) =>
-    tx(locale, rangeLabel(over, to), `over ${over} through ${to}`);
+    tx(locale, rangeLabel(over, to), `>${over} – ≤${to}`);
   const activeLabel = row ? rangeLabel(row.over, row.to) : "";
 
   function onDia(v: string) {
@@ -37,7 +37,7 @@ export function SpiebaanCalc() {
 
   const copy = useMemo(() => {
     if (!row) return "";
-    const range = tx(locale, rangeLabel(row.over, row.to), `over ${row.over} through ${row.to}`);
+    const range = tx(locale, rangeLabel(row.over, row.to), `>${row.over} – ≤${row.to}`);
     return [
       `${tx(locale, "As", "Shaft")} Ø ${d} mm · ${range}`,
       `${tx(locale, "Spie", "Key")} ${row.b} × ${row.h} mm`,
