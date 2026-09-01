@@ -29,8 +29,8 @@ function Contact() {
         <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">
           {tx(
             locale,
-            "Vragen over engineering of samenwerking: e-mail of LinkedIn.",
-            "Questions about engineering or working together: email or LinkedIn.",
+            "Vragen over engineering of samenwerking? Neem contact op via onderstaande kanalen.",
+            "Questions about engineering or working together? Reach out via the channels below.",
           )}
         </p>
         <div className="mt-10 grid gap-3">
