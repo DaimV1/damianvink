@@ -88,7 +88,9 @@ export function RagBadge({
         ))}
       </div>
       {suggested !== value ? (
-        <p className="mt-1 text-[11px] text-subtle">registers wijzen op {suggested}</p>
+        <p className="mt-1 text-[11px] text-subtle">
+          {tx(locale, "registers wijzen op", "registers point to")} {ragLabel[suggested]}
+        </p>
       ) : null}
     </div>
   );

@@ -58,7 +58,7 @@ function ProjectPage() {
               lastExportAt={store.lastExportAt}
             />
           ) : (
-            <p className="text-sm text-muted">Laden…</p>
+            <p className="text-sm text-muted">{tx(locale, "Laden…", "Loading…")}</p>
           )}
         </div>
       </PageWrap>

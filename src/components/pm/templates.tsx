@@ -3,6 +3,7 @@ import { GENERATORS } from "@/lib/pm/fill-templates";
 import { downloadMsProject } from "@/lib/pm/msproject";
 import { TEMPLATES } from "@/lib/pm/templates";
 import type { Project } from "@/lib/pm/model";
+import { tx, useLocale } from "@/lib/i18n/locale";
 
 export function TemplatesPanel({
   project,
@@ -11,6 +12,7 @@ export function TemplatesPanel({
   project: Project;
   setProject: (p: Project | ((prev: Project) => Project)) => void;
 }) {
+  const { locale } = useLocale();
   return (
     <div className="space-y-10">
       <GanttBoard project={project} setProject={setProject} />
@@ -18,7 +20,11 @@ export function TemplatesPanel({
         <div>
           <h2 className="font-display text-xl font-semibold tracking-tight">Downloads</h2>
           <p className="mt-1 max-w-2xl text-sm leading-relaxed text-muted">
-            Bestanden worden gevuld met wat nu in de werkplek staat: naam, scope, risico’s, issues en de Gantt-regels.
+            {tx(
+              locale,
+              "Bestanden worden gevuld met wat nu in de werkplek staat: naam, scope, risico’s, issues en de Gantt-regels.",
+              "Files are filled with what's currently in the workspace: name, scope, risks, issues and the Gantt rows.",
+            )}
           </p>
         </div>
         <div className="grid gap-3">
@@ -29,10 +35,12 @@ export function TemplatesPanel({
             >
               <div className="min-w-0">
                 <p className="font-mono text-xs text-accent">
-                  {String(i + 1).padStart(2, "0")} · {t.phase}
+                  {String(i + 1).padStart(2, "0")} · {tx(locale, t.phase, t.phaseEn)}
                 </p>
-                <h3 className="mt-1 font-display text-lg font-semibold tracking-tight">{t.title}</h3>
-                <p className="mt-1 text-sm text-muted">{t.body}</p>
+                <h3 className="mt-1 font-display text-lg font-semibold tracking-tight">
+                  {tx(locale, t.title, t.titleEn)}
+                </h3>
+                <p className="mt-1 text-sm text-muted">{tx(locale, t.body, t.bodyEn)}</p>
               </div>
               <button
                 type="button"
@@ -42,7 +50,7 @@ export function TemplatesPanel({
                 }}
                 className="inline-flex h-11 shrink-0 items-center justify-center rounded-full border border-accent bg-accent px-4 text-sm text-accent-fg"
               >
-                Download {t.kind}
+                {tx(locale, "Download", "Download")} {t.kind}
               </button>
             </article>
           ))}

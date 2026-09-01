@@ -10,6 +10,7 @@ import {
   type ActivityKind,
 } from "@/lib/pm/activity";
 import { applyActivityProgress, uid, type Project } from "@/lib/pm/model";
+import { tx, useLocale } from "@/lib/i18n/locale";
 
 export function GanttBoard({
   project,
@@ -18,6 +19,7 @@ export function GanttBoard({
   project: Project;
   setProject: (p: Project | ((prev: Project) => Project)) => void;
 }) {
+  const { locale } = useLocale();
   const activities = project.activities ?? [];
   const weeks = weekStarts(project.startDate, planWeekCount(project.startDate, project.endDate, activities));
 
@@ -50,11 +52,38 @@ export function GanttBoard({
       startDate: start,
       activities: [
         { id: uid(), wbs: "1", name: "Kick-off", kind: "mijlpaal", owner: project.manager, start: d(0), end: d(0), pct: 0 },
-        { id: uid(), wbs: "1.1", name: "Scope vastleggen", kind: "activiteit", owner: project.manager, start: d(1), end: d(10), pct: 0 },
-        { id: uid(), wbs: "2.1", name: "WBS en raming", kind: "activiteit", owner: project.manager, start: d(8), end: d(21), pct: 0 },
-        { id: uid(), wbs: "2", name: "Baseline", kind: "mijlpaal", owner: project.sponsor, start: d(21), end: d(21), pct: 0 },
-        { id: uid(), wbs: "3.1", name: "Uitvoering", kind: "activiteit", owner: "", start: d(22), end: d(70), pct: 0 },
-        { id: uid(), wbs: "5", name: "Decharge", kind: "mijlpaal", owner: project.sponsor, start: d(90), end: d(90), pct: 0 },
+        {
+          id: uid(),
+          wbs: "1.1",
+          name: tx(locale, "Scope vastleggen", "Lock scope"),
+          kind: "activiteit",
+          owner: project.manager,
+          start: d(1),
+          end: d(10),
+          pct: 0,
+        },
+        {
+          id: uid(),
+          wbs: "2.1",
+          name: tx(locale, "WBS en raming", "WBS and estimate"),
+          kind: "activiteit",
+          owner: project.manager,
+          start: d(8),
+          end: d(21),
+          pct: 0,
+        },
+        { id: uid(), wbs: "2", name: tx(locale, "Baseline", "Baseline"), kind: "mijlpaal", owner: project.sponsor, start: d(21), end: d(21), pct: 0 },
+        {
+          id: uid(),
+          wbs: "3.1",
+          name: tx(locale, "Uitvoering", "Delivery"),
+          kind: "activiteit",
+          owner: "",
+          start: d(22),
+          end: d(70),
+          pct: 0,
+        },
+        { id: uid(), wbs: "5", name: tx(locale, "Decharge", "Discharge"), kind: "mijlpaal", owner: project.sponsor, start: d(90), end: d(90), pct: 0 },
       ],
     });
   }
@@ -65,18 +94,22 @@ export function GanttBoard({
         <div>
           <h2 className="font-display text-xl font-semibold tracking-tight">Gantt</h2>
           <p className="mt-1 max-w-2xl text-sm text-muted">
-            Vul start, einde, eigenaar en %. De balk volgt de datums; de horizon volgt jouw plan.
+            {tx(
+              locale,
+              "Vul start, einde, eigenaar en %. De balk volgt de datums; de horizon volgt jouw plan.",
+              "Fill in start, end, owner and %. The bar follows the dates; the horizon follows your plan.",
+            )}
           </p>
         </div>
         <div className="flex flex-wrap items-end gap-3">
-          <Field label="W1 start (maandag)">
+          <Field label={tx(locale, "W1 start (maandag)", "W1 start (Monday)")}>
             <TextInput
               type="date"
               value={project.startDate}
               onChange={(e) => patch({ startDate: e.target.value })}
             />
           </Field>
-          <Field label="Einde">
+          <Field label={tx(locale, "Einde", "End")}>
             <TextInput
               type="date"
               value={project.endDate}
@@ -91,20 +124,22 @@ export function GanttBoard({
           <thead>
             <tr className="bg-elevated">
               <th className="border-b border-line px-2 py-2 text-left font-medium">WBS</th>
-              <th className="border-b border-line px-2 py-2 text-left font-medium">Activiteit</th>
-              <th className="border-b border-line px-2 py-2 text-left font-medium">Type</th>
-              <th className="border-b border-line px-2 py-2 text-left font-medium">Eigenaar</th>
+              <th className="border-b border-line px-2 py-2 text-left font-medium">{tx(locale, "Activiteit", "Activity")}</th>
+              <th className="border-b border-line px-2 py-2 text-left font-medium">{tx(locale, "Type", "Type")}</th>
+              <th className="border-b border-line px-2 py-2 text-left font-medium">{tx(locale, "Eigenaar", "Owner")}</th>
               <th className="border-b border-line px-2 py-2 text-left font-medium">Start</th>
-              <th className="border-b border-line px-2 py-2 text-left font-medium">Einde</th>
+              <th className="border-b border-line px-2 py-2 text-left font-medium">{tx(locale, "Einde", "End")}</th>
               <th className="border-b border-line px-2 py-2 text-left font-medium">%</th>
               <th className="border-b border-line px-2 py-2 text-left font-medium">d</th>
               {weeks.map((w, i) => (
                 <th key={i} className="border-b border-line px-1 py-2 text-center font-mono text-[10px] text-muted">
                   W{i + 1}
-                  <span className="block font-sans">{weekLabel(w)}</span>
+                  <span className="block font-sans">{weekLabel(w, locale)}</span>
                 </th>
               ))}
-              <th className="border-b border-line px-2 py-2 text-left font-medium"><span className="sr-only">Weg</span></th>
+              <th className="border-b border-line px-2 py-2 text-left font-medium">
+                <span className="sr-only">{tx(locale, "Weg", "Remove")}</span>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -122,12 +157,17 @@ export function GanttBoard({
                     onChange={(e) => update(a.id, { kind: e.target.value as ActivityKind })}
                     className="h-9 min-w-[7rem] px-2"
                   >
-                    <option value="activiteit">Activiteit</option>
-                    <option value="mijlpaal">Mijlpaal</option>
+                    <option value="activiteit">{tx(locale, "Activiteit", "Activity")}</option>
+                    <option value="mijlpaal">{tx(locale, "Mijlpaal", "Milestone")}</option>
                   </Select>
                 </td>
                 <td className="border-b border-line p-1">
-                  <TextInput value={a.owner} onChange={(e) => update(a.id, { owner: e.target.value })} className="h-9 min-w-[6rem] px-2" placeholder="Wie" />
+                  <TextInput
+                    value={a.owner}
+                    onChange={(e) => update(a.id, { owner: e.target.value })}
+                    className="h-9 min-w-[6rem] px-2"
+                    placeholder={tx(locale, "Wie", "Who")}
+                  />
                 </td>
                 <td className="border-b border-line p-1">
                   <TextInput type="date" value={a.start} onChange={(e) => update(a.id, { start: e.target.value, end: a.end || e.target.value })} className="h-9 px-2" />
@@ -172,7 +212,7 @@ export function GanttBoard({
                       }))
                     }
                   >
-                    weg
+                    {tx(locale, "weg", "remove")}
                   </button>
                 </td>
               </tr>
@@ -183,14 +223,14 @@ export function GanttBoard({
 
       <div className="flex flex-wrap gap-2">
         <button type="button" onClick={() => addRow("activiteit")} className="h-11 rounded-full border border-line px-4 text-sm">
-          Activiteit
+          {tx(locale, "Activiteit", "Activity")}
         </button>
         <button type="button" onClick={() => addRow("mijlpaal")} className="h-11 rounded-full border border-line px-4 text-sm">
-          Mijlpaal
+          {tx(locale, "Mijlpaal", "Milestone")}
         </button>
         {activities.length === 0 ? (
           <button type="button" onClick={seed} className="h-11 rounded-full border border-accent bg-accent px-4 text-sm text-accent-fg">
-            Voorbeeld vullen
+            {tx(locale, "Voorbeeld vullen", "Fill example")}
           </button>
         ) : null}
       </div>

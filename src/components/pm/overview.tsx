@@ -57,9 +57,13 @@ export function OverviewPanel({
         </p>
         {slip.late || slip.over || suggested !== project.rag ? (
           <p className="mt-2 text-sm text-ink">
-            {slip.late ? `Einddatum later dan baseline (${project.baselineEndDate}). ` : ""}
-            {slip.over ? "Besteed boven budget. " : ""}
-            {suggested !== project.rag ? `Registers wijzen op ${suggested}.` : ""}
+            {slip.late
+              ? `${tx(locale, "Einddatum later dan baseline", "End date later than baseline")} (${project.baselineEndDate}). `
+              : ""}
+            {slip.over ? `${tx(locale, "Besteed boven budget.", "Spent over budget.")} ` : ""}
+            {suggested !== project.rag
+              ? tx(locale, `Registers wijzen op ${suggested}.`, `Registers point to ${suggested}.`)
+              : ""}
           </p>
         ) : null}
         <div className="mt-4 grid gap-3 sm:grid-cols-3">
@@ -136,7 +140,8 @@ export function OverviewPanel({
               {weekWork.map((a) => (
                 <li key={a.id} className="flex flex-wrap items-center gap-2 text-sm">
                   <span className="min-w-0 flex-1">
-                    <span className="font-mono text-xs text-accent">{a.wbs || a.kind}</span> {a.name || "Naamloos"}
+                    <span className="font-mono text-xs text-accent">{a.wbs || a.kind}</span>{" "}
+                    {a.name || tx(locale, "Naamloos", "Untitled")}
                     {a.owner ? <span className="text-muted"> · {a.owner}</span> : null}
                   </span>
                   <NumInput
@@ -145,7 +150,7 @@ export function OverviewPanel({
                     value={a.pct}
                     onValue={(pct) => setProject((p) => applyActivityProgress(p, a.id, pct))}
                     className="h-9 w-20"
-                    aria-label={`Voortgang ${a.name || "activiteit"}`}
+                    aria-label={`${tx(locale, "Voortgang", "Progress")} ${a.name || tx(locale, "activiteit", "activity")}`}
                   />
                 </li>
               ))}
@@ -163,7 +168,8 @@ export function OverviewPanel({
             <ul className="space-y-2 text-sm">
               {risks.map((r) => (
                 <li key={r.id}>
-                  <span className="font-mono text-xs text-accent">{riskScore(r)}</span> {r.event || r.source || "Naamloos"}
+                  <span className="font-mono text-xs text-accent">{riskScore(r)}</span>{" "}
+                  {r.event || r.source || tx(locale, "Naamloos", "Untitled")}
                   {r.owner ? <span className="text-muted"> · {r.owner}</span> : null}
                 </li>
               ))}
@@ -178,7 +184,7 @@ export function OverviewPanel({
             <ul className="space-y-2 text-sm">
               {issues.map((i) => (
                 <li key={i.id}>
-                  {i.title || "Naamloos"}
+                  {i.title || tx(locale, "Naamloos", "Untitled")}
                   <span className="text-muted">{i.due ? ` · ${i.due}` : ""}{i.owner ? ` · ${i.owner}` : ""}</span>
                 </li>
               ))}
@@ -192,7 +198,7 @@ export function OverviewPanel({
           {changes.length === 0 ? <p className="text-sm text-muted">{tx(locale, "Geen open wijzigingen.", "No open changes.")}</p> : (
             <ul className="space-y-2 text-sm">
               {changes.map((c) => (
-                <li key={c.id}>{c.title || "Naamloos"} · {c.advice}</li>
+                <li key={c.id}>{c.title || tx(locale, "Naamloos", "Untitled")} · {c.advice}</li>
               ))}
             </ul>
           )}
@@ -204,9 +210,13 @@ export function OverviewPanel({
 
       <p className="text-sm text-muted">
         Budget {euro(project.spent)} / {euro(project.budget)}
-        {project.endDate ? ` · einde ${project.endDate}` : ""}
-        {project.baselineFrozen ? ` · baseline ${project.baselineEndDate || "bevroren"}` : " · baseline nog open"}
-        {slip.budgetDelta ? ` · plan ${slip.budgetDelta > 0 ? "+" : ""}${euro(slip.budgetDelta)} t.o.v. baseline` : ""}
+        {project.endDate ? ` · ${tx(locale, "einde", "end")} ${project.endDate}` : ""}
+        {project.baselineFrozen
+          ? ` · baseline ${project.baselineEndDate || tx(locale, "bevroren", "frozen")}`
+          : ` · ${tx(locale, "baseline nog open", "baseline still open")}`}
+        {slip.budgetDelta
+          ? ` · ${tx(locale, "plan", "plan")} ${slip.budgetDelta > 0 ? "+" : ""}${euro(slip.budgetDelta)} ${tx(locale, "t.o.v. baseline", "vs. baseline")}`
+          : ""}
       </p>
     </div>
   );

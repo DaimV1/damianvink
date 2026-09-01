@@ -84,55 +84,77 @@ function Voorbereiding({
         <Button variant="secondary" size="sm" onClick={() => setProject((p) => ({
           ...p,
           stakeholders: [...p.stakeholders, { id: uid(), name: "", influence: 3, interest: 3, note: "" }],
-        }))}>Toevoegen</Button>
+        }))}>{tx(locale, "Toevoegen", "Add")}</Button>
       }>
         {project.stakeholders.length === 0 ? (
-          <p className="text-sm text-muted">Minstens één naam. Invloed en belang sturen de actie in het register Mensen.</p>
+          <p className="text-sm text-muted">
+            {tx(
+              locale,
+              "Minstens één naam. Invloed en belang sturen de actie in het register Mensen.",
+              "At least one name. Influence and interest drive the action in the People register.",
+            )}
+          </p>
         ) : null}
         <div className="space-y-3">
           {project.stakeholders.map((s) => (
             <div key={s.id} className="grid gap-2 rounded-md border border-line p-3 sm:grid-cols-4">
-              <TextInput className="sm:col-span-2" placeholder="Naam" value={s.name} onChange={(e) => patchList(setProject, "stakeholders", s.id, { name: e.target.value })} />
+              <TextInput
+                className="sm:col-span-2"
+                placeholder={tx(locale, "Naam", "Name")}
+                value={s.name}
+                onChange={(e) => patchList(setProject, "stakeholders", s.id, { name: e.target.value })}
+              />
               <Select value={s.influence} onChange={(e) => patchList(setProject, "stakeholders", s.id, { influence: Number(e.target.value) as 1 | 2 | 3 | 4 | 5 })}>
-                <option value={1}>Invloed 1</option>
-                <option value={2}>Invloed 2</option>
-                <option value={3}>Invloed 3</option>
-                <option value={4}>Invloed 4</option>
-                <option value={5}>Invloed 5</option>
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <option key={n} value={n}>
+                    {tx(locale, "Invloed", "Influence")} {n}
+                  </option>
+                ))}
               </Select>
               <Select value={s.interest} onChange={(e) => patchList(setProject, "stakeholders", s.id, { interest: Number(e.target.value) as 1 | 2 | 3 | 4 | 5 })}>
-                <option value={1}>Belang 1</option>
-                <option value={2}>Belang 2</option>
-                <option value={3}>Belang 3</option>
-                <option value={4}>Belang 4</option>
-                <option value={5}>Belang 5</option>
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <option key={n} value={n}>
+                    {tx(locale, "Belang", "Interest")} {n}
+                  </option>
+                ))}
               </Select>
             </div>
           ))}
         </div>
       </Card>
-      <Card title="Eerste risico’s" action={
+      <Card title={tx(locale, "Eerste risico’s", "Initial risks")} action={
         <Button variant="secondary" size="sm" onClick={() => setProject((p) => ({
           ...p,
           risks: [...p.risks, {
             id: uid(), source: "", event: "", effect: "", probability: 3, impact: 3,
             euro: null, owner: "", measure: "", response: "verkleinen", status: "open",
           }],
-        }))}>Toevoegen</Button>
+        }))}>{tx(locale, "Toevoegen", "Add")}</Button>
       }>
         {project.risks.length === 0 ? (
-          <p className="text-sm text-muted">Noem de gebeurtenis. Kans × impact en eigenaar komen in het register Risico’s verder.</p>
+          <p className="text-sm text-muted">
+            {tx(
+              locale,
+              "Noem de gebeurtenis. Kans × impact en eigenaar komen in het register Risico’s verder.",
+              "Name the event. Probability × impact and owner come later in the Risks register.",
+            )}
+          </p>
         ) : null}
         <div className="space-y-3">
           {project.risks.map((r) => (
             <div key={r.id} className="grid gap-2 rounded-md border border-line p-3 sm:grid-cols-4">
-              <TextInput className="sm:col-span-2" placeholder="Gebeurtenis" value={r.event} onChange={(e) => patchList(setProject, "risks", r.id, { event: e.target.value })} />
+              <TextInput
+                className="sm:col-span-2"
+                placeholder={tx(locale, "Gebeurtenis", "Event")}
+                value={r.event}
+                onChange={(e) => patchList(setProject, "risks", r.id, { event: e.target.value })}
+              />
               <Select value={r.probability} onChange={(e) => patchList(setProject, "risks", r.id, { probability: Number(e.target.value) as 1 | 2 | 3 | 4 | 5 })}>
-                <option value={1}>Kans 1</option>
-                <option value={2}>Kans 2</option>
-                <option value={3}>Kans 3</option>
-                <option value={4}>Kans 4</option>
-                <option value={5}>Kans 5</option>
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <option key={n} value={n}>
+                    {tx(locale, "Kans", "Probability")} {n}
+                  </option>
+                ))}
               </Select>
               <Select value={r.impact} onChange={(e) => patchList(setProject, "risks", r.id, { impact: Number(e.target.value) as 1 | 2 | 3 | 4 | 5 })}>
                 <option value={1}>Impact 1</option>
@@ -173,7 +195,9 @@ function Definitie({
         </div>
       </Card>
       <Card title={tx(locale, "3-punts schatting (dagen)", "3-point estimate (days)")} action={
-        <Button variant="secondary" size="sm" onClick={() => setProject((p) => ({ ...p, estimates: [...p.estimates, { id: uid(), name: "", o: null, m: null, p: null }] }))}>Regel</Button>
+        <Button variant="secondary" size="sm" onClick={() => setProject((p) => ({ ...p, estimates: [...p.estimates, { id: uid(), name: "", o: null, m: null, p: null }] }))}>
+          {tx(locale, "Regel", "Row")}
+        </Button>
       }>
         <div className="space-y-3">
           {project.estimates.length === 0 ? <p className="text-sm text-muted">{tx(locale, "Nog geen stukken. Schat de grote brokken in dagen, niet elke taak.", "No chunks yet. Estimate the big pieces in days, not every task.")}</p> : null}
@@ -181,18 +205,33 @@ function Definitie({
             const calc = pert(est);
             return (
               <div key={est.id} className="grid gap-2 rounded-md border border-line p-3 sm:grid-cols-6">
-                <TextInput className="sm:col-span-2" placeholder="Stuk werk" value={est.name} onChange={(e) => patchList(setProject, "estimates", est.id, { name: e.target.value })} />
+                <TextInput
+                  className="sm:col-span-2"
+                  placeholder={tx(locale, "Stuk werk", "Piece of work")}
+                  value={est.name}
+                  onChange={(e) => patchList(setProject, "estimates", est.id, { name: e.target.value })}
+                />
                 <NumInput placeholder="O (d)" value={est.o} onValue={(o) => patchList(setProject, "estimates", est.id, { o } as Partial<Estimate>)} />
                 <NumInput placeholder="M (d)" value={est.m} onValue={(m) => patchList(setProject, "estimates", est.id, { m } as Partial<Estimate>)} />
                 <NumInput placeholder="P (d)" value={est.p} onValue={(p) => patchList(setProject, "estimates", est.id, { p } as Partial<Estimate>)} />
                 <div className="flex items-center justify-between gap-2 text-xs text-muted">
                   <span>{calc ? `μ ${calc.mu.toFixed(1)} d · σ ${calc.sigma.toFixed(1)} d` : "—"}</span>
-                  <button type="button" className="text-subtle hover:text-ink" onClick={() => setProject((p) => ({ ...p, estimates: p.estimates.filter((x) => x.id !== est.id) }))}>weg</button>
+                  <button
+                    type="button"
+                    className="text-subtle hover:text-ink"
+                    onClick={() => setProject((p) => ({ ...p, estimates: p.estimates.filter((x) => x.id !== est.id) }))}
+                  >
+                    {tx(locale, "weg", "remove")}
+                  </button>
                 </div>
               </div>
             );
           })}
-          {project.estimates.some((e) => pert(e)) ? <p className="text-sm text-muted">Som μ {total.mu.toFixed(1)} d · gecombineerde σ {sigma.toFixed(1)} d</p> : null}
+          {project.estimates.some((e) => pert(e)) ? (
+            <p className="text-sm text-muted">
+              {tx(locale, "Som", "Sum")} μ {total.mu.toFixed(1)} d · {tx(locale, "gecombineerde", "combined")} σ {sigma.toFixed(1)} d
+            </p>
+          ) : null}
         </div>
       </Card>
       <Card title={tx(locale, "Geld en baseline", "Money and baseline")}>
@@ -227,8 +266,15 @@ function Uitvoering({ project, patch }: { project: Project; patch: (p: Partial<P
           <Field label={tx(locale, "Huidige einddatum", "Current end date")}><TextInput type="date" value={project.endDate} onChange={(e) => patch({ endDate: e.target.value })} /></Field>
         </div>
         <ul className="mt-4 space-y-1 text-sm text-muted">
-          <li>Budget {euro(project.spent)} van {euro(project.budget)}{over ? " — over budget" : ""}</li>
-          <li>Baseline-einddatum {project.baselineEndDate || "niet bevroren"}{slip ? " — later dan baseline" : ""}</li>
+          <li>
+            Budget {euro(project.spent)} {tx(locale, "van", "of")} {euro(project.budget)}
+            {over ? ` — ${tx(locale, "over budget", "over budget")}` : ""}
+          </li>
+          <li>
+            {tx(locale, "Baseline-einddatum", "Baseline end date")}{" "}
+            {project.baselineEndDate || tx(locale, "niet bevroren", "not frozen")}
+            {slip ? ` — ${tx(locale, "later dan baseline", "later than baseline")}` : ""}
+          </li>
         </ul>
       </Card>
     </div>

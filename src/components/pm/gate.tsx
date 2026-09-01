@@ -13,15 +13,15 @@ export function GatePanel({
   project: Project;
   setProject: (p: Project | ((prev: Project) => Project)) => void;
 }) {
+  const { locale } = useLocale();
   const [advice, setAdvice] = useState<DecisionKind>("go");
   const [who, setWho] = useState(project.sponsor);
   const [notes, setNotes] = useState("");
   const nxt = nextPhase(project.phase);
   const phase = PHASES.find((p) => p.id === project.phase)!;
   const brief = gateBrief(project);
-  const blockers = gateBlockers(project);
+  const blockers = gateBlockers(project, locale);
   const canGo = blockers.length === 0;
-  const { locale } = useLocale();
 
   function record(decision: DecisionKind) {
     if (decision === "go" && !canGo) return;
@@ -81,19 +81,35 @@ export function GatePanel({
           <Button onClick={() => record("go")} disabled={!canGo || (!nxt && project.phase !== "afsluiting")}>
             {nxt ? `${tx(locale, "Go naar", "Go to")} ${locale === "en" ? PHASES.find((p) => p.id === nxt)?.labelEn : PHASES.find((p) => p.id === nxt)?.label}` : tx(locale, "Go vastleggen", "Record go")}
           </Button>
-          <Button variant="secondary" onClick={() => record("bijsturen")}>Bijsturen</Button>
+          <Button variant="secondary" onClick={() => record("bijsturen")}>{tx(locale, "Bijsturen", "Steer")}</Button>
           <Button variant="secondary" onClick={() => record("stop")}>Stop</Button>
-          <Button variant="ghost" onClick={download}>Export stuurgroep</Button>
-          <button type="button" className="text-sm text-muted hover:text-ink" onClick={() => navigator.clipboard.writeText(brief)}>Kopieer tekst</button>
+          <Button variant="ghost" onClick={download}>{tx(locale, "Export stuurgroep", "Export steering group")}</Button>
+          <button
+            type="button"
+            className="text-sm text-muted hover:text-ink"
+            onClick={() => navigator.clipboard.writeText(brief)}
+          >
+            {tx(locale, "Kopieer tekst", "Copy text")}
+          </button>
         </div>
       </Card>
       {project.decisions.length ? (
-        <Card title="Eerdere besluiten">
+        <Card title={tx(locale, "Eerdere besluiten", "Previous decisions")}>
           <ul className="space-y-2 text-sm">
             {project.decisions.slice().reverse().map((d) => (
               <li key={d.id} className="border-b border-line pb-2 last:border-0">
-                <strong className="text-ink">{d.date} · {d.decision}</strong>
-                <span className="text-muted"> vanuit {PHASES.find((p) => p.id === d.from)?.label} · {d.who}</span>
+                <strong className="text-ink">
+                  {d.date} ·{" "}
+                  {d.decision === "bijsturen" ? tx(locale, "Bijsturen", "Steer") : d.decision === "go" ? "Go" : "Stop"}
+                </strong>
+                <span className="text-muted">
+                  {" "}
+                  {tx(locale, "vanuit", "from")}{" "}
+                  {locale === "en"
+                    ? PHASES.find((p) => p.id === d.from)?.labelEn
+                    : PHASES.find((p) => p.id === d.from)?.label}{" "}
+                  · {d.who}
+                </span>
                 {d.notes ? <p className="mt-1 text-muted">{d.notes}</p> : null}
               </li>
             ))}

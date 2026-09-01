@@ -116,9 +116,14 @@ export function ProjectWorkspace({
     <div className="space-y-6">
       {backupStale ? (
         <p className="rounded-md border border-line bg-elevated px-4 py-3 text-sm text-ink">
-          Backup is verouderd{lastExportAt ? ` (laatste export ${lastExportAt.slice(0, 10)})` : " (nog nooit geëxporteerd)"}.
-          Staat zit in dit tabblad.{" "}
-          <button type="button" className="text-accent hover:underline" onClick={exportJson}>Exporteer JSON</button>
+          {tx(locale, "Backup is verouderd", "Backup is outdated")}
+          {lastExportAt
+            ? ` (${tx(locale, "laatste export", "last export")} ${lastExportAt.slice(0, 10)})`
+            : ` (${tx(locale, "nog nooit geëxporteerd", "never exported")})`}
+          . {tx(locale, "Staat zit in dit tabblad.", "State lives in this tab.")}{" "}
+          <button type="button" className="text-accent hover:underline" onClick={exportJson}>
+            {tx(locale, "Exporteer JSON", "Export JSON")}
+          </button>
         </p>
       ) : null}
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -191,20 +196,46 @@ export function ProjectWorkspace({
           <Stat label="Budget" value={`${euro(project.spent)} / ${euro(project.budget)}`} />
         </dl>
         <p className="mt-4 text-sm text-ink">
-          Weekstart: {nextAction(project, locale)}
+          {tx(locale, "Weekstart", "Week start")}: {nextAction(project, locale)}
         </p>
         <p className="mt-1 text-sm text-muted">
-          Open: {openCount(project.issues)} issues · {openCount(project.changes)} wijzigingen · {project.risks.filter((r) => r.status !== "dicht").length} risico’s
+          {tx(locale, "Open", "Open")}: {openCount(project.issues)} issues ·{" "}
+          {openCount(project.changes)} {tx(locale, "wijzigingen", "changes")} ·{" "}
+          {project.risks.filter((r) => r.status !== "dicht").length} {tx(locale, "risico’s", "risks")}
         </p>
       </header>
 
       <aside className="rounded-lg border border-line bg-elevated p-4 text-sm leading-relaxed text-muted">
-        <p className="font-medium text-ink">Kort</p>
+        <p className="font-medium text-ink">{tx(locale, "Kort", "Summary")}</p>
         <ul className="mt-2 list-disc space-y-1 pl-5">
-          <li>Maandag: naam, vragen van deze fase, plan even nalopen.</li>
-          <li>Een fase is de open vraag: kader, opdracht, plan/baseline, stand, decharge.</li>
-          <li>Beslispunt is de enige officiële fasezet. Later fases zijn al leesbaar en invulbaar.</li>
-          <li>Staat in deze browser. Export bewaart een kopie. Voorbeeld laadt een montagelijn in Oriëntatie.</li>
+          <li>
+            {tx(
+              locale,
+              "Maandag: naam, vragen van deze fase, plan even nalopen.",
+              "Monday: name, this phase's questions, check the plan.",
+            )}
+          </li>
+          <li>
+            {tx(
+              locale,
+              "Een fase is de open vraag: kader, opdracht, plan/baseline, stand, decharge.",
+              "A phase is the open question: frame, brief, plan/baseline, status, discharge.",
+            )}
+          </li>
+          <li>
+            {tx(
+              locale,
+              "Beslispunt is de enige officiële fasezet. Later fases zijn al leesbaar en invulbaar.",
+              "The gate is the only official phase change. Later phases are already readable and fillable.",
+            )}
+          </li>
+          <li>
+            {tx(
+              locale,
+              "Staat in deze browser. Export bewaart een kopie. Voorbeeld laadt een montagelijn in Oriëntatie.",
+              "Stored in this browser. Export keeps a copy. Sample loads an assembly line in Framing.",
+            )}
+          </li>
         </ul>
       </aside>
 
@@ -254,9 +285,26 @@ export function ProjectWorkspace({
       {panel === "templates" ? <TemplatesPanel project={project} setProject={setProject} /> : null}
 
       <div className="flex flex-wrap items-center justify-between gap-3 border-t border-line pt-4">
-        <p className="text-xs text-subtle">Staat in deze browser. Export bewaart een kopie.</p>
-        <Button variant="ghost" size="sm" onClick={() => { if (window.confirm("Dit wist het actieve project in deze browser.")) reset(); }}>
-          Project wissen
+        <p className="text-xs text-subtle">
+          {tx(locale, "Staat in deze browser. Export bewaart een kopie.", "Stored in this browser. Export keeps a copy.")}
+        </p>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => {
+            if (
+              window.confirm(
+                tx(
+                  locale,
+                  "Dit wist het actieve project in deze browser.",
+                  "This deletes the active project in this browser.",
+                ),
+              )
+            )
+              reset();
+          }}
+        >
+          {tx(locale, "Project wissen", "Delete project")}
         </Button>
       </div>
     </div>

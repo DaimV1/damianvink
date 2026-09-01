@@ -44,8 +44,8 @@ export function weekStarts(projectStart: string, count = 16) {
   return Array.from({ length: count }, (_, i) => addDays(mon, i * 7));
 }
 
-export function weekLabel(d: Date) {
-  return d.toLocaleDateString("nl-NL", { day: "numeric", month: "short" });
+export function weekLabel(d: Date, locale: "nl" | "en" = "nl") {
+  return d.toLocaleDateString(locale === "en" ? "en-GB" : "nl-NL", { day: "numeric", month: "short" });
 }
 
 export function overlapsWeek(weekStart: Date, start: string, end: string) {

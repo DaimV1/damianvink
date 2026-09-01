@@ -111,21 +111,23 @@ export function nextPhase(id: PhaseId): PhaseId | null {
   return i >= 0 && i < PHASES.length - 1 ? PHASES[i + 1].id : null;
 }
 
-export function stakeholderAction(s: Stakeholder) {
+export function stakeholderAction(s: Stakeholder, locale: "nl" | "en" = "nl") {
+  const en = locale === "en";
   const hiInf = s.influence >= 3;
   const hiInt = s.interest >= 3;
-  if (hiInf && hiInt) return "Actief managen";
-  if (hiInf && !hiInt) return "Tevreden houden";
-  if (!hiInf && hiInt) return "Informeren";
-  return "Monitoren";
+  if (hiInf && hiInt) return en ? "Actively manage" : "Actief managen";
+  if (hiInf && !hiInt) return en ? "Keep satisfied" : "Tevreden houden";
+  if (!hiInf && hiInt) return en ? "Inform" : "Informeren";
+  return en ? "Monitor" : "Monitoren";
 }
 
 export function riskScore(r: Risk) { return r.probability * r.impact; }
-export function riskBand(score: number) {
-  if (score >= 16) return "kritiek" as const;
-  if (score >= 10) return "hoog" as const;
-  if (score >= 5) return "midden" as const;
-  return "laag" as const;
+export function riskBand(score: number, locale: "nl" | "en" = "nl") {
+  const en = locale === "en";
+  if (score >= 16) return en ? "critical" : "kritiek";
+  if (score >= 10) return en ? "high" : "hoog";
+  if (score >= 5) return en ? "medium" : "midden";
+  return en ? "low" : "laag";
 }
 export function riskEmv(r: Risk) { return r.euro == null ? null : (r.probability / 5) * r.euro; }
 
@@ -231,15 +233,16 @@ export function nextAction(project: Project, locale: "nl" | "en" = "nl") {
   return en ? "Ask for discharge." : "Vraag decharge.";
 }
 
-export function gateBlockers(project: Project) {
+export function gateBlockers(project: Project, locale: "nl" | "en" = "nl") {
+  const en = locale === "en";
   const blockers: string[] = [];
-  if (!project.name.trim()) blockers.push("Nog geen projectnaam.");
-  if (!project.sponsor.trim()) blockers.push("Geen opdrachtgever.");
+  if (!project.name.trim()) blockers.push(en ? "No project name yet." : "Nog geen projectnaam.");
+  if (!project.sponsor.trim()) blockers.push(en ? "No sponsor." : "Geen opdrachtgever.");
   for (const check of phaseChecks(project)) {
-    if (!check.done) blockers.push(check.label);
+    if (!check.done) blockers.push(en ? check.labelEn : check.label);
   }
   const orphanRisks = project.risks.filter((r) => r.status !== "dicht" && riskScore(r) >= 16 && !r.owner.trim());
-  if (orphanRisks.length) blockers.push("Kritiek risico zonder eigenaar.");
+  if (orphanRisks.length) blockers.push(en ? "Critical risk without an owner." : "Kritiek risico zonder eigenaar.");
   return blockers;
 }
 
