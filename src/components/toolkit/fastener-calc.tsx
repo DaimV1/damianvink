@@ -82,9 +82,9 @@ export function FastenerCalc() {
           </Field>
           <Field label={tx(locale, "Doorlaat", "Clearance hole")}>
             <SelectInput value={fit} onChange={(v) => setFit(v as FitSeries)}>
-              <option value="fijn">Fijn</option>
-              <option value="middel">Middel</option>
-              <option value="grof">Grof</option>
+              <option value="fijn">{tx(locale, "Fijn", "Fine")}</option>
+              <option value="middel">{tx(locale, "Middel", "Medium")}</option>
+              <option value="grof">{tx(locale, "Grof", "Coarse")}</option>
             </SelectInput>
           </Field>
         </div>

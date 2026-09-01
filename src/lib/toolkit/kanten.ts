@@ -1,16 +1,20 @@
 export type Material = "staal" | "alu" | "rvs" | "hoogsterkte";
 export type Kind = "haaks" | "scherp";
 
-export const MATERIALS: { id: Material; label: string }[] = [
-  { id: "staal", label: "Staal" },
-  { id: "alu", label: "Aluminium" },
-  { id: "rvs", label: "RVS" },
-  { id: "hoogsterkte", label: "Hoogsterkte (S355 / CorTen)" },
+export const MATERIALS: { id: Material; label: string; labelEn: string }[] = [
+  { id: "staal", label: "Staal", labelEn: "Steel" },
+  { id: "alu", label: "Aluminium", labelEn: "Aluminium" },
+  { id: "rvs", label: "RVS", labelEn: "Stainless steel" },
+  {
+    id: "hoogsterkte",
+    label: "Hoogsterkte (S355 / CorTen)",
+    labelEn: "High-strength (S355 / CorTen)",
+  },
 ];
 
-export const KINDS: { id: Kind; label: string }[] = [
-  { id: "haaks", label: "Haaks (90°)" },
-  { id: "scherp", label: "Scherp" },
+export const KINDS: { id: Kind; label: string; labelEn: string }[] = [
+  { id: "haaks", label: "Haaks (90°)", labelEn: "Right angle (90°)" },
+  { id: "scherp", label: "Scherp", labelEn: "Sharp" },
 ];
 
 /** Discrete thicknesses that appear in the 247 tables (mm). */

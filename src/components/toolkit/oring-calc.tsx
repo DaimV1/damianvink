@@ -3,6 +3,7 @@ import {
   D2_OPTIONS,
   GROOVE,
   ORING_LABELS,
+  ORING_LABELS_EN,
   squeeze,
   type OringKind,
 } from "@/lib/toolkit/oring";
@@ -25,16 +26,17 @@ export function OringCalc() {
   const [kind, setKind] = useState<OringKind>("radial");
   const d2n = parseFloat(d2);
   const g = GROOVE[kind][d2n as keyof (typeof GROOVE)[typeof kind]];
+  const kindLabel = tx(locale, ORING_LABELS[kind], ORING_LABELS_EN[kind]);
 
   const copy = useMemo(() => {
     if (!g) return "";
     return [
-      `O-ring d2 ${fmtMm(d2n, 2)} mm · ${ORING_LABELS[kind]}`,
+      `O-ring d2 ${fmtMm(d2n, 2)} mm · ${kindLabel}`,
       `Groefdiepte t  ${fmtMm(g.t)} mm (+0,05)`,
       `Groefbreedte b  ${fmtMm(g.b)} mm (+0,25)`,
       `Samendrukking  ca. ${squeeze(d2n, g.t)} %`,
     ].join("\n");
-  }, [d2n, g, kind]);
+  }, [d2n, g, kindLabel]);
 
   const items = g
     ? [
@@ -64,23 +66,23 @@ export function OringCalc() {
             <SelectInput value={d2} onChange={setD2}>
               {D2_OPTIONS.map((opt) => (
                 <option key={opt.value} value={String(opt.value)}>
-                  {opt.label}
+                  {tx(locale, opt.label, opt.labelEn)}
                 </option>
               ))}
             </SelectInput>
           </Field>
           <Field label={tx(locale, "Inbouw", "Installation")}>
             <SelectInput value={kind} onChange={(v) => setKind(v as OringKind)}>
-              <option value="radial">Radiaal, statisch</option>
-              <option value="axial">Axiaal, statisch</option>
-              <option value="hydro">Hydrauliek, dynamisch</option>
+              <option value="radial">{tx(locale, "Radiaal, statisch", "Radial, static")}</option>
+              <option value="axial">{tx(locale, "Axiaal, statisch", "Axial, static")}</option>
+              <option value="hydro">{tx(locale, "Hydrauliek, dynamisch", "Hydraulic, dynamic")}</option>
             </SelectInput>
           </Field>
         </div>
         {g ? (
           <>
             <p className="mt-5 text-sm text-muted">
-              d₂ {fmtMm(d2n, 2)} mm · {ORING_LABELS[kind]}
+              d₂ {fmtMm(d2n, 2)} mm · {kindLabel}
             </p>
             <ResultGrid items={items} />
             <p className="mt-4 text-sm leading-relaxed text-muted">

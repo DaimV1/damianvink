@@ -138,10 +138,10 @@ export function MotorCalc() {
           </Field>
           <Field label={tx(locale, "Bedrijf", "Duty")}>
             <SelectInput value={duty} onChange={onDuty}>
-              <option value="rollenbaan">Rollenbaan (μ = 0,03)</option>
-              <option value="band">Band (μ = 0,10)</option>
-              <option value="helling">Helling (μ + α°)</option>
-              <option value="hijsen">Hijsen</option>
+              <option value="rollenbaan">{tx(locale, "Rollenbaan (μ = 0,03)", "Roller conveyor (μ = 0.03)")}</option>
+              <option value="band">{tx(locale, "Band (μ = 0,10)", "Belt (μ = 0.10)")}</option>
+              <option value="helling">{tx(locale, "Helling (μ + α°)", "Incline (μ + α°)")}</option>
+              <option value="hijsen">{tx(locale, "Hijsen", "Hoisting")}</option>
             </SelectInput>
           </Field>
           {showMuMain ? (

@@ -62,7 +62,7 @@ export function KantenCalc() {
             >
               {MATERIALS.map((m) => (
                 <option key={m.id} value={m.id}>
-                  {m.label}
+                  {tx(locale, m.label, m.labelEn)}
                 </option>
               ))}
             </SelectInput>
@@ -71,7 +71,7 @@ export function KantenCalc() {
             <SelectInput value={kind} onChange={(v) => setKind(v as Kind)}>
               {KINDS.map((k) => (
                 <option key={k.id} value={k.id}>
-                  {k.label}
+                  {tx(locale, k.label, k.labelEn)}
                 </option>
               ))}
             </SelectInput>

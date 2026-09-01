@@ -83,8 +83,8 @@ export function SeegerCalc() {
               value={kind}
               onChange={(v) => setKind(v as SeegerKind)}
             >
-              <option value="as">As — DIN 471</option>
-              <option value="boring">Boring — DIN 472</option>
+              <option value="as">{tx(locale, "As — DIN 471", "Shaft — DIN 471")}</option>
+              <option value="boring">{tx(locale, "Boring — DIN 472", "Bore — DIN 472")}</option>
             </SelectInput>
           </Field>
         </div>

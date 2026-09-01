@@ -136,7 +136,7 @@ export function EenhedenCalc() {
               <SelectInput value={from.id} onChange={setFromId}>
                 {category.units.map((unit) => (
                   <option key={unit.id} value={unit.id}>
-                    {unit.symbol} — {unit.name}
+                    {unit.symbol} — {tx(locale, unit.name, unit.nameEn)}
                   </option>
                 ))}
               </SelectInput>
@@ -157,7 +157,7 @@ export function EenhedenCalc() {
               <SelectInput value={to.id} onChange={setToId}>
                 {category.units.map((unit) => (
                   <option key={unit.id} value={unit.id}>
-                    {unit.symbol} — {unit.name}
+                    {unit.symbol} — {tx(locale, unit.name, unit.nameEn)}
                   </option>
                 ))}
               </SelectInput>
@@ -192,22 +192,26 @@ export function EenhedenCalc() {
             <CopyResult text={copy} />
           </>
         ) : (
-          <p className="mt-5 text-sm text-muted">Voer een getal in.</p>
+          <p className="mt-5 text-sm text-muted">{tx(locale, "Voer een getal in.", "Enter a number.")}</p>
         )}
       </CalcPanel>
 
       <section className="mt-12">
         <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-          Alle eenheden in {category.label.toLowerCase()}
+          {tx(
+            locale,
+            `Alle eenheden in ${category.label.toLowerCase()}`,
+            `All units in ${CAT_EN[category.id].toLowerCase()}`,
+          )}
         </h2>
         <p className="mt-2 text-sm text-muted">{category.note}</p>
         <div className="table-scroll mt-4">
           <table className="ref-table">
             <thead>
               <tr>
-                <th>Eenheid</th>
-                <th>Systeem</th>
-                <th>Waarde</th>
+                <th>{tx(locale, "Eenheid", "Unit")}</th>
+                <th>{tx(locale, "Systeem", "System")}</th>
+                <th>{tx(locale, "Waarde", "Value")}</th>
               </tr>
             </thead>
             <tbody>
@@ -219,9 +223,11 @@ export function EenhedenCalc() {
                   <tr key={unit.id} className={active ? "is-active" : ""}>
                     <th scope="row">
                       {unit.symbol}
-                      <span className="ml-2 font-sans font-normal text-muted">{unit.name}</span>
+                      <span className="ml-2 font-sans font-normal text-muted">
+                        {tx(locale, unit.name, unit.nameEn)}
+                      </span>
                     </th>
-                    <td>{systemLabel(unit.system)}</td>
+                    <td>{systemLabel(unit.system, locale)}</td>
                     <td>{shown == null ? "—" : formatQty(shown)}</td>
                   </tr>
                 );
@@ -230,8 +236,11 @@ export function EenhedenCalc() {
           </table>
         </div>
         <p className="mt-4 text-xs leading-relaxed text-subtle">
-          Factoren: BIPM SI-brochure, NIST SP 811. Inch = 25,4 mm exact. Geen
-          vervanging van een meetrapport of ijkcertificaat.
+          {tx(
+            locale,
+            "Factoren: BIPM SI-brochure, NIST SP 811. Inch = 25,4 mm exact. Geen vervanging van een meetrapport of ijkcertificaat.",
+            "Factors: BIPM SI brochure, NIST SP 811. Inch = 25.4 mm exact. No substitute for a measurement report or calibration certificate.",
+          )}
         </p>
       </section>
     </>
@@ -266,8 +275,8 @@ function QtyInput({
   );
 }
 
-function systemLabel(system: "si" | "imp" | "other") {
-  if (system === "si") return "SI / metrisch";
+function systemLabel(system: "si" | "imp" | "other", locale: "nl" | "en") {
+  if (system === "si") return tx(locale, "SI / metrisch", "SI / metric");
   if (system === "imp") return "Imperial / US";
-  return "Overig";
+  return tx(locale, "Overig", "Other");
 }

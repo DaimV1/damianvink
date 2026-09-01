@@ -28,14 +28,20 @@ export const ORING_LABELS = {
   hydro: "Radiaal, hydrauliek (dynamisch)",
 } as const;
 
+export const ORING_LABELS_EN = {
+  radial: "Radial, static",
+  axial: "Axial, static (flange)",
+  hydro: "Radial, hydraulic (dynamic)",
+} as const;
+
 export type OringKind = keyof typeof GROOVE;
 
 export const D2_OPTIONS = [
-  { value: 1.8, label: "1,80 mm (A)" },
-  { value: 2.65, label: "2,65 mm (B)" },
-  { value: 3.55, label: "3,55 mm (C)" },
-  { value: 5.3, label: "5,30 mm (D)" },
-  { value: 7, label: "7,00 mm (E)" },
+  { value: 1.8, label: "1,80 mm (A)", labelEn: "1.80 mm (A)" },
+  { value: 2.65, label: "2,65 mm (B)", labelEn: "2.65 mm (B)" },
+  { value: 3.55, label: "3,55 mm (C)", labelEn: "3.55 mm (C)" },
+  { value: 5.3, label: "5,30 mm (D)", labelEn: "5.30 mm (D)" },
+  { value: 7, label: "7,00 mm (E)", labelEn: "7.00 mm (E)" },
 ] as const;
 
 export function squeeze(d2: number, t: number) {

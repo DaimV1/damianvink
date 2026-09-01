@@ -103,10 +103,10 @@ export function Iso2768Calc() {
           </Field>
           <Field label={tx(locale, "Lineair (2768-1)", "Linear (2768-1)")}>
             <SelectInput value={linear} onChange={(v) => setLinear(v as LinearClass)}>
-              <option value="f">f fijn</option>
-              <option value="m">m middel</option>
-              <option value="c">c grof</option>
-              <option value="v">v zeer grof</option>
+              <option value="f">{tx(locale, "f fijn", "f fine")}</option>
+              <option value="m">{tx(locale, "m middel", "m medium")}</option>
+              <option value="c">{tx(locale, "c grof", "c coarse")}</option>
+              <option value="v">{tx(locale, "v zeer grof", "v very coarse")}</option>
             </SelectInput>
           </Field>
           <Field label={tx(locale, "Vorm (2768-2)", "Geometrical (2768-2)")}>

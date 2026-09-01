@@ -90,15 +90,15 @@ export function LagerCalc() {
           </Field>
           <Field label={tx(locale, "Rotatie", "Rotation")}>
             <SelectInput value={rot} onChange={setRot}>
-              <option value="binnen">Binnenring draait (as)</option>
-              <option value="buiten">Buitenring draait (naaf)</option>
-              <option value="stil">Binnenring stil</option>
+              <option value="binnen">{tx(locale, "Binnenring draait (as)", "Inner ring rotates (shaft)")}</option>
+              <option value="buiten">{tx(locale, "Buitenring draait (naaf)", "Outer ring rotates (hub)")}</option>
+              <option value="stil">{tx(locale, "Binnenring stil", "Inner ring stationary")}</option>
             </SelectInput>
           </Field>
           <Field label={tx(locale, "Last", "Load")}>
             <SelectInput value={load} onChange={setLoad} disabled={stil}>
-              <option value="licht">Licht, P ≤ 0,05 C</option>
-              <option value="normaal">Normaal tot hoog, P {'>'} 0,05 C</option>
+              <option value="licht">{tx(locale, "Licht, P ≤ 0,05 C", "Light, P ≤ 0.05 C")}</option>
+              <option value="normaal">{tx(locale, "Normaal tot hoog, P > 0,05 C", "Normal to high, P > 0.05 C")}</option>
             </SelectInput>
           </Field>
         </div>
