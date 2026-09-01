@@ -148,6 +148,17 @@ export function SpiebaanCalc() {
             </tbody>
           </table>
         </div>
+        <p className="mt-4 text-xs leading-relaxed text-subtle">
+          {tx(locale, "Bron:", "Source:")}{" "}
+          <a
+            href="https://www.elesa-ganter.com/static/technicaldata/files/DIN6885_Keyways_EN.pdf"
+            className="text-accent hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Elesa+Ganter — DIN 6885 keyways
+          </a>
+        </p>
       </section>
 
       <section className="mt-10">
@@ -193,10 +204,19 @@ export function SpiebaanCalc() {
           </article>
         </div>
         <p className="mt-4 text-xs leading-relaxed text-subtle">
+          {tx(locale, "Bron:", "Source:")}{" "}
+          <a
+            href="https://www.elesa-ganter.com/static/technicaldata/files/DIN6885_Keyways_EN.pdf"
+            className="text-accent hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Elesa+Ganter — DIN 6885 keyways
+          </a>
           {tx(
             locale,
-            "Bron: DIN 6885-1 (hoge vorm). DIN 6885-2 is de lage vorm. H9/D10 is werkplaats-/UNI-conventie, niet de benoemde glijdpassing in DIN 6885-1:2021. Controleer kritieke maten in de actuele norm.",
-            "Source: DIN 6885-1 (high type). DIN 6885-2 is the low type. H9/D10 is shop/UNI convention, not the named sliding fit in DIN 6885-1:2021. Verify critical dimensions in the current standard.",
+            " (hoge vorm). DIN 6885-2 is de lage vorm. H9/D10 is werkplaats-/UNI-conventie, niet de benoemde glijdpassing in DIN 6885-1:2021. Controleer kritieke maten in de actuele norm.",
+            " (high type). DIN 6885-2 is the low type. H9/D10 is shop/UNI convention, not the named sliding fit in DIN 6885-1:2021. Verify critical dimensions in the current standard.",
           )}
         </p>
       </section>

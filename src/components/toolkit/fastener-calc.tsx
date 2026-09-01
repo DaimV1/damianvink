@@ -182,6 +182,17 @@ export function FastenerCalc() {
             </tbody>
           </table>
         </div>
+        <p className="mt-4 text-xs leading-relaxed text-subtle">
+          {tx(locale, "Bron:", "Source:")} ISO 273, ISO 4014/4017, ISO 4762, ISO 262 ·{" "}
+          <a
+            href="https://www.engineersedge.com/iso_socket_head_screw.htm"
+            className="text-accent hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {tx(locale, "Engineers Edge — ISO 4762 maattabel", "Engineers Edge — ISO 4762 size table")}
+          </a>
+        </p>
       </section>
 
       <section className="mt-10">

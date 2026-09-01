@@ -296,6 +296,17 @@ function RiTable({
           </tbody>
         </table>
       </div>
+      <p className="mt-4 text-xs leading-relaxed text-subtle">
+        {tx(locale, "Bron:", "Source:")}{" "}
+        <a
+          href={KANTEN_SOURCE}
+          className="text-accent hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          247TailorSteel
+        </a>
+      </p>
     </section>
   );
 }
@@ -387,6 +398,17 @@ function GroupTable({
           </tbody>
         </table>
       </div>
+      <p className="mt-4 text-xs leading-relaxed text-subtle">
+        {tx(locale, "Bron:", "Source:")}{" "}
+        <a
+          href={KANTEN_SOURCE}
+          className="text-accent hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          247TailorSteel
+        </a>
+      </p>
     </section>
   );
 }

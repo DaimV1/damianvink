@@ -205,29 +205,6 @@ export function Iso2768Calc() {
           locale,
           "ISO 2768-2 (H/K/L) is in 2021 ingetrokken; opvolger is ISO 22081. Hier nog getoond omdat tekeningen nog mK zetten. Dit is geen ISO 286 en geen vervanging van een maat in een vakje.",
           "ISO 2768-2 (H/K/L) was withdrawn in 2021; successor is ISO 22081. Still shown here because drawings still call out mK. This is not ISO 286 and not a substitute for a dimension in a tolerance box.",
-        )}{" "}
-        {tx(locale, "Bron:", "Source:")}{" "}
-        <a
-          href="https://www.rodinmachining.nl/media/53qdjv2u/iso-2768-normblad-rodin-machining.pdf"
-          className="text-accent hover:underline"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {tx(locale, "Rodin ISO 2768-blad", "Rodin ISO 2768 sheet")}
-        </a>
-        {tx(locale, "; lineair nagekeken bij", "; linear values checked against")}{" "}
-        <a
-          href="https://www.hoekman-rvs.nl/toleranties-cnc-kanten-iso-2768"
-          className="text-accent hover:underline"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Hoekman
-        </a>{" "}
-        {tx(
-          locale,
-          "(hoek/vorm niet van Hoekman — onvolledig t.o.v. de norm).",
-          "(angle/form not from Hoekman — incomplete relative to the standard).",
         )}
       </p>
 
@@ -278,6 +255,17 @@ export function Iso2768Calc() {
             </tbody>
           </table>
         </div>
+        <p className="mt-4 text-xs leading-relaxed text-subtle">
+          {tx(locale, "Bron:", "Source:")}{" "}
+          <a
+            href="https://www.rodinmachining.nl/media/53qdjv2u/iso-2768-normblad-rodin-machining.pdf"
+            className="text-accent hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {tx(locale, "Rodin ISO 2768-blad", "Rodin ISO 2768 sheet")}
+          </a>
+        </p>
       </section>
     </>
   );
@@ -332,6 +320,27 @@ function LinearTable({
           </tbody>
         </table>
       </div>
+      <p className="mt-4 text-xs leading-relaxed text-subtle">
+        {tx(locale, "Bron:", "Source:")}{" "}
+        <a
+          href="https://www.rodinmachining.nl/media/53qdjv2u/iso-2768-normblad-rodin-machining.pdf"
+          className="text-accent hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {tx(locale, "Rodin ISO 2768-blad", "Rodin ISO 2768 sheet")}
+        </a>
+        {tx(locale, "; nagekeken bij", "; checked against")}{" "}
+        <a
+          href="https://www.hoekman-rvs.nl/toleranties-cnc-kanten-iso-2768"
+          className="text-accent hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Hoekman
+        </a>
+        .
+      </p>
     </section>
   );
 }
@@ -370,6 +379,17 @@ function RadiusTable({
           </tbody>
         </table>
       </div>
+      <p className="mt-4 text-xs leading-relaxed text-subtle">
+        {tx(locale, "Bron:", "Source:")}{" "}
+        <a
+          href="https://www.rodinmachining.nl/media/53qdjv2u/iso-2768-normblad-rodin-machining.pdf"
+          className="text-accent hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {tx(locale, "Rodin ISO 2768-blad", "Rodin ISO 2768 sheet")}
+        </a>
+      </p>
     </section>
   );
 }
@@ -410,6 +430,17 @@ function AngleTable({
           </tbody>
         </table>
       </div>
+      <p className="mt-4 text-xs leading-relaxed text-subtle">
+        {tx(locale, "Bron:", "Source:")}{" "}
+        <a
+          href="https://www.rodinmachining.nl/media/53qdjv2u/iso-2768-normblad-rodin-machining.pdf"
+          className="text-accent hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {tx(locale, "Rodin ISO 2768-blad", "Rodin ISO 2768 sheet")}
+        </a>
+      </p>
     </section>
   );
 }
@@ -451,6 +482,17 @@ function StraightTable({
           </tbody>
         </table>
       </div>
+      <p className="mt-4 text-xs leading-relaxed text-subtle">
+        {tx(locale, "Bron:", "Source:")}{" "}
+        <a
+          href="https://www.rodinmachining.nl/media/53qdjv2u/iso-2768-normblad-rodin-machining.pdf"
+          className="text-accent hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {tx(locale, "Rodin ISO 2768-blad", "Rodin ISO 2768 sheet")}
+        </a>
+      </p>
     </section>
   );
 }
@@ -496,6 +538,17 @@ function FormTable({
           </tbody>
         </table>
       </div>
+      <p className="mt-4 text-xs leading-relaxed text-subtle">
+        {tx(locale, "Bron:", "Source:")}{" "}
+        <a
+          href="https://www.rodinmachining.nl/media/53qdjv2u/iso-2768-normblad-rodin-machining.pdf"
+          className="text-accent hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {tx(locale, "Rodin ISO 2768-blad", "Rodin ISO 2768 sheet")}
+        </a>
+      </p>
     </section>
   );
 }

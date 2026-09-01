@@ -236,10 +236,29 @@ export function EenhedenCalc() {
           </table>
         </div>
         <p className="mt-4 text-xs leading-relaxed text-subtle">
+          {tx(locale, "Factoren:", "Factors:")}{" "}
+          <a
+            href="https://www.nist.gov/publications/international-system-units-si-2019-edition"
+            className="text-accent hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {tx(locale, "BIPM SI-brochure (NIST SP 330)", "BIPM SI brochure (NIST SP 330)")}
+          </a>
+          ,{" "}
+          <a
+            href="https://physics.nist.gov/cuu/pdf/sp811.pdf"
+            className="text-accent hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            NIST SP 811
+          </a>
+          .{" "}
           {tx(
             locale,
-            "Factoren: BIPM SI-brochure, NIST SP 811. Inch = 25,4 mm exact. Geen vervanging van een meetrapport of ijkcertificaat.",
-            "Factors: BIPM SI brochure, NIST SP 811. Inch = 25.4 mm exact. No substitute for a measurement report or calibration certificate.",
+            "Inch = 25,4 mm exact. Geen vervanging van een meetrapport of ijkcertificaat.",
+            "Inch = 25.4 mm exact. No substitute for a measurement report or calibration certificate.",
           )}
         </p>
       </section>

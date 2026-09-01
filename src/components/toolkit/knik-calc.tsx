@@ -291,6 +291,17 @@ export function KnikCalc() {
             </tbody>
           </table>
         </div>
+        <p className="mt-4 text-xs leading-relaxed text-subtle">
+          {tx(locale, "Bron:", "Source:")}{" "}
+          <a
+            href="https://www.engineeringtoolbox.com/euler-column-formula-d_1813.html"
+            className="text-accent hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Engineering ToolBox — Euler column formula
+          </a>
+        </p>
       </section>
 
       <section className="mt-10">
@@ -322,6 +333,17 @@ export function KnikCalc() {
             </tbody>
           </table>
         </div>
+        <p className="mt-4 text-xs leading-relaxed text-subtle">
+          {tx(locale, "Bron:", "Source:")}{" "}
+          <a
+            href="https://www.engineeringtoolbox.com/young-modulus-d_417.html"
+            className="text-accent hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Engineering ToolBox — Young's modulus of elasticity
+          </a>
+        </p>
       </section>
     </>
   );

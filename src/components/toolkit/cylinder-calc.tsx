@@ -222,6 +222,27 @@ export function CylinderCalc() {
             </tbody>
           </table>
         </div>
+        <p className="mt-4 text-xs leading-relaxed text-subtle">
+          {tx(locale, "Bron:", "Source:")}{" "}
+          <a
+            href="https://www.iso.org/standard/66921.html"
+            className="text-accent hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            ISO 15552
+          </a>{" "}
+          (Ø 32–320 mm) ·{" "}
+          <a
+            href="https://www.iso.org/standard/64054.html"
+            className="text-accent hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            ISO 6432
+          </a>{" "}
+          (Ø 8–25 mm).
+        </p>
       </section>
     </>
   );

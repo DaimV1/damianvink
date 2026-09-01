@@ -299,19 +299,28 @@ export function MotorCalc() {
             </tbody>
           </table>
         </div>
+        <p className="mt-4 text-xs leading-relaxed text-subtle">
+          {tx(locale, "Bron μ-defaults:", "Source for μ defaults:")}{" "}
+          <a
+            href="https://www.engineeringtoolbox.com/rolling-friction-resistance-d_1303.html"
+            className="text-accent hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Engineering ToolBox — rolling resistance
+          </a>
+          {tx(
+            locale,
+            ". Richtwaarden, geen normtabel — meet of vraag de fabrikant na bij kritieke aandrijvingen.",
+            ". Indicative values, not a standard table — measure or check with the manufacturer for critical drives.",
+          )}
+        </p>
       </section>
 
       <section className="mt-10">
         <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
           {tx(locale, "IEC 60034 kW-stappen", "IEC 60034 kW steps")}
         </h2>
-        <Note>
-          {tx(
-            locale,
-            "Volgende catalogusmotor, niet het berekende asvermogen. Boven 315 kW geen stap in deze reeks.",
-            "Next catalog motor, not the calculated shaft power. Above 315 kW no step in this series.",
-          )}
-        </Note>
         <div className="table-scroll mt-4">
           <table className="ref-table">
             <thead>
@@ -334,11 +343,8 @@ export function MotorCalc() {
           </table>
         </div>
         <p className="mt-4 text-xs leading-relaxed text-subtle">
-          {tx(
-            locale,
-            "P = F·v. IEC 60034 kW-reeks (R20). Naslag, geen motorcatalogus.",
-            "P = F·v. IEC 60034 kW series (R20). Reference only, not a motor catalog.",
-          )}
+          {tx(locale, "Bron:", "Source:")} IEC 60034-1 (
+          {tx(locale, "voorkeurreeks vermogens, R20", "preferred power ratings, R20 series")}).
         </p>
       </section>
     </>

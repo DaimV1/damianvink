@@ -176,6 +176,19 @@ export function PassingenCalc() {
             </tbody>
           </table>
         </div>
+        <p className="mt-4 text-xs leading-relaxed text-subtle">
+          {tx(locale, "Bron:", "Source:")}{" "}
+          {tx(locale, "afgeleid van de gat- en astoleranties in tabel 2 en 3, zie ", "derived from the hole and shaft tolerances in tables 2 and 3, see ")}
+          <a
+            href="https://www.roymech.co.uk/Useful_Tables/ISO_Tolerances/ISO_286_2H.html"
+            className="text-accent hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            RoyMech ISO 286-2
+          </a>
+          .
+        </p>
       </section>
 
       <section className="mt-10">
@@ -242,6 +255,17 @@ export function PassingenCalc() {
             </tbody>
           </table>
         </div>
+        <p className="mt-4 text-xs leading-relaxed text-subtle">
+          {tx(locale, "Bron:", "Source:")} ISO 286-1 / ISO 286-2 ·{" "}
+          <a
+            href="https://www.roymech.co.uk/Useful_Tables/ISO_Tolerances/ISO_286_2H.html"
+            className="text-accent hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            RoyMech ISO 286-2 hole tolerances
+          </a>
+        </p>
       </section>
 
       <section className="mt-10">
@@ -280,10 +304,21 @@ export function PassingenCalc() {
           </table>
         </div>
         <p className="mt-4 text-xs leading-relaxed text-subtle">
+          {tx(locale, "Bron:", "Source:")} ISO 286-1 / ISO 286-2 (
+          {tx(locale, "limietafwijkingen", "limit deviations")}) ·{" "}
+          <a
+            href="https://www.roymech.co.uk/Useful_Tables/ISO_Tolerances/ISO_286_2s.html"
+            className="text-accent hover:underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            RoyMech ISO 286-2 shaft tolerances
+          </a>
+          .{" "}
           {tx(
             locale,
-            "Bron: ISO 286-1 / ISO 286-2 (limietafwijkingen). Waarden omgerekend van µm naar mm. Diameters: boven de ondergrens tot en met de bovengrens. JS7 is ±IT7/2 volgens ISO 286-2, zonder afronding naar hele µm. Naslag, geen vervanging van de norm.",
-            "Source: ISO 286-1 / ISO 286-2 (limit deviations). Values converted from µm to mm. Diameters: over the lower bound up to and including the upper bound. JS7 is ±IT7/2 per ISO 286-2, without rounding to whole µm. Reference only, not a substitute for the standard.",
+            "Waarden omgerekend van µm naar mm. Diameters: boven de ondergrens tot en met de bovengrens. JS7 is ±IT7/2 volgens ISO 286-2, zonder afronding naar hele µm. Naslag, geen vervanging van de norm.",
+            "Values converted from µm to mm. Diameters: over the lower bound up to and including the upper bound. JS7 is ±IT7/2 per ISO 286-2, without rounding to whole µm. Reference only, not a substitute for the standard.",
           )}
         </p>
       </section>
