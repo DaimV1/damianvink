@@ -731,7 +731,15 @@ export function BendSection({
       <path d={path} fill="none" stroke="currentColor" strokeWidth={strokeW} strokeLinecap="butt" strokeLinejoin="round" />
       <path d={path} fill="none" stroke="var(--accent)" strokeWidth={accentW} strokeLinecap="butt" strokeLinejoin="round" />
 
-      <text x={bendX - 65} y={bendY + 14} fill="currentColor" fontSize="11" fontFamily={FONT}>
+      {/* Ri is the concave (inner) radius, so its label sits inside the V opening, above the apex — not below it in the die's clearance notch */}
+      <text
+        x={bendX}
+        y={bendY - 54}
+        textAnchor="middle"
+        fill="currentColor"
+        fontSize="11"
+        fontFamily={FONT}
+      >
         {ril}
       </text>
 
