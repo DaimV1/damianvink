@@ -257,34 +257,34 @@ export function BoltSection({
       </text>
       {/* clearance D */}
       <rect x="140" y="96" width="56" height="76" fill="var(--paper)" />
-      {/* shank d */}
-      <rect x="150" y="80" width="36" height="148" fill="var(--accent)" />
-      {/* hex head */}
-      <path d="M132 48 h72 l10 32 H122 Z" fill="var(--accent)" stroke="currentColor" strokeWidth="1" />
-      {/* nut */}
+      {/* shank d, flush between head and nut */}
+      <rect x="150" y="96" width="36" height="76" fill="var(--accent)" />
+      {/* hex head, flush against the top plate */}
+      <path d="M132 64 h72 l10 32 H122 Z" fill="var(--accent)" stroke="currentColor" strokeWidth="1" />
+      {/* nut, flush against the bottom plate */}
       <path
-        d="M128 228 h80 l8 24 H120 Z"
+        d="M128 172 h80 l8 24 H120 Z"
         fill="var(--paper)"
         stroke="currentColor"
         strokeWidth="1.2"
       />
-      <rect x="150" y="228" width="36" height="24" fill="var(--accent)" />
+      <rect x="150" y="172" width="36" height="24" fill="var(--accent)" />
 
-      <Ext x1={122} y1={48} x2={122} y2={40} />
-      <Ext x1={214} y1={48} x2={214} y2={40} />
+      <Ext x1={122} y1={64} x2={122} y2={40} />
+      <Ext x1={214} y1={64} x2={214} y2={40} />
       <DimH x1={122} x2={214} y={36} label={sw} side="up" />
 
-      <Ext x1={304} y1={48} x2={318} y2={48} />
-      <Ext x1={304} y1={80} x2={318} y2={80} />
-      <DimV x={324} y1={48} y2={80} label={k} side="right" />
+      <Ext x1={304} y1={64} x2={318} y2={64} />
+      <Ext x1={304} y1={96} x2={318} y2={96} />
+      <DimV x={324} y1={64} y2={96} label={k} side="right" />
 
-      <Ext x1={140} y1={172} x2={140} y2={214} />
-      <Ext x1={196} y1={172} x2={196} y2={214} />
-      <DimH x1={140} x2={196} y={222} label={D} />
+      <Ext x1={150} y1={196} x2={150} y2={212} />
+      <Ext x1={186} y1={196} x2={186} y2={212} />
+      <DimH x1={150} x2={186} y={220} label={d} />
 
-      <Ext x1={150} y1={252} x2={150} y2={268} />
-      <Ext x1={186} y1={252} x2={186} y2={268} />
-      <DimH x1={150} x2={186} y={276} label={d} />
+      <Ext x1={140} y1={196} x2={140} y2={244} />
+      <Ext x1={196} y1={196} x2={196} y2={244} />
+      <DimH x1={140} x2={196} y={252} label={D} />
     </svg>
   );
 }
