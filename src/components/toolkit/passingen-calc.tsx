@@ -64,8 +64,7 @@ export function PassingenCalc() {
         </h2>
         <Note>
           Nominale Ø in hele millimeters. Tabellen: boven 3 t/m 50 mm. Zelfde
-          getallen als de naslag hieronder. Een decimaal (20,5) wordt niet
-          omgezet naar 205.
+          getallen als de naslag hieronder.
         </Note>
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
           <Field label={tx(locale, "Nominale Ø (mm)", "Nominal Ø (mm)")}>

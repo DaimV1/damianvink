@@ -8,7 +8,7 @@ import { itemListJsonLd, pageHead, softwareJsonLd } from "@/lib/seo";
 import { TOOLS } from "@/lib/toolkit/tools";
 
 const DESCRIPTION =
-  "Engineering toolkit: eenheden (SI · imperial), ISO 286-passingen, DIN 6885-spiebanen, SKF-lagerpassingen, seegerringgroef DIN 471/472, VDI 2230-bevestigingsmateriaal, ISO 2768 algemene toleranties, motorspecificatie, pneumatische cilinder ISO 15552, richtlijnen kanten, O-ringgroef ISO 3601 en CAD-bronnen. Rekenhulp bovenaan, naslag eronder.";
+  "Engineering toolkit: eenheden (SI · imperial), ISO 286-passingen, DIN 6885-spiebanen, SKF-lagerpassingen, seegerringgroef DIN 471/472, VDI 2230-bevestigingsmateriaal, ISO 2768 algemene toleranties, motorspecificatie, pneumatische cilinder ISO 15552, richtlijnen kanten, O-ringgroef ISO 3601 en CAD-bronnen.";
 
 export const Route = createFileRoute("/toolkit/")({
   validateSearch: (s: Record<string, unknown>): { q?: string } => ({

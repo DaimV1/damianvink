@@ -15,13 +15,13 @@ const pages = {
       title: "Engineering toolkit.",
       accent: "toolkit.",
       crumb: "Toolkit",
-      lede: "Naslagwerk voor werktuigbouwkundigen en constructeurs. Zoek op norm, trefwoord of eenheid; open een tool voor de rekenhulp bovenaan en de tabel eronder.",
+      lede: "Naslagwerk voor werktuigbouwkundigen en constructeurs. Zoek op norm, trefwoord of eenheid.",
     },
     en: {
       title: "Engineering toolkit.",
       accent: "toolkit.",
       crumb: "Toolkit",
-      lede: "Reference material for mechanical engineers and machine designers. Search by standard, keyword or unit; open a tool for the calculator on top and the table below.",
+      lede: "Reference material for mechanical engineers and machine designers. Search by standard, keyword or unit.",
     },
   },
   eenheden: {
@@ -29,7 +29,7 @@ const pages = {
       title: "Eenheden omrekenen.",
       accent: "omrekenen.",
       crumb: "Eenheden",
-      lede: "Imperial naar metrisch en terug, plus SI onderling: lengte, volume, massa, kracht, druk, temperatuur, koppel, vermogen. Rekenhulp eerst; alle eenheden van de gekozen grootheid eronder.",
+      lede: "Imperial naar metrisch en terug, plus SI onderling: lengte, volume, massa, kracht, druk, temperatuur, koppel, vermogen.",
       faq: [
         { q: "Hoeveel mm is 1 inch?", a: "Exact 25,4 mm. Dat is de internationale inch sinds 1959 (ISO 1). 1 ft = 12 in = 304,8 mm." },
         { q: "Is 1 dm³ hetzelfde als 1 L?", a: "Ja. De liter is gedefinieerd als 1 dm³, dus 0,001 m³. 1 mL = 1 cm³." },
@@ -42,7 +42,7 @@ const pages = {
       title: "Convert units.",
       accent: "units.",
       crumb: "Units",
-      lede: "Imperial to metric and back, plus SI among themselves: length, volume, mass, force, pressure, temperature, torque, power. Calculator first; every unit of the selected quantity below.",
+      lede: "Imperial to metric and back, plus SI among themselves: length, volume, mass, force, pressure, temperature, torque, power.",
       faq: [
         { q: "How many mm is 1 inch?", a: "Exactly 25.4 mm. That is the international inch since 1959 (ISO 1). 1 ft = 12 in = 304.8 mm." },
         { q: "Is 1 dm³ the same as 1 L?", a: "Yes. The litre is defined as 1 dm³, so 0.001 m³. 1 mL = 1 cm³." },
@@ -57,7 +57,7 @@ const pages = {
       title: "Passingen (ISO 286).",
       accent: "(ISO 286).",
       crumb: "Passingen",
-      lede: "ISO 286, eenheidsgatstelsel. Rekenhulp eerst: nominale Ø en passing. Daaronder de tabellen. Diameters: boven 3 mm tot en met 50 mm.",
+      lede: "ISO 286, eenheidsgatstelsel. Diameters: boven 3 mm tot en met 50 mm.",
       faq: [
         { q: "Wat is het eenheidsgatstelsel in ISO 286?", a: "Het gat krijgt een H-afwijking (ondermaat 0). De as (c, d, f, g, h, k, n, p, s) bepaalt of de passing los, overgang of vast is." },
         { q: "Wat betekent H7/g6?", a: "Losse passing: gat H7, as g6. Altijd speling. Typisch voor glijdende of nauwkeurig verschuifbare delen." },
@@ -70,7 +70,7 @@ const pages = {
       title: "Fits (ISO 286).",
       accent: "(ISO 286).",
       crumb: "Fits",
-      lede: "ISO 286, hole-basis system. Calculator first: nominal Ø and fit. Tables below. Diameters: above 3 mm through 50 mm.",
+      lede: "ISO 286, hole-basis system. Diameters: above 3 mm through 50 mm.",
       faq: [
         { q: "What is the hole-basis system in ISO 286?", a: "The hole gets an H deviation (lower deviation 0). The shaft (c, d, f, g, h, k, n, p, s) decides whether the fit is clearance, transition or interference." },
         { q: "What does H7/g6 mean?", a: "Clearance fit: hole H7, shaft g6. Always clearance. Typical for sliding or accurately movable parts." },
@@ -139,7 +139,7 @@ const pages = {
       title: "Spiebaan-toleranties (DIN 6885).",
       accent: "(DIN 6885).",
       crumb: "Spiebaan-toleranties",
-      lede: "Parallelspieën en spiebanen volgens DIN 6885-1 (hoge vorm). Vul de as-Ø in; de tabel eronder markeert de bijbehorende rij.",
+      lede: "Parallelspieën en spiebanen volgens DIN 6885-1 (hoge vorm). Vul de as-Ø in; de tabel markeert de bijbehorende rij.",
       faq: [
         { q: "Wat is t1 en t2 bij DIN 6885?", a: "t₁ is de groefdiepte in de as, t₂ in de naaf. b × h is de spiemaat." },
         { q: "Welke breedtetolerantie is standaard?", a: "P9 in as en naaf: vaste zitting (DIN 6885-1:2021). Lichte zitting is N9 (as) / JS9 (naaf). H9/D10 is werkplaats-/UNI-conventie." },
@@ -151,7 +151,7 @@ const pages = {
       title: "Keyway tolerances (DIN 6885).",
       accent: "(DIN 6885).",
       crumb: "Keyway tolerances",
-      lede: "Parallel keys and keyways per DIN 6885-1 (high type). Enter shaft Ø; the table below highlights the matching row.",
+      lede: "Parallel keys and keyways per DIN 6885-1 (high type). Enter shaft Ø; the table highlights the matching row.",
       faq: [
         { q: "What are t1 and t2 in DIN 6885?", a: "t₁ is groove depth in the shaft, t₂ in the hub. b × h is the key size." },
         { q: "Which width tolerance is standard?", a: "P9 in shaft and hub: tight fit (DIN 6885-1:2021). Easy fit is N9 (shaft) / JS9 (hub). H9/D10 is a shop/UNI convention." },
