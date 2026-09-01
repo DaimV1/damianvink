@@ -57,6 +57,15 @@ function groups(locale: Locale) {
             "Reads the configuration-independent custom properties of the active document. Read-only.",
           ),
         },
+        {
+          file: "/macros/solidworks-save-all.bas",
+          name: tx(locale, "Sla alles op", "Save all"),
+          note: tx(
+            locale,
+            "Slaat elk geopend document met niet-opgeslagen wijzigingen op.",
+            "Saves every open document that has unsaved changes.",
+          ),
+        },
       ],
     },
     {
@@ -92,6 +101,15 @@ function groups(locale: Locale) {
             locale,
             "Leest titel, auteur, onderwerp en trefwoorden uit het actieve document. Alleen-lezen.",
             "Reads title, author, subject and keywords from the active document. Read-only.",
+          ),
+        },
+        {
+          file: "/macros/inventor-batch-pdf.bas",
+          name: tx(locale, "Batch-export tekeningen naar PDF", "Batch-export drawings to PDF"),
+          note: tx(
+            locale,
+            "Exporteert elke geopende, al opgeslagen tekening naar PDF.",
+            "Exports every open, already-saved drawing to PDF.",
           ),
         },
       ],
