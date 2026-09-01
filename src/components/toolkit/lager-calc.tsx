@@ -151,13 +151,13 @@ export function LagerCalc() {
 
       <section className="mt-12">
         <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-          {tx(locale, "Tolerantievelden", "Tolerance zones")}
+          {tx(locale, "Doorsnede", "Section")}
         </h2>
         <Note>
           {tx(
             locale,
-            "ISO 286 voor de gekozen Ø-band. Boven: huis (gat), onder: as. Positief = groter dan nominaal. Accent = aanbevolen klasse; lichter = alternatief huis.",
-            "ISO 286 for the selected Ø band. Top: housing (hole), bottom: shaft. Positive = larger than nominal. Accent = recommended class; lighter = alternative housing.",
+            "Doorsnede van het lager in het huis. Links de pasvlak bij de as, rechts de pasvlak tussen buitenring en huis. Geen schaal.",
+            "Cross-section of the bearing in the housing. Left: the fit at the shaft, right: the fit between the outer ring and the housing. Not to scale.",
           )}
         </Note>
         <SchemaPanel
