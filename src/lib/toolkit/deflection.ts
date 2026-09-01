@@ -64,6 +64,46 @@ export function computeDeflection({
   return { deltaAtLoad, deltaMax, xMax };
 }
 
+/**
+ * Doorbuiging δ(x) op N punten langs de balk, voor een indicatieve
+ * vervormingscurve. Zelfde piecewise formules als computeDeflection, maar
+ * dan overal geëvalueerd in plaats van alleen bij x=a en x=x_max.
+ */
+export function deflectionShapePoints({
+  end,
+  L,
+  a,
+  E,
+  I,
+  P,
+  n = 40,
+}: {
+  end: BeamEndCondition;
+  L: number;
+  a: number;
+  E: number;
+  I: number;
+  P: number;
+  n?: number;
+}): { x: number; y: number }[] {
+  const pts: { x: number; y: number }[] = [];
+  for (let i = 0; i <= n; i++) {
+    const x = (L * i) / n;
+    let y: number;
+    if (end === "cant") {
+      y = x <= a ? (P * x ** 2 * (3 * a - x)) / (6 * E * I) : (P * a ** 2 * (3 * x - a)) / (6 * E * I);
+    } else {
+      const b = L - a;
+      y =
+        x <= a
+          ? (P * b * x * (L ** 2 - b ** 2 - x ** 2)) / (6 * L * E * I)
+          : (P * a * (L - x) * (2 * L * x - a ** 2 - x ** 2)) / (6 * L * E * I);
+    }
+    pts.push({ x, y });
+  }
+  return pts;
+}
+
 export function copyLine(r: DeflectionResult, endLabel: string, a: number) {
   return `δ(x=${fmtDotComma(a, 0)}) = ${fmtDotComma(r.deltaAtLoad, 3)} mm, δ_max = ${fmtDotComma(r.deltaMax, 3)} mm bij x = ${fmtDotComma(r.xMax, 0)} mm (${endLabel})`;
 }

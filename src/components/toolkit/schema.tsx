@@ -9,7 +9,12 @@ import type { SeegerKind } from "@/lib/toolkit/seeger";
 import type { OringKind } from "@/lib/toolkit/oring";
 import { dashMm, type Kind as BendKind } from "@/lib/toolkit/kanten";
 import { END_CONDITIONS, type EndConditionId } from "@/lib/toolkit/knik";
-import type { BeamEndCondition } from "@/lib/toolkit/deflection";
+import {
+  computeDeflection,
+  deflectionShapePoints,
+  fmtDotComma,
+  type BeamEndCondition,
+} from "@/lib/toolkit/deflection";
 
 const FONT = "IBM Plex Mono, ui-monospace, monospace";
 
@@ -862,42 +867,69 @@ export function BeamDeflection({
   end,
   a,
   L,
-  xMax,
+  E,
+  I,
+  P,
 }: {
   end: BeamEndCondition;
   a: number;
   L: number;
-  xMax: number;
+  E: number;
+  I: number;
+  P: number;
 }) {
   const { locale } = useLocale();
   const x0 = 90;
   const x1 = 560;
-  const cy = 108;
+  const cy = 100;
   const toX = (v: number) => x0 + (x1 - x0) * (Math.min(Math.max(v, 0), L) / L);
   const loadX = toX(a);
+
+  const result = computeDeflection({ end, L, a, E, I, P });
+  const xMax = result?.xMax ?? a;
   const maxX = toX(xMax);
   const showMaxMarker = Math.abs(maxX - loadX) > 4;
+
+  const points = deflectionShapePoints({ end, L, a, E, I, P });
+  const peak = points.reduce((m, p) => Math.max(m, Math.abs(p.y)), 0) || 1;
+  const amp = 26;
+  const curve = points
+    .map((p, i) => `${i === 0 ? "M" : "L"}${toX(p.x).toFixed(1)},${(cy + (p.y / peak) * amp).toFixed(1)}`)
+    .join(" ");
+
+  const dAtLoad = result ? `δ(a) ${fmtDotComma(result.deltaAtLoad, 2)} mm` : "";
+  const dMax = result ? `δ_max ${fmtDotComma(result.deltaMax, 2)} mm` : "";
 
   return (
     <svg
       className="w-full max-w-2xl text-ink"
-      viewBox="0 0 640 200"
+      viewBox="0 0 640 210"
       role="img"
       aria-label={
         end === "cant"
           ? tx(
               locale,
-              "Uitkraging, ingeklemd links, puntlast P op afstand a vanaf de inklemming",
-              "Cantilever, fixed at the left, point load P at distance a from the fixed end",
+              "Uitkraging, ingeklemd links, puntlast P op afstand a vanaf de inklemming, indicatieve doorbuigingscurve",
+              "Cantilever, fixed at the left, point load P at distance a from the fixed end, indicative deflection curve",
             )
           : tx(
               locale,
-              "Vrij opgelegde balk, puntlast P op afstand a vanaf het linker steunpunt",
-              "Simply supported beam, point load P at distance a from the left support",
+              "Vrij opgelegde balk, puntlast P op afstand a vanaf het linker steunpunt, indicatieve doorbuigingscurve",
+              "Simply supported beam, point load P at distance a from the left support, indicative deflection curve",
             )
       }
     >
-      <line x1={x0} y1={cy} x2={x1} y2={cy} stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+      <line
+        x1={x0}
+        y1={cy}
+        x2={x1}
+        y2={cy}
+        stroke="currentColor"
+        strokeWidth="1.4"
+        strokeDasharray="3 4"
+        opacity="0.4"
+      />
+      <path d={curve} fill="none" stroke="var(--accent)" strokeWidth="2.5" strokeLinecap="round" />
       {end === "ss" ? (
         <>
           <BuckleSupportH kind="pin" x={x0} y={cy} dir={-1} />
@@ -922,16 +954,31 @@ export function BeamDeflection({
 
       {showMaxMarker ? (
         <>
-          <line x1={maxX} y1={cy + 6} x2={maxX} y2={cy + 18} stroke="currentColor" strokeWidth="1" opacity="0.6" />
-          <text x={maxX} y={cy + 32} textAnchor="middle" fill="currentColor" fontSize="10" fontFamily={FONT} opacity="0.75">
-            {tx(locale, "max", "max")}
+          <line
+            x1={maxX}
+            y1={cy + (amp * (points.find((p) => Math.abs(toX(p.x) - maxX) < 3)?.y ?? 0)) / peak}
+            x2={maxX}
+            y2={cy + amp + 14}
+            stroke="currentColor"
+            strokeWidth="1"
+            opacity="0.6"
+          />
+          <text x={loadX} y={cy + amp + 28} textAnchor="middle" fill="var(--accent)" fontSize="11" fontFamily={FONT}>
+            {dAtLoad}
+          </text>
+          <text x={maxX} y={cy + amp + 44} textAnchor="middle" fill="currentColor" fontSize="11" fontFamily={FONT}>
+            {dMax}
           </text>
         </>
-      ) : null}
+      ) : (
+        <text x={loadX} y={cy + amp + 28} textAnchor="middle" fill="var(--accent)" fontSize="11" fontFamily={FONT}>
+          {`δ ${fmtDotComma(result?.deltaAtLoad ?? 0, 2)} mm`}
+        </text>
+      )}
 
-      <Ext x1={x0} y1={cy} x2={x0} y2={cy + 50} />
-      <Ext x1={loadX} y1={cy} x2={loadX} y2={cy + 50} />
-      <DimH x1={x0} x2={loadX} y={cy + 50} label="a" side="down" />
+      <Ext x1={x0} y1={cy} x2={x0} y2={cy + amp + 62} />
+      <Ext x1={loadX} y1={cy} x2={loadX} y2={cy + amp + 62} />
+      <DimH x1={x0} x2={loadX} y={cy + amp + 62} label="a" side="down" />
     </svg>
   );
 }

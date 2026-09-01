@@ -246,7 +246,9 @@ export function DeflectionCalc() {
             end={endCondition}
             a={posARaw != null && Lraw != null ? Math.min(Math.max(posARaw, 0), Lraw) : 0}
             L={Lraw ?? 1000}
-            xMax={result?.xMax ?? 0}
+            E={E}
+            I={section?.I ?? 7854}
+            P={Praw ?? 1000}
           />
         </SchemaPanel>
       </section>
