@@ -122,7 +122,12 @@ export function PassingenCalc() {
                   value: `${mmFromUm(result.ES)} / ${mmFromUm(result.EI)} mm`,
                 },
                 {
-                  label: `${tx(locale, "As", "Shaft")} ${result.fit.shaft}`,
+                  label: (
+                    <>
+                      {tx(locale, "As", "Shaft")}{" "}
+                      <span className="normal-case">{result.fit.shaft}</span>
+                    </>
+                  ),
                   value: `${mmFromUm(result.es)} / ${mmFromUm(result.ei)} mm`,
                 },
                 {

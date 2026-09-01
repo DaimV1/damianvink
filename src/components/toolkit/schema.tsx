@@ -22,7 +22,7 @@ export function SchemaPanel({
   caption,
   children,
 }: {
-  caption: string;
+  caption: ReactNode;
   children: ReactNode;
 }) {
   return (

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { computeBearing } from "@/lib/toolkit/bearing";
 import { readStoredDiameter, storeDiameter } from "@/lib/toolkit/tools";
 import { mmFromUm } from "@/lib/utils";
@@ -51,11 +51,15 @@ export function LagerCalc() {
       .join("\n");
   }, [d, result, locale]);
 
-  const items: { label: string; value: string }[] =
+  const items: { label: ReactNode; value: string }[] =
     result
       ? ([
           {
-            label: `${tx(locale, "As", "Shaft")} ${result.shaft}`,
+            label: (
+              <>
+                {tx(locale, "As", "Shaft")} <span className="normal-case">{result.shaft}</span>
+              </>
+            ),
             value: `${mmFromUm(result.shaftDev.es[result.i])} / ${mmFromUm(result.shaftDev.ei[result.i])} mm`,
           },
           {
@@ -70,11 +74,17 @@ export function LagerCalc() {
             : null,
           stil
             ? {
-                label: tx(locale, "As h6 (geen verschuiving nodig)", "Shaft h6 (no shift needed)"),
+                label: (
+                  <>
+                    {tx(locale, "As", "Shaft")}{" "}
+                    <span className="normal-case">h6</span>{" "}
+                    {tx(locale, "(geen verschuiving nodig)", "(no shift needed)")}
+                  </>
+                ),
                 value: `${mmFromUm(result.h6.es[result.i])} / ${mmFromUm(result.h6.ei[result.i])} mm`,
               }
             : null,
-        ].filter(Boolean) as { label: string; value: string }[])
+        ].filter(Boolean) as { label: ReactNode; value: string }[])
       : [];
 
   return (
@@ -160,13 +170,16 @@ export function LagerCalc() {
         </Note>
         <SchemaPanel
           caption={
-            result
-              ? tx(
-                  locale,
-                  `Band ${result.band.label} mm · as ${result.shaft} · huis ${result.hole}${result.holeAlt ? ` / ${result.holeAlt}` : ""}`,
-                  `Band ${result.band.labelEn} mm · shaft ${result.shaft} · housing ${result.hole}${result.holeAlt ? ` / ${result.holeAlt}` : ""}`,
-                )
-              : tx(locale, "Band boven 18 t/m 30 mm — vul een Ø in", "Band over 18 through 30 mm — enter an Ø")
+            result ? (
+              <>
+                {tx(locale, "Band", "Band")} {tx(locale, result.band.label, result.band.labelEn)} mm ·{" "}
+                {tx(locale, "as", "shaft")} <span className="normal-case">{result.shaft}</span> ·{" "}
+                {tx(locale, "huis", "housing")} {result.hole}
+                {result.holeAlt ? ` / ${result.holeAlt}` : ""}
+              </>
+            ) : (
+              tx(locale, "Band boven 18 t/m 30 mm — vul een Ø in", "Band over 18 through 30 mm — enter an Ø")
+            )
           }
         >
           <BearingFitChart
