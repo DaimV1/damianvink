@@ -11,21 +11,6 @@ export const TOOL_GROUPS: { id: ToolGroupId; label: string; labelEn: string }[] 
 /** Switcher uses `short`; ISO 2768 is labeled Toleranties. */
 export const TOOLS = [
   {
-    id: "eenheden",
-    href: "/toolkit/eenheden",
-    short: "Eenheden",
-    shortEn: "Units",
-    title: "Eenheden",
-    titleEn: "Units",
-    standard: "SI · imperial",
-    kind: "rekenhulp",
-    group: "eh",
-    related: ["motor", "bevestigers", "cilinder"],
-    blurb: "Inch ↔ mm, °C ↔ K, dm³ ↔ L, lbf ↔ N, psi ↔ bar. SI en imperial.",
-    blurbEn: "Inch ↔ mm, °C ↔ K, dm³ ↔ L, lbf ↔ N, psi ↔ bar. SI and imperial.",
-    tags: ["omrekenen", "inch", "kelvin", "newton", "liter", "units", "convert"],
-  },
-  {
     id: "passingen",
     href: "/toolkit/passingen",
     short: "Passingen",
@@ -214,6 +199,21 @@ export const TOOLS = [
     blurbEn:
       "Deflection of a beam under a point load at distance a: simply supported or cantilever. Deflection at the load and the maximum.",
     tags: ["puntlast", "buiging", "doorbuiging", "balk", "staaf", "point load", "bending", "deflection", "beam"],
+  },
+  {
+    id: "eenheden",
+    href: "/toolkit/eenheden",
+    short: "Eenheden",
+    shortEn: "Units",
+    title: "Eenheden",
+    titleEn: "Units",
+    standard: "SI · imperial",
+    kind: "rekenhulp",
+    group: "eh",
+    related: ["motor", "bevestigers", "cilinder"],
+    blurb: "Inch ↔ mm, °C ↔ K, dm³ ↔ L, lbf ↔ N, psi ↔ bar. SI en imperial.",
+    blurbEn: "Inch ↔ mm, °C ↔ K, dm³ ↔ L, lbf ↔ N, psi ↔ bar. SI and imperial.",
+    tags: ["omrekenen", "inch", "kelvin", "newton", "liter", "units", "convert"],
   },
   {
     id: "bronnen",
