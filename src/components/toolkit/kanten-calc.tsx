@@ -121,7 +121,13 @@ export function KantenCalc() {
             kind === "haaks" ? "Cross-section · right angle (90°)" : "Cross-section · sharp",
           )}
         >
-          <BendSection kind={kind} ri={row?.ri ?? null} s={row?.s ?? null} w={row?.w ?? null} />
+          <BendSection
+            kind={kind}
+            ri={row?.ri ?? null}
+            s={row?.s ?? null}
+            w={row?.w ?? null}
+            t={Number.isFinite(t) ? t : null}
+          />
         </SchemaPanel>
       </section>
 

@@ -651,16 +651,22 @@ export function OringGroove({
   );
 }
 
+function clamp(v: number, lo: number, hi: number) {
+  return Math.min(hi, Math.max(lo, v));
+}
+
 export function BendSection({
   kind,
   ri,
   s,
   w,
+  t,
 }: {
   kind: BendKind;
   ri: number | null;
   s: number | null;
   w: number | null;
+  t: number | null;
 }) {
   const { locale } = useLocale();
   const uid = useId().replace(/:/g, "");
@@ -668,16 +674,29 @@ export function BendSection({
 
   // The sheet sits in the die's V-groove at the bottom of the stroke, legs
   // following the die's own 45°/45° walls out into the open air — this is
-  // the same for every bend kind; only the Ri/s/w values differ.
+  // the same for every bend kind; only the Ri/s/w values differ. Only the
+  // stroke weight (plate thickness) tracks the real value; leg length and
+  // groove width stay fixed so the diagram doesn't reflow with input.
   const bendX = 220;
   const bendY = 224;
   const leg1End = { x: 370, y: 74 };
   const leg2End = { x: 70, y: 74 };
   const path = `M${leg1End.x},${leg1End.y} L${bendX},${bendY} L${leg2End.x},${leg2End.y}`;
 
+  const strokeW = clamp(6 + Math.sqrt(t ?? 2) * 7, 8, 30);
+  const accentW = Math.max(strokeW - 3, 5);
+  const DIAG = Math.SQRT1_2;
+
   const wl = w != null ? `w ${dashMm(w)}` : "w";
   const sl = s != null ? `s ${dashMm(s)}` : "s";
   const ril = ri != null ? `Ri ${dashMm(ri)}` : "Ri";
+  const tl = t != null ? `t ${dashMm(t)}` : "t";
+
+  // Thickness dimension: spans the flat cut edge at the left leg's tip,
+  // perpendicular to the leg (width = strokeW), offset past the tip.
+  const halfStroke = strokeW / 2;
+  const tTip1 = { x: leg2End.x + DIAG * halfStroke, y: leg2End.y + DIAG * halfStroke };
+  const tTip2 = { x: leg2End.x - DIAG * halfStroke, y: leg2End.y - DIAG * halfStroke };
 
   return (
     <svg
@@ -688,13 +707,13 @@ export function BendSection({
         sharp
           ? tx(
               locale,
-              "Doorsnede scherpe kant in de matrijs, met groefwijdte w, minimale beenlengte s en inwendige radius Ri",
-              "Section of a sharp bend in the die, with die width w, minimum leg length s and inner radius Ri",
+              "Doorsnede scherpe kant in de matrijs, met groefwijdte w, minimale beenlengte s, plaatdikte t en inwendige radius Ri",
+              "Section of a sharp bend in the die, with die width w, minimum leg length s, plate thickness t and inner radius Ri",
             )
           : tx(
               locale,
-              "Doorsnede haakse kant (90°) in de matrijs, met groefwijdte w, minimale beenlengte s en inwendige radius Ri",
-              "Section of a right-angle bend (90°) in the die, with die width w, minimum leg length s and inner radius Ri",
+              "Doorsnede haakse kant (90°) in de matrijs, met groefwijdte w, minimale beenlengte s, plaatdikte t en inwendige radius Ri",
+              "Section of a right-angle bend (90°) in the die, with die width w, minimum leg length s, plate thickness t and inner radius Ri",
             )
       }
     >
@@ -707,8 +726,8 @@ export function BendSection({
       </text>
 
       {/* bent sheet — square-cut ends (butt cap), rounded only at the bend itself */}
-      <path d={path} fill="none" stroke="currentColor" strokeWidth="20" strokeLinecap="butt" strokeLinejoin="round" />
-      <path d={path} fill="none" stroke="var(--accent)" strokeWidth="17" strokeLinecap="butt" strokeLinejoin="round" />
+      <path d={path} fill="none" stroke="currentColor" strokeWidth={strokeW} strokeLinecap="butt" strokeLinejoin="round" />
+      <path d={path} fill="none" stroke="var(--accent)" strokeWidth={accentW} strokeLinecap="butt" strokeLinejoin="round" />
 
       <text x={bendX - 65} y={bendY + 14} fill="currentColor" fontSize="11" fontFamily={FONT}>
         {ril}
@@ -723,6 +742,9 @@ export function BendSection({
           angle), not at the sharp-corner apex itself, offset well clear of
           the leg so the line and label both read easily */}
       <DimAligned x1={227} y1={217} x2={leg1End.x} y2={leg1End.y} offset={28} label={sl} />
+
+      {/* plate thickness, perpendicular to the left leg at its cut edge */}
+      <DimAligned x1={tTip1.x} y1={tTip1.y} x2={tTip2.x} y2={tTip2.y} offset={16} label={tl} />
     </svg>
   );
 }
