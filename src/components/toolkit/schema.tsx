@@ -604,14 +604,18 @@ export function BendSection({
   const sharp = kind === "scherp";
 
   const bendX = 220;
-  const bendY = 190;
-  const leg1End = { x: 380, y: 190 };
-  const leg2End = sharp ? { x: 150, y: 75 } : { x: 220, y: 70 };
+  // Haaks (90°): the sheet sits in the die's V-groove at the bottom of the
+  // stroke, legs following the die's own 45°/45° walls out into the open
+  // air above it — not resting flat on the die's top surface.
+  const bendY = sharp ? 190 : 224;
+  const leg1End = sharp ? { x: 380, y: 190 } : { x: 370, y: 74 };
+  const leg2End = sharp ? { x: 150, y: 75 } : { x: 70, y: 74 };
   const path = `M${leg1End.x},${leg1End.y} L${bendX},${bendY} L${leg2End.x},${leg2End.y}`;
 
   const wl = w != null ? `w ${dashMm(w)}` : "w";
   const sl = s != null ? `s ${dashMm(s)}` : "s";
   const ril = ri != null ? `Ri ${dashMm(ri)}` : "Ri";
+  const sDimY = sharp ? 125 : 40;
 
   return (
     <svg
@@ -644,7 +648,13 @@ export function BendSection({
       <path d={path} fill="none" stroke="currentColor" strokeWidth="20" strokeLinecap="butt" strokeLinejoin="round" />
       <path d={path} fill="none" stroke="var(--accent)" strokeWidth="17" strokeLinecap="butt" strokeLinejoin="round" />
 
-      <text x={bendX + 14} y={bendY - 16} fill="currentColor" fontSize="11" fontFamily={FONT}>
+      <text
+        x={sharp ? bendX + 14 : bendX - 25}
+        y={sharp ? bendY - 16 : bendY + 12}
+        fill="currentColor"
+        fontSize="11"
+        fontFamily={FONT}
+      >
         {ril}
       </text>
 
@@ -652,9 +662,9 @@ export function BendSection({
       <Ext x1={254} y1={190} x2={254} y2={144} />
       <DimH x1={186} x2={254} y={144} label={wl} side="up" />
 
-      <Ext x1={bendX} y1={bendY} x2={bendX} y2={125} />
-      <Ext x1={leg1End.x} y1={leg1End.y} x2={leg1End.x} y2={125} />
-      <DimH x1={bendX} x2={leg1End.x} y={125} label={sl} side="up" />
+      <Ext x1={bendX} y1={bendY} x2={bendX} y2={sDimY} />
+      <Ext x1={leg1End.x} y1={leg1End.y} x2={leg1End.x} y2={sDimY} />
+      <DimH x1={bendX} x2={leg1End.x} y={sDimY} label={sl} side="up" />
     </svg>
   );
 }
