@@ -2,7 +2,7 @@ import { Search, X } from "lucide-react";
 import { useMemo } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { tx, useLocale } from "@/lib/i18n/locale";
-import { matchTools, TOOLS, toolBlurb, toolTitle } from "@/lib/toolkit/tools";
+import { matchTools, TOOL_GROUPS, TOOLS, toolBlurb, toolTitle, type Tool } from "@/lib/toolkit/tools";
 
 export function ToolkitIndexList({ query = "" }: { query?: string }) {
   const { locale } = useLocale();
@@ -66,46 +66,75 @@ export function ToolkitIndexList({ query = "" }: { query?: string }) {
           : tx(locale, `${TOOLS.length} tools`, `${TOOLS.length} tools`)}
       </p>
 
-      <div id="toolkit-lijst" className="mt-4 grid gap-3">
-        {hits.length === 0 ? (
-          <p className="rounded-lg border border-dashed border-line-strong bg-elevated px-5 py-10 text-center text-sm text-muted">
-            {tx(
-              locale,
-              `Geen tools voor “${query.trim()}”. Probeer een norm, eenheid of trefwoord.`,
-              `No tools for “${query.trim()}”. Try a standard, unit or keyword.`,
-            )}
-          </p>
+      <div id="toolkit-lijst" className="mt-4">
+        {searching ? (
+          hits.length === 0 ? (
+            <p className="rounded-lg border border-dashed border-line-strong bg-elevated px-5 py-10 text-center text-sm text-muted">
+              {tx(
+                locale,
+                `Geen tools voor “${query.trim()}”. Probeer een norm, eenheid of trefwoord.`,
+                `No tools for “${query.trim()}”. Try a standard, unit or keyword.`,
+              )}
+            </p>
+          ) : (
+            <div className="grid gap-3 sm:grid-cols-2">
+              {hits.map((tool) => (
+                <ToolCard key={tool.id} tool={tool} locale={locale} />
+              ))}
+            </div>
+          )
         ) : (
-          hits.map((tool) => {
-            const n = TOOLS.findIndex((t) => t.id === tool.id) + 1;
-            return (
-              <Link
-                key={tool.id}
-                to={tool.href}
-                className="flex items-center justify-between gap-4 rounded-lg border border-line bg-elevated p-5 transition-colors duration-150 hover:border-line-strong"
-              >
-                <span>
-                  <span className="font-mono text-xs text-accent">
-                    {String(n).padStart(2, "0")} · {tool.standard}
-                  </span>
-                  <strong className="mt-1 block font-display text-lg font-semibold tracking-tight text-ink">
-                    {toolTitle(tool, locale)}
-                  </strong>
-                  <small className="mt-1 block text-sm text-muted">{toolBlurb(tool, locale)}</small>
-                  <small className="mt-2 block font-mono text-xs uppercase tracking-[0.12em] text-subtle">
-                    {tool.kind === "naslag"
-                      ? tx(locale, "Naslag", "Reference")
-                      : tx(locale, "Rekenhulp + naslag", "Calculator + reference")}
-                  </small>
-                </span>
-                <span aria-hidden="true" className="text-accent">
-                  →
-                </span>
-              </Link>
-            );
-          })
+          <div className="space-y-8">
+            {TOOL_GROUPS.map((group) => {
+              const groupTools = TOOLS.filter((tool) => tool.group === group.id);
+              if (groupTools.length === 0) return null;
+              return (
+                <section key={group.id}>
+                  <div className="flex items-baseline gap-2">
+                    <span className="size-1.5 rounded-full bg-accent" aria-hidden="true" />
+                    <h2 className="font-display text-base font-semibold tracking-tight text-ink">
+                      {tx(locale, group.label, group.labelEn)}
+                    </h2>
+                  </div>
+                  <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                    {groupTools.map((tool) => (
+                      <ToolCard key={tool.id} tool={tool} locale={locale} />
+                    ))}
+                  </div>
+                </section>
+              );
+            })}
+          </div>
         )}
       </div>
     </div>
+  );
+}
+
+function ToolCard({ tool, locale }: { tool: Tool; locale: "nl" | "en" }) {
+  const n = TOOLS.findIndex((t) => t.id === tool.id) + 1;
+  return (
+    <Link
+      to={tool.href}
+      className="flex items-center justify-between gap-4 rounded-lg border border-line bg-elevated p-5 transition-colors duration-150 hover:border-line-strong"
+    >
+      <span>
+        <span className="font-mono text-xs text-accent">
+          {String(n).padStart(2, "0")} · {tool.standard}
+        </span>
+        <strong className="mt-1 block font-display text-lg font-semibold tracking-tight text-ink">
+          {toolTitle(tool, locale)}
+        </strong>
+        <small className="mt-1 block text-sm text-muted">{toolBlurb(tool, locale)}</small>
+        <small className="mt-2 block font-mono text-xs uppercase tracking-[0.12em] text-subtle">
+          {tool.kind === "naslag"
+            ? tx(locale, "Naslag", "Reference")
+            : tx(locale, "Rekenhulp + naslag", "Calculator + reference")}
+        </small>
+      </span>
+      <span aria-hidden="true" className="text-accent">
+        →
+      </span>
+    </Link>
   );
 }

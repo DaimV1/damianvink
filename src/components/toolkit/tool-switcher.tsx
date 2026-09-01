@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { tx, useLocale } from "@/lib/i18n/locale";
-import { TOOLS, type ToolId, toolShort } from "@/lib/toolkit/tools";
+import { TOOL_GROUPS, TOOLS, type ToolId, toolShort } from "@/lib/toolkit/tools";
 import { cn } from "@/lib/utils";
 
 export function ToolSwitcher({ active }: { active?: ToolId }) {
@@ -9,27 +9,37 @@ export function ToolSwitcher({ active }: { active?: ToolId }) {
     <div className="border-b border-line bg-paper">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <nav
-          className="-mx-1 flex gap-1 overflow-x-auto py-2.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="-mx-1 flex items-center gap-1 overflow-x-auto py-2.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           aria-label="Engineering tools"
         >
-          {TOOLS.map((tool) => {
-            const isOn = tool.id === active;
-            return (
-              <Link
-                key={tool.id}
-                to={tool.href}
-                aria-current={isOn ? "page" : undefined}
-                className={cn(
-                  "flex h-11 shrink-0 items-center rounded-full border px-4 text-sm transition-[background-color,border-color,color] duration-150",
-                  isOn
-                    ? "border-accent bg-accent text-accent-fg"
-                    : "border-line bg-elevated text-muted hover:border-line-strong hover:text-ink",
-                )}
-              >
-                {toolShort(tool, locale)}
-              </Link>
-            );
-          })}
+          {TOOL_GROUPS.map((group, groupIndex) => (
+            <span key={group.id} className="flex shrink-0 items-center gap-1">
+              {groupIndex > 0 ? (
+                <span
+                  aria-hidden="true"
+                  className="mx-1 h-6 w-px shrink-0 bg-line-strong"
+                />
+              ) : null}
+              {TOOLS.filter((tool) => tool.group === group.id).map((tool) => {
+                const isOn = tool.id === active;
+                return (
+                  <Link
+                    key={tool.id}
+                    to={tool.href}
+                    aria-current={isOn ? "page" : undefined}
+                    className={cn(
+                      "flex h-11 shrink-0 items-center rounded-full border px-4 text-sm transition-[background-color,border-color,color] duration-150",
+                      isOn
+                        ? "border-accent bg-accent text-accent-fg"
+                        : "border-line bg-elevated text-muted hover:border-line-strong hover:text-ink",
+                    )}
+                  >
+                    {toolShort(tool, locale)}
+                  </Link>
+                );
+              })}
+            </span>
+          ))}
         </nav>
       </div>
     </div>

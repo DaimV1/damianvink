@@ -1,3 +1,13 @@
+export type ToolGroupId = "maat" | "verb" | "aand" | "eh";
+
+/** Order here is the display order everywhere: index list, switcher dividers. */
+export const TOOL_GROUPS: { id: ToolGroupId; label: string; labelEn: string }[] = [
+  { id: "maat", label: "Maatvoering & toleranties", labelEn: "Dimensioning & tolerances" },
+  { id: "verb", label: "Verbindingen & afdichting", labelEn: "Connections & sealing" },
+  { id: "aand", label: "Aandrijving & constructie", labelEn: "Drive & structural" },
+  { id: "eh", label: "Eenheden & naslag", labelEn: "Units & reference" },
+];
+
 /** Switcher uses `short`; ISO 2768 is labeled Toleranties. */
 export const TOOLS = [
   {
@@ -9,6 +19,7 @@ export const TOOLS = [
     titleEn: "Units",
     standard: "SI · imperial",
     kind: "rekenhulp",
+    group: "eh",
     related: ["motor", "bevestigers", "cilinder"],
     blurb: "Inch ↔ mm, °C ↔ K, dm³ ↔ L, lbf ↔ N, psi ↔ bar. SI en imperial.",
     blurbEn: "Inch ↔ mm, °C ↔ K, dm³ ↔ L, lbf ↔ N, psi ↔ bar. SI and imperial.",
@@ -23,6 +34,7 @@ export const TOOLS = [
     titleEn: "Fits",
     standard: "ISO 286",
     kind: "rekenhulp",
+    group: "maat",
     related: ["lager", "iso2768"],
     blurb: "Voorkeurpassingen tot Ø 50 mm. JS7 = ±IT7/2, niet afgerond.",
     blurbEn: "Preferred fits to Ø 50 mm. JS7 = ±IT7/2, not rounded.",
@@ -37,6 +49,7 @@ export const TOOLS = [
     titleEn: "General tolerances",
     standard: "ISO 2768",
     kind: "rekenhulp",
+    group: "maat",
     related: ["passingen"],
     blurb: "Titelblok-default f/m/c/v en H/K/L. Geen passing (dat is ISO 286).",
     blurbEn: "Title-block default f/m/c/v and H/K/L. Not a fit (that is ISO 286).",
@@ -51,6 +64,7 @@ export const TOOLS = [
     titleEn: "Keyway tolerances",
     standard: "DIN 6885",
     kind: "rekenhulp",
+    group: "maat",
     related: ["passingen"],
     blurb: "Spiemaat, t₁/t₂. As-Ø: boven de ondergrens t/m de bovengrens.",
     blurbEn: "Key size, t₁/t₂. Shaft Ø: above the lower bound through the upper bound.",
@@ -65,6 +79,7 @@ export const TOOLS = [
     titleEn: "Bearing fits",
     standard: "SKF · ISO 286",
     kind: "rekenhulp",
+    group: "maat",
     related: ["passingen"],
     blurb: "Groefkogellagers: vast/los, SKF-klassen tot Ø 50 mm.",
     blurbEn: "Deep-groove ball bearings: locating/non-locating, SKF classes to Ø 50 mm.",
@@ -79,6 +94,7 @@ export const TOOLS = [
     titleEn: "Circlip groove",
     standard: "DIN 471 / 472",
     kind: "rekenhulp",
+    group: "verb",
     related: ["oring"],
     blurb: "Groef d₂, breedte b en diepte t op as of in boring, tot Ø 100 mm.",
     blurbEn: "Groove d₂, width b and depth t on shaft or in bore, to Ø 100 mm.",
@@ -93,6 +109,7 @@ export const TOOLS = [
     titleEn: "Fasteners",
     standard: "ISO 273 · VDI 2230",
     kind: "rekenhulp",
+    group: "verb",
     related: ["bronnen"],
     blurb: "M3–M24: doorlaat, zeskant/inbus, aandraaimoment 8.8 / 10.9 / 12.9.",
     blurbEn: "M3–M24: clearance hole, hex/socket, tightening torque 8.8 / 10.9 / 12.9.",
@@ -107,6 +124,7 @@ export const TOOLS = [
     titleEn: "O-ring groove",
     standard: "ISO 3601",
     kind: "rekenhulp",
+    group: "verb",
     related: ["seeger"],
     blurb: "ISO-koorden 1,80–7,00 mm: groef t / b, radiaal en axiaal.",
     blurbEn: "ISO cords 1.80–7.00 mm: groove t / b, radial and axial.",
@@ -121,6 +139,7 @@ export const TOOLS = [
     titleEn: "Motor specification",
     standard: "P = F·v",
     kind: "rekenhulp",
+    group: "aand",
     related: ["eenheden", "bronnen", "cilinder"],
     blurb:
       "Rollenbaan/band/helling/hijsen: n, F, T, P en volgende IEC-kW-stap.",
@@ -137,6 +156,7 @@ export const TOOLS = [
     titleEn: "Pneumatic cylinder",
     standard: "ISO 15552 · 6432",
     kind: "rekenhulp",
+    group: "aand",
     related: ["motor", "eenheden", "knik"],
     blurb:
       "F = p·A, dubbelwerkend. ISO-boring bij last en 6 bar. Geen knik, geen Festo-type.",
@@ -153,6 +173,7 @@ export const TOOLS = [
     titleEn: "Bending guidelines",
     standard: "247TailorSteel",
     kind: "rekenhulp",
+    group: "aand",
     related: ["bronnen"],
     blurb:
       "Haaks/scherp: Ri, min. beenlengte s, groefwijdte w, Z-buiging. Shop-spec Sophia, geen ISO.",
@@ -169,6 +190,7 @@ export const TOOLS = [
     titleEn: "Buckling calculation",
     standard: "Euler",
     kind: "rekenhulp",
+    group: "aand",
     related: ["cilinder", "eenheden"],
     blurb:
       "Euler-knik van een slanke staaf: F_cr, kritieke spanning en slankheid λ. Vier inklemgevallen.",
@@ -185,6 +207,7 @@ export const TOOLS = [
     titleEn: "CAD libraries",
     standard: "Bronnen",
     kind: "naslag",
+    group: "eh",
     related: ["bevestigers", "kanten", "macros"],
     blurb: "3D-modellen, componenten, plaatwerk en naslag.",
     blurbEn: "3D models, components, sheet metal and references.",
@@ -199,6 +222,7 @@ export const TOOLS = [
     titleEn: "Macro library",
     standard: "SolidWorks · Inventor",
     kind: "naslag",
+    group: "eh",
     related: ["bronnen"],
     blurb:
       "Downloadbare VBA-macro's voor SolidWorks 2024 en Inventor 2024: STEP-export, batch opslaan, eigenschappen tonen.",
