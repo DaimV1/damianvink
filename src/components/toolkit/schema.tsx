@@ -709,7 +709,8 @@ export function BendSection({
       <Ext x1={254} y1={190} x2={254} y2={144} />
       <DimH x1={186} x2={254} y={144} label={wl} side="up" />
 
-      <DimAligned x1={bendX} y1={bendY} x2={leg1End.x} y2={leg1End.y} offset={18} label={sl} />
+      {/* s starts past the shared bend fillet, not at the centerline apex */}
+      <DimAligned x1={237} y1={207} x2={leg1End.x} y2={leg1End.y} offset={18} label={sl} />
     </svg>
   );
 }
