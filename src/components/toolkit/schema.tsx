@@ -743,8 +743,8 @@ export function BendSection({
           the leg so the line and label both read easily */}
       <DimAligned x1={227} y1={217} x2={leg1End.x} y2={leg1End.y} offset={28} label={sl} />
 
-      {/* plate thickness, perpendicular to the left leg at its cut edge */}
-      <DimAligned x1={tTip1.x} y1={tTip1.y} x2={tTip2.x} y2={tTip2.y} offset={16} label={tl} />
+      {/* plate thickness, directly on the left leg's flat cut edge */}
+      <DimAligned x1={tTip1.x} y1={tTip1.y} x2={tTip2.x} y2={tTip2.y} offset={0} label={tl} />
     </svg>
   );
 }
