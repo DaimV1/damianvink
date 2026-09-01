@@ -260,10 +260,13 @@ export function BoltSection({
       {/* shank d, flush between head and nut */}
       <rect x="150" y="96" width="36" height="76" fill="var(--accent)" />
       {/* hex head, flush against the top plate */}
-      <path d="M132 64 h72 l10 32 H122 Z" fill="var(--accent)" stroke="currentColor" strokeWidth="1" />
+      <rect x="122" y="64" width="92" height="32" fill="var(--accent)" stroke="currentColor" strokeWidth="1" />
       {/* nut, flush against the bottom plate */}
-      <path
-        d="M128 172 h80 l8 24 H120 Z"
+      <rect
+        x="122"
+        y="172"
+        width="92"
+        height="24"
         fill="var(--paper)"
         stroke="currentColor"
         strokeWidth="1.2"
