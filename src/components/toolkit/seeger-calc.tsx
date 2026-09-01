@@ -16,11 +16,11 @@ import {
   CopyResult,
   Field,
   Note,
-  NumInput,
   parseWholeMm,
   ResultGrid,
   SelectInput,
   SourceBadge,
+  WholeMmInput,
 } from "./calc-ui";
 import { CirclipSection, SchemaPanel } from "./schema";
 
@@ -76,7 +76,7 @@ export function SeegerCalc() {
         </SourceBadge>
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
           <Field label={tx(locale, "Ø d₁ (mm)", "Ø d₁ (mm)")}>
-            <NumInput id="seeger-diameter" value={diameter} onChange={onDia} />
+            <WholeMmInput id="seeger-diameter" value={diameter} onChange={onDia} />
           </Field>
           <Field label={tx(locale, "Inbouw", "Installation")}>
             <SelectInput
@@ -91,14 +91,6 @@ export function SeegerCalc() {
         {parsed.status === "empty" ? (
           <p className="mt-5 text-sm text-muted">
             {tx(locale, "Vul een nominale Ø in.", "Enter a nominal Ø.")}
-          </p>
-        ) : parsed.status === "fraction" ? (
-          <p className="mt-5 text-sm text-muted">
-            {tx(
-              locale,
-              "Alleen hele millimeters. Seegerringen zijn nominale maten, geen bereik.",
-              "Whole millimeters only. Circlips are nominal sizes, not a range.",
-            )}
           </p>
         ) : !row ? (
           <p className="mt-5 text-sm text-muted">

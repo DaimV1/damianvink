@@ -9,10 +9,10 @@ import {
   CopyResult,
   Field,
   Note,
-  NumInput,
   parseWholeMm,
   ResultGrid,
   SelectInput,
+  WholeMmInput,
 } from "./calc-ui";
 import { BearingFitChart, SchemaPanel } from "./schema";
 
@@ -103,7 +103,7 @@ export function LagerCalc() {
         </Note>
         <div className="mt-6 grid gap-4 sm:grid-cols-3">
           <Field label={tx(locale, "As-Ø (mm)", "Shaft Ø (mm)")}>
-            <NumInput id="lager-diameter" value={diameter} onChange={onDia} />
+            <WholeMmInput id="lager-diameter" value={diameter} onChange={onDia} />
           </Field>
           <Field label={tx(locale, "Rotatie", "Rotation")}>
             <SelectInput value={rot} onChange={setRot}>
@@ -122,14 +122,6 @@ export function LagerCalc() {
         {parsed.status === "empty" ? (
           <p className="mt-5 text-sm text-muted">
             {tx(locale, "Vul een as-Ø in.", "Enter a shaft Ø.")}
-          </p>
-        ) : parsed.status === "fraction" ? (
-          <p className="mt-5 text-sm text-muted">
-            {tx(
-              locale,
-              `Alleen hele millimeters. ${diameter} mm valt niet in de SKF-rijen tot 50 mm.`,
-              `Whole millimeters only. ${diameter} mm is not in the SKF rows up to 50 mm.`,
-            )}
           </p>
         ) : !result ? (
           <p className="mt-5 text-sm text-muted">

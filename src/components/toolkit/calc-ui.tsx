@@ -56,13 +56,11 @@ export function sanitizeDiameterInput(raw: string) {
   return v.slice(0, 4);
 }
 
-export function parseWholeMm(raw: string): { status: "empty" } | { status: "fraction" } | { status: "ok"; mm: number } {
+export function parseWholeMm(raw: string): { status: "empty" } | { status: "ok"; mm: number } {
   const t = raw.trim();
   if (t === "") return { status: "empty" };
-  const n = t.replace(",", ".");
-  if (!/^\d+(\.0*)?$/.test(n)) return { status: "fraction" };
-  const mm = Number.parseInt(n, 10);
-  if (!Number.isFinite(mm)) return { status: "fraction" };
+  const mm = Number.parseInt(t, 10);
+  if (!Number.isFinite(mm)) return { status: "empty" };
   return { status: "ok", mm };
 }
 
@@ -85,6 +83,35 @@ export function NumInput({
       value={value}
       onFocus={(e) => e.currentTarget.select()}
       onChange={(e) => onChange(sanitizeDiameterInput(e.target.value))}
+      className={controlClass}
+    />
+  );
+}
+
+/** Whole millimeters only — no decimal separator can be entered. */
+export function sanitizeWholeMmInput(raw: string) {
+  return raw.replace(/\D/g, "").slice(0, 4);
+}
+
+export function WholeMmInput({
+  value,
+  onChange,
+  id,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  id?: string;
+}) {
+  return (
+    <input
+      id={id}
+      type="text"
+      inputMode="numeric"
+      autoComplete="off"
+      spellCheck={false}
+      value={value}
+      onFocus={(e) => e.currentTarget.select()}
+      onChange={(e) => onChange(sanitizeWholeMmInput(e.target.value))}
       className={controlClass}
     />
   );

@@ -21,10 +21,10 @@ import {
   Field,
   KindDot,
   Note,
-  NumInput,
   parseWholeMm,
   ResultGrid,
   SelectInput,
+  WholeMmInput,
 } from "./calc-ui";
 
 export function PassingenCalc() {
@@ -74,7 +74,7 @@ export function PassingenCalc() {
         </Note>
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
           <Field label={tx(locale, "Nominale Ø (mm)", "Nominal Ø (mm)")}>
-            <NumInput id="fit-diameter" value={diameter} onChange={onDia} />
+            <WholeMmInput id="fit-diameter" value={diameter} onChange={onDia} />
           </Field>
           <Field label={tx(locale, "Passing", "Fit")}>
             <SelectInput value={fitId} onChange={setFitId}>
@@ -90,14 +90,6 @@ export function PassingenCalc() {
         {parsed.status === "empty" ? (
           <p className="mt-5 text-sm text-muted">
             {tx(locale, "Vul een nominale Ø in.", "Enter a nominal Ø.")}
-          </p>
-        ) : parsed.status === "fraction" ? (
-          <p className="mt-5 text-sm text-muted">
-            {tx(
-              locale,
-              `Alleen hele millimeters. ${diameter} mm valt niet in de tabel.`,
-              `Whole millimeters only. ${diameter} mm is not in the table.`,
-            )}
           </p>
         ) : !result ? (
           <p className="mt-5 text-sm text-muted">

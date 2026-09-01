@@ -10,9 +10,9 @@ import {
   Field,
   KindDot,
   Note,
-  NumInput,
   parseWholeMm,
   ResultGrid,
+  WholeMmInput,
 } from "./calc-ui";
 import { KeywaySection, SchemaPanel } from "./schema";
 
@@ -63,20 +63,12 @@ export function SpiebaanCalc() {
         </Note>
         <div className="mt-6 max-w-xs">
           <Field label={tx(locale, "As-Ø (mm)", "Shaft Ø (mm)")}>
-            <NumInput id="spie-diameter" value={diameter} onChange={onDia} />
+            <WholeMmInput id="spie-diameter" value={diameter} onChange={onDia} />
           </Field>
         </div>
         {parsed.status === "empty" ? (
           <p className="mt-5 text-sm text-muted">
             {tx(locale, "Vul een as-Ø in.", "Enter a shaft Ø.")}
-          </p>
-        ) : parsed.status === "fraction" ? (
-          <p className="mt-5 text-sm text-muted">
-            {tx(
-              locale,
-              `Alleen hele millimeters. ${diameter} mm valt niet in DIN 6885-1.`,
-              `Whole millimeters only. ${diameter} mm is not in DIN 6885-1.`,
-            )}
           </p>
         ) : !row ? (
           <p className="mt-5 text-sm text-muted">
