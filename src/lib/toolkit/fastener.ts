@@ -151,7 +151,7 @@ export const FASTENERS: FastenerRow[] = [
     p: 2.5,
     tap: 19.5,
     hole: { fijn: 23, middel: 24, grof: 26 },
-    sw: 32,
+    sw: 34,
     k: 14,
     s: 17,
     dk: 33,
