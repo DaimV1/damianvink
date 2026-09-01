@@ -68,6 +68,16 @@ export function EenhedenCalc() {
     setEdited("from");
   }
 
+  function pickFrom(id: string) {
+    if (id === toId) setToId(fromId);
+    setFromId(id);
+  }
+
+  function pickTo(id: string) {
+    if (id === fromId) setFromId(toId);
+    setToId(id);
+  }
+
   function swap() {
     setFromId(to.id);
     setToId(from.id);
@@ -133,7 +143,7 @@ export function EenhedenCalc() {
         <div className="mt-4 grid gap-6 sm:grid-cols-2 sm:gap-4">
           <div className="flex flex-col gap-4">
             <Field label={tx(locale, "Van", "From")}>
-              <SelectInput value={from.id} onChange={setFromId}>
+              <SelectInput value={from.id} onChange={pickFrom}>
                 {category.units.map((unit) => (
                   <option key={unit.id} value={unit.id}>
                     {unit.symbol} — {tx(locale, unit.name, unit.nameEn)}
@@ -154,7 +164,7 @@ export function EenhedenCalc() {
           </div>
           <div className="flex flex-col gap-4">
             <Field label={tx(locale, "Naar", "To")}>
-              <SelectInput value={to.id} onChange={setToId}>
+              <SelectInput value={to.id} onChange={pickTo}>
                 {category.units.map((unit) => (
                   <option key={unit.id} value={unit.id}>
                     {unit.symbol} — {tx(locale, unit.name, unit.nameEn)}
