@@ -44,10 +44,12 @@ Custom domain: `www.damianvink.nl` (apex 308’t naar www).
 - `/toolkit/o-ringgroef` — ISO 3601
 - `/toolkit/motorspecificatie` — P = F·v
 - `/toolkit/kanten` — 247TailorSteel
+- `/toolkit/knikberekening` — Euler-knik
 - `/toolkit/bronnen` — CAD-bibliotheken
+- `/toolkit/macros` — VBA-macro's SolidWorks/Inventor
 - `/project` — projectwerkplek
 - `/blog` — artikelen
-- `/contact` — e-mail en socials
+- `/contact` — socials
 - `/spel` — easter egg (noindex)
 
 ## Stack
