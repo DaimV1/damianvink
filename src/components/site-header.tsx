@@ -64,7 +64,7 @@ export function SiteHeader() {
             title={locale === "nl" ? "English" : "Nederlands"}
           >
             <span className="font-mono text-xs font-medium tracking-wide">
-              {locale === "nl" ? "EN" : "NL"}
+              {locale === "nl" ? "NL" : "EN"}
             </span>
           </button>
           <button
