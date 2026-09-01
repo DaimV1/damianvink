@@ -9,6 +9,7 @@ import {
   THICKNESSES,
   copyLine,
   dashMm,
+  isRiNonMonotone,
   lookupKanten,
   type Kind,
   type Material,
@@ -108,6 +109,15 @@ export function KantenCalc() {
                   locale,
                   "10 en 12 mm: niet over de volle plaatlengte. Check de actuele 247-pagina.",
                   "10 and 12 mm: not over the full plate length. Check the current 247 page.",
+                )}
+              </Note>
+            ) : null}
+            {!row.thickPlate && row.w == null && row.s != null ? (
+              <Note>
+                {tx(
+                  locale,
+                  "w ontbreekt op de 247-pagina bij deze combinatie, terwijl s wel is opgegeven. Geen naburige rij gebruiken — check de actuele 247-pagina.",
+                  "w is missing on the 247 page for this combination, while s is given. Do not use a neighboring row — check the current 247 page.",
                 )}
               </Note>
             ) : null}
@@ -255,6 +265,7 @@ function RiTable({
     const m = MATERIALS.find((m) => m.id === id);
     return m ? tx(locale, m.label, m.labelEn) : id;
   };
+  const hasFlagged = thicknesses.some((d) => cols.some((c) => isRiNonMonotone(kind, c, d)));
   return (
     <section className="mt-10">
       <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
@@ -281,21 +292,45 @@ function RiTable({
             {thicknesses.map((d) => (
               <tr key={d} className={d === active ? "is-active" : ""}>
                 <th scope="row">{dashMm(d)}</th>
-                {cols.map((c) => (
-                  <td
-                    key={c}
-                    className={
-                      d === active && c === material ? "font-semibold" : ""
-                    }
-                  >
-                    {dashMm(lookupKanten(d, c, kind)?.ri ?? null)}
-                  </td>
-                ))}
+                {cols.map((c) => {
+                  const flagged = isRiNonMonotone(kind, c, d);
+                  return (
+                    <td
+                      key={c}
+                      className={
+                        d === active && c === material ? "font-semibold" : ""
+                      }
+                    >
+                      {dashMm(lookupKanten(d, c, kind)?.ri ?? null)}
+                      {flagged ? (
+                        <sup
+                          className="ml-0.5 text-accent"
+                          title={tx(
+                            locale,
+                            "Niet monotoon oplopend met t — letterlijk overgenomen van 247, geen invoerfout.",
+                            "Not monotonically increasing with t — copied verbatim from 247, not a data-entry error.",
+                          )}
+                        >
+                          *
+                        </sup>
+                      ) : null}
+                    </td>
+                  );
+                })}
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+      {hasFlagged ? (
+        <p className="mt-2 text-xs leading-relaxed text-subtle">
+          {tx(
+            locale,
+            "* Waarde daalt hier t.o.v. de vorige dikte — letterlijk overgenomen van 247, geen invoerfout.",
+            "* Value dips here relative to the previous thickness — copied verbatim from 247, not a data-entry error.",
+          )}
+        </p>
+      ) : null}
       <p className="mt-4 text-xs leading-relaxed text-subtle">
         {tx(locale, "Bron:", "Source:")}{" "}
         <a

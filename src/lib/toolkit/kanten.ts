@@ -401,6 +401,20 @@ export function lookupKanten(
 export const KANTEN_SOURCE =
   "https://247tailorsteel.com/nl/aanleverspecificaties/richtlijnen-voor-kanten";
 
+/**
+ * Ri-cellen die niet monotoon oplopen met t, letterlijk overgenomen van de
+ * 247-pagina (geen invoerfout). Gemarkeerd zodat lezers geen typo vermoeden.
+ */
+export const RI_NON_MONOTONE: { kind: Kind; material: Material; t: number }[] = [
+  { kind: "haaks", material: "rvs", t: 6 },
+  { kind: "haaks", material: "rvs", t: 8 },
+  { kind: "haaks", material: "alu", t: 10 },
+];
+
+export function isRiNonMonotone(kind: Kind, material: Material, t: number) {
+  return RI_NON_MONOTONE.some((r) => r.kind === kind && r.material === material && r.t === t);
+}
+
 export function dashMm(n: number | null) {
   if (n == null) return "—";
   return String(n).replace(".", ",");
