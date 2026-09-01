@@ -23,6 +23,7 @@ import { Route as ToolkitIndexRouteImport } from './routes/toolkit/index'
 import { Route as ToolkitBevestigersRouteImport } from './routes/toolkit/bevestigers'
 import { Route as ToolkitBronnenRouteImport } from './routes/toolkit/bronnen'
 import { Route as ToolkitCilinderRouteImport } from './routes/toolkit/cilinder'
+import { Route as ToolkitDoorbuigingBalkRouteImport } from './routes/toolkit/doorbuiging-balk'
 import { Route as ToolkitEenhedenRouteImport } from './routes/toolkit/eenheden'
 import { Route as ToolkitIso2768RouteImport } from './routes/toolkit/iso-2768'
 import { Route as ToolkitKantenRouteImport } from './routes/toolkit/kanten'
@@ -105,6 +106,11 @@ const ToolkitCilinderRoute = ToolkitCilinderRouteImport.update({
   path: '/toolkit/cilinder',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ToolkitDoorbuigingBalkRoute = ToolkitDoorbuigingBalkRouteImport.update({
+  id: '/toolkit/doorbuiging-balk',
+  path: '/toolkit/doorbuiging-balk',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ToolkitEenhedenRoute = ToolkitEenhedenRouteImport.update({
   id: '/toolkit/eenheden',
   path: '/toolkit/eenheden',
@@ -176,6 +182,7 @@ export interface FileRoutesByFullPath {
   '/toolkit/bevestigers': typeof ToolkitBevestigersRoute
   '/toolkit/bronnen': typeof ToolkitBronnenRoute
   '/toolkit/cilinder': typeof ToolkitCilinderRoute
+  '/toolkit/doorbuiging-balk': typeof ToolkitDoorbuigingBalkRoute
   '/toolkit/eenheden': typeof ToolkitEenhedenRoute
   '/toolkit/iso-2768': typeof ToolkitIso2768Route
   '/toolkit/kanten': typeof ToolkitKantenRoute
@@ -203,6 +210,7 @@ export interface FileRoutesByTo {
   '/toolkit/bevestigers': typeof ToolkitBevestigersRoute
   '/toolkit/bronnen': typeof ToolkitBronnenRoute
   '/toolkit/cilinder': typeof ToolkitCilinderRoute
+  '/toolkit/doorbuiging-balk': typeof ToolkitDoorbuigingBalkRoute
   '/toolkit/eenheden': typeof ToolkitEenhedenRoute
   '/toolkit/iso-2768': typeof ToolkitIso2768Route
   '/toolkit/kanten': typeof ToolkitKantenRoute
@@ -231,6 +239,7 @@ export interface FileRoutesById {
   '/toolkit/bevestigers': typeof ToolkitBevestigersRoute
   '/toolkit/bronnen': typeof ToolkitBronnenRoute
   '/toolkit/cilinder': typeof ToolkitCilinderRoute
+  '/toolkit/doorbuiging-balk': typeof ToolkitDoorbuigingBalkRoute
   '/toolkit/eenheden': typeof ToolkitEenhedenRoute
   '/toolkit/iso-2768': typeof ToolkitIso2768Route
   '/toolkit/kanten': typeof ToolkitKantenRoute
@@ -260,6 +269,7 @@ export interface FileRouteTypes {
     | '/toolkit/bevestigers'
     | '/toolkit/bronnen'
     | '/toolkit/cilinder'
+    | '/toolkit/doorbuiging-balk'
     | '/toolkit/eenheden'
     | '/toolkit/iso-2768'
     | '/toolkit/kanten'
@@ -287,6 +297,7 @@ export interface FileRouteTypes {
     | '/toolkit/bevestigers'
     | '/toolkit/bronnen'
     | '/toolkit/cilinder'
+    | '/toolkit/doorbuiging-balk'
     | '/toolkit/eenheden'
     | '/toolkit/iso-2768'
     | '/toolkit/kanten'
@@ -314,6 +325,7 @@ export interface FileRouteTypes {
     | '/toolkit/bevestigers'
     | '/toolkit/bronnen'
     | '/toolkit/cilinder'
+    | '/toolkit/doorbuiging-balk'
     | '/toolkit/eenheden'
     | '/toolkit/iso-2768'
     | '/toolkit/kanten'
@@ -342,6 +354,7 @@ export interface RootRouteChildren {
   ToolkitBevestigersRoute: typeof ToolkitBevestigersRoute
   ToolkitBronnenRoute: typeof ToolkitBronnenRoute
   ToolkitCilinderRoute: typeof ToolkitCilinderRoute
+  ToolkitDoorbuigingBalkRoute: typeof ToolkitDoorbuigingBalkRoute
   ToolkitEenhedenRoute: typeof ToolkitEenhedenRoute
   ToolkitIso2768Route: typeof ToolkitIso2768Route
   ToolkitKantenRoute: typeof ToolkitKantenRoute
@@ -457,6 +470,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ToolkitCilinderRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/toolkit/doorbuiging-balk': {
+      id: '/toolkit/doorbuiging-balk'
+      path: '/toolkit/doorbuiging-balk'
+      fullPath: '/toolkit/doorbuiging-balk'
+      preLoaderRoute: typeof ToolkitDoorbuigingBalkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/toolkit/eenheden': {
       id: '/toolkit/eenheden'
       path: '/toolkit/eenheden'
@@ -550,6 +570,7 @@ const rootRouteChildren: RootRouteChildren = {
   ToolkitBevestigersRoute: ToolkitBevestigersRoute,
   ToolkitBronnenRoute: ToolkitBronnenRoute,
   ToolkitCilinderRoute: ToolkitCilinderRoute,
+  ToolkitDoorbuigingBalkRoute: ToolkitDoorbuigingBalkRoute,
   ToolkitEenhedenRoute: ToolkitEenhedenRoute,
   ToolkitIso2768Route: ToolkitIso2768Route,
   ToolkitKantenRoute: ToolkitKantenRoute,

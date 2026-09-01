@@ -24,6 +24,7 @@ Main nav: Toolkit, Project, Marathon, About, Contact.
 - [Pneumatic cylinder](https://www.damianvink.nl/toolkit/cilinder): F = p·A, ISO 15552 / 6432, double acting; no buckling, no Festo type
 - [Bending guidelines](https://www.damianvink.nl/toolkit/kanten): Ri, leg length, Z-bend; 247TailorSteel Sophia shop-spec, not ISO
 - [Buckling calculation](https://www.damianvink.nl/toolkit/knikberekening): Euler F_cr, critical stress, slenderness λ; four end conditions
+- [Beam deflection](https://www.damianvink.nl/toolkit/doorbuiging-balk): point load at any position, deflection at the load and the maximum; simply supported or cantilever
 - [CAD libraries](https://www.damianvink.nl/toolkit/bronnen): TraceParts, 3Dfindit, MISUMI, 247 Tailor Steel, ISO OBP
 - [Macro library](https://www.damianvink.nl/toolkit/macros): downloadable VBA macros for SolidWorks 2024 and Inventor 2024
 - [Project workspace](https://www.damianvink.nl/project): five-phase PM workspace (noindex; local to the browser)

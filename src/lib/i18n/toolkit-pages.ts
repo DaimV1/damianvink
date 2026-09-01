@@ -338,6 +338,32 @@ const pages = {
       ],
     },
   },
+  doorbuiging: {
+    nl: {
+      title: "Doorbuiging balk.",
+      accent: "balk.",
+      crumb: "Doorbuiging",
+      lede: "Doorbuiging van een balk onder een puntlast op afstand a: vrij opgelegd of uitkraging. Doorbuiging bij de last en het maximum.",
+      faq: [
+        { q: "Waar wordt afstand a vandaan gemeten?", a: "Bij vrij opgelegd vanaf het linker steunpunt. Bij uitkraging vanaf de inklemming. a moet tussen 0 en L liggen." },
+        { q: "Waarom staat er ook een maximum naast δ bij de last?", a: "Bij een last buiten het midden ligt de grootste doorbuiging niet onder de last zelf, maar iets verderop in het langste deel van de overspanning." },
+        { q: "Waarom maar twee inklemgevallen?", a: "Scharnier-scharnier en ingeklemd-vrij zijn statisch bepaald: directe formules. Ingeklemd-ingeklemd en ingeklemd-scharnier zijn statisch onbepaald en zitten (nog) niet in deze rekenhulp." },
+        { q: "Is dit een vervanging van EN 1993-1-1?", a: "Nee. Lineair-elastische balktheorie, kleine doorbuigingen, geen partiële veiligheidsfactoren. Voor kritieke constructies de norm of een FEM-check gebruiken." },
+      ],
+    },
+    en: {
+      title: "Beam deflection.",
+      accent: "deflection.",
+      crumb: "Deflection",
+      lede: "Deflection of a beam under a point load at distance a: simply supported or cantilever. Deflection at the load and the maximum.",
+      faq: [
+        { q: "Where is distance a measured from?", a: "For simply supported, from the left support. For cantilever, from the fixed end. a must be between 0 and L." },
+        { q: "Why show a maximum next to δ at the load?", a: "For an off-center load, the largest deflection isn't under the load itself, but a bit further along the longer part of the span." },
+        { q: "Why only two end conditions?", a: "Pinned-pinned and fixed-free are statically determinate: direct formulas. Fixed-fixed and fixed-pinned are statically indeterminate and aren't (yet) in this calculator." },
+        { q: "Does this replace EN 1993-1-1?", a: "No. Linear-elastic beam theory, small deflections, no partial safety factors. For critical structures, use the standard or an FEM check." },
+      ],
+    },
+  },
   bronnen: {
     nl: {
       title: "CAD-bibliotheken.",

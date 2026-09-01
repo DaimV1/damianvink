@@ -191,12 +191,29 @@ export const TOOLS = [
     standard: "Euler",
     kind: "rekenhulp",
     group: "aand",
-    related: ["cilinder", "eenheden"],
+    related: ["cilinder", "eenheden", "doorbuiging"],
     blurb:
       "Euler-knik van een slanke staaf: F_cr, kritieke spanning en slankheid λ. Vier inklemgevallen.",
     blurbEn:
       "Euler buckling of a slender strut: F_cr, critical stress and slenderness λ. Four end-condition cases.",
     tags: ["euler", "kritieke last", "slankheid", "staaf", "kolom", "buckling", "critical load", "slenderness", "column"],
+  },
+  {
+    id: "doorbuiging",
+    href: "/toolkit/doorbuiging-balk",
+    short: "Doorbuiging",
+    shortEn: "Deflection",
+    title: "Doorbuiging balk",
+    titleEn: "Beam deflection",
+    standard: "Puntlast",
+    kind: "rekenhulp",
+    group: "aand",
+    related: ["knik", "eenheden"],
+    blurb:
+      "Doorbuiging van een balk onder een puntlast op afstand a: vrij opgelegd of uitkraging. Doorbuiging bij de last en het maximum.",
+    blurbEn:
+      "Deflection of a beam under a point load at distance a: simply supported or cantilever. Deflection at the load and the maximum.",
+    tags: ["puntlast", "buiging", "doorbuiging", "balk", "staaf", "point load", "bending", "deflection", "beam"],
   },
   {
     id: "bronnen",

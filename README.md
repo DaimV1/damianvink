@@ -45,6 +45,7 @@ Custom domain: `www.damianvink.nl` (apex 308’t naar www).
 - `/toolkit/motorspecificatie` — P = F·v
 - `/toolkit/kanten` — 247TailorSteel
 - `/toolkit/knikberekening` — Euler-knik
+- `/toolkit/doorbuiging-balk` — doorbuiging puntlast
 - `/toolkit/bronnen` — CAD-bibliotheken
 - `/toolkit/macros` — VBA-macro's SolidWorks/Inventor
 - `/project` — projectwerkplek
