@@ -8,6 +8,7 @@ import type { FastenerRow } from "@/lib/toolkit/fastener";
 import type { SeegerKind } from "@/lib/toolkit/seeger";
 import type { OringKind } from "@/lib/toolkit/oring";
 import { dashMm, type Kind as BendKind } from "@/lib/toolkit/kanten";
+import { END_CONDITIONS, type EndConditionId } from "@/lib/toolkit/knik";
 
 const FONT = "IBM Plex Mono, ui-monospace, monospace";
 
@@ -654,6 +655,158 @@ export function BendSection({
       <Ext x1={bendX} y1={bendY} x2={bendX} y2={210} />
       <Ext x1={leg1End.x} y1={leg1End.y} x2={leg1End.x} y2={210} />
       <DimH x1={bendX} x2={leg1End.x} y={218} label={sl} side="down" />
+    </svg>
+  );
+}
+
+function bucklePath(cx: number, y0: number, y1: number, amp: number, shape: (t: number) => number) {
+  const N = 24;
+  const pts: string[] = [];
+  for (let i = 0; i <= N; i++) {
+    const t = i / N;
+    const y = y0 + (y1 - y0) * t;
+    const x = cx + amp * shape(t);
+    pts.push(`${i === 0 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)}`);
+  }
+  return pts.join(" ");
+}
+
+function GroundHatch({ x, y, dir }: { x: number; y: number; dir: 1 | -1 }) {
+  const w = 26;
+  const n = 4;
+  const ticks = [];
+  for (let i = 0; i <= n; i++) {
+    const tx0 = x - w / 2 + (i * w) / n;
+    ticks.push(
+      <line
+        key={i}
+        x1={tx0}
+        y1={y}
+        x2={tx0 - 6}
+        y2={y + dir * 9}
+        stroke="currentColor"
+        strokeWidth="1"
+        opacity="0.55"
+      />,
+    );
+  }
+  return (
+    <g>
+      <line x1={x - w / 2} y1={y} x2={x + w / 2} y2={y} stroke="currentColor" strokeWidth="1.3" />
+      {ticks}
+    </g>
+  );
+}
+
+function BuckleSupport({
+  kind,
+  x,
+  y,
+  dir,
+}: {
+  kind: "pin" | "fixed" | "free";
+  x: number;
+  y: number;
+  dir: 1 | -1;
+}) {
+  if (kind === "free") return null;
+  if (kind === "fixed") return <GroundHatch x={x} y={y} dir={dir} />;
+  return (
+    <>
+      <circle cx={x} cy={y} r="3.5" fill="var(--paper)" stroke="currentColor" strokeWidth="1.2" />
+      <GroundHatch x={x} y={y + dir * 10} dir={dir} />
+    </>
+  );
+}
+
+const BUCKLE_CASES: {
+  id: EndConditionId;
+  bottom: "pin" | "fixed";
+  top: "pin" | "fixed" | "free";
+  shape: (t: number) => number;
+}[] = [
+  { id: "hh", bottom: "pin", top: "pin", shape: (t) => Math.sin(Math.PI * t) },
+  { id: "fc", bottom: "fixed", top: "free", shape: (t) => 1 - Math.cos((Math.PI / 2) * t) },
+  { id: "ff", bottom: "fixed", top: "fixed", shape: (t) => (1 - Math.cos(2 * Math.PI * t)) / 2 },
+  { id: "fp", bottom: "fixed", top: "pin", shape: (t) => Math.sin(Math.PI * t) * (1 - 0.3 * t) },
+];
+
+export function BucklingModes({ active }: { active: EndConditionId }) {
+  const { locale } = useLocale();
+  const y0 = 208;
+  const y1 = 50;
+  const amp = 16;
+  const slots = [90, 250, 410, 570];
+
+  return (
+    <svg
+      className="w-full text-ink"
+      viewBox="0 0 640 250"
+      role="img"
+      aria-label={tx(
+        locale,
+        "Vier Euler-knikvormen: scharnier-scharnier, ingeklemd-vrij, ingeklemd-ingeklemd en ingeklemd-scharnier, gekozen gedeelte gemarkeerd",
+        "Four Euler buckling modes: pinned-pinned, fixed-free, fixed-fixed and fixed-pinned, selected case highlighted",
+      )}
+    >
+      {BUCKLE_CASES.map((c, idx) => {
+        const cx = slots[idx];
+        const cond = END_CONDITIONS.find((e) => e.id === c.id);
+        const isActive = c.id === active;
+        const d = bucklePath(cx, y0, y1, amp, c.shape);
+        return (
+          <g key={c.id}>
+            <line
+              x1={cx}
+              y1={y0}
+              x2={cx}
+              y2={y1}
+              stroke="currentColor"
+              strokeWidth="0.75"
+              strokeDasharray="3 4"
+              opacity="0.3"
+            />
+            <path
+              d={d}
+              fill="none"
+              stroke={isActive ? "var(--accent)" : "currentColor"}
+              strokeWidth={isActive ? 2.5 : 1.4}
+              strokeLinecap="round"
+              opacity={isActive ? 1 : 0.4}
+            />
+            <BuckleSupport kind={c.bottom} x={cx} y={y0} dir={1} />
+            <BuckleSupport kind={c.top} x={cx} y={y1} dir={-1} />
+            {c.top !== "free" ? (
+              <>
+                <line x1={cx} y1={y1 - 22} x2={cx} y2={y1 - 4} stroke="currentColor" strokeWidth="1.2" opacity="0.7" />
+                <path d={`M${cx - 3},${y1 - 9} L${cx},${y1 - 3} L${cx + 3},${y1 - 9}`} fill="none" stroke="currentColor" strokeWidth="1.2" opacity="0.7" />
+              </>
+            ) : null}
+            <text
+              x={cx}
+              y={228}
+              textAnchor="middle"
+              fill={isActive ? "var(--accent)" : "currentColor"}
+              fontSize="11"
+              fontFamily={FONT}
+              fontWeight={isActive ? 500 : 400}
+            >
+              {cond ? tx(locale, cond.label, cond.labelEn) : c.id}
+            </text>
+            <text
+              x={cx}
+              y={242}
+              textAnchor="middle"
+              fill={isActive ? "var(--accent)" : "currentColor"}
+              fontSize="10"
+              fontFamily={FONT}
+              opacity="0.8"
+            >
+              k = {cond ? cond.k : ""}
+            </text>
+          </g>
+        );
+      })}
     </svg>
   );
 }

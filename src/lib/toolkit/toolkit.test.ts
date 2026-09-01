@@ -14,6 +14,7 @@ import {
 import { GROOVE, squeeze } from "./oring.ts";
 import { lookupSeeger, seegerFor } from "./seeger.ts";
 import { lookupKanten } from "./kanten.ts";
+import { computeBuckling, sectionProps } from "./knik.ts";
 import { rangeHint, matchTools, TOOLS } from "./tools.ts";
 
 describe("ISO 286 passingen", () => {
@@ -311,5 +312,57 @@ describe("toolkit zoek", () => {
 
   it("unknown term is empty", () => {
     assert.equal(matchTools("xyzzy").length, 0);
+  });
+});
+
+describe("Euler-knik", () => {
+  it("square 10 mm, L=500 mm, K=1, E=200000: F_cr ≈ 6579,7 N", () => {
+    const section = sectionProps("vierkant", { a: 10 });
+    assert.ok(section);
+    assert.ok(Math.abs(section.I - 833.3333) < 0.001);
+    assert.equal(section.A, 100);
+    const r = computeBuckling({ L: 500, k: 1, E: 200000, I: section.I, A: section.A, F: null });
+    assert.ok(r);
+    assert.ok(Math.abs(r.Fcr - 6579.7) < 1);
+    assert.ok(Math.abs(r.sigmaCr - 65.797) < 0.01);
+    assert.ok(Math.abs(r.lambda - 173.205) < 0.01);
+    assert.equal(r.safety, null);
+  });
+
+  it("F_cr scales with 1/k²: fixed-free (k=2) is a quarter of pinned-pinned (k=1)", () => {
+    const section = sectionProps("rond", { D: 20 });
+    assert.ok(section);
+    const hh = computeBuckling({ L: 1000, k: 1, E: 210000, I: section.I, A: section.A, F: null });
+    const fc = computeBuckling({ L: 1000, k: 2, E: 210000, I: section.I, A: section.A, F: null });
+    assert.ok(hh && fc);
+    assert.ok(Math.abs(hh.Fcr / fc.Fcr - 4) < 1e-9);
+  });
+
+  it("tube I/A less than solid round of the same OD", () => {
+    const solid = sectionProps("rond", { D: 30 });
+    const tube = sectionProps("buis", { D: 30, d: 24 });
+    assert.ok(solid && tube);
+    assert.ok(tube.I < solid.I);
+    assert.ok(tube.A < solid.A);
+  });
+
+  it("rectangle takes the weaker axis", () => {
+    const section = sectionProps("rechthoek", { b: 40, h: 10 });
+    assert.ok(section);
+    assert.ok(Math.abs(section.I - (10 * 40 ** 3) / 12) < 1e-6);
+  });
+
+  it("safety factor is F_cr / F when a load is given", () => {
+    const section = sectionProps("rond", { D: 20 });
+    assert.ok(section);
+    const r = computeBuckling({ L: 1000, k: 1, E: 210000, I: section.I, A: section.A, F: 1000 });
+    assert.ok(r && r.safety != null);
+    assert.ok(Math.abs(r.safety - r.Fcr / 1000) < 1e-9);
+  });
+
+  it("invalid inputs return null", () => {
+    assert.equal(sectionProps("buis", { D: 10, d: 12 }), null);
+    assert.equal(sectionProps("rond", { D: 0 }), null);
+    assert.equal(computeBuckling({ L: 0, k: 1, E: 210000, I: 100, A: 10, F: null }), null);
   });
 });

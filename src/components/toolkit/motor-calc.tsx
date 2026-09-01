@@ -113,9 +113,8 @@ export function MotorCalc() {
           {tx(locale, "Bedrijfspunt van de rol", "Roller operating point")}
         </h2>
         <Note>
-          Horizontale aangedreven rol of trommel. Berekent n, F, T en P. SEW
-          kiest het aggregaat — dit is geen cataloguskeuze en geen typecode.
-          g = 9,81 m/s².
+          Horizontale aangedreven rol of trommel. Berekent n, F, T en P. Geen
+          cataloguskeuze en geen typecode. g = 9,81 m/s².
         </Note>
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
           <Field label={tx(locale, "Transportsnelheid", "Conveyor speed")}>
@@ -233,42 +232,6 @@ export function MotorCalc() {
         )}
       </CalcPanel>
 
-      <section className="mt-12">
-        <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-          SEW kiest het aggregaat
-        </h2>
-        <Note>
-          Deze rekenhulp bepaalt het bedrijfspunt (n, F, T, P). SEW selecteert
-          het reductoraggregaat. DRN.. IE3 is de huidige SEW-wisselstroomlijn,
-          geen voorraadkeuze. Geen verzonnen typecodes.
-        </Note>
-        <ul className="mt-4 list-disc space-y-2 pl-5 text-sm leading-relaxed text-muted">
-          <li>
-            <a
-              href="https://www.sew-eurodrive.nl/en_us/online_support/"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Drive selection / Online Support
-            </a>
-            : application → recommendations, zonder login. Neem conveyor/roller,
-            P, n en T mee.
-          </li>
-          <li>
-            <a
-              href="https://www.sew-eurodrive.nl/products/software/project-planning/product-configurator/product-configurator.html"
-              className="text-accent hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              DriveConfigurator
-            </a>
-            : projectplanning en productconfigurator.
-          </li>
-        </ul>
-      </section>
-
       <section className="mt-10">
         <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
           Bedrijfsformules
@@ -338,8 +301,7 @@ export function MotorCalc() {
           </table>
         </div>
         <p className="mt-4 text-xs leading-relaxed text-subtle">
-          P = F·v. IEC 60034 kW-reeks (R20). Naslag, geen SEW-catalogus. Open
-          Online Support of DriveConfigurator voor het aggregaat.
+          P = F·v. IEC 60034 kW-reeks (R20). Naslag, geen motorcatalogus.
         </p>
       </section>
     </>

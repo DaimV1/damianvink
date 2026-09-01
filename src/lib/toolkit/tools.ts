@@ -123,9 +123,9 @@ export const TOOLS = [
     kind: "rekenhulp",
     related: ["eenheden", "bronnen", "cilinder"],
     blurb:
-      "Rollenbaan/band/helling/hijsen: n, F, T, P en volgende IEC-kW-stap. SEW kiest het aggregaat.",
+      "Rollenbaan/band/helling/hijsen: n, F, T, P en volgende IEC-kW-stap.",
     blurbEn:
-      "Roller conveyor/belt/incline/hoist: n, F, T, P and next IEC kW step. SEW selects the gearmotor.",
+      "Roller conveyor/belt/incline/hoist: n, F, T, P and next IEC kW step.",
     tags: ["kw", "koppel", "iec", "aandrijving", "torque", "drive"],
   },
   {
@@ -137,7 +137,7 @@ export const TOOLS = [
     titleEn: "Pneumatic cylinder",
     standard: "ISO 15552 · 6432",
     kind: "rekenhulp",
-    related: ["motor", "eenheden"],
+    related: ["motor", "eenheden", "knik"],
     blurb:
       "F = p·A, dubbelwerkend. ISO-boring bij last en 6 bar. Geen knik, geen Festo-type.",
     blurbEn:
@@ -159,6 +159,22 @@ export const TOOLS = [
     blurbEn:
       "Square/acute: Ri, min. leg length s, groove width w, Z-bend. Sophia shop-spec, not ISO.",
     tags: ["buigen", "plaat", "sophia", "zetwerk", "bending", "sheet"],
+  },
+  {
+    id: "knik",
+    href: "/toolkit/knikberekening",
+    short: "Knik",
+    shortEn: "Buckling",
+    title: "Knikberekening",
+    titleEn: "Buckling calculation",
+    standard: "Euler",
+    kind: "rekenhulp",
+    related: ["cilinder", "eenheden"],
+    blurb:
+      "Euler-knik van een slanke staaf: F_cr, kritieke spanning en slankheid λ. Vier inklemgevallen.",
+    blurbEn:
+      "Euler buckling of a slender strut: F_cr, critical stress and slenderness λ. Four end-condition cases.",
+    tags: ["euler", "kritieke last", "slankheid", "staaf", "kolom", "buckling", "critical load", "slenderness", "column"],
   },
   {
     id: "bronnen",

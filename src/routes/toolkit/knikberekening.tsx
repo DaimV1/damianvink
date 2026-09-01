@@ -1,31 +1,31 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { JsonLd } from "@/components/json-ld";
 import { Faq } from "@/components/toolkit/calc-ui";
-import { MotorCalc } from "@/components/toolkit/motor-calc";
+import { KnikCalc } from "@/components/toolkit/knik-calc";
 import { ToolkitFrame } from "@/components/toolkit/toolkit-frame";
 import { toolkitCopy } from "@/lib/i18n/toolkit-pages";
 import { useLocale } from "@/lib/i18n/locale";
 import { pageHead, softwareJsonLd } from "@/lib/seo";
 
 const DESCRIPTION =
-  "Motorspecificatie voor een aangedreven rol of trommel: n, F, T, P en de volgende IEC 60034 kW-stap.";
+  "Euler-knikberekening van een slanke staaf: kritieke last F_cr, kritieke spanning en slankheid λ voor vier inklemgevallen.";
 
-export const Route = createFileRoute("/toolkit/motorspecificatie")({
+export const Route = createFileRoute("/toolkit/knikberekening")({
   head: () =>
     pageHead({
-      title: "Motorspecificatie aandrijving — Damian Vink",
+      title: "Knikberekening balk Euler — Damian Vink",
       description: DESCRIPTION,
-      path: "/toolkit/motorspecificatie",
+      path: "/toolkit/knikberekening",
     }),
-  component: MotorPage,
+  component: KnikPage,
 });
 
-function MotorPage() {
+function KnikPage() {
   const { locale } = useLocale();
-  const copy = toolkitCopy("motor", locale);
+  const copy = toolkitCopy("knik", locale);
   return (
     <ToolkitFrame
-      active="motor"
+      active="knik"
       crumbs={[
         { href: "/toolkit", label: "Toolkit" },
         { label: copy.crumb },
@@ -36,24 +36,21 @@ function MotorPage() {
     >
       <JsonLd
         data={softwareJsonLd({
-          name: "Motorspecificatie aandrijving",
-          path: "/toolkit/motorspecificatie",
+          name: "Knikberekening balk (Euler)",
+          path: "/toolkit/knikberekening",
           description: DESCRIPTION,
           featureList: [
-            "n_rol",
-            "F",
-            "T",
-            "P_as",
-            "P_motor",
-            "IEC 60034",
-            "rollenbaan",
-            "band",
-            "helling",
-            "hijsen",
+            "F_cr",
+            "sigma_cr",
+            "slankheid",
+            "scharnier-scharnier",
+            "ingeklemd-vrij",
+            "ingeklemd-ingeklemd",
+            "ingeklemd-scharnier",
           ],
         })}
       />
-      <MotorCalc />
+      <KnikCalc />
       <Faq items={copy.faq ?? []} />
     </ToolkitFrame>
   );
