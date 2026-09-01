@@ -19,13 +19,14 @@ export function kFor(id: EndConditionId): number {
   return END_CONDITIONS.find((c) => c.id === id)?.k ?? 1;
 }
 
-export type SectionKind = "rond" | "buis" | "rechthoek" | "vierkant";
+export type SectionKind = "rond" | "buis" | "rechthoek" | "vierkant" | "koker";
 
 export const SECTION_KINDS: { id: SectionKind; label: string; labelEn: string }[] = [
   { id: "rond", label: "Rond, massief", labelEn: "Round, solid" },
   { id: "buis", label: "Rond, buis", labelEn: "Round, tube" },
   { id: "rechthoek", label: "Rechthoekig", labelEn: "Rectangular" },
   { id: "vierkant", label: "Vierkant", labelEn: "Square" },
+  { id: "koker", label: "Koker (rechthoekig, hol)", labelEn: "Box section (rectangular, hollow)" },
 ];
 
 export const MATERIALS_E: { id: string; label: string; labelEn: string; E: number }[] = [
@@ -40,10 +41,10 @@ export function eFor(id: string): number {
   return MATERIALS_E.find((m) => m.id === id)?.E ?? MATERIALS_E[0].E;
 }
 
-/** I (mm⁴) en A (mm²) uit doorsnede-afmetingen (mm). Rechthoek geeft I_min (zwakke as). */
+/** I (mm⁴) en A (mm²) uit doorsnede-afmetingen (mm). Rechthoek en koker geven I_min (zwakke as). */
 export function sectionProps(
   kind: SectionKind,
-  dims: { D?: number; d?: number; b?: number; h?: number; a?: number },
+  dims: { D?: number; d?: number; b?: number; h?: number; a?: number; t?: number },
 ): { I: number; A: number } | null {
   switch (kind) {
     case "rond": {
@@ -72,6 +73,18 @@ export function sectionProps(
       const a = dims.a;
       if (a == null || !(a > 0)) return null;
       return { I: a ** 4 / 12, A: a * a };
+    }
+    case "koker": {
+      const b = dims.b;
+      const h = dims.h;
+      const t = dims.t;
+      if (b == null || h == null || t == null || !(b > 0) || !(h > 0) || !(t > 0)) return null;
+      const bi = b - 2 * t;
+      const hi = h - 2 * t;
+      if (bi <= 0 || hi <= 0) return null;
+      const Ix = (b * h ** 3 - bi * hi ** 3) / 12;
+      const Iy = (h * b ** 3 - hi * bi ** 3) / 12;
+      return { I: Math.min(Ix, Iy), A: b * h - bi * hi };
     }
     default:
       return null;

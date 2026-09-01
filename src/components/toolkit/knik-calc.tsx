@@ -42,6 +42,7 @@ export function KnikCalc() {
   const [b, setB] = useState("40");
   const [h, setH] = useState("10");
   const [a, setA] = useState("10");
+  const [t, setT] = useState("3");
   const [L, setL] = useState("1000");
   const [endCondition, setEndCondition] = useState<EndConditionId>("hh");
   const [materialId, setMaterialId] = useState("rvs");
@@ -57,8 +58,10 @@ export function KnikCalc() {
         return { b: parseNum(b) ?? undefined, h: parseNum(h) ?? undefined };
       case "vierkant":
         return { a: parseNum(a) ?? undefined };
+      case "koker":
+        return { b: parseNum(b) ?? undefined, h: parseNum(h) ?? undefined, t: parseNum(t) ?? undefined };
     }
-  }, [sectionKind, D, dIn, b, h, a]);
+  }, [sectionKind, D, dIn, b, h, a, t]);
 
   const section = useMemo(
     () => sectionProps(sectionKind, dims),
@@ -168,6 +171,19 @@ export function KnikCalc() {
             <Field label={tx(locale, "Zijde a (mm)", "Side a (mm)")}>
               <NumInput id="knik-a" value={a} onChange={setA} />
             </Field>
+          ) : null}
+          {sectionKind === "koker" ? (
+            <>
+              <Field label={tx(locale, "Breedte b (mm)", "Width b (mm)")}>
+                <NumInput id="knik-koker-b" value={b} onChange={setB} />
+              </Field>
+              <Field label={tx(locale, "Hoogte h (mm)", "Height h (mm)")}>
+                <NumInput id="knik-koker-h" value={h} onChange={setH} />
+              </Field>
+              <Field label={tx(locale, "Wanddikte t (mm)", "Wall thickness t (mm)")}>
+                <NumInput id="knik-koker-t" value={t} onChange={setT} />
+              </Field>
+            </>
           ) : null}
         </div>
 

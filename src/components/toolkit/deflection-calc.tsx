@@ -42,6 +42,7 @@ export function DeflectionCalc() {
   const [bDim, setBDim] = useState("40");
   const [hDim, setHDim] = useState("10");
   const [aDim, setADim] = useState("10");
+  const [tDim, setTDim] = useState("3");
   const [L, setL] = useState("1000");
   const [endCondition, setEndCondition] = useState<BeamEndCondition>("ss");
   const [materialId, setMaterialId] = useState("rvs");
@@ -58,8 +59,14 @@ export function DeflectionCalc() {
         return { b: parseNum(bDim) ?? undefined, h: parseNum(hDim) ?? undefined };
       case "vierkant":
         return { a: parseNum(aDim) ?? undefined };
+      case "koker":
+        return {
+          b: parseNum(bDim) ?? undefined,
+          h: parseNum(hDim) ?? undefined,
+          t: parseNum(tDim) ?? undefined,
+        };
     }
-  }, [sectionKind, D, dIn, bDim, hDim, aDim]);
+  }, [sectionKind, D, dIn, bDim, hDim, aDim, tDim]);
 
   const section = useMemo(() => sectionProps(sectionKind, dims), [sectionKind, dims]);
   const Lraw = parseNum(L);
@@ -162,6 +169,19 @@ export function DeflectionCalc() {
             <Field label={tx(locale, "Zijde a (mm)", "Side a (mm)")}>
               <NumInput id="defl-a" value={aDim} onChange={setADim} />
             </Field>
+          ) : null}
+          {sectionKind === "koker" ? (
+            <>
+              <Field label={tx(locale, "Breedte b (mm)", "Width b (mm)")}>
+                <NumInput id="defl-koker-b" value={bDim} onChange={setBDim} />
+              </Field>
+              <Field label={tx(locale, "Hoogte h (mm)", "Height h (mm)")}>
+                <NumInput id="defl-koker-h" value={hDim} onChange={setHDim} />
+              </Field>
+              <Field label={tx(locale, "Wanddikte t (mm)", "Wall thickness t (mm)")}>
+                <NumInput id="defl-koker-t" value={tDim} onChange={setTDim} />
+              </Field>
+            </>
           ) : null}
 
           <Field label={tx(locale, "Puntlast P (N)", "Point load P (N)")}>
