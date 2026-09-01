@@ -63,7 +63,7 @@ export function tractionForceN({
     F = m * G;
   } else if (duty === "helling") {
     const alphaRad = (alpha_deg * Math.PI) / 180;
-    F = m * G * mu + m * G * Math.sin(alphaRad);
+    F = m * G * (mu * Math.cos(alphaRad) + Math.sin(alphaRad));
   } else {
     F = m * G * mu;
   }

@@ -285,7 +285,7 @@ export function MotorCalc() {
                 [
                   ["rollenbaan", "m g μ", "0,03"],
                   ["band", "m g μ", "0,10"],
-                  ["helling", "m g μ + m g sin(α)", "0,03"],
+                  ["helling", "m g (μ cos(α) + sin(α))", "0,03"],
                   ["hijsen", "m g", "—"],
                 ] as const
               ).map(([id, formula, muDef]) => (
