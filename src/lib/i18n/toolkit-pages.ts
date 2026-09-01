@@ -352,6 +352,32 @@ const pages = {
       lede: "CAD models, components, sheet metal and standards. Bend lines in the Bending guidelines calculator (247TailorSteel Sophia, shop-spec). Links open in a new tab.",
     },
   },
+  macros: {
+    nl: {
+      title: "Macro-bibliotheek.",
+      accent: "bibliotheek.",
+      crumb: "Macro-bibliotheek",
+      lede: "Downloadbare VBA-macro's voor SolidWorks 2024 en Inventor 2024. Basis-hulpmiddelen: STEP-export, batch opslaan, eigenschappen tonen. Geen productiecode — test eerst op een kopie.",
+      faq: [
+        { q: "Waarom .bas-bestanden?", a: "Dat is het standaard tekstformaat voor een VBA-module. Open de VBA-editor, voeg een module toe en plak de code, of importeer het .bas-bestand direct." },
+        { q: "Werkt dit ook in oudere versies?", a: "Geschreven voor 2024, maar de gebruikte API's zijn al jaren stabiel. Waarschijnlijk werkt het ook in 2021–2023; niet getest." },
+        { q: "Zijn dit productie-macro's?", a: "Nee. Basis-hulpmiddelen zonder foutafhandeling voor edge cases. Test eerst op een kopie, niet op een kritiek bestand." },
+        { q: "Moet ik macro's inschakelen?", a: "Ja, via het Trust Center (SolidWorks) of de macro-instellingen (Inventor). Macro's uit onbekende bron staan standaard uit." },
+      ],
+    },
+    en: {
+      title: "Macro library.",
+      accent: "library.",
+      crumb: "Macro library",
+      lede: "Downloadable VBA macros for SolidWorks 2024 and Inventor 2024. Basic utilities: STEP export, batch save, show properties. Not production code — test on a copy first.",
+      faq: [
+        { q: "Why .bas files?", a: "That's the standard text format for a VBA module. Open the VBA editor, add a module and paste the code, or import the .bas file directly." },
+        { q: "Does this work in older versions?", a: "Written for 2024, but the APIs used have been stable for years. Likely works in 2021–2023 too; not tested." },
+        { q: "Are these production macros?", a: "No. Basic utilities with no edge-case error handling. Test on a copy first, not on a critical file." },
+        { q: "Do I need to enable macros?", a: "Yes, via the Trust Center (SolidWorks) or macro settings (Inventor). Macros from an unknown source are disabled by default." },
+      ],
+    },
+  },
 } as const satisfies Record<string, Record<Locale, PageCopy>>;
 
 export function toolkitCopy<K extends keyof typeof pages>(id: K, locale: Locale): PageCopy {

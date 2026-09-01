@@ -185,10 +185,26 @@ export const TOOLS = [
     titleEn: "CAD libraries",
     standard: "Bronnen",
     kind: "naslag",
-    related: ["bevestigers", "kanten"],
+    related: ["bevestigers", "kanten", "macros"],
     blurb: "3D-modellen, componenten, plaatwerk en naslag.",
     blurbEn: "3D models, components, sheet metal and references.",
     tags: ["grabcad", "mcmaster", "model"],
+  },
+  {
+    id: "macros",
+    href: "/toolkit/macros",
+    short: "Macro's",
+    shortEn: "Macros",
+    title: "Macro-bibliotheek",
+    titleEn: "Macro library",
+    standard: "SolidWorks · Inventor",
+    kind: "naslag",
+    related: ["bronnen"],
+    blurb:
+      "Downloadbare VBA-macro's voor SolidWorks 2024 en Inventor 2024: STEP-export, batch opslaan, eigenschappen tonen.",
+    blurbEn:
+      "Downloadable VBA macros for SolidWorks 2024 and Inventor 2024: STEP export, batch save, show properties.",
+    tags: ["vba", "macro", "solidworks", "inventor", "step", "export", "automation", "cad"],
   },
 ] as const;
 

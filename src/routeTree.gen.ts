@@ -28,6 +28,7 @@ import { Route as ToolkitIso2768RouteImport } from './routes/toolkit/iso-2768'
 import { Route as ToolkitKantenRouteImport } from './routes/toolkit/kanten'
 import { Route as ToolkitKnikberekeningRouteImport } from './routes/toolkit/knikberekening'
 import { Route as ToolkitLagerpassingenRouteImport } from './routes/toolkit/lagerpassingen'
+import { Route as ToolkitMacrosRouteImport } from './routes/toolkit/macros'
 import { Route as ToolkitMotorspecificatieRouteImport } from './routes/toolkit/motorspecificatie'
 import { Route as ToolkitORinggroefRouteImport } from './routes/toolkit/o-ringgroef'
 import { Route as ToolkitPassingenRouteImport } from './routes/toolkit/passingen'
@@ -129,6 +130,11 @@ const ToolkitLagerpassingenRoute = ToolkitLagerpassingenRouteImport.update({
   path: '/toolkit/lagerpassingen',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ToolkitMacrosRoute = ToolkitMacrosRouteImport.update({
+  id: '/toolkit/macros',
+  path: '/toolkit/macros',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ToolkitMotorspecificatieRoute =
   ToolkitMotorspecificatieRouteImport.update({
     id: '/toolkit/motorspecificatie',
@@ -175,6 +181,7 @@ export interface FileRoutesByFullPath {
   '/toolkit/kanten': typeof ToolkitKantenRoute
   '/toolkit/knikberekening': typeof ToolkitKnikberekeningRoute
   '/toolkit/lagerpassingen': typeof ToolkitLagerpassingenRoute
+  '/toolkit/macros': typeof ToolkitMacrosRoute
   '/toolkit/motorspecificatie': typeof ToolkitMotorspecificatieRoute
   '/toolkit/o-ringgroef': typeof ToolkitORinggroefRoute
   '/toolkit/passingen': typeof ToolkitPassingenRoute
@@ -201,6 +208,7 @@ export interface FileRoutesByTo {
   '/toolkit/kanten': typeof ToolkitKantenRoute
   '/toolkit/knikberekening': typeof ToolkitKnikberekeningRoute
   '/toolkit/lagerpassingen': typeof ToolkitLagerpassingenRoute
+  '/toolkit/macros': typeof ToolkitMacrosRoute
   '/toolkit/motorspecificatie': typeof ToolkitMotorspecificatieRoute
   '/toolkit/o-ringgroef': typeof ToolkitORinggroefRoute
   '/toolkit/passingen': typeof ToolkitPassingenRoute
@@ -228,6 +236,7 @@ export interface FileRoutesById {
   '/toolkit/kanten': typeof ToolkitKantenRoute
   '/toolkit/knikberekening': typeof ToolkitKnikberekeningRoute
   '/toolkit/lagerpassingen': typeof ToolkitLagerpassingenRoute
+  '/toolkit/macros': typeof ToolkitMacrosRoute
   '/toolkit/motorspecificatie': typeof ToolkitMotorspecificatieRoute
   '/toolkit/o-ringgroef': typeof ToolkitORinggroefRoute
   '/toolkit/passingen': typeof ToolkitPassingenRoute
@@ -256,6 +265,7 @@ export interface FileRouteTypes {
     | '/toolkit/kanten'
     | '/toolkit/knikberekening'
     | '/toolkit/lagerpassingen'
+    | '/toolkit/macros'
     | '/toolkit/motorspecificatie'
     | '/toolkit/o-ringgroef'
     | '/toolkit/passingen'
@@ -282,6 +292,7 @@ export interface FileRouteTypes {
     | '/toolkit/kanten'
     | '/toolkit/knikberekening'
     | '/toolkit/lagerpassingen'
+    | '/toolkit/macros'
     | '/toolkit/motorspecificatie'
     | '/toolkit/o-ringgroef'
     | '/toolkit/passingen'
@@ -308,6 +319,7 @@ export interface FileRouteTypes {
     | '/toolkit/kanten'
     | '/toolkit/knikberekening'
     | '/toolkit/lagerpassingen'
+    | '/toolkit/macros'
     | '/toolkit/motorspecificatie'
     | '/toolkit/o-ringgroef'
     | '/toolkit/passingen'
@@ -335,6 +347,7 @@ export interface RootRouteChildren {
   ToolkitKantenRoute: typeof ToolkitKantenRoute
   ToolkitKnikberekeningRoute: typeof ToolkitKnikberekeningRoute
   ToolkitLagerpassingenRoute: typeof ToolkitLagerpassingenRoute
+  ToolkitMacrosRoute: typeof ToolkitMacrosRoute
   ToolkitMotorspecificatieRoute: typeof ToolkitMotorspecificatieRoute
   ToolkitORinggroefRoute: typeof ToolkitORinggroefRoute
   ToolkitPassingenRoute: typeof ToolkitPassingenRoute
@@ -479,6 +492,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ToolkitLagerpassingenRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/toolkit/macros': {
+      id: '/toolkit/macros'
+      path: '/toolkit/macros'
+      fullPath: '/toolkit/macros'
+      preLoaderRoute: typeof ToolkitMacrosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/toolkit/motorspecificatie': {
       id: '/toolkit/motorspecificatie'
       path: '/toolkit/motorspecificatie'
@@ -535,6 +555,7 @@ const rootRouteChildren: RootRouteChildren = {
   ToolkitKantenRoute: ToolkitKantenRoute,
   ToolkitKnikberekeningRoute: ToolkitKnikberekeningRoute,
   ToolkitLagerpassingenRoute: ToolkitLagerpassingenRoute,
+  ToolkitMacrosRoute: ToolkitMacrosRoute,
   ToolkitMotorspecificatieRoute: ToolkitMotorspecificatieRoute,
   ToolkitORinggroefRoute: ToolkitORinggroefRoute,
   ToolkitPassingenRoute: ToolkitPassingenRoute,
