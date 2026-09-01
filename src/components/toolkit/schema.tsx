@@ -694,10 +694,11 @@ export function BendSection({
   const tl = t != null ? `t ${dashMm(t)}` : "t";
 
   // Thickness dimension: spans the flat cut edge at the left leg's tip,
-  // perpendicular to the leg (width = strokeW), offset past the tip.
+  // perpendicular to the leg (width = strokeW). The leg runs along (-1,-1),
+  // so its perpendicular is (1,-1) — opposite-sign offsets, not same-sign.
   const halfStroke = strokeW / 2;
-  const tTip1 = { x: leg2End.x + DIAG * halfStroke, y: leg2End.y + DIAG * halfStroke };
-  const tTip2 = { x: leg2End.x - DIAG * halfStroke, y: leg2End.y - DIAG * halfStroke };
+  const tTip1 = { x: leg2End.x + DIAG * halfStroke, y: leg2End.y - DIAG * halfStroke };
+  const tTip2 = { x: leg2End.x - DIAG * halfStroke, y: leg2End.y + DIAG * halfStroke };
 
   return (
     <svg
