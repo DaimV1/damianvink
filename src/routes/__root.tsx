@@ -4,12 +4,11 @@ import {
   Outlet,
   Scripts,
 } from "@tanstack/react-router";
+import { Analytics } from "@vercel/analytics/react";
 import { AuthProvider } from "@/lib/auth/provider";
 import { ThemeProvider } from "@/lib/theme";
 import { LocaleProvider, tx, useLocale } from "@/lib/i18n/locale";
 import { PreviewHostBridge } from "@/components/preview-host-bridge";
-import { GoogleAnalytics } from "@/components/google-analytics";
-import { CookieConsent } from "@/components/cookie-consent";
 import { JsonLd } from "@/components/json-ld";
 import { PageWrap, SiteShell } from "@/components/site-shell";
 import { VinkRun } from "@/components/vink-run";
@@ -50,8 +49,6 @@ export const Route = createRootRoute({
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Space+Grotesk:wght@500;600;700&display=swap",
       },
-      { rel: "preconnect", href: "https://www.googletagmanager.com" },
-      { rel: "preconnect", href: "https://www.google-analytics.com" },
     ],
   }),
   errorComponent: AppErrorComponent,
@@ -75,8 +72,7 @@ function RootDocument() {
             <LocaleProvider>
               <SkipLink />
               <Outlet />
-              <GoogleAnalytics />
-              <CookieConsent />
+              <Analytics />
             </LocaleProvider>
           </ThemeProvider>
         </AuthProvider>

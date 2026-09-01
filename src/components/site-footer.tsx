@@ -1,6 +1,5 @@
 import { Link } from "@tanstack/react-router";
 import { tx, useLocale } from "@/lib/i18n/locale";
-import { reopenCookieConsent } from "@/components/cookie-consent";
 
 export function SiteFooter() {
   const { locale } = useLocale();
@@ -25,13 +24,6 @@ export function SiteFooter() {
               {item.label}
             </Link>
           ))}
-          <button
-            type="button"
-            onClick={reopenCookieConsent}
-            className="text-sm text-muted transition-colors duration-150 hover:text-ink"
-          >
-            {tx(locale, "Cookievoorkeuren", "Cookie preferences")}
-          </button>
         </nav>
         <p className="font-mono text-xs text-subtle">
           {tx(locale, "Project Engineer · werktuigbouwkunde", "Project Engineer · mechanical engineering")}
