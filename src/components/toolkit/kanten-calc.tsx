@@ -28,7 +28,7 @@ import { BendSection, SchemaPanel } from "./schema";
 export function KantenCalc() {
   const { locale } = useLocale();
   const [tRaw, setTRaw] = useState("2");
-  const [material, setMaterial] = useState<Material>("staal");
+  const [material, setMaterial] = useState<Material>("rvs");
   const [kind, setKind] = useState<Kind>("haaks");
   const t = Number(tRaw);
   const row = Number.isFinite(t) ? lookupKanten(t, material, kind) : null;

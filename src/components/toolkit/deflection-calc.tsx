@@ -44,7 +44,7 @@ export function DeflectionCalc() {
   const [aDim, setADim] = useState("10");
   const [L, setL] = useState("1000");
   const [endCondition, setEndCondition] = useState<BeamEndCondition>("ss");
-  const [materialId, setMaterialId] = useState("staal");
+  const [materialId, setMaterialId] = useState("rvs");
   const [P, setP] = useState("1000");
   const [posA, setPosA] = useState("500");
 

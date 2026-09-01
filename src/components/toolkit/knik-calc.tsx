@@ -44,7 +44,7 @@ export function KnikCalc() {
   const [a, setA] = useState("10");
   const [L, setL] = useState("1000");
   const [endCondition, setEndCondition] = useState<EndConditionId>("hh");
-  const [materialId, setMaterialId] = useState("staal");
+  const [materialId, setMaterialId] = useState("rvs");
   const [F, setF] = useState("");
 
   const dims = useMemo(() => {
