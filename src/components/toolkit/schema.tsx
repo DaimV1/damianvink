@@ -715,8 +715,9 @@ export function BendSection({
 
       {/* s starts where the rounded bend fillet ends (10 units up the 45° leg
           from the apex — the round line-join's tangent point at this corner
-          angle), not at the sharp-corner apex itself, and hugs close beside the leg */}
-      <DimAligned x1={227} y1={217} x2={leg1End.x} y2={leg1End.y} offset={9} label={sl} />
+          angle), not at the sharp-corner apex itself, offset well clear of
+          the leg so the line and label both read easily */}
+      <DimAligned x1={227} y1={217} x2={leg1End.x} y2={leg1End.y} offset={28} label={sl} />
     </svg>
   );
 }
