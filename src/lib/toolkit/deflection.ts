@@ -104,8 +104,35 @@ export function deflectionShapePoints({
   return pts;
 }
 
-export function copyLine(r: DeflectionResult, endLabel: string, a: number) {
-  return `δ(x=${fmtDotComma(a, 0)}) = ${fmtDotComma(r.deltaAtLoad, 3)} mm, δ_max = ${fmtDotComma(r.deltaMax, 3)} mm bij x = ${fmtDotComma(r.xMax, 0)} mm (${endLabel})`;
+/**
+ * Maximaal buigend moment (N·mm) voor een puntlast P op afstand a.
+ * Scharnier-scharnier: onder de last (altijd het globale maximum bij één
+ * puntlast). Uitkraging: bij de inklemming (a = afstand last tot inklemming).
+ */
+export function maxBendingMoment({
+  end,
+  L,
+  a,
+  P,
+}: {
+  end: BeamEndCondition;
+  L: number;
+  a: number;
+  P: number;
+}): number {
+  if (end === "cant") return P * a;
+  const b = L - a;
+  return (P * a * b) / L;
+}
+
+/** Buigspanning σ = M·c / I (N/mm²), c = afstand neutrale lijn tot uiterste vezel. */
+export function bendingStress(M: number, c: number, I: number): number {
+  return (M * c) / I;
+}
+
+export function copyLine(r: DeflectionResult, endLabel: string, a: number, sigma?: number | null) {
+  const sigmaPart = sigma != null ? `, σ_max = ${fmtDotComma(sigma, 1)} N/mm²` : "";
+  return `δ(x=${fmtDotComma(a, 0)}) = ${fmtDotComma(r.deltaAtLoad, 3)} mm, δ_max = ${fmtDotComma(r.deltaMax, 3)} mm bij x = ${fmtDotComma(r.xMax, 0)} mm (${endLabel})${sigmaPart}`;
 }
 
 export function fmtDotComma(n: number, digits: number) {

@@ -1,14 +1,18 @@
 import { useMemo, useState } from "react";
 import {
   BEAM_END_CONDITIONS,
+  bendingStress,
   computeDeflection,
   copyLine,
   fmtDotComma,
+  maxBendingMoment,
   type BeamEndCondition,
 } from "@/lib/toolkit/deflection";
 import {
   eFor,
+  extremeFiber,
   MATERIALS_E,
+  rp02For,
   sectionProps,
   SECTION_KINDS,
   fmtN,
@@ -81,12 +85,24 @@ export function DeflectionCalc() {
       ? computeDeflection({ end: endCondition, L: Lraw, a: posARaw, E, I: section.I, P: Praw })
       : null;
 
+  const c = useMemo(() => extremeFiber(sectionKind, dims), [sectionKind, dims]);
+  const sigma =
+    section && c != null && Lraw != null && Praw != null && posARaw != null && posARaw >= 0 && posARaw <= Lraw
+      ? bendingStress(
+          maxBendingMoment({ end: endCondition, L: Lraw, a: posARaw, P: Praw }),
+          c,
+          section.I,
+        )
+      : null;
+  const rp02 = rp02For(materialId);
+  const overYield = sigma != null && sigma > rp02;
+
   const copy = useMemo(
     () =>
       result && endLabel && posARaw != null
-        ? copyLine(result, tx(locale, endLabel.label, endLabel.labelEn), posARaw)
+        ? copyLine(result, tx(locale, endLabel.label, endLabel.labelEn), posARaw, sigma)
         : "",
-    [result, endLabel, posARaw, locale],
+    [result, endLabel, posARaw, locale, sigma],
   );
 
   const outOfRange = Lraw != null && posARaw != null && (posARaw < 0 || posARaw > Lraw);
@@ -216,8 +232,20 @@ export function DeflectionCalc() {
                   { label: "δ(a)", value: `${fmtDotComma(result.deltaAtLoad, 3)} mm` },
                   { label: "δ_max", value: `${fmtDotComma(result.deltaMax, 3)} mm` },
                   { label: "x (δ_max)", value: `${fmtDotComma(result.xMax, 0)} mm` },
-                ]}
+                  sigma != null
+                    ? { label: "σ_max", value: `${fmtN(sigma)} N/mm²` }
+                    : null,
+                ].filter(Boolean) as { label: string; value: string }[]}
               />
+              {overYield ? (
+                <Note>
+                  {tx(
+                    locale,
+                    `σ_max = ${fmtN(sigma ?? 0)} N/mm² ≥ Rp0,2 ≈ ${fmtN(rp02)} N/mm² (${tx(locale, material.label, material.labelEn)}, richtwaarde) — deze last geeft blijvende vervorming, de doorbuiging hierboven is dan niet meer geldig.`,
+                    `σ_max = ${fmtN(sigma ?? 0)} N/mm² ≥ Rp0.2 ≈ ${fmtN(rp02)} N/mm² (${tx(locale, material.label, material.labelEn)}, indicative) — this load causes permanent deformation, the deflection above no longer applies.`,
+                  )}
+                </Note>
+              ) : null}
               <CopyResult text={copy} />
             </>
           ) : outOfRange ? (
@@ -275,13 +303,13 @@ export function DeflectionCalc() {
 
       <section className="mt-10">
         <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-          {tx(locale, "E-modulus (indicatief)", "Modulus of elasticity (indicative)")}
+          {tx(locale, "E-modulus en vloeigrens (indicatief)", "Modulus of elasticity and yield strength (indicative)")}
         </h2>
         <Note>
           {tx(
             locale,
-            "Richtwaarden. Voor een specifieke legering of kwaliteit: materiaalcertificaat of norm nalopen.",
-            "Indicative values. For a specific alloy or grade: check the material certificate or standard.",
+            "Richtwaarden voor een generieke kwaliteit binnen de materiaalgroep, geen specifieke legering of temper. Voor een specifieke legering of kwaliteit: materiaalcertificaat of norm nalopen.",
+            "Indicative values for a generic grade within the material group, not a specific alloy or temper. For a specific alloy or grade: check the material certificate or standard.",
           )}
         </Note>
         <div className="table-scroll mt-4">
@@ -290,6 +318,7 @@ export function DeflectionCalc() {
               <tr>
                 <th>{tx(locale, "Materiaal", "Material")}</th>
                 <th>E (N/mm²)</th>
+                <th>Rp0,2 (N/mm²)</th>
               </tr>
             </thead>
             <tbody>
@@ -297,6 +326,7 @@ export function DeflectionCalc() {
                 <tr key={m.id} className={m.id === materialId ? "is-active" : ""}>
                   <th scope="row">{tx(locale, m.label, m.labelEn)}</th>
                   <td>{fmtN(m.E)}</td>
+                  <td>{fmtN(m.Rp02)}</td>
                 </tr>
               ))}
             </tbody>

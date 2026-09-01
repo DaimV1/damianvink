@@ -29,16 +29,21 @@ export const SECTION_KINDS: { id: SectionKind; label: string; labelEn: string }[
   { id: "koker", label: "Koker (rechthoekig, hol)", labelEn: "Box section (rectangular, hollow)" },
 ];
 
-export const MATERIALS_E: { id: string; label: string; labelEn: string; E: number }[] = [
-  { id: "staal", label: "Staal", labelEn: "Steel", E: 210000 },
-  { id: "rvs", label: "RVS", labelEn: "Stainless steel", E: 193000 },
-  { id: "aluminium", label: "Aluminium", labelEn: "Aluminium", E: 70000 },
-  { id: "messing", label: "Messing", labelEn: "Brass", E: 100000 },
-  { id: "kunststof", label: "Kunststof (indicatief)", labelEn: "Plastic (indicative)", E: 3000 },
+/** Rp02: indicatieve vloeigrens (N/mm²). Generieke aanname per materiaalgroep, geen legering/temper-specifiek. */
+export const MATERIALS_E: { id: string; label: string; labelEn: string; E: number; Rp02: number }[] = [
+  { id: "staal", label: "Staal", labelEn: "Steel", E: 210000, Rp02: 235 },
+  { id: "rvs", label: "RVS", labelEn: "Stainless steel", E: 193000, Rp02: 215 },
+  { id: "aluminium", label: "Aluminium", labelEn: "Aluminium", E: 70000, Rp02: 240 },
+  { id: "messing", label: "Messing", labelEn: "Brass", E: 100000, Rp02: 130 },
+  { id: "kunststof", label: "Kunststof (indicatief)", labelEn: "Plastic (indicative)", E: 3000, Rp02: 50 },
 ];
 
 export function eFor(id: string): number {
   return MATERIALS_E.find((m) => m.id === id)?.E ?? MATERIALS_E[0].E;
+}
+
+export function rp02For(id: string): number {
+  return MATERIALS_E.find((m) => m.id === id)?.Rp02 ?? MATERIALS_E[0].Rp02;
 }
 
 /** I (mm⁴) en A (mm²) uit doorsnede-afmetingen (mm). Rechthoek en koker geven I_min (zwakke as). */
@@ -85,6 +90,35 @@ export function sectionProps(
       const Ix = (b * h ** 3 - bi * hi ** 3) / 12;
       const Iy = (h * b ** 3 - hi * bi ** 3) / 12;
       return { I: Math.min(Ix, Iy), A: b * h - bi * hi };
+    }
+    default:
+      return null;
+  }
+}
+
+/** Afstand (mm) van de neutrale lijn tot de uiterste vezel, voor dezelfde (zwakke) as als sectionProps' I. */
+export function extremeFiber(
+  kind: SectionKind,
+  dims: { D?: number; d?: number; b?: number; h?: number; a?: number; t?: number },
+): number | null {
+  switch (kind) {
+    case "rond":
+    case "buis": {
+      const D = dims.D;
+      if (D == null || !(D > 0)) return null;
+      return D / 2;
+    }
+    case "rechthoek":
+    case "koker": {
+      const b = dims.b;
+      const h = dims.h;
+      if (b == null || h == null || !(b > 0) || !(h > 0)) return null;
+      return Math.min(b, h) / 2;
+    }
+    case "vierkant": {
+      const a = dims.a;
+      if (a == null || !(a > 0)) return null;
+      return a / 2;
     }
     default:
       return null;
