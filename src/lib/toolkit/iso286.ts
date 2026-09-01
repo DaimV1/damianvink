@@ -1,12 +1,12 @@
 import { mmFromUm } from "@/lib/utils";
 
 export const BANDS = [
-  { over: 3, to: 6, label: "boven 3 t/m 6", labelEn: ">3 – ≤6" },
-  { over: 6, to: 10, label: "boven 6 t/m 10", labelEn: ">6 – ≤10" },
-  { over: 10, to: 18, label: "boven 10 t/m 18", labelEn: ">10 – ≤18" },
-  { over: 18, to: 30, label: "boven 18 t/m 30", labelEn: ">18 – ≤30" },
-  { over: 30, to: 40, label: "boven 30 t/m 40", labelEn: ">30 – ≤40" },
-  { over: 40, to: 50, label: "boven 40 t/m 50", labelEn: ">40 – ≤50" },
+  { over: 3, to: 6, label: "boven 3 t/m 6", labelEn: "over 3 to 6" },
+  { over: 6, to: 10, label: "boven 6 t/m 10", labelEn: "over 6 to 10" },
+  { over: 10, to: 18, label: "boven 10 t/m 18", labelEn: "over 10 to 18" },
+  { over: 18, to: 30, label: "boven 18 t/m 30", labelEn: "over 18 to 30" },
+  { over: 30, to: 40, label: "boven 30 t/m 40", labelEn: "over 30 to 40" },
+  { over: 40, to: 50, label: "boven 40 t/m 50", labelEn: "over 40 to 50" },
 ] as const;
 
 export const HOLE: Record<string, { ES: number[]; EI: number[] }> = {
