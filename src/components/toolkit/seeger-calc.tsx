@@ -20,6 +20,7 @@ import {
   parseWholeMm,
   ResultGrid,
   SelectInput,
+  SourceBadge,
 } from "./calc-ui";
 import { CirclipSection, SchemaPanel } from "./schema";
 
@@ -66,6 +67,13 @@ export function SeegerCalc() {
           |d₁ − d₂| / 2; de dieptetol. 0 / +IT11/2 volgt uit d₂ (dieper mag,
           ondieper niet).
         </Note>
+        <SourceBadge>
+          {tx(
+            locale,
+            "Groefbreedte b komt uit een werkplaatstabel, niet uit de officiële DIN 471/472-pdf.",
+            "Groove width b comes from a shop table, not the official DIN 471/472 PDF.",
+          )}
+        </SourceBadge>
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
           <Field label={tx(locale, "Ø d₁ (mm)", "Ø d₁ (mm)")}>
             <NumInput id="seeger-diameter" value={diameter} onChange={onDia} />

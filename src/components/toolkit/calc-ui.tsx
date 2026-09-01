@@ -1,4 +1,4 @@
-import { Check, Copy } from "lucide-react";
+import { Check, Copy, Info } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { JsonLd } from "@/components/json-ld";
@@ -183,6 +183,16 @@ export function CalcEyebrow() {
 
 export function Note({ children }: { children: ReactNode }) {
   return <p className="mt-3 text-sm leading-relaxed text-muted">{children}</p>;
+}
+
+/** Visible source/caveat chip — for provenance notes that matter even to a reader who only scans the table, not just the footnote. */
+export function SourceBadge({ children }: { children: ReactNode }) {
+  return (
+    <p className="mt-3 inline-flex items-start gap-1.5 rounded-md border border-line-strong bg-paper px-2.5 py-1.5 text-xs leading-relaxed text-muted">
+      <Info className="mt-0.5 size-3.5 shrink-0 text-subtle" aria-hidden="true" />
+      <span>{children}</span>
+    </p>
+  );
 }
 
 export function Faq({

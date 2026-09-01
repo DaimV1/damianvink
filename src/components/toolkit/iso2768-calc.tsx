@@ -29,6 +29,7 @@ import {
   NumInput,
   ResultGrid,
   SelectInput,
+  SourceBadge,
 } from "./calc-ui";
 
 function parseLen(raw: string): number | null {
@@ -83,6 +84,13 @@ export function Iso2768Calc() {
           Titelblok-default als een maat geen vakje heeft. Geen passing (dat is
           ISO 286). Standaardaanduiding ISO 2768-mK.
         </Note>
+        <SourceBadge>
+          {tx(
+            locale,
+            "ISO 2768-2 (H/K/L) is in 2021 ingetrokken; opvolger is ISO 22081.",
+            "ISO 2768-2 (H/K/L) was withdrawn in 2021; successor is ISO 22081.",
+          )}
+        </SourceBadge>
         <div className="mt-6 grid gap-4 sm:grid-cols-3">
           <Field label={tx(locale, "Nominale lengte (mm)", "Nominal length (mm)")}>
             <NumInput

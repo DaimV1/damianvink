@@ -15,13 +15,13 @@ const pages = {
       title: "Engineering toolkit.",
       accent: "toolkit.",
       crumb: "Toolkit",
-      lede: "Rekenhulp en naslag voor machinebouw. Zoek op norm, trefwoord of eenheid; open een tool voor de rekenhulp bovenaan en de tabel eronder.",
+      lede: "Naslagwerk voor werktuigbouwkundigen en constructeurs. Zoek op norm, trefwoord of eenheid; open een tool voor de rekenhulp bovenaan en de tabel eronder.",
     },
     en: {
       title: "Engineering toolkit.",
       accent: "toolkit.",
       crumb: "Toolkit",
-      lede: "Calculators and tables for machine building. Search by standard, keyword or unit; open a tool for the calculator on top and the table below.",
+      lede: "Reference material for mechanical engineers and machine designers. Search by standard, keyword or unit; open a tool for the calculator on top and the table below.",
     },
   },
   eenheden: {
