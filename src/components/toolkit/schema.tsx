@@ -635,14 +635,14 @@ export function BendSection({
       <HatchDefs uid={uid} />
       {/* die */}
       <rect x="40" y="190" width="360" height="54" fill={`url(#${uid}-a)`} stroke="currentColor" />
-      <path d={`M186,190 L${bendX},232 L254,190 Z`} fill="var(--paper)" />
+      <path d={`M186,190 L${bendX},224 L254,190 Z`} fill="var(--paper)" />
       <text x="56" y="228" fill="currentColor" fontSize="12" fontFamily={FONT}>
         {tx(locale, "matrijs", "die")}
       </text>
 
-      {/* bent sheet */}
-      <path d={path} fill="none" stroke="currentColor" strokeWidth="20" strokeLinecap="round" strokeLinejoin="round" />
-      <path d={path} fill="none" stroke="var(--accent)" strokeWidth="17" strokeLinecap="round" strokeLinejoin="round" />
+      {/* bent sheet — square-cut ends (butt cap), rounded only at the bend itself */}
+      <path d={path} fill="none" stroke="currentColor" strokeWidth="20" strokeLinecap="butt" strokeLinejoin="round" />
+      <path d={path} fill="none" stroke="var(--accent)" strokeWidth="17" strokeLinecap="butt" strokeLinejoin="round" />
 
       <text x={bendX + 14} y={bendY - 16} fill="currentColor" fontSize="11" fontFamily={FONT}>
         {ril}
@@ -652,9 +652,9 @@ export function BendSection({
       <Ext x1={254} y1={190} x2={254} y2={144} />
       <DimH x1={186} x2={254} y={144} label={wl} side="up" />
 
-      <Ext x1={bendX} y1={bendY} x2={bendX} y2={210} />
-      <Ext x1={leg1End.x} y1={leg1End.y} x2={leg1End.x} y2={210} />
-      <DimH x1={bendX} x2={leg1End.x} y={218} label={sl} side="down" />
+      <Ext x1={bendX} y1={bendY} x2={bendX} y2={125} />
+      <Ext x1={leg1End.x} y1={leg1End.y} x2={leg1End.x} y2={125} />
+      <DimH x1={bendX} x2={leg1End.x} y={125} label={sl} side="up" />
     </svg>
   );
 }
