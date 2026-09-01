@@ -1059,9 +1059,9 @@ export function BearingFitChart({
     >
       <HatchDefs uid={uid} />
 
-      {/* rotation axis, stops short of the housing-fit label */}
+      {/* rotation axis, stops short of the shaft-fit and housing-fit labels on either side */}
       <line
-        x1="20"
+        x1={housingX - 20}
         y1={cy}
         x2={housingX + housingW + 20}
         y2={cy}
@@ -1125,11 +1125,11 @@ export function BearingFitChart({
         stroke="currentColor"
       />
 
-      {/* shaft, stops clear of the housing-fit label so the label stays on one background */}
+      {/* shaft, flush with the housing footprint on both sides so neither fit label sits on the shaft fill */}
       <rect
-        x="40"
+        x={housingX}
         y={shaftTop}
-        width={housingX + housingW - 40}
+        width={housingW}
         height={shaftBot - shaftTop}
         fill="var(--accent)"
       />
@@ -1150,8 +1150,8 @@ export function BearingFitChart({
         stroke="currentColor"
       />
 
-      {/* shaft fit, on the bare shaft to the left of the housing */}
-      <DimV x={90} y1={shaftTop} y2={shaftBot} label={shaftLabel} side="left" />
+      {/* shaft fit, in the clear space to the left of the housing */}
+      <DimV x={housingX - 40} y1={shaftTop} y2={shaftBot} label={shaftLabel} side="left" />
 
       {/* housing fit, at the outer-ring / housing-bore interface */}
       <DimV x={380} y1={outerOuterTop} y2={outerOuterBot} label={holeLabel} side="right" />
