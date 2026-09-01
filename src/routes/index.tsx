@@ -3,14 +3,17 @@ import { ArrowUpRight } from "lucide-react";
 import { DisplayTitle, SectionTitle } from "@/components/display-title";
 import { PageWrap, SiteShell } from "@/components/site-shell";
 import { tx, useLocale } from "@/lib/i18n/locale";
-import { DEFAULT_DESCRIPTION, pageHead } from "@/lib/seo";
+import { pageHead } from "@/lib/seo";
 import { SOCIALS } from "@/lib/socials";
+
+const HOME_DESCRIPTION =
+  "Damian Vink, Project Engineer werktuigbouwkunde. Engineering toolkit, projectwerkplek en marathon-trainingslogboek.";
 
 export const Route = createFileRoute("/")({
   head: () =>
     pageHead({
-      title: "Damian Vink | Project Engineer werktuigbouwkunde & machinebouw",
-      description: DEFAULT_DESCRIPTION,
+      title: "Project Engineer werktuigbouwkunde & machinebouw — Damian Vink",
+      description: HOME_DESCRIPTION,
       path: "/",
     }),
   component: Home,
@@ -77,8 +80,8 @@ function Home() {
           <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted">
             {tx(
               locale,
-              "Vragen over engineering of samenwerking: e-mail of LinkedIn.",
-              "Questions about engineering or working together: email or LinkedIn.",
+              "Vragen over engineering of samenwerking? Neem contact op via onderstaande kanalen.",
+              "Questions about engineering or working together? Reach out via the channels below.",
             )}
           </p>
           <div className="mt-8 grid gap-3 sm:grid-cols-2">

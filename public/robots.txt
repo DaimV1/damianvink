@@ -5,14 +5,12 @@
 User-agent: *
 Allow: /
 Disallow: /spel
-Disallow: /project
 Disallow: /podcast
 Disallow: /projecten
 
 User-agent: GPTBot
 Allow: /
 Disallow: /spel
-Disallow: /project
 
 User-agent: OAI-SearchBot
 Allow: /
@@ -23,7 +21,6 @@ Allow: /
 User-agent: ClaudeBot
 Allow: /
 Disallow: /spel
-Disallow: /project
 
 User-agent: Claude-SearchBot
 Allow: /
