@@ -1,12 +1,12 @@
 import { mmFromUm } from "@/lib/utils";
 
 export const BANDS = [
-  { over: 3, to: 6, label: "boven 3 t/m 6" },
-  { over: 6, to: 10, label: "boven 6 t/m 10" },
-  { over: 10, to: 18, label: "boven 10 t/m 18" },
-  { over: 18, to: 30, label: "boven 18 t/m 30" },
-  { over: 30, to: 40, label: "boven 30 t/m 40" },
-  { over: 40, to: 50, label: "boven 40 t/m 50" },
+  { over: 3, to: 6, label: "boven 3 t/m 6", labelEn: "over 3 through 6" },
+  { over: 6, to: 10, label: "boven 6 t/m 10", labelEn: "over 6 through 10" },
+  { over: 10, to: 18, label: "boven 10 t/m 18", labelEn: "over 10 through 18" },
+  { over: 18, to: 30, label: "boven 18 t/m 30", labelEn: "over 18 through 30" },
+  { over: 30, to: 40, label: "boven 30 t/m 40", labelEn: "over 30 through 40" },
+  { over: 40, to: 50, label: "boven 40 t/m 50", labelEn: "over 40 through 50" },
 ] as const;
 
 export const HOLE: Record<string, { ES: number[]; EI: number[] }> = {
@@ -50,6 +50,7 @@ export const FITS = [
     shaft: "c11",
     kind: "los" as FitKind,
     use: "Ruime speling. Plaatwerk, ruwe montage, geverfde of vuile vlakken.",
+    useEn: "Generous clearance. Sheet metal work, rough assembly, painted or dirty surfaces.",
   },
   {
     id: "H9/d9",
@@ -57,6 +58,7 @@ export const FITS = [
     shaft: "d9",
     kind: "los" as FitKind,
     use: "Ruime looppassing. Poelies, ringen, onderdelen die makkelijk moeten lopen.",
+    useEn: "Generous running fit. Pulleys, rings, parts that must run easily.",
   },
   {
     id: "H8/f7",
@@ -64,6 +66,7 @@ export const FITS = [
     shaft: "f7",
     kind: "los" as FitKind,
     use: "Looppassing. Glijassen en lagers die met speling moeten draaien.",
+    useEn: "Running fit. Sliding shafts and bearings that must rotate with clearance.",
   },
   {
     id: "H7/g6",
@@ -71,6 +74,7 @@ export const FITS = [
     shaft: "g6",
     kind: "los" as FitKind,
     use: "Nauwkeurig glijden. Weinig speling, nog met de hand te verschuiven.",
+    useEn: "Precise sliding. Little clearance, still movable by hand.",
   },
   {
     id: "H7/h6",
@@ -78,6 +82,7 @@ export const FITS = [
     shaft: "h6",
     kind: "los" as FitKind,
     use: "Centrumpassing. Schuiven met minimale speling; locatie van stilstaande delen.",
+    useEn: "Location fit. Sliding with minimal clearance; locating stationary parts.",
   },
   {
     id: "H7/k6",
@@ -85,6 +90,7 @@ export const FITS = [
     shaft: "k6",
     kind: "overgang" as FitKind,
     use: "Overgang. Tikken met hamer; centreren waar speling of lichte klemming mag.",
+    useEn: "Transition. Tapped in with a hammer; centering where clearance or light clamping is acceptable.",
   },
   {
     id: "H7/n6",
@@ -92,6 +98,7 @@ export const FITS = [
     shaft: "n6",
     kind: "overgang" as FitKind,
     use: "Stevige overgang. Meestal klemming; persen of tikken.",
+    useEn: "Firm transition. Usually clamping; pressed or tapped in.",
   },
   {
     id: "H7/p6",
@@ -99,6 +106,7 @@ export const FITS = [
     shaft: "p6",
     kind: "lijn" as FitKind,
     use: "Lichte perspassing. Tot 18 mm max. speling 0 µm (lijnpassing mogelijk). Daarboven altijd overmaat.",
+    useEn: "Light press fit. Up to 18 mm max. clearance 0 µm (line fit possible). Above that, always interference.",
   },
   {
     id: "H7/s6",
@@ -106,6 +114,7 @@ export const FITS = [
     shaft: "s6",
     kind: "vast" as FitKind,
     use: "Perspassing. Pers of krimp; niet bedoeld om los te nemen.",
+    useEn: "Press fit. Pressed or shrink-fitted; not intended to be taken apart.",
   },
 ] as const;
 
@@ -113,12 +122,25 @@ export function bandIndex(d: number) {
   return BANDS.findIndex((b) => d > b.over && d <= b.to);
 }
 
-export function kindLabel(minC: number, maxC: number): { kind: FitKind; text: string } {
-  if (minC >= 0 && maxC >= 0) return { kind: "los", text: "Los — altijd speling" };
-  if (maxC < 0) return { kind: "vast", text: "Vast — altijd overmaat" };
+export function kindLabel(
+  minC: number,
+  maxC: number,
+): { kind: FitKind; text: string; textEn: string } {
+  if (minC >= 0 && maxC >= 0)
+    return { kind: "los", text: "Los — altijd speling", textEn: "Clearance — always clearance" };
+  if (maxC < 0)
+    return { kind: "vast", text: "Vast — altijd overmaat", textEn: "Interference — always interference" };
   if (maxC === 0 && minC < 0)
-    return { kind: "lijn", text: "Vast — tot lijnpassing (max. 0 µm)" };
-  return { kind: "overgang", text: "Overgang — speling of klemming" };
+    return {
+      kind: "lijn",
+      text: "Vast — tot lijnpassing (max. 0 µm)",
+      textEn: "Interference — up to a line fit (max. 0 µm)",
+    };
+  return {
+    kind: "overgang",
+    text: "Overgang — speling of klemming",
+    textEn: "Transition — clearance or clamping",
+  };
 }
 
 export function computeFit(d: number, fitId: string) {

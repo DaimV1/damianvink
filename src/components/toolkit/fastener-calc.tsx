@@ -56,9 +56,11 @@ export function FastenerCalc() {
           {tx(locale, "Bout bij M-maat", "Bolt at M size")}
         </h2>
         <Note>
-          Grove draad ISO 262. Doorlaat ISO 273. Moment en voorspanning: VDI
-          2230-1 tabel A1, μ = 0,14, 90 % van Rp0,2, droog. Geen vervanging van
-          een VDI-berekening bij wisselende last.
+          {tx(
+            locale,
+            "Grove draad ISO 262. Doorlaat ISO 273. Moment en voorspanning: VDI 2230-1 tabel A1, μ = 0,14, 90 % van Rp0,2, droog. Geen vervanging van een VDI-berekening bij wisselende last.",
+            "Coarse thread ISO 262. Clearance hole ISO 273. Torque and preload: VDI 2230-1 table A1, μ = 0.14, 90 % of Rp0.2, dry. Not a substitute for a VDI calculation under variable load.",
+          )}
         </Note>
         <div className="mt-6 grid gap-4 sm:grid-cols-3">
           <Field label={tx(locale, "Draad", "Thread")}>
@@ -91,32 +93,36 @@ export function FastenerCalc() {
         {row && hole != null ? (
           <>
             <p className="mt-5 text-sm text-muted">
-              M{row.d} × {fmtPitch(row.p)} · {klass} · ISO 273 {fit}
+              M{row.d} × {fmtPitch(row.p)} · {klass} · ISO 273{" "}
+              {tx(locale, fit, fit === "fijn" ? "fine" : fit === "grof" ? "coarse" : "medium")}
             </p>
             <ResultGrid
               items={[
-                { label: "Tappoorgat", value: `${fmtMm(row.tap)} mm` },
-                { label: "Doorlaat D", value: `${fmtMm(hole)} mm` },
+                { label: tx(locale, "Tappoorgat", "Tap drill"), value: `${fmtMm(row.tap)} mm` },
+                { label: tx(locale, "Doorlaat D", "Clearance D"), value: `${fmtMm(hole)} mm` },
                 {
-                  label: "SW zeskant",
+                  label: tx(locale, "SW zeskant", "SW hex"),
                   value: `${fmtMm(row.sw)} mm · k ${fmtMm(row.k)}`,
                 },
                 {
-                  label: "Inbus ISO 4762",
+                  label: tx(locale, "Inbus ISO 4762", "Socket head ISO 4762"),
                   value: `s ${fmtMm(row.s)} · dk ${fmtMm(row.dk)}`,
                 },
                 ma != null
-                  ? { label: "Aandraaimoment Ma", value: `${fmtNm(ma)} Nm` }
-                  : { label: "Aandraaimoment Ma", value: "geen rij vanaf M4" },
+                  ? { label: tx(locale, "Aandraaimoment Ma", "Tightening torque Ma"), value: `${fmtNm(ma)} Nm` }
+                  : {
+                      label: tx(locale, "Aandraaimoment Ma", "Tightening torque Ma"),
+                      value: tx(locale, "geen rij vanaf M4", "no row from M4"),
+                    },
                 fv != null
-                  ? { label: "Voorspanning Fv", value: `${fmtForce(fv)} N` }
-                  : { label: "Voorspanning Fv", value: "—" },
+                  ? { label: tx(locale, "Voorspanning Fv", "Preload Fv"), value: `${fmtForce(fv)} N` }
+                  : { label: tx(locale, "Voorspanning Fv", "Preload Fv"), value: "—" },
               ]}
             />
             <CopyResult text={copy} />
           </>
         ) : (
-          <p className="mt-5 text-sm text-muted">Kies een M-maat.</p>
+          <p className="mt-5 text-sm text-muted">{tx(locale, "Kies een M-maat.", "Choose an M size.")}</p>
         )}
       </CalcPanel>
 
@@ -144,7 +150,7 @@ export function FastenerCalc() {
 
       <section className="mt-10">
         <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-          Doorlaat en kop (ISO 273 / 4014 / 4762)
+          {tx(locale, "Doorlaat en kop (ISO 273 / 4014 / 4762)", "Clearance and head (ISO 273 / 4014 / 4762)")}
         </h2>
         <div className="table-scroll mt-4">
           <table className="ref-table">
@@ -152,12 +158,12 @@ export function FastenerCalc() {
               <tr>
                 <th>d</th>
                 <th>P</th>
-                <th>Tap</th>
-                <th>D fijn</th>
-                <th>D middel</th>
-                <th>D grof</th>
+                <th>{tx(locale, "Tap", "Tap")}</th>
+                <th>{tx(locale, "D fijn", "D fine")}</th>
+                <th>{tx(locale, "D middel", "D medium")}</th>
+                <th>{tx(locale, "D grof", "D coarse")}</th>
                 <th>SW</th>
-                <th>s inbus</th>
+                <th>{tx(locale, "s inbus", "s socket")}</th>
               </tr>
             </thead>
             <tbody>
@@ -180,10 +186,14 @@ export function FastenerCalc() {
 
       <section className="mt-10">
         <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-          Aandraaimoment (VDI 2230-1 A1)
+          {tx(locale, "Aandraaimoment (VDI 2230-1 A1)", "Tightening torque (VDI 2230-1 A1)")}
         </h2>
         <Note>
-          Grove draad, μ = 0,14, 90 % Rp0,2, droog. Fv in N, Ma in N·m.
+          {tx(
+            locale,
+            "Grove draad, μ = 0,14, 90 % Rp0,2, droog. Fv in N, Ma in N·m.",
+            "Coarse thread, μ = 0.14, 90 % Rp0.2, dry. Fv in N, Ma in N·m.",
+          )}
         </Note>
         <SourceBadge>
           {tx(
@@ -221,8 +231,12 @@ export function FastenerCalc() {
           </table>
         </div>
         <p className="mt-4 text-xs leading-relaxed text-subtle">
-          Bron: ISO 273 (doorlaat), ISO 4014/4017 (zeskant SW, k), ISO 4762
-          (inbus s, dk), ISO 262 (spoed). Momenten: VDI 2230-1 tabel A1 via{" "}
+          {tx(locale, "Bron:", "Source:")}{" "}
+          {tx(
+            locale,
+            "ISO 273 (doorlaat), ISO 4014/4017 (zeskant SW, k), ISO 4762 (inbus s, dk), ISO 262 (spoed). Momenten: VDI 2230-1 tabel A1 via",
+            "ISO 273 (clearance), ISO 4014/4017 (hex SW, k), ISO 4762 (socket s, dk), ISO 262 (pitch). Torques: VDI 2230-1 table A1 via",
+          )}{" "}
           <a
             href="https://www.wurth.nl/nl/wuerth_nl/uw_branche/architecten_en_planners/din__en_normdelen/voorspan_en_aandraaimoment_3/voorspanaandraai.php"
             className="text-accent hover:underline"
@@ -231,8 +245,11 @@ export function FastenerCalc() {
           >
             Würth
           </a>
-          . Gesmeerd (μ lager) geeft een lager toelaatbaar moment. M3 heeft geen
-          A1-rij. Controleer kritieke verbindingen in VDI 2230.
+          {tx(
+            locale,
+            ". Gesmeerd (μ lager) geeft een lager toelaatbaar moment. M3 heeft geen A1-rij. Controleer kritieke verbindingen in VDI 2230.",
+            ". Lubricated (lower μ) gives a lower permissible torque. M3 has no A1 row. Verify critical joints in VDI 2230.",
+          )}
         </p>
       </section>
     </>

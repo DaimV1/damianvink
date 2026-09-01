@@ -85,7 +85,7 @@ const pages = {
       title: "Pneumatische cilinder.",
       accent: "cilinder.",
       crumb: "Cilinder",
-      lede: "Berekent de ISO-boring bij last en druk. F = p·A, dubbelwerkend. Festo of SMC kiest het type. Geen knikberekening.",
+      lede: "Berekent de ISO-boring bij last en druk. F = p·A, dubbelwerkend.",
       faq: [
         { q: "Wat is F = p·A?", a: "Theoretische kracht: druk (manometer, in N/mm²) maal zuigeroppervlak. 1 bar = 0,1 N/mm². Geen wrijving, geen afdichtingverlies." },
         { q: "6 bar of 6 bar absoluut?", a: "Manometerdruk (overdruk). 6 bar op de reduceerventiel is 6 bar gauge. Luchtverbruik per cyclus gebruikt p+1 als benadering van absoluut." },
@@ -98,7 +98,7 @@ const pages = {
       title: "Pneumatic cylinder.",
       accent: "cylinder.",
       crumb: "Cylinder",
-      lede: "ISO bore from load and pressure. F = p·A, double acting. Festo or SMC picks the type. No buckling check.",
+      lede: "ISO bore from load and pressure. F = p·A, double acting.",
       faq: [
         { q: "What is F = p·A?", a: "Theoretical force: gauge pressure (N/mm²) times piston area. 1 bar = 0.1 N/mm². No friction, no seal loss." },
         { q: "6 bar or 6 bar absolute?", a: "Gauge pressure. 6 bar on the regulator is 6 bar gauge. Air per cycle uses p+1 as an absolute approximation." },

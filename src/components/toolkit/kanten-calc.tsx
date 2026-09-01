@@ -13,7 +13,7 @@ import {
   type Kind,
   type Material,
 } from "@/lib/toolkit/kanten";
-import { tx, useLocale } from "@/lib/i18n/locale";
+import { tx, useLocale, type Locale } from "@/lib/i18n/locale";
 import {
   CalcEyebrow,
   CalcPanel,
@@ -42,8 +42,11 @@ export function KantenCalc() {
           {tx(locale, "Kantlijn", "Bend line")}
         </h2>
         <Note>
-          Shop-spec van 247TailorSteel Sophia, geen ISO of DIN. Discrete
-          diktes; een lege cel is geen buurrij. Changelog bron: 11-03-2026.
+          {tx(
+            locale,
+            "Shop-spec van 247TailorSteel Sophia, geen ISO of DIN. Discrete diktes; een lege cel is geen buurrij. Changelog bron: 11-03-2026.",
+            "Shop spec from 247TailorSteel Sophia, not ISO or DIN. Discrete thicknesses; an empty cell is not a neighboring row. Changelog source: 11-03-2026.",
+          )}
         </Note>
         <div className="mt-6 grid gap-4 sm:grid-cols-3">
           <Field label={tx(locale, "Dikte (mm)", "Thickness (mm)")}>
@@ -81,24 +84,42 @@ export function KantenCalc() {
           <>
             <ResultGrid
               items={[
-                { label: "Ri (inwendig)", value: `${dashMm(row.ri)} mm` },
-                { label: "s min. beenlengte", value: `${dashMm(row.s)} mm` },
-                { label: "w groefwijdte", value: `${dashMm(row.w)} mm` },
-                { label: "x (Z-buiging)", value: `${dashMm(row.x)} mm` },
+                {
+                  label: tx(locale, "Ri (inwendig)", "Ri (internal)"),
+                  value: `${dashMm(row.ri)} mm`,
+                },
+                {
+                  label: tx(locale, "s min. beenlengte", "s min. leg length"),
+                  value: `${dashMm(row.s)} mm`,
+                },
+                {
+                  label: tx(locale, "w groefwijdte", "w die opening"),
+                  value: `${dashMm(row.w)} mm`,
+                },
+                {
+                  label: tx(locale, "x (Z-buiging)", "x (Z-bend)"),
+                  value: `${dashMm(row.x)} mm`,
+                },
               ]}
             />
             {row.thickPlate ? (
               <Note>
-                10 en 12 mm: niet over de volle plaatlengte. Check de actuele
-                247-pagina.
+                {tx(
+                  locale,
+                  "10 en 12 mm: niet over de volle plaatlengte. Check de actuele 247-pagina.",
+                  "10 and 12 mm: not over the full plate length. Check the current 247 page.",
+                )}
               </Note>
             ) : null}
             <CopyResult text={copy} />
           </>
         ) : (
           <p className="mt-5 text-sm text-muted">
-            Deze dikte staat niet in de 247-tabellen voor deze combinatie. Geen
-            naburige rij gebruiken.
+            {tx(
+              locale,
+              "Deze dikte staat niet in de 247-tabellen voor deze combinatie. Geen naburige rij gebruiken.",
+              "This thickness is not in the 247 tables for this combination. Do not use a neighboring row.",
+            )}
           </p>
         )}
       </CalcPanel>
@@ -132,67 +153,79 @@ export function KantenCalc() {
       </section>
 
       <p className="mt-8 text-sm leading-relaxed text-muted">
-        Bron:{" "}
+        {tx(locale, "Bron:", "Source:")}{" "}
         <a
           href={KANTEN_SOURCE}
           className="text-accent hover:underline"
           target="_blank"
           rel="noopener noreferrer"
         >
-          247TailorSteel — richtlijnen voor kanten
+          {tx(
+            locale,
+            "247TailorSteel — richtlijnen voor kanten",
+            "247TailorSteel — bending guidelines",
+          )}
         </a>
-        . Shop-spec Sophia, geen ISO/DIN. Geen commerciële band; altijd hun
-        pagina nalopen (changelog 11-03-2026). Botsingcontrole, damwandfoto’s
-        en de A–F-tolerantiegrid staan daar, niet hier.
+        {tx(
+          locale,
+          ". Shop-spec Sophia, geen ISO/DIN. Geen commerciële band; altijd hun pagina nalopen (changelog 11-03-2026). Botsingcontrole, damwandfoto’s en de A–F-tolerantiegrid staan daar, niet hier.",
+          ". Shop spec Sophia, not ISO/DIN. No commercial affiliation; always check their page (changelog 11-03-2026). Collision checks, tooling photos and the A–F tolerance grid live there, not here.",
+        )}
       </p>
 
       <RiTable
-        title="Inwendige radius Ri — haaks"
+        title={tx(locale, "Inwendige radius Ri — haaks", "Internal radius Ri — right angle")}
         kind="haaks"
         thicknesses={RI_T_HAAKS}
         active={kind === "haaks" ? t : null}
         material={material}
         showHoogsterkte
+        locale={locale}
       />
       <RiTable
-        title="Inwendige radius Ri — scherp"
+        title={tx(locale, "Inwendige radius Ri — scherp", "Internal radius Ri — sharp")}
         kind="scherp"
         thicknesses={RI_T_SCHERP}
         active={kind === "scherp" ? t : null}
         material={material}
         showHoogsterkte={false}
+        locale={locale}
       />
       <GroupTable
-        title="Minimale beenlengte — haaks"
+        title={tx(locale, "Minimale beenlengte — haaks", "Minimum leg length — right angle")}
         kind="haaks"
         thicknesses={THICKNESSES}
         active={kind === "haaks" ? t : null}
         material={material}
         mode="ws"
+        locale={locale}
       />
       <GroupTable
-        title="Minimale beenlengte — scherp"
+        title={tx(locale, "Minimale beenlengte — scherp", "Minimum leg length — sharp")}
         kind="scherp"
         thicknesses={BL_T_SCHERP}
         active={kind === "scherp" ? t : null}
         material={material}
         mode="ws"
+        locale={locale}
       />
       <GroupTable
-        title="Z-buiging — haaks"
+        title={tx(locale, "Z-buiging — haaks", "Z-bend — right angle")}
         kind="haaks"
         thicknesses={THICKNESSES}
         active={kind === "haaks" ? t : null}
         material={material}
         mode="zx"
+        locale={locale}
       />
       <GroupTable
-        title="Z-buiging — scherp"
+        title={tx(locale, "Z-buiging — scherp", "Z-bend — sharp")}
         kind="scherp"
         thicknesses={BL_T_SCHERP}
         active={kind === "scherp" ? t : null}
         material={material}
         mode="zx"
+        locale={locale}
       />
     </>
   );
@@ -205,6 +238,7 @@ function RiTable({
   active,
   material,
   showHoogsterkte,
+  locale,
 }: {
   title: string;
   kind: Kind;
@@ -212,15 +246,14 @@ function RiTable({
   active: number | null;
   material: Material;
   showHoogsterkte: boolean;
+  locale: Locale;
 }) {
   const cols: Material[] = showHoogsterkte
     ? ["staal", "alu", "rvs", "hoogsterkte"]
     : ["staal", "alu", "rvs"];
-  const labels: Record<Material, string> = {
-    staal: "Staal",
-    alu: "Aluminium",
-    rvs: "RVS",
-    hoogsterkte: "Hoogsterkte",
+  const labelFor = (id: Material) => {
+    const m = MATERIALS.find((m) => m.id === id);
+    return m ? tx(locale, m.label, m.labelEn) : id;
   };
   return (
     <section className="mt-10">
@@ -228,8 +261,11 @@ function RiTable({
         {title}
       </h2>
       <Note>
-        Lege cel = geen waarde op de 247-pagina. Aluminium 0,8 mm is geen
-        staal-buur.
+        {tx(
+          locale,
+          "Lege cel = geen waarde op de 247-pagina. Aluminium 0,8 mm is geen staal-buur.",
+          "Empty cell = no value on the 247 page. Aluminium 0.8 mm is not a steel neighbor.",
+        )}
       </Note>
       <div className="table-scroll mt-4">
         <table className="ref-table">
@@ -237,7 +273,7 @@ function RiTable({
             <tr>
               <th>t (mm)</th>
               {cols.map((c) => (
-                <th key={c}>{labels[c]}</th>
+                <th key={c}>{labelFor(c)}</th>
               ))}
             </tr>
           </thead>
@@ -271,6 +307,7 @@ function GroupTable({
   active,
   material,
   mode,
+  locale,
 }: {
   title: string;
   kind: Kind;
@@ -278,11 +315,12 @@ function GroupTable({
   active: number | null;
   material: Material;
   mode: "ws" | "zx";
+  locale: Locale;
 }) {
   const groups: { id: "sa" | "rvs" | "hs"; label: string; mat: Material }[] = [
-    { id: "sa", label: "Staal en Aluminium", mat: "staal" },
+    { id: "sa", label: tx(locale, "Staal en Aluminium", "Steel and Aluminium"), mat: "staal" },
     { id: "rvs", label: "RVS", mat: "rvs" },
-    { id: "hs", label: "Hoogsterkte", mat: "hoogsterkte" },
+    { id: "hs", label: tx(locale, "Hoogsterkte", "High-strength"), mat: "hoogsterkte" },
   ];
   const activeGroup =
     material === "rvs" ? "rvs" : material === "hoogsterkte" ? "hs" : "sa";
@@ -292,11 +330,18 @@ function GroupTable({
         {title}
       </h2>
       <Note>
-        Staal en aluminium delen deze kolom op de 247-pagina. w is groefwijdte;
-        {" "}
+        {tx(
+          locale,
+          "Staal en aluminium delen deze kolom op de 247-pagina. w is groefwijdte;",
+          "Steel and aluminium share this column on the 247 page. w is die opening;",
+        )}{" "}
         {mode === "ws"
-          ? "s is minimale beenlengte (opleg op de matrijs)"
-          : "x is de Z-maat"}
+          ? tx(
+              locale,
+              "s is minimale beenlengte (opleg op de matrijs)",
+              "s is minimum leg length (bearing on the die)",
+            )
+          : tx(locale, "x is de Z-maat", "x is the Z dimension")}
         .
       </Note>
       <div className="table-scroll mt-4">
@@ -314,8 +359,8 @@ function GroupTable({
               <th />
               {groups.map((g) => (
                 <Fragment key={g.id}>
-                  <th>w (groef)</th>
-                  <th>{mode === "ws" ? "s (been)" : "x"}</th>
+                  <th>{tx(locale, "w (groef)", "w (die)")}</th>
+                  <th>{mode === "ws" ? tx(locale, "s (been)", "s (leg)") : "x"}</th>
                 </Fragment>
               ))}
             </tr>

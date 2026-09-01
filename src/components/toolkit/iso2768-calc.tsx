@@ -1,18 +1,23 @@
 import { useMemo, useState } from "react";
 import { fmtMm } from "@/lib/utils";
-import { tx, useLocale } from "@/lib/i18n/locale";
+import { tx, useLocale, type Locale } from "@/lib/i18n/locale";
 import {
   ANGULAR,
   ANGULAR_LABELS,
+  ANGULAR_LABELS_EN,
   FORM_RANGE_LABELS,
+  FORM_RANGE_LABELS_EN,
   LINEAR,
   LINEAR_LABELS,
+  LINEAR_LABELS_EN,
   PERPENDICULARITY,
   RADIUS,
   RADIUS_LABELS,
+  RADIUS_LABELS_EN,
   RUNOUT,
   STRAIGHTNESS,
   STRAIGHTNESS_LABELS,
+  STRAIGHTNESS_LABELS_EN,
   SYMMETRY,
   fmtAngle,
   lookupIso2768,
@@ -50,27 +55,37 @@ export function Iso2768Calc() {
 
   const copy = useMemo(() => {
     if (!row) return "";
+    const noVal = tx(locale, "geen tabelwaarde", "no table value");
     const lines = [row.callout];
-    if (row.linearTol != null) lines.push(`Lineair  ±${fmtMm(row.linearTol, 2)} mm`);
-    else lines.push("Lineair  geen tabelwaarde");
-    if (row.radiusTol != null) lines.push(`Radii/afschuining  ±${fmtMm(row.radiusTol, 1)} mm`);
-    if (row.angularTol) lines.push(`Hoek  ±${fmtAngle(row.angularTol)}`);
+    if (row.linearTol != null)
+      lines.push(`${tx(locale, "Lineair", "Linear")}  ±${fmtMm(row.linearTol, 2)} mm`);
+    else lines.push(`${tx(locale, "Lineair", "Linear")}  ${noVal}`);
+    if (row.radiusTol != null)
+      lines.push(`${tx(locale, "Radii/afschuining", "Radii/chamfer")}  ±${fmtMm(row.radiusTol, 1)} mm`);
+    if (row.angularTol) lines.push(`${tx(locale, "Hoek", "Angle")}  ±${fmtAngle(row.angularTol)}`);
     if (row.straightness != null) {
-      lines.push(`Rechtheid/vlakheid  ${fmtMm(row.straightness, 2)} mm`);
+      lines.push(
+        `${tx(locale, "Rechtheid/vlakheid", "Straightness/flatness")}  ${fmtMm(row.straightness, 2)} mm`,
+      );
     }
     if (row.perpendicularity != null) {
-      lines.push(`Haaksheid  ${fmtMm(row.perpendicularity, 1)} mm`);
+      lines.push(`${tx(locale, "Haaksheid", "Perpendicularity")}  ${fmtMm(row.perpendicularity, 1)} mm`);
     }
-    if (row.symmetry != null) lines.push(`Symmetrie  ${fmtMm(row.symmetry, 1)} mm`);
-    lines.push(`Circulaire uitloop  ${fmtMm(row.runout, 1)} mm`);
+    if (row.symmetry != null)
+      lines.push(`${tx(locale, "Symmetrie", "Symmetry")}  ${fmtMm(row.symmetry, 1)} mm`);
+    lines.push(`${tx(locale, "Circulaire uitloop", "Circular runout")}  ${fmtMm(row.runout, 1)} mm`);
     return lines.join("\n");
-  }, [row]);
+  }, [row, locale]);
 
   const missing =
     L != null && L < 0.5
-      ? "Onder 0,5 mm heeft ISO 2768 geen rij. Zet de afwijking naast de maat."
+      ? tx(
+          locale,
+          "Onder 0,5 mm heeft ISO 2768 geen rij. Zet de afwijking naast de maat.",
+          "Below 0.5 mm ISO 2768 has no row. Put the deviation next to the dimension.",
+        )
       : L != null && row == null
-        ? "Deze nominale lengte valt buiten de tabellen."
+        ? tx(locale, "Deze nominale lengte valt buiten de tabellen.", "This nominal length is outside the tables.")
         : null;
 
   return (
@@ -81,8 +96,11 @@ export function Iso2768Calc() {
           {tx(locale, "Nominale lengte", "Nominal length")}
         </h2>
         <Note>
-          Titelblok-default als een maat geen vakje heeft. Geen passing (dat is
-          ISO 286). Standaardaanduiding ISO 2768-mK.
+          {tx(
+            locale,
+            "Titelblok-default als een maat geen vakje heeft. Geen passing (dat is ISO 286). Standaardaanduiding ISO 2768-mK.",
+            "Title-block default when a dimension has no tolerance box. Not a fit (that is ISO 286). Standard callout ISO 2768-mK.",
+          )}
         </Note>
         <SourceBadge>
           {tx(
@@ -123,48 +141,52 @@ export function Iso2768Calc() {
             <ResultGrid
               items={[
                 {
-                  label: "Lineair ±",
+                  label: tx(locale, "Lineair ±", "Linear ±"),
                   value:
                     row.linearTol != null
                       ? `±${fmtMm(row.linearTol, 2)} mm`
-                      : "geen tabelwaarde",
+                      : tx(locale, "geen tabelwaarde", "no table value"),
                 },
                 {
-                  label: "Radii / afschuining ±",
+                  label: tx(locale, "Radii / afschuining ±", "Radii / chamfer ±"),
                   value:
                     row.radiusTol != null
                       ? `±${fmtMm(row.radiusTol, 1)} mm`
-                      : "geen tabelwaarde",
+                      : tx(locale, "geen tabelwaarde", "no table value"),
                 },
                 {
-                  label: "Hoek ±",
-                  value: row.angularTol ? `±${fmtAngle(row.angularTol)}` : "geen tabelwaarde",
+                  label: tx(locale, "Hoek ±", "Angle ±"),
+                  value: row.angularTol
+                    ? `±${fmtAngle(row.angularTol)}`
+                    : tx(locale, "geen tabelwaarde", "no table value"),
                 },
                 {
-                  label: "Tekening",
+                  label: tx(locale, "Tekening", "Drawing"),
                   value: row.callout,
                 },
                 {
-                  label: "Rechtheid / vlakheid",
+                  label: tx(locale, "Rechtheid / vlakheid", "Straightness / flatness"),
                   value:
                     row.straightness != null
                       ? `${fmtMm(row.straightness, 2)} mm`
-                      : "buiten 2768-2",
+                      : tx(locale, "buiten 2768-2", "outside 2768-2"),
                 },
                 {
-                  label: "Haaksheid",
+                  label: tx(locale, "Haaksheid", "Perpendicularity"),
                   value:
                     row.perpendicularity != null
                       ? `${fmtMm(row.perpendicularity, 1)} mm`
-                      : "buiten 2768-2",
+                      : tx(locale, "buiten 2768-2", "outside 2768-2"),
                 },
                 {
-                  label: "Symmetrie",
+                  label: tx(locale, "Symmetrie", "Symmetry"),
                   value:
-                    row.symmetry != null ? `${fmtMm(row.symmetry, 1)} mm` : "buiten 2768-2",
+                    row.symmetry != null
+                      ? `${fmtMm(row.symmetry, 1)} mm`
+                      : tx(locale, "buiten 2768-2", "outside 2768-2"),
                 },
                 {
-                  label: "Circulaire uitloop",
+                  label: tx(locale, "Circulaire uitloop", "Circular runout"),
                   value: `${fmtMm(row.runout, 1)} mm`,
                 },
               ]}
@@ -173,24 +195,27 @@ export function Iso2768Calc() {
           </>
         ) : (
           <p className="mt-5 text-sm text-muted">
-            {missing ?? "Voer een nominale lengte in."}
+            {missing ?? tx(locale, "Voer een nominale lengte in.", "Enter a nominal length.")}
           </p>
         )}
       </CalcPanel>
 
       <p className="mt-8 text-sm leading-relaxed text-muted">
-        ISO 2768-2 (H/K/L) is in 2021 ingetrokken; opvolger is ISO 22081. Hier
-        nog getoond omdat tekeningen nog mK zetten. Dit is geen ISO 286 en geen
-        vervanging van een maat in een vakje. Bron:{" "}
+        {tx(
+          locale,
+          "ISO 2768-2 (H/K/L) is in 2021 ingetrokken; opvolger is ISO 22081. Hier nog getoond omdat tekeningen nog mK zetten. Dit is geen ISO 286 en geen vervanging van een maat in een vakje.",
+          "ISO 2768-2 (H/K/L) was withdrawn in 2021; successor is ISO 22081. Still shown here because drawings still call out mK. This is not ISO 286 and not a substitute for a dimension in a tolerance box.",
+        )}{" "}
+        {tx(locale, "Bron:", "Source:")}{" "}
         <a
           href="https://www.rodinmachining.nl/media/53qdjv2u/iso-2768-normblad-rodin-machining.pdf"
           className="text-accent hover:underline"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Rodin ISO 2768-blad
+          {tx(locale, "Rodin ISO 2768-blad", "Rodin ISO 2768 sheet")}
         </a>
-        ; lineair nagekeken bij{" "}
+        {tx(locale, "; lineair nagekeken bij", "; linear values checked against")}{" "}
         <a
           href="https://www.hoekman-rvs.nl/toleranties-cnc-kanten-iso-2768"
           className="text-accent hover:underline"
@@ -199,30 +224,42 @@ export function Iso2768Calc() {
         >
           Hoekman
         </a>{" "}
-        (hoek/vorm niet van Hoekman — onvolledig t.o.v. de norm).
+        {tx(
+          locale,
+          "(hoek/vorm niet van Hoekman — onvolledig t.o.v. de norm).",
+          "(angle/form not from Hoekman — incomplete relative to the standard).",
+        )}
       </p>
 
-      <LinearTable active={row?.linearIndex ?? null} klass={linear} />
-      <RadiusTable active={row?.radiusIndex ?? null} klass={linear} />
-      <AngleTable active={row?.angularIndex ?? null} klass={linear} />
-      <StraightTable active={row?.straightIndex ?? null} klass={form} />
+      <LinearTable active={row?.linearIndex ?? null} klass={linear} locale={locale} />
+      <RadiusTable active={row?.radiusIndex ?? null} klass={linear} locale={locale} />
+      <AngleTable active={row?.angularIndex ?? null} klass={linear} locale={locale} />
+      <StraightTable active={row?.straightIndex ?? null} klass={form} locale={locale} />
       <FormTable
-        title="Haaksheid (ISO 2768-2)"
+        title={tx(locale, "Haaksheid (ISO 2768-2)", "Perpendicularity (ISO 2768-2)")}
         data={PERPENDICULARITY}
         active={row?.formRangeIndex ?? null}
         klass={form}
+        locale={locale}
       />
       <FormTable
-        title="Symmetrie (ISO 2768-2)"
+        title={tx(locale, "Symmetrie (ISO 2768-2)", "Symmetry (ISO 2768-2)")}
         data={SYMMETRY}
         active={row?.formRangeIndex ?? null}
         klass={form}
+        locale={locale}
       />
       <section className="mt-10">
         <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-          Circulaire uitloop
+          {tx(locale, "Circulaire uitloop", "Circular runout")}
         </h2>
-        <Note>Onafhankelijk van de nominale lengte. Geen ±.</Note>
+        <Note>
+          {tx(
+            locale,
+            "Onafhankelijk van de nominale lengte. Geen ±.",
+            "Independent of the nominal length. No ±.",
+          )}
+        </Note>
         <div className="table-scroll mt-4">
           <table className="ref-table">
             <thead>
@@ -253,21 +290,29 @@ function dash(v: number | null) {
 function LinearTable({
   active,
   klass: _klass,
+  locale,
 }: {
   active: number | null;
   klass: LinearClass;
+  locale: Locale;
 }) {
   return (
     <section className="mt-10">
       <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-        Lineaire maten (ISO 2768-1)
+        {tx(locale, "Lineaire maten (ISO 2768-1)", "Linear dimensions (ISO 2768-1)")}
       </h2>
-      <Note>Toelaatbare afwijkingen in mm. Onder 0,5 mm: afwijking naast de maat.</Note>
+      <Note>
+        {tx(
+          locale,
+          "Toelaatbare afwijkingen in mm. Onder 0,5 mm: afwijking naast de maat.",
+          "Permissible deviations in mm. Below 0.5 mm: deviation next to the dimension.",
+        )}
+      </Note>
       <div className="table-scroll mt-4">
         <table className="ref-table">
           <thead>
             <tr>
-              <th>Nominale lengte</th>
+              <th>{tx(locale, "Nominale lengte", "Nominal length")}</th>
               <th>f</th>
               <th>m</th>
               <th>c</th>
@@ -277,7 +322,7 @@ function LinearTable({
           <tbody>
             {LINEAR_LABELS.map((label, i) => (
               <tr key={label} className={i === active ? "is-active" : ""}>
-                <th scope="row">{label}</th>
+                <th scope="row">{tx(locale, label, LINEAR_LABELS_EN[i])}</th>
                 <td>{dash(LINEAR.f[i] ?? null)}</td>
                 <td>{dash(LINEAR.m[i] ?? null)}</td>
                 <td>{dash(LINEAR.c[i] ?? null)}</td>
@@ -294,20 +339,22 @@ function LinearTable({
 function RadiusTable({
   active,
   klass: _klass,
+  locale,
 }: {
   active: number | null;
   klass: LinearClass;
+  locale: Locale;
 }) {
   return (
     <section className="mt-10">
       <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-        Radii en afschuinhoogten
+        {tx(locale, "Radii en afschuinhoogten", "Radii and chamfer heights")}
       </h2>
       <div className="table-scroll mt-4">
         <table className="ref-table">
           <thead>
             <tr>
-              <th>Nominale lengte</th>
+              <th>{tx(locale, "Nominale lengte", "Nominal length")}</th>
               <th>f / m</th>
               <th>c / v</th>
             </tr>
@@ -315,7 +362,7 @@ function RadiusTable({
           <tbody>
             {RADIUS_LABELS.map((label, i) => (
               <tr key={label} className={i === active ? "is-active" : ""}>
-                <th scope="row">{label}</th>
+                <th scope="row">{tx(locale, label, RADIUS_LABELS_EN[i])}</th>
                 <td>±{fmtMm(RADIUS.fm[i] ?? 0, 1)}</td>
                 <td>±{fmtMm(RADIUS.cv[i] ?? 0, 1)}</td>
               </tr>
@@ -330,20 +377,22 @@ function RadiusTable({
 function AngleTable({
   active,
   klass: _klass,
+  locale,
 }: {
   active: number | null;
   klass: LinearClass;
+  locale: Locale;
 }) {
   return (
     <section className="mt-10">
       <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-        Hoekmaten (kortere been)
+        {tx(locale, "Hoekmaten (kortere been)", "Angular dimensions (shorter leg)")}
       </h2>
       <div className="table-scroll mt-4">
         <table className="ref-table">
           <thead>
             <tr>
-              <th>Kortere been</th>
+              <th>{tx(locale, "Kortere been", "Shorter leg")}</th>
               <th>f / m</th>
               <th>c</th>
               <th>v</th>
@@ -352,7 +401,7 @@ function AngleTable({
           <tbody>
             {ANGULAR_LABELS.map((label, i) => (
               <tr key={label} className={i === active ? "is-active" : ""}>
-                <th scope="row">{label}</th>
+                <th scope="row">{tx(locale, label, ANGULAR_LABELS_EN[i])}</th>
                 <td>±{fmtAngle(ANGULAR.f[i] ?? ANGULAR.f[0])}</td>
                 <td>±{fmtAngle(ANGULAR.c[i] ?? ANGULAR.c[0])}</td>
                 <td>±{fmtAngle(ANGULAR.v[i] ?? ANGULAR.v[0])}</td>
@@ -368,21 +417,23 @@ function AngleTable({
 function StraightTable({
   active,
   klass: _klass,
+  locale,
 }: {
   active: number | null;
   klass: FormClass;
+  locale: Locale;
 }) {
   return (
     <section className="mt-10">
       <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-        Rechtheid en vlakheid (ISO 2768-2)
+        {tx(locale, "Rechtheid en vlakheid (ISO 2768-2)", "Straightness and flatness (ISO 2768-2)")}
       </h2>
-      <Note>Waarden in mm, geen ±.</Note>
+      <Note>{tx(locale, "Waarden in mm, geen ±.", "Values in mm, no ±.")}</Note>
       <div className="table-scroll mt-4">
         <table className="ref-table">
           <thead>
             <tr>
-              <th>Nominale lengte</th>
+              <th>{tx(locale, "Nominale lengte", "Nominal length")}</th>
               <th>H</th>
               <th>K</th>
               <th>L</th>
@@ -391,7 +442,7 @@ function StraightTable({
           <tbody>
             {STRAIGHTNESS_LABELS.map((label, i) => (
               <tr key={label} className={i === active ? "is-active" : ""}>
-                <th scope="row">{label}</th>
+                <th scope="row">{tx(locale, label, STRAIGHTNESS_LABELS_EN[i])}</th>
                 <td>{fmtMm(STRAIGHTNESS.H[i] ?? 0, 2)}</td>
                 <td>{fmtMm(STRAIGHTNESS.K[i] ?? 0, 2)}</td>
                 <td>{fmtMm(STRAIGHTNESS.L[i] ?? 0, 2)}</td>
@@ -409,23 +460,25 @@ function FormTable({
   data,
   active,
   klass: _klass,
+  locale,
 }: {
   title: string;
   data: { H: readonly number[]; K: readonly number[]; L: readonly number[] };
   active: number | null;
   klass: FormClass;
+  locale: Locale;
 }) {
   return (
     <section className="mt-10">
       <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
         {title}
       </h2>
-      <Note>Waarden in mm, geen ±.</Note>
+      <Note>{tx(locale, "Waarden in mm, geen ±.", "Values in mm, no ±.")}</Note>
       <div className="table-scroll mt-4">
         <table className="ref-table">
           <thead>
             <tr>
-              <th>Nominale lengte</th>
+              <th>{tx(locale, "Nominale lengte", "Nominal length")}</th>
               <th>H</th>
               <th>K</th>
               <th>L</th>
@@ -434,7 +487,7 @@ function FormTable({
           <tbody>
             {FORM_RANGE_LABELS.map((label, i) => (
               <tr key={label} className={i === active ? "is-active" : ""}>
-                <th scope="row">{label}</th>
+                <th scope="row">{tx(locale, label, FORM_RANGE_LABELS_EN[i])}</th>
                 <td>{fmtMm(data.H[i] ?? 0, 1)}</td>
                 <td>{fmtMm(data.K[i] ?? 0, 1)}</td>
                 <td>{fmtMm(data.L[i] ?? 0, 1)}</td>

@@ -22,6 +22,17 @@ export const LINEAR_LABELS = [
   "meer dan 2000 tot 4000",
 ] as const;
 
+export const LINEAR_LABELS_EN = [
+  "0.5 to 3",
+  "over 3 to 6",
+  "over 6 to 30",
+  "over 30 to 120",
+  "over 120 to 400",
+  "over 400 to 1000",
+  "over 1000 to 2000",
+  "over 2000 to 4000",
+] as const;
+
 /** Radii and chamfer heights ± mm. Bands: 0,5–3 | 3–6 | >6. f/m share, c/v share. */
 export const RADIUS = {
   fm: [0.2, 0.5, 1.0],
@@ -29,6 +40,8 @@ export const RADIUS = {
 } as const;
 
 export const RADIUS_LABELS = ["0,5 tot 3", "meer dan 3 tot 6", "meer dan 6"] as const;
+
+export const RADIUS_LABELS_EN = ["0.5 to 3", "over 3 to 6", "over 6"] as const;
 
 export type AngleTol = { deg: number; min: number };
 
@@ -71,6 +84,14 @@ export const ANGULAR_LABELS = [
   "meer dan 400",
 ] as const;
 
+export const ANGULAR_LABELS_EN = [
+  "to 10",
+  "over 10 to 50",
+  "over 50 to 120",
+  "over 120 to 400",
+  "over 400",
+] as const;
+
 export const STRAIGHTNESS = {
   H: [0.02, 0.05, 0.1, 0.2, 0.3, 0.4],
   K: [0.05, 0.1, 0.2, 0.4, 0.6, 0.8],
@@ -84,6 +105,15 @@ export const STRAIGHTNESS_LABELS = [
   "meer dan 100 tot 300",
   "meer dan 300 tot 1000",
   "meer dan 1000 tot 3000",
+] as const;
+
+export const STRAIGHTNESS_LABELS_EN = [
+  "to 10",
+  "over 10 to 30",
+  "over 30 to 100",
+  "over 100 to 300",
+  "over 300 to 1000",
+  "over 1000 to 3000",
 ] as const;
 
 export const PERPENDICULARITY = {
@@ -103,6 +133,13 @@ export const FORM_RANGE_LABELS = [
   "meer dan 100 tot 300",
   "meer dan 300 tot 1000",
   "meer dan 1000 tot 3000",
+] as const;
+
+export const FORM_RANGE_LABELS_EN = [
+  "to 100",
+  "over 100 to 300",
+  "over 300 to 1000",
+  "over 1000 to 3000",
 ] as const;
 
 export const RUNOUT: Record<FormClass, number> = { H: 0.1, K: 0.2, L: 0.5 };

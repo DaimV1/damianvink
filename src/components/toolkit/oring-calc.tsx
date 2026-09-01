@@ -32,21 +32,23 @@ export function OringCalc() {
     if (!g) return "";
     return [
       `O-ring d2 ${fmtMm(d2n, 2)} mm · ${kindLabel}`,
-      `Groefdiepte t  ${fmtMm(g.t)} mm (+0,05)`,
-      `Groefbreedte b  ${fmtMm(g.b)} mm (+0,25)`,
-      `Samendrukking  ca. ${squeeze(d2n, g.t)} %`,
+      `${tx(locale, "Groefdiepte t", "Groove depth t")}  ${fmtMm(g.t)} mm (+0,05)`,
+      `${tx(locale, "Groefbreedte b", "Groove width b")}  ${fmtMm(g.b)} mm (+0,25)`,
+      `${tx(locale, "Samendrukking", "Compression")}  ca. ${squeeze(d2n, g.t)} %`,
     ].join("\n");
-  }, [d2n, g, kindLabel]);
+  }, [d2n, g, kindLabel, locale]);
 
   const items = g
     ? [
-        { label: "Groefdiepte t", value: `${fmtMm(g.t)} mm  +0,05` },
-        { label: "Groefbreedte b", value: `${fmtMm(g.b)} mm  +0,25` },
+        { label: tx(locale, "Groefdiepte t", "Groove depth t"), value: `${fmtMm(g.t)} mm  +0,05` },
+        { label: tx(locale, "Groefbreedte b", "Groove width b"), value: `${fmtMm(g.b)} mm  +0,25` },
         {
-          label: "Nominale samendrukking",
+          label: tx(locale, "Nominale samendrukking", "Nominal compression"),
           value: `ca. ${squeeze(d2n, g.t)} %`,
         },
-        g.C != null ? { label: "Inloop C", value: `${fmtMm(g.C)} mm` } : null,
+        g.C != null
+          ? { label: tx(locale, "Inloop C", "Lead-in C"), value: `${fmtMm(g.C)} mm` }
+          : null,
       ].filter(Boolean) as { label: string; value: string }[]
     : [];
 
@@ -58,8 +60,11 @@ export function OringCalc() {
           {tx(locale, "Groef bij koord", "Groove at cord")}
         </h2>
         <Note>
-          ISO-koorden A–E. t +0,05 mm, b +0,25 mm (Dichtomatik). Samendrukking =
-          (d₂ − t)/d₂: nominale compressie, geen plus-mintolerantie.
+          {tx(
+            locale,
+            "ISO-koorden A–E. t +0,05 mm, b +0,25 mm (Dichtomatik). Samendrukking = (d₂ − t)/d₂: nominale compressie, geen plus-mintolerantie.",
+            "ISO cords A–E. t +0.05 mm, b +0.25 mm (Dichtomatik). Compression = (d₂ − t)/d₂: nominal compression, not a plus/minus tolerance.",
+          )}
         </Note>
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
           <Field label={tx(locale, "Koord d₂", "Cord d₂")}>
@@ -86,12 +91,14 @@ export function OringCalc() {
             </p>
             <ResultGrid items={items} />
             <p className="mt-4 text-sm leading-relaxed text-muted">
-              Dichtomatik; geen vervanging van ISO 3601-2.
+              {tx(locale, "Dichtomatik; geen vervanging van ISO 3601-2.", "Dichtomatik; not a substitute for ISO 3601-2.")}
             </p>
             <CopyResult text={copy} />
           </>
         ) : (
-          <p className="mt-5 text-sm text-muted">Kies een ISO-koord.</p>
+          <p className="mt-5 text-sm text-muted">
+            {tx(locale, "Kies een ISO-koord.", "Choose an ISO cord.")}
+          </p>
         )}
       </CalcPanel>
 
@@ -119,17 +126,17 @@ export function OringCalc() {
 
       <section className="mt-12">
         <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-          Groefmaten
+          {tx(locale, "Groefmaten", "Groove dimensions")}
         </h2>
         <div className="table-scroll mt-4">
           <table className="ref-table">
             <thead>
               <tr>
                 <th>d₂ (mm)</th>
-                <th>Groep</th>
-                <th>Radiaal statisch t / b</th>
-                <th>Axiaal statisch t / b</th>
-                <th>Hydrauliek t / b</th>
+                <th>{tx(locale, "Groep", "Group")}</th>
+                <th>{tx(locale, "Radiaal statisch t / b", "Radial static t / b")}</th>
+                <th>{tx(locale, "Axiaal statisch t / b", "Axial static t / b")}</th>
+                <th>{tx(locale, "Hydrauliek t / b", "Hydraulic t / b")}</th>
               </tr>
             </thead>
             <tbody>
@@ -165,8 +172,12 @@ export function OringCalc() {
           </table>
         </div>
         <p className="mt-4 text-xs leading-relaxed text-subtle">
-          Bron: Dichtomatik O-ring brochure, static radial / axial / dynamic
-          hydraulics. Trapezium, driehoek en vacuüm weggelaten.
+          {tx(locale, "Bron:", "Source:")}{" "}
+          {tx(
+            locale,
+            "Dichtomatik O-ring brochure, static radial / axial / dynamic hydraulics. Trapezium, driehoek en vacuüm weggelaten.",
+            "Dichtomatik O-ring brochure, static radial / axial / dynamic hydraulics. Trapezoidal, triangular and vacuum grooves omitted.",
+          )}
         </p>
       </section>
     </>

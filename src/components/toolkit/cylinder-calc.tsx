@@ -116,8 +116,8 @@ export function CylinderCalc() {
         <Note>
           {tx(
             locale,
-            "F = p·A, manometerdruk. Dubbelwerkend. Theoretisch, zonder wrijving. Stangdiameter is de ISO-basisstang, geen vergroting. Festo of SMC kiest het type — dit is geen cataloguscode en geen knikberekening.",
-            "F = p·A, gauge pressure. Double acting. Theoretical, no friction. Rod diameter is the ISO basic rod, not oversized. Festo or SMC picks the type — not a catalogue code and not a buckling check.",
+            "F = p·A, manometerdruk. Dubbelwerkend. Theoretisch, zonder wrijving. Stangdiameter is de ISO-basisstang, geen vergroting.",
+            "F = p·A, gauge pressure. Double acting. Theoretical, no friction. Rod diameter is the ISO basic rod, not oversized.",
           )}
         </Note>
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -144,9 +144,11 @@ export function CylinderCalc() {
         {pick && forces && need != null && dMin != null && p != null ? (
           <>
             <p className="mt-5 text-sm text-muted">
-              {seriesLabel(pick.series)} Ø{pick.bore}/{pick.rod} dekt {fmtNl(need, 0)} N
-              ({fmtNl(loadN ?? 0, 0)} × {String(sFac).replace(".", ",")}). Ondergrens
-              zuiger {fmtNl(dMin, 1)} mm.
+              {tx(
+                locale,
+                `${seriesLabel(pick.series)} Ø${pick.bore}/${pick.rod} dekt ${fmtNl(need, 0)} N (${fmtNl(loadN ?? 0, 0)} × ${String(sFac).replace(".", ",")}). Ondergrens zuiger ${fmtNl(dMin, 1)} mm.`,
+                `${seriesLabel(pick.series)} Ø${pick.bore}/${pick.rod} covers ${fmtNl(need, 0)} N (${fmtNl(loadN ?? 0, 0)} × ${String(sFac).replace(".", ",")}). Minimum piston ${fmtNl(dMin, 1)} mm.`,
+              )}
             </p>
             <ResultGrid
               items={[

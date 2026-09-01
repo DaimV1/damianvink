@@ -25,6 +25,13 @@ export const FAMILY_HINT: Record<Duty, string> = {
   hijsen: "vaak R of K",
 };
 
+export const FAMILY_HINT_EN: Record<Duty, string> = {
+  rollenbaan: "typically F (parallel shaft) or K (bevel-helical)",
+  band: "typically F (parallel shaft) or K (bevel-helical)",
+  helling: "F or K",
+  hijsen: "often R or K",
+};
+
 export function toMetersPerSecond(value: number, unit: SpeedUnit) {
   return unit === "m/min" ? value / 60 : value;
 }

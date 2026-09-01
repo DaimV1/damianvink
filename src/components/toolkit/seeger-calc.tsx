@@ -61,11 +61,11 @@ export function SeegerCalc() {
           {tx(locale, "Groef bij Ø", "Groove at Ø")}
         </h2>
         <Note>
-          Nominale seegerringmaten, geen bereik. As = DIN 471 (d₂ h11, kleiner
-          dan d₁), boring = DIN 472 (d₂ H11, groter). b is groefbreedte H13 uit
-          een werkplaatstabel — kan afwijken van de officiële DIN. t is nominaal
-          |d₁ − d₂| / 2; de dieptetol. 0 / +IT11/2 volgt uit d₂ (dieper mag,
-          ondieper niet).
+          {tx(
+            locale,
+            "Nominale seegerringmaten, geen bereik. As = DIN 471 (d₂ h11, kleiner dan d₁), boring = DIN 472 (d₂ H11, groter). b is groefbreedte H13 uit een werkplaatstabel — kan afwijken van de officiële DIN. t is nominaal |d₁ − d₂| / 2; de dieptetol. 0 / +IT11/2 volgt uit d₂ (dieper mag, ondieper niet).",
+            "Nominal circlip sizes, not a range. Shaft = DIN 471 (d₂ h11, smaller than d₁), bore = DIN 472 (d₂ H11, larger). b is groove width H13 from a shop table — may deviate from the official DIN. t is nominal |d₁ − d₂| / 2; the depth tolerance 0 / +IT11/2 follows from d₂ (deeper is allowed, shallower is not).",
+          )}
         </Note>
         <SourceBadge>
           {tx(
@@ -89,43 +89,61 @@ export function SeegerCalc() {
           </Field>
         </div>
         {parsed.status === "empty" ? (
-          <p className="mt-5 text-sm text-muted">Vul een nominale Ø in.</p>
+          <p className="mt-5 text-sm text-muted">
+            {tx(locale, "Vul een nominale Ø in.", "Enter a nominal Ø.")}
+          </p>
         ) : parsed.status === "fraction" ? (
           <p className="mt-5 text-sm text-muted">
-            Alleen hele millimeters. Seegerringen zijn nominale maten, geen bereik.
+            {tx(
+              locale,
+              "Alleen hele millimeters. Seegerringen zijn nominale maten, geen bereik.",
+              "Whole millimeters only. Circlips are nominal sizes, not a range.",
+            )}
           </p>
         ) : !row ? (
           <p className="mt-5 text-sm text-muted">
-            Geen nominale seegerring voor Ø {d} mm. De tabel loopt 3–100 mm,
-            niet elke millimeter.
+            {tx(
+              locale,
+              `Geen nominale seegerring voor Ø ${d} mm. De tabel loopt 3–100 mm, niet elke millimeter.`,
+              `No nominal circlip for Ø ${d} mm. The table runs 3–100 mm, not every millimeter.`,
+            )}
           </p>
         ) : !result ? (
           <p className="mt-5 text-sm text-muted">
-            Ø {d} mm heeft geen DIN 472-ring voor boring. Kies as, of een Ø
-            vanaf 8 mm.
+            {tx(
+              locale,
+              `Ø ${d} mm heeft geen DIN 472-ring voor boring. Kies as, of een Ø vanaf 8 mm.`,
+              `Ø ${d} mm has no DIN 472 ring for a bore. Choose shaft, or an Ø from 8 mm.`,
+            )}
           </p>
         ) : (
           <>
             <p className="mt-5 text-sm text-muted">
-              {kind === "as" ? "As" : "Boring"} Ø {d} mm ·{" "}
+              {kind === "as" ? tx(locale, "As", "Shaft") : tx(locale, "Boring", "Bore")} Ø {d} mm ·{" "}
               {kind === "as" ? "DIN 471" : "DIN 472"}
             </p>
             <ResultGrid
               items={[
-                { label: "d₂ groef", value: `${fmtSeeger(result.d2)} mm ${result.d2Class}` },
                 {
-                  label: "b breedte (werkplaatstabel)",
+                  label: tx(locale, "d₂ groef", "d₂ groove"),
+                  value: `${fmtSeeger(result.d2)} mm ${result.d2Class}`,
+                },
+                {
+                  label: tx(locale, "b breedte (werkplaatstabel)", "b width (shop table)"),
                   value: `${fmtSeeger(result.b)} mm H13`,
                 },
                 {
-                  label: "t diepte",
+                  label: tx(locale, "t diepte", "t depth"),
                   value: `${fmtSeeger(result.t)} mm  0 / +${fmtSeeger3(result.tPlus)}`,
                 },
               ]}
             />
             <p className="mt-4 text-sm leading-relaxed text-muted">
-              Breedte b komt uit een werkplaatstabel, niet uit de officiële
-              DIN-pdf. Voor productiewerk b in DIN 471/472 controleren.
+              {tx(
+                locale,
+                "Breedte b komt uit een werkplaatstabel, niet uit de officiële DIN-pdf. Voor productiewerk b in DIN 471/472 controleren.",
+                "Width b comes from a shop table, not the official DIN PDF. For production work, verify b in DIN 471/472.",
+              )}
             </p>
             <CopyResult text={copy} />
           </>
@@ -162,18 +180,18 @@ export function SeegerCalc() {
 
       <section className="mt-10">
         <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-          Seegerringgroef (DIN 471 / 472)
+          {tx(locale, "Seegerringgroef (DIN 471 / 472)", "Circlip groove (DIN 471 / 472)")}
         </h2>
         <div className="table-scroll mt-4">
           <table className="ref-table">
             <thead>
               <tr>
                 <th>d₁</th>
-                <th>d₂ as</th>
-                <th>d₂ boring</th>
+                <th>{tx(locale, "d₂ as", "d₂ shaft")}</th>
+                <th>{tx(locale, "d₂ boring", "d₂ bore")}</th>
                 <th>b</th>
-                <th>t as</th>
-                <th>t boring</th>
+                <th>{tx(locale, "t as", "t shaft")}</th>
+                <th>{tx(locale, "t boring", "t bore")}</th>
               </tr>
             </thead>
             <tbody>
@@ -198,8 +216,12 @@ export function SeegerCalc() {
           </table>
         </div>
         <p className="mt-4 text-xs leading-relaxed text-subtle">
-          Bron: werkplaatstabel seegerringgroef (samenvatting van DIN 471 as /
-          DIN 472 boring), o.a.{" "}
+          {tx(locale, "Bron:", "Source:")}{" "}
+          {tx(
+            locale,
+            "werkplaatstabel seegerringgroef (samenvatting van DIN 471 as / DIN 472 boring), o.a.",
+            "shop table for the circlip groove (summary of DIN 471 shaft / DIN 472 bore), incl.",
+          )}{" "}
           <a
             href="https://verspanenmuzo.wordpress.com/2015/02/24/seegerring-groef-tabbel/"
             className="text-accent hover:underline"
@@ -208,11 +230,11 @@ export function SeegerCalc() {
           >
             verspanen-metaal
           </a>
-          . b = groefbreedte H13 uit die tabel — niet 1:1 overnemen uit de
-          officiële DIN zonder check. t = |d₁ − d₂| / 2 (nominaal). d₂ as =
-          h11, d₂ boring = H11: t wordt daardoor 0 / +IT11/2 — dieper mag,
-          ondieper niet. Geen n-min. (schouder). Controleer kritieke maten in de
-          actuele DIN.
+          {tx(
+            locale,
+            ". b = groefbreedte H13 uit die tabel — niet 1:1 overnemen uit de officiële DIN zonder check. t = |d₁ − d₂| / 2 (nominaal). d₂ as = h11, d₂ boring = H11: t wordt daardoor 0 / +IT11/2 — dieper mag, ondieper niet. Geen n-min. (schouder). Controleer kritieke maten in de actuele DIN.",
+            ". b = groove width H13 from that table — do not copy 1:1 from the official DIN without checking. t = |d₁ − d₂| / 2 (nominal). d₂ shaft = h11, d₂ bore = H11: t therefore becomes 0 / +IT11/2 — deeper is allowed, shallower is not. No n-min. (shoulder). Verify critical dimensions in the current DIN.",
+          )}
         </p>
       </section>
     </>

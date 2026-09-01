@@ -37,36 +37,40 @@ export function LagerCalc() {
   const copy = useMemo(() => {
     if (!result) return "";
     const i = result.i;
+    const shaftL = tx(locale, "As", "Shaft");
+    const houseL = tx(locale, "Huis", "Housing");
+    const bearingL = tx(locale, "Groefkogellager", "Deep-groove bearing");
+    const altL = tx(locale, "(alternatief)", "(alternative)");
     return [
-      `Groefkogellager · as Ø ${d} mm · band ${result.band.label} mm`,
-      `As ${result.shaft}  ${mmFromUm(result.shaftDev.es[i])} / ${mmFromUm(result.shaftDev.ei[i])} mm`,
-      `Huis ${result.hole}  ${mmFromUm(result.holeDev.ES[i])} / ${mmFromUm(result.holeDev.EI[i])} mm`,
-      result.holeAlt ? `Huis ${result.holeAlt} (alternatief)` : "",
+      `${bearingL} · ${shaftL.toLowerCase()} Ø ${d} mm · band ${tx(locale, result.band.label, result.band.labelEn)} mm`,
+      `${shaftL} ${result.shaft}  ${mmFromUm(result.shaftDev.es[i])} / ${mmFromUm(result.shaftDev.ei[i])} mm`,
+      `${houseL} ${result.hole}  ${mmFromUm(result.holeDev.ES[i])} / ${mmFromUm(result.holeDev.EI[i])} mm`,
+      result.holeAlt ? `${houseL} ${result.holeAlt} ${altL}` : "",
     ]
       .filter(Boolean)
       .join("\n");
-  }, [d, result]);
+  }, [d, result, locale]);
 
   const items: { label: string; value: string }[] =
     result
       ? ([
           {
-            label: `As ${result.shaft}`,
+            label: `${tx(locale, "As", "Shaft")} ${result.shaft}`,
             value: `${mmFromUm(result.shaftDev.es[result.i])} / ${mmFromUm(result.shaftDev.ei[result.i])} mm`,
           },
           {
-            label: `Huis ${result.hole}`,
+            label: `${tx(locale, "Huis", "Housing")} ${result.hole}`,
             value: `${mmFromUm(result.holeDev.ES[result.i])} / ${mmFromUm(result.holeDev.EI[result.i])} mm`,
           },
           result.holeAltDev
             ? {
-                label: `Huis ${result.holeAlt} (alternatief)`,
+                label: `${tx(locale, "Huis", "Housing")} ${result.holeAlt} ${tx(locale, "(alternatief)", "(alternative)")}`,
                 value: `${mmFromUm(result.holeAltDev.ES[result.i])} / ${mmFromUm(result.holeAltDev.EI[result.i])} mm`,
               }
             : null,
           stil
             ? {
-                label: "As h6 (geen verschuiving nodig)",
+                label: tx(locale, "As h6 (geen verschuiving nodig)", "Shaft h6 (no shift needed)"),
                 value: `${mmFromUm(result.h6.es[result.i])} / ${mmFromUm(result.h6.ei[result.i])} mm`,
               }
             : null,
@@ -81,8 +85,11 @@ export function LagerCalc() {
           {tx(locale, "Groefkogellager", "Deep-groove bearing")}
         </h2>
         <Note>
-          As-Ø in hele mm (4 t/m 50). Lastkeuze valt weg bij stilstaande
-          binnenring. Klassen volgens SKF; µm → mm volgens ISO 286-2.
+          {tx(
+            locale,
+            "As-Ø in hele mm (4 t/m 50). Lastkeuze valt weg bij stilstaande binnenring. Klassen volgens SKF; µm → mm volgens ISO 286-2.",
+            "Shaft Ø in whole mm (4 through 50). Load choice drops away for a stationary inner ring. Classes per SKF; µm → mm per ISO 286-2.",
+          )}
         </Note>
         <div className="mt-6 grid gap-4 sm:grid-cols-3">
           <Field label={tx(locale, "As-Ø (mm)", "Shaft Ø (mm)")}>
@@ -103,22 +110,38 @@ export function LagerCalc() {
           </Field>
         </div>
         {parsed.status === "empty" ? (
-          <p className="mt-5 text-sm text-muted">Vul een as-Ø in.</p>
+          <p className="mt-5 text-sm text-muted">
+            {tx(locale, "Vul een as-Ø in.", "Enter a shaft Ø.")}
+          </p>
         ) : parsed.status === "fraction" ? (
           <p className="mt-5 text-sm text-muted">
-            Alleen hele millimeters. {diameter} mm valt niet in de SKF-rijen tot 50 mm.
+            {tx(
+              locale,
+              `Alleen hele millimeters. ${diameter} mm valt niet in de SKF-rijen tot 50 mm.`,
+              `Whole millimeters only. ${diameter} mm is not in the SKF rows up to 50 mm.`,
+            )}
           </p>
         ) : !result ? (
           <p className="mt-5 text-sm text-muted">
-            Geen SKF-rij voor Ø {d} mm. Rekenhulp: 4 t/m 50 mm.
+            {tx(
+              locale,
+              `Geen SKF-rij voor Ø ${d} mm. Rekenhulp: 4 t/m 50 mm.`,
+              `No SKF row for Ø ${d} mm. Tool range: 4 through 50 mm.`,
+            )}
           </p>
         ) : (
           <>
             <p className="mt-5 text-sm text-muted">
-              As Ø {d} mm · band {result.band.label} mm · groefkogellager
+              {tx(
+                locale,
+                `As Ø ${d} mm · band ${result.band.label} mm · groefkogellager`,
+                `Shaft Ø ${d} mm · band ${result.band.labelEn} mm · deep-groove bearing`,
+              )}
             </p>
             <ResultGrid items={items} />
-            <p className="mt-4 text-sm leading-relaxed text-muted">{result.note}</p>
+            <p className="mt-4 text-sm leading-relaxed text-muted">
+              {tx(locale, result.note, result.noteEn)}
+            </p>
             <CopyResult text={copy} />
           </>
         )}
@@ -141,7 +164,7 @@ export function LagerCalc() {
               ? tx(
                   locale,
                   `Band ${result.band.label} mm · as ${result.shaft} · huis ${result.hole}${result.holeAlt ? ` / ${result.holeAlt}` : ""}`,
-                  `Band ${result.band.label} mm · shaft ${result.shaft} · housing ${result.hole}${result.holeAlt ? ` / ${result.holeAlt}` : ""}`,
+                  `Band ${result.band.labelEn} mm · shaft ${result.shaft} · housing ${result.hole}${result.holeAlt ? ` / ${result.holeAlt}` : ""}`,
                 )
               : tx(locale, "Band boven 18 t/m 30 mm — vul een Ø in", "Band over 18 through 30 mm — enter an Ø")
           }
@@ -157,56 +180,71 @@ export function LagerCalc() {
 
       <section className="mt-12">
         <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-          As — groefkogellager
+          {tx(locale, "As — groefkogellager", "Shaft — deep-groove bearing")}
         </h2>
         <Note>
-          SKF, massieve stalen as, cilindrische boring. Alleen rijen tot 50 mm. P
-          is de equivalente lagerbelasting, C het dynamische draaggetal.
+          {tx(
+            locale,
+            "SKF, massieve stalen as, cilindrische boring. Alleen rijen tot 50 mm. P is de equivalente lagerbelasting, C het dynamische draaggetal.",
+            "SKF, solid steel shaft, cylindrical bore. Rows up to 50 mm only. P is the equivalent bearing load, C the dynamic load rating.",
+          )}
         </Note>
         <div className="table-scroll mt-4">
           <table className="ref-table">
             <thead>
               <tr>
-                <th>Last</th>
-                <th>As-Ø (mm)</th>
-                <th>Klasse</th>
+                <th>{tx(locale, "Last", "Load")}</th>
+                <th>{tx(locale, "As-Ø (mm)", "Shaft Ø (mm)")}</th>
+                <th>{tx(locale, "Klasse", "Class")}</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <th scope="row" rowSpan={2}>
-                  Licht, P ≤ 0,05 C
+                  {tx(locale, "Licht, P ≤ 0,05 C", "Light, P ≤ 0.05 C")}
                 </th>
                 <td>≤ 17</td>
                 <td>js5</td>
               </tr>
               <tr>
-                <td>(17) t/m 50</td>
+                <td>{tx(locale, "(17) t/m 50", "(17) through 50")}</td>
                 <td>j6</td>
               </tr>
               <tr>
                 <th scope="row" rowSpan={3}>
-                  Normaal tot hoog, P {'>'} 0,05 C
+                  {tx(locale, "Normaal tot hoog, P > 0,05 C", "Normal to high, P > 0.05 C")}
                 </th>
                 <td>≤ 10</td>
                 <td>js5</td>
               </tr>
               <tr>
-                <td>(10) t/m 17</td>
+                <td>{tx(locale, "(10) t/m 17", "(10) through 17")}</td>
                 <td>j5</td>
               </tr>
               <tr>
-                <td>(17) t/m 50</td>
+                <td>{tx(locale, "(17) t/m 50", "(17) through 50")}</td>
                 <td>k5</td>
               </tr>
               <tr>
-                <th scope="row">Binnenring stil, verschuiven gewenst</th>
-                <td>alle Ø</td>
+                <th scope="row">
+                  {tx(
+                    locale,
+                    "Binnenring stil, verschuiven gewenst",
+                    "Inner ring stationary, shift desired",
+                  )}
+                </th>
+                <td>{tx(locale, "alle Ø", "all Ø")}</td>
                 <td>g6</td>
               </tr>
               <tr>
-                <th scope="row">Binnenring stil, verschuiven niet nodig</th>
-                <td>alle Ø</td>
+                <th scope="row">
+                  {tx(
+                    locale,
+                    "Binnenring stil, verschuiven niet nodig",
+                    "Inner ring stationary, shift not needed",
+                  )}
+                </th>
+                <td>{tx(locale, "alle Ø", "all Ø")}</td>
                 <td>h6</td>
               </tr>
             </tbody>
@@ -216,55 +254,75 @@ export function LagerCalc() {
 
       <section className="mt-10">
         <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-          Huis — gietijzer / staal
+          {tx(locale, "Huis — gietijzer / staal", "Housing — cast iron / steel")}
         </h2>
         <div className="table-scroll mt-4">
           <table className="ref-table">
             <thead>
               <tr>
-                <th>Situatie</th>
-                <th>Klasse</th>
-                <th>Buitenring</th>
+                <th>{tx(locale, "Situatie", "Situation")}</th>
+                <th>{tx(locale, "Klasse", "Class")}</th>
+                <th>{tx(locale, "Buitenring", "Outer ring")}</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <th scope="row">Stilstaande buitenring, algemeen</th>
+                <th scope="row">
+                  {tx(locale, "Stilstaande buitenring, algemeen", "Stationary outer ring, general")}
+                </th>
                 <td>H7</td>
-                <td>verschuifbaar</td>
+                <td>{tx(locale, "verschuifbaar", "slidable")}</td>
               </tr>
               <tr>
-                <th scope="row">Licht tot normaal, schuiven gewenst</th>
+                <th scope="row">
+                  {tx(locale, "Licht tot normaal, schuiven gewenst", "Light to normal, sliding desired")}
+                </th>
                 <td>J7</td>
-                <td>meestal verschuifbaar</td>
+                <td>{tx(locale, "meestal verschuifbaar", "usually slidable")}</td>
               </tr>
               <tr>
-                <th scope="row">Normaal tot hoog, schuiven niet nodig</th>
+                <th scope="row">
+                  {tx(
+                    locale,
+                    "Normaal tot hoog, schuiven niet nodig",
+                    "Normal to high, sliding not needed",
+                  )}
+                </th>
                 <td>K7</td>
-                <td>meestal vast</td>
+                <td>{tx(locale, "meestal vast", "usually fixed")}</td>
               </tr>
               <tr>
-                <th scope="row">Buitenring draait, licht (P ≤ 0,05 C)</th>
+                <th scope="row">
+                  {tx(locale, "Buitenring draait, licht (P ≤ 0,05 C)", "Outer ring rotates, light (P ≤ 0.05 C)")}
+                </th>
                 <td>M7</td>
-                <td>vast</td>
+                <td>{tx(locale, "vast", "fixed")}</td>
               </tr>
               <tr>
-                <th scope="row">Buitenring draait, normaal tot hoog</th>
+                <th scope="row">
+                  {tx(
+                    locale,
+                    "Buitenring draait, normaal tot hoog",
+                    "Outer ring rotates, normal to high",
+                  )}
+                </th>
                 <td>N7</td>
-                <td>vast</td>
+                <td>{tx(locale, "vast", "fixed")}</td>
               </tr>
               <tr>
-                <th scope="row">Gedeeld huis</th>
-                <td>G of H, max. K</td>
+                <th scope="row">{tx(locale, "Gedeeld huis", "Split housing")}</th>
+                <td>{tx(locale, "G of H, max. K", "G or H, max. K")}</td>
                 <td>—</td>
               </tr>
             </tbody>
           </table>
         </div>
         <p className="mt-4 text-xs leading-relaxed text-subtle">
-          Bron: SKF-aanbevelingen lagerpassingen, via Duursma. js5 alleen tot en
-          met 17 mm; Ø 20 mm licht is j6. Naslag, geen vervanging van de
-          catalogus.
+          {tx(
+            locale,
+            "Bron: SKF-aanbevelingen lagerpassingen, via Duursma. js5 alleen tot en met 17 mm; Ø 20 mm licht is j6. Naslag, geen vervanging van de catalogus.",
+            "Source: SKF bearing fit recommendations, via Duursma. js5 only up to and including 17 mm; Ø 20 mm light is j6. Reference only, not a substitute for the catalog.",
+          )}
         </p>
       </section>
     </>

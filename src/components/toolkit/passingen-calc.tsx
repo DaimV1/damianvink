@@ -47,13 +47,16 @@ export function PassingenCalc() {
 
   const copy = useMemo(() => {
     if (!result) return "";
+    const holeL = tx(locale, "Gat", "Hole");
+    const shaftL = tx(locale, "As", "Shaft");
+    const clearanceL = tx(locale, "Speling", "Clearance");
     return [
-      `Ø ${d} mm · ${result.fit.id} · band ${result.band.label} mm`,
-      `Gat ${result.fit.hole}  ${mmFromUm(result.ES)} / ${mmFromUm(result.EI)} mm`,
-      `As ${result.fit.shaft}  ${mmFromUm(result.es)} / ${mmFromUm(result.ei)} mm`,
-      `Speling  ${mmFromUm(result.minC)} … ${mmFromUm(result.maxC)} mm`,
+      `Ø ${d} mm · ${result.fit.id} · band ${tx(locale, result.band.label, result.band.labelEn)} mm`,
+      `${holeL} ${result.fit.hole}  ${mmFromUm(result.ES)} / ${mmFromUm(result.EI)} mm`,
+      `${shaftL} ${result.fit.shaft}  ${mmFromUm(result.es)} / ${mmFromUm(result.ei)} mm`,
+      `${clearanceL}  ${mmFromUm(result.minC)} … ${mmFromUm(result.maxC)} mm`,
     ].join("\n");
-  }, [d, result]);
+  }, [d, result, locale]);
 
   return (
     <>
@@ -63,8 +66,11 @@ export function PassingenCalc() {
           {tx(locale, "Nominale passing", "Nominal fit")}
         </h2>
         <Note>
-          Nominale Ø in hele millimeters. Tabellen: boven 3 t/m 50 mm. Zelfde
-          getallen als de naslag hieronder.
+          {tx(
+            locale,
+            "Nominale Ø in hele millimeters. Tabellen: boven 3 t/m 50 mm. Zelfde getallen als de naslag hieronder.",
+            "Nominal Ø in whole millimeters. Tables: over 3 through 50 mm. Same figures as the reference below.",
+          )}
         </Note>
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
           <Field label={tx(locale, "Nominale Ø (mm)", "Nominal Ø (mm)")}>
@@ -82,40 +88,52 @@ export function PassingenCalc() {
         </div>
 
         {parsed.status === "empty" ? (
-          <p className="mt-5 text-sm text-muted">Vul een nominale Ø in.</p>
+          <p className="mt-5 text-sm text-muted">
+            {tx(locale, "Vul een nominale Ø in.", "Enter a nominal Ø.")}
+          </p>
         ) : parsed.status === "fraction" ? (
           <p className="mt-5 text-sm text-muted">
-            Alleen hele millimeters. {diameter} mm valt niet in de tabel.
+            {tx(
+              locale,
+              `Alleen hele millimeters. ${diameter} mm valt niet in de tabel.`,
+              `Whole millimeters only. ${diameter} mm is not in the table.`,
+            )}
           </p>
         ) : !result ? (
           <p className="mt-5 text-sm text-muted">
-            Geen ISO-band voor Ø {d} mm. Tabellen: boven 3 t/m 50 mm (Ø 3 valt
-            erbuiten).
+            {tx(
+              locale,
+              `Geen ISO-band voor Ø ${d} mm. Tabellen: boven 3 t/m 50 mm (Ø 3 valt erbuiten).`,
+              `No ISO band for Ø ${d} mm. Tables: over 3 through 50 mm (Ø 3 falls outside).`,
+            )}
           </p>
         ) : (
           <>
             <p className="mt-5 flex flex-wrap items-center gap-2 text-sm text-muted">
-              Ø {d} mm · band {result.band.label} mm ·{" "}
+              Ø {d} mm · {tx(locale, "band", "band")}{" "}
+              {tx(locale, result.band.label, result.band.labelEn)} mm ·{" "}
               <KindDot kind={result.kind.kind} />
-              <span className="text-ink">{result.kind.text}</span>
+              <span className="text-ink">{tx(locale, result.kind.text, result.kind.textEn)}</span>
             </p>
             <ResultGrid
               items={[
                 {
-                  label: `Gat ${result.fit.hole}`,
+                  label: `${tx(locale, "Gat", "Hole")} ${result.fit.hole}`,
                   value: `${mmFromUm(result.ES)} / ${mmFromUm(result.EI)} mm`,
                 },
                 {
-                  label: `As ${result.fit.shaft}`,
+                  label: `${tx(locale, "As", "Shaft")} ${result.fit.shaft}`,
                   value: `${mmFromUm(result.es)} / ${mmFromUm(result.ei)} mm`,
                 },
                 {
-                  label: "Speling min … max",
+                  label: tx(locale, "Speling min … max", "Clearance min … max"),
                   value: `${clearanceRange(result.minC, result.maxC)} mm`,
                 },
               ]}
             />
-            <p className="mt-4 text-sm leading-relaxed text-muted">{result.fit.use}</p>
+            <p className="mt-4 text-sm leading-relaxed text-muted">
+              {tx(locale, result.fit.use, result.fit.useEn)}
+            </p>
             <CopyResult text={copy} />
           </>
         )}
@@ -123,11 +141,14 @@ export function PassingenCalc() {
 
       <section className="mt-12">
         <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-          1. Voorkeurpassingen
+          {tx(locale, "1. Voorkeurpassingen", "1. Preferred fits")}
         </h2>
         <Note>
-          Minimum … maximum speling in mm. Negatief = overmaat. H7/p6 tot 18 mm:
-          max. 0 µm (lijnpassing mogelijk).
+          {tx(
+            locale,
+            "Minimum … maximum speling in mm. Negatief = overmaat. H7/p6 tot 18 mm: max. 0 µm (lijnpassing mogelijk).",
+            "Minimum … maximum clearance in mm. Negative = interference. H7/p6 up to 18 mm: max. 0 µm (line fit possible).",
+          )}
         </Note>
         <div className="table-scroll mt-4">
           <table className="ref-table">
@@ -144,7 +165,7 @@ export function PassingenCalc() {
             <tbody>
               {BANDS.map((band, i) => (
                 <tr key={band.label} className={i === activeBand ? "is-active" : ""}>
-                  <th scope="row">{band.label}</th>
+                  <th scope="row">{tx(locale, band.label, band.labelEn)}</th>
                   {FITS.map((f) => {
                     const r = computeFit(band.to, f.id);
                     return (
@@ -162,7 +183,7 @@ export function PassingenCalc() {
 
       <section className="mt-10">
         <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-          Wanneer welke passing
+          {tx(locale, "Wanneer welke passing", "When to use which fit")}
         </h2>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           {FITS.map((f) => {
@@ -177,10 +198,14 @@ export function PassingenCalc() {
                   <KindDot kind={kind} />
                   {f.id}
                   {live ? (
-                    <span className="font-sans text-muted">· {live.kind.text}</span>
+                    <span className="font-sans text-muted">
+                      · {tx(locale, live.kind.text, live.kind.textEn)}
+                    </span>
                   ) : null}
                 </p>
-                <p className="mt-2 text-sm leading-relaxed text-muted">{f.use}</p>
+                <p className="mt-2 text-sm leading-relaxed text-muted">
+                  {tx(locale, f.use, f.useEn)}
+                </p>
               </article>
             );
           })}
@@ -189,9 +214,15 @@ export function PassingenCalc() {
 
       <section className="mt-10">
         <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-          2. Gattoleranties
+          {tx(locale, "2. Gattoleranties", "2. Hole tolerances")}
         </h2>
-        <Note>Bovenmaat / ondermaat t.o.v. nominaal, in mm. JS7 = ±IT7/2, niet afgerond.</Note>
+        <Note>
+          {tx(
+            locale,
+            "Bovenmaat / ondermaat t.o.v. nominaal, in mm. JS7 = ±IT7/2, niet afgerond.",
+            "Upper / lower deviation relative to nominal, in mm. JS7 = ±IT7/2, not rounded.",
+          )}
+        </Note>
         <div className="table-scroll mt-4">
           <table className="ref-table">
             <thead>
@@ -205,7 +236,7 @@ export function PassingenCalc() {
             <tbody>
               {BANDS.map((band, i) => (
                 <tr key={band.label} className={i === activeBand ? "is-active" : ""}>
-                  <th scope="row">{band.label}</th>
+                  <th scope="row">{tx(locale, band.label, band.labelEn)}</th>
                   {HOLE_FIELDS.map((k) => (
                     <td key={k}>{pairRange(HOLE[k].ES[i], HOLE[k].EI[i])}</td>
                   ))}
@@ -218,9 +249,15 @@ export function PassingenCalc() {
 
       <section className="mt-10">
         <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-          3. Astoleranties
+          {tx(locale, "3. Astoleranties", "3. Shaft tolerances")}
         </h2>
-        <Note>Bovenmaat / ondermaat t.o.v. nominaal, in mm.</Note>
+        <Note>
+          {tx(
+            locale,
+            "Bovenmaat / ondermaat t.o.v. nominaal, in mm.",
+            "Upper / lower deviation relative to nominal, in mm.",
+          )}
+        </Note>
         <div className="table-scroll mt-4">
           <table className="ref-table">
             <thead>
@@ -236,7 +273,7 @@ export function PassingenCalc() {
             <tbody>
               {BANDS.map((band, i) => (
                 <tr key={band.label} className={i === activeBand ? "is-active" : ""}>
-                  <th scope="row">{band.label}</th>
+                  <th scope="row">{tx(locale, band.label, band.labelEn)}</th>
                   {SHAFT_FIELDS.map((k) => (
                     <td key={k}>{pairRange(SHAFT[k].es[i], SHAFT[k].ei[i])}</td>
                   ))}
@@ -246,10 +283,11 @@ export function PassingenCalc() {
           </table>
         </div>
         <p className="mt-4 text-xs leading-relaxed text-subtle">
-          Bron: ISO 286-1 / ISO 286-2 (limietafwijkingen). Waarden omgerekend van
-          µm naar mm. Diameters: boven de ondergrens tot en met de bovengrens.
-          JS7 is ±IT7/2 volgens ISO 286-2, zonder afronding naar hele µm.
-          Naslag, geen vervanging van de norm.
+          {tx(
+            locale,
+            "Bron: ISO 286-1 / ISO 286-2 (limietafwijkingen). Waarden omgerekend van µm naar mm. Diameters: boven de ondergrens tot en met de bovengrens. JS7 is ±IT7/2 volgens ISO 286-2, zonder afronding naar hele µm. Naslag, geen vervanging van de norm.",
+            "Source: ISO 286-1 / ISO 286-2 (limit deviations). Values converted from µm to mm. Diameters: over the lower bound up to and including the upper bound. JS7 is ±IT7/2 per ISO 286-2, without rounding to whole µm. Reference only, not a substitute for the standard.",
+          )}
         </p>
       </section>
     </>

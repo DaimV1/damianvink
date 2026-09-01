@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import {
   DUTY_DEFAULT_MU,
   FAMILY_HINT,
+  FAMILY_HINT_EN,
   IEC_KW,
   copyLine,
   fmtDotComma,
@@ -104,6 +105,13 @@ export function MotorCalc() {
   const showMuMain = duty === "helling";
   const showMuAdvanced = duty !== "hijsen" && duty !== "helling";
   const showAlpha = duty === "helling";
+  const familyHintText = tx(locale, FAMILY_HINT[duty], FAMILY_HINT_EN[duty]);
+  const dutyLabel: Record<Duty, string> = {
+    rollenbaan: tx(locale, "Rollenbaan", "Roller conveyor"),
+    band: tx(locale, "Band", "Belt"),
+    helling: tx(locale, "Helling", "Incline"),
+    hijsen: tx(locale, "Hijsen", "Hoisting"),
+  };
 
   return (
     <>
@@ -113,8 +121,11 @@ export function MotorCalc() {
           {tx(locale, "Bedrijfspunt van de rol", "Roller operating point")}
         </h2>
         <Note>
-          Horizontale aangedreven rol of trommel. Berekent n, F, T en P. Geen
-          cataloguskeuze en geen typecode. g = 9,81 m/s².
+          {tx(
+            locale,
+            "Horizontale aangedreven rol of trommel. Berekent n, F, T en P. Geen cataloguskeuze en geen typecode. g = 9,81 m/s².",
+            "Horizontal driven roller or drum. Calculates n, F, T and P. No catalog selection and no type code. g = 9.81 m/s².",
+          )}
         </Note>
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
           <Field label={tx(locale, "Transportsnelheid", "Conveyor speed")}>
@@ -158,7 +169,7 @@ export function MotorCalc() {
 
         <details className="mt-6">
           <summary className="cursor-pointer text-sm font-medium text-ink">
-            Geavanceerd (η, f_b, μ, a)
+            {tx(locale, "Geavanceerd (η, f_b, μ, a)", "Advanced (η, f_b, μ, a)")}
           </summary>
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
             <Field label={tx(locale, "Rendement η", "Efficiency η")}>
@@ -177,16 +188,22 @@ export function MotorCalc() {
             </Field>
           </div>
           <Note>
-            Standaard η = 0,85 en f_b = 1,2. Versnelling staat uit (a = 0). Bij
-            hijsen telt μ niet mee.
+            {tx(
+              locale,
+              "Standaard η = 0,85 en f_b = 1,2. Versnelling staat uit (a = 0). Bij hijsen telt μ niet mee.",
+              "Default η = 0.85 and f_b = 1.2. Acceleration is off (a = 0). For hoisting, μ does not count.",
+            )}
           </Note>
         </details>
 
         {result ? (
           <>
             <p className="mt-5 text-sm text-muted">
-              {result.familyHint}. 4-polig 50 Hz is een familie-indicatie, geen
-              gemeten toerental.
+              {tx(
+                locale,
+                `${familyHintText}. 4-polig 50 Hz is een familie-indicatie, geen gemeten toerental.`,
+                `${familyHintText}. 4-pole 50 Hz is a family indication, not a measured speed.`,
+              )}
             </p>
             <ResultGrid
               items={[
@@ -209,45 +226,58 @@ export function MotorCalc() {
                   value: result.iecKw != null
                     ? `${fmtKw(result.iecKw)} kW`
                     : result.iecOverRange
-                      ? `boven ${fmtKw(IEC_KW[IEC_KW.length - 1])} kW — geen stap in deze reeks`
+                      ? tx(
+                          locale,
+                          `boven ${fmtKw(IEC_KW[IEC_KW.length - 1])} kW — geen stap in deze reeks`,
+                          `above ${fmtKw(IEC_KW[IEC_KW.length - 1])} kW — no step in this series`,
+                        )
                       : "—",
                 },
                 {
-                  label: "i (4-polig 50 Hz)",
+                  label: tx(locale, "i (4-polig 50 Hz)", "i (4-pole 50 Hz)"),
                   value:
                     result.i == null
                       ? "—"
                       : `≈ ${fmtDotComma(result.i, 1)}`,
                 },
-                { label: "Reductorfamilie", value: result.familyHint },
+                {
+                  label: tx(locale, "Reductorfamilie", "Gearbox family"),
+                  value: familyHintText,
+                },
               ]}
             />
             <CopyResult text={copy} />
           </>
         ) : (
           <p className="mt-5 text-sm text-muted">
-            Vul een snelheid groter dan 0, een roldiameter groter dan 0 en een
-            massa groter dan 0 in.
+            {tx(
+              locale,
+              "Vul een snelheid groter dan 0, een roldiameter groter dan 0 en een massa groter dan 0 in.",
+              "Enter a speed greater than 0, a roller diameter greater than 0 and a mass greater than 0.",
+            )}
           </p>
         )}
       </CalcPanel>
 
       <section className="mt-10">
         <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-          Bedrijfsformules
+          {tx(locale, "Bedrijfsformules", "Duty formulas")}
         </h2>
         <Note>
-          SI intern. n_rol = v / (π D), T = F · D/2, P_as = F · v, P_motor =
-          P_as / η · f_b. Optioneel + m a.
+          {tx(
+            locale,
+            "SI intern. n_rol = v / (π D), T = F · D/2, P_as = F · v, P_motor = P_as / η · f_b. Optioneel + m a.",
+            "SI internally. n_rol = v / (π D), T = F · D/2, P_as = F · v, P_motor = P_as / η · f_b. Optionally + m a.",
+          )}
         </Note>
         <div className="table-scroll mt-4">
           <table className="ref-table">
             <thead>
               <tr>
-                <th>Bedrijf</th>
+                <th>{tx(locale, "Bedrijf", "Duty")}</th>
                 <th>F</th>
-                <th>μ-default</th>
-                <th>Familie</th>
+                <th>{tx(locale, "μ-default", "μ default")}</th>
+                <th>{tx(locale, "Familie", "Family")}</th>
               </tr>
             </thead>
             <tbody>
@@ -260,10 +290,10 @@ export function MotorCalc() {
                 ] as const
               ).map(([id, formula, muDef]) => (
                 <tr key={id} className={id === duty ? "is-active" : ""}>
-                  <th scope="row">{id}</th>
+                  <th scope="row">{dutyLabel[id]}</th>
                   <td>{formula}</td>
                   <td>{muDef}</td>
-                  <td>{FAMILY_HINT[id]}</td>
+                  <td>{tx(locale, FAMILY_HINT[id], FAMILY_HINT_EN[id])}</td>
                 </tr>
               ))}
             </tbody>
@@ -273,11 +303,14 @@ export function MotorCalc() {
 
       <section className="mt-10">
         <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-          IEC 60034 kW-stappen
+          {tx(locale, "IEC 60034 kW-stappen", "IEC 60034 kW steps")}
         </h2>
         <Note>
-          Volgende catalogusmotor, niet het berekende asvermogen. Boven 315 kW
-          geen stap in deze reeks.
+          {tx(
+            locale,
+            "Volgende catalogusmotor, niet het berekende asvermogen. Boven 315 kW geen stap in deze reeks.",
+            "Next catalog motor, not the calculated shaft power. Above 315 kW no step in this series.",
+          )}
         </Note>
         <div className="table-scroll mt-4">
           <table className="ref-table">
@@ -294,14 +327,18 @@ export function MotorCalc() {
                   className={kw === result?.iecKw ? "is-active" : ""}
                 >
                   <th scope="row">{fmtKw(kw)}</th>
-                  <td>{kw === result?.iecKw ? "volgende stap" : ""}</td>
+                  <td>{kw === result?.iecKw ? tx(locale, "volgende stap", "next step") : ""}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
         <p className="mt-4 text-xs leading-relaxed text-subtle">
-          P = F·v. IEC 60034 kW-reeks (R20). Naslag, geen motorcatalogus.
+          {tx(
+            locale,
+            "P = F·v. IEC 60034 kW-reeks (R20). Naslag, geen motorcatalogus.",
+            "P = F·v. IEC 60034 kW series (R20). Reference only, not a motor catalog.",
+          )}
         </p>
       </section>
     </>
