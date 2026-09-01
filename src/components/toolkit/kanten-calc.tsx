@@ -23,6 +23,7 @@ import {
   ResultGrid,
   SelectInput,
 } from "./calc-ui";
+import { BendSection, SchemaPanel } from "./schema";
 
 export function KantenCalc() {
   const { locale } = useLocale();
@@ -101,6 +102,28 @@ export function KantenCalc() {
           </p>
         )}
       </CalcPanel>
+
+      <section className="mt-12">
+        <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
+          {tx(locale, "Doorsnede", "Section")}
+        </h2>
+        <Note>
+          {tx(
+            locale,
+            "Kant in de matrijs: w is de groefwijdte (opening bovenkant matrijs), s de minimale beenlengte, Ri de inwendige radius bij de knik. Maatlijnen volgen de gekozen rij. Geen schaal.",
+            "Bend in the die: w is the die opening width, s the minimum leg length, Ri the inner radius at the bend. Dimension lines follow the selected row. Not to scale.",
+          )}
+        </Note>
+        <SchemaPanel
+          caption={tx(
+            locale,
+            kind === "haaks" ? "Dwarsdoorsnede · haaks (90°)" : "Dwarsdoorsnede · scherp",
+            kind === "haaks" ? "Cross-section · right angle (90°)" : "Cross-section · sharp",
+          )}
+        >
+          <BendSection kind={kind} ri={row?.ri ?? null} s={row?.s ?? null} w={row?.w ?? null} />
+        </SchemaPanel>
+      </section>
 
       <p className="mt-8 text-sm leading-relaxed text-muted">
         Bron:{" "}

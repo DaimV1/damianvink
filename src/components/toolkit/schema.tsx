@@ -6,6 +6,8 @@ import { HOLE, SHAFT } from "@/lib/toolkit/iso286";
 import { HOUSING_CHART, SHAFT_CHART } from "@/lib/toolkit/bearing";
 import type { FastenerRow } from "@/lib/toolkit/fastener";
 import type { SeegerKind } from "@/lib/toolkit/seeger";
+import type { OringKind } from "@/lib/toolkit/oring";
+import { dashMm, type Kind as BendKind } from "@/lib/toolkit/kanten";
 
 const FONT = "IBM Plex Mono, ui-monospace, monospace";
 
@@ -481,6 +483,177 @@ export function CirclipSection({
         label={tl}
         side="right"
       />
+    </svg>
+  );
+}
+
+export function OringGroove({
+  kind,
+  t,
+  b,
+}: {
+  kind: OringKind;
+  t?: number;
+  b?: number;
+}) {
+  const { locale } = useLocale();
+  const uid = useId().replace(/:/g, "");
+  const axial = kind === "axial";
+  const tl = t != null ? `t ${fmtMm(t)}` : "t";
+  const bl = b != null ? `b ${fmtMm(b)}` : "b";
+
+  const grooveX = 194;
+  const grooveW = 52;
+  const grooveD = 26;
+  const grooveFloorY = 150 + grooveD;
+
+  return (
+    <svg
+      className="w-full max-w-xl text-ink"
+      viewBox="0 0 440 260"
+      role="img"
+      aria-label={
+        axial
+          ? tx(
+              locale,
+              "Doorsnede flensgroef met O-ring, geklemd tussen twee vlakke platen",
+              "Section of a flange groove with O-ring, clamped between two flat faces",
+            )
+          : tx(
+              locale,
+              "Doorsnede as met radiale O-ringgroef, afdichtend tegen de boring",
+              "Section of a shaft with radial O-ring groove, sealing against the bore",
+            )
+      }
+    >
+      <HatchDefs uid={uid} />
+      {axial ? (
+        <line
+          x1="220"
+          y1="20"
+          x2="220"
+          y2="240"
+          stroke="currentColor"
+          strokeDasharray="4 5"
+          strokeWidth="0.8"
+          opacity="0.4"
+        />
+      ) : null}
+
+      {axial ? (
+        <>
+          {/* upper flange, clamped face down */}
+          <rect x="40" y="36" width="360" height="54" fill={`url(#${uid}-b)`} stroke="currentColor" />
+          {/* lower flange with groove cut into its top face */}
+          <rect x="40" y={150} width="360" height="60" fill={`url(#${uid}-a)`} stroke="currentColor" />
+          <rect x={grooveX} y="150" width={grooveW} height={grooveD} fill="var(--paper)" />
+          <line x1={grooveX} y1="150" x2={grooveX} y2={grooveFloorY} stroke="currentColor" strokeWidth="1.2" />
+          <line x1={grooveX + grooveW} y1="150" x2={grooveX + grooveW} y2={grooveFloorY} stroke="currentColor" strokeWidth="1.2" />
+          <circle cx="220" cy="133" r="43" fill="var(--accent)" stroke="currentColor" strokeWidth="1.5" />
+          <text x="56" y="68" fill="currentColor" fontSize="12" fontFamily={FONT}>
+            {tx(locale, "flens boven", "upper flange")}
+          </text>
+          <text x="56" y="184" fill="currentColor" fontSize="12" fontFamily={FONT}>
+            {tx(locale, "flens onder", "lower flange")}
+          </text>
+        </>
+      ) : (
+        <>
+          {/* housing / bore */}
+          <rect x="40" y="56" width="360" height="54" fill={`url(#${uid}-b)`} stroke="currentColor" />
+          {/* shaft with groove cut into its OD */}
+          <rect x="40" y="150" width="360" height="64" fill={`url(#${uid}-a)`} stroke="currentColor" />
+          <rect x={grooveX} y="150" width={grooveW} height={grooveD} fill="var(--paper)" />
+          <line x1={grooveX} y1="150" x2={grooveX} y2={grooveFloorY} stroke="currentColor" strokeWidth="1.2" />
+          <line x1={grooveX + grooveW} y1="150" x2={grooveX + grooveW} y2={grooveFloorY} stroke="currentColor" strokeWidth="1.2" />
+          <circle cx="220" cy="143" r="34" fill="var(--accent)" stroke="currentColor" strokeWidth="1.5" />
+          <text x="56" y="88" fill="currentColor" fontSize="12" fontFamily={FONT}>
+            {tx(locale, "behuizing / boring", "housing / bore")}
+          </text>
+          <text x="56" y="188" fill="currentColor" fontSize="12" fontFamily={FONT}>
+            {tx(locale, "as", "shaft")}
+          </text>
+        </>
+      )}
+
+      <Ext x1={grooveX} y1={150} x2={grooveX} y2={204} />
+      <Ext x1={grooveX + grooveW} y1={150} x2={grooveX + grooveW} y2={204} />
+      <DimH x1={grooveX} x2={grooveX + grooveW} y={210} label={bl} side="down" />
+
+      <Ext x1={grooveX + grooveW} y1={150} x2={330} y2={150} />
+      <Ext x1={grooveX + grooveW} y1={grooveFloorY} x2={330} y2={grooveFloorY} />
+      <DimV x={338} y1={150} y2={grooveFloorY} label={tl} side="right" />
+    </svg>
+  );
+}
+
+export function BendSection({
+  kind,
+  ri,
+  s,
+  w,
+}: {
+  kind: BendKind;
+  ri: number | null;
+  s: number | null;
+  w: number | null;
+}) {
+  const { locale } = useLocale();
+  const uid = useId().replace(/:/g, "");
+  const sharp = kind === "scherp";
+
+  const bendX = 220;
+  const bendY = 190;
+  const leg1End = { x: 380, y: 190 };
+  const leg2End = sharp ? { x: 150, y: 75 } : { x: 220, y: 70 };
+  const path = `M${leg1End.x},${leg1End.y} L${bendX},${bendY} L${leg2End.x},${leg2End.y}`;
+
+  const wl = w != null ? `w ${dashMm(w)}` : "w";
+  const sl = s != null ? `s ${dashMm(s)}` : "s";
+  const ril = ri != null ? `Ri ${dashMm(ri)}` : "Ri";
+
+  return (
+    <svg
+      className="w-full max-w-xl text-ink"
+      viewBox="0 0 440 260"
+      role="img"
+      aria-label={
+        sharp
+          ? tx(
+              locale,
+              "Doorsnede scherpe kant in de matrijs, met groefwijdte w, minimale beenlengte s en inwendige radius Ri",
+              "Section of a sharp bend in the die, with die width w, minimum leg length s and inner radius Ri",
+            )
+          : tx(
+              locale,
+              "Doorsnede haakse kant (90°) in de matrijs, met groefwijdte w, minimale beenlengte s en inwendige radius Ri",
+              "Section of a right-angle bend (90°) in the die, with die width w, minimum leg length s and inner radius Ri",
+            )
+      }
+    >
+      <HatchDefs uid={uid} />
+      {/* die */}
+      <rect x="40" y="190" width="360" height="54" fill={`url(#${uid}-a)`} stroke="currentColor" />
+      <path d={`M186,190 L${bendX},232 L254,190 Z`} fill="var(--paper)" />
+      <text x="56" y="228" fill="currentColor" fontSize="12" fontFamily={FONT}>
+        {tx(locale, "matrijs", "die")}
+      </text>
+
+      {/* bent sheet */}
+      <path d={path} fill="none" stroke="currentColor" strokeWidth="20" strokeLinecap="round" strokeLinejoin="round" />
+      <path d={path} fill="none" stroke="var(--accent)" strokeWidth="17" strokeLinecap="round" strokeLinejoin="round" />
+
+      <text x={bendX + 14} y={bendY - 16} fill="currentColor" fontSize="11" fontFamily={FONT}>
+        {ril}
+      </text>
+
+      <Ext x1={186} y1={190} x2={186} y2={144} />
+      <Ext x1={254} y1={190} x2={254} y2={144} />
+      <DimH x1={186} x2={254} y={144} label={wl} side="up" />
+
+      <Ext x1={bendX} y1={bendY} x2={bendX} y2={210} />
+      <Ext x1={leg1End.x} y1={leg1End.y} x2={leg1End.x} y2={210} />
+      <DimH x1={bendX} x2={leg1End.x} y={218} label={sl} side="down" />
     </svg>
   );
 }

@@ -17,6 +17,7 @@ import {
   ResultGrid,
   SelectInput,
 } from "./calc-ui";
+import { OringGroove, SchemaPanel } from "./schema";
 
 export function OringCalc() {
   const { locale } = useLocale();
@@ -91,6 +92,28 @@ export function OringCalc() {
           <p className="mt-5 text-sm text-muted">Kies een ISO-koord.</p>
         )}
       </CalcPanel>
+
+      <section className="mt-12">
+        <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
+          {tx(locale, "Doorsnede", "Section")}
+        </h2>
+        <Note>
+          {tx(
+            locale,
+            "Radiaal en hydrauliek: groef in de as, afdichting tegen de boring. Axiaal: groef in de flens, geklemd tussen twee vlakke platen. Maatlijnen volgen de gekozen rij. Geen schaal.",
+            "Radial and hydraulic: groove in the shaft, sealing against the bore. Axial: groove in the flange, clamped between two flat faces. Dimension lines follow the selected row. Not to scale.",
+          )}
+        </Note>
+        <SchemaPanel
+          caption={tx(
+            locale,
+            "Dwarsdoorsnede · ISO 3601",
+            "Cross-section · ISO 3601",
+          )}
+        >
+          <OringGroove kind={kind} t={g?.t} b={g?.b} />
+        </SchemaPanel>
+      </section>
 
       <section className="mt-12">
         <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
