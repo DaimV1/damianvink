@@ -9,6 +9,7 @@ import type { SeegerKind } from "@/lib/toolkit/seeger";
 import type { OringKind } from "@/lib/toolkit/oring";
 import { dashMm, type Kind as BendKind } from "@/lib/toolkit/kanten";
 import { END_CONDITIONS, type EndConditionId } from "@/lib/toolkit/knik";
+import type { BeamEndCondition } from "@/lib/toolkit/deflection";
 
 const FONT = "IBM Plex Mono, ui-monospace, monospace";
 
@@ -709,8 +710,10 @@ export function BendSection({
       <Ext x1={254} y1={190} x2={254} y2={144} />
       <DimH x1={186} x2={254} y={144} label={wl} side="up" />
 
-      {/* s runs the full length of the leg, hugging close beside it */}
-      <DimAligned x1={bendX} y1={bendY} x2={leg1End.x} y2={leg1End.y} offset={9} label={sl} />
+      {/* s starts where the rounded bend fillet ends (10 units up the 45° leg
+          from the apex — the round line-join's tangent point at this corner
+          angle), not at the sharp-corner apex itself, and hugs close beside the leg */}
+      <DimAligned x1={227} y1={217} x2={leg1End.x} y2={leg1End.y} offset={9} label={sl} />
     </svg>
   );
 }
@@ -846,6 +849,85 @@ export function BucklingModes({ active }: { active: EndConditionId }) {
       <text x={(x0 + x1) / 2} y={190} textAnchor="middle" fill="currentColor" fontSize="11" fontFamily={FONT} opacity="0.75">
         k = {cond ? cond.k : ""}
       </text>
+    </svg>
+  );
+}
+
+/** Beam with supports for the chosen end condition, a load arrow at x=a, and a marker at the max-deflection point. Not to scale. */
+export function BeamDeflection({
+  end,
+  a,
+  L,
+  xMax,
+}: {
+  end: BeamEndCondition;
+  a: number;
+  L: number;
+  xMax: number;
+}) {
+  const { locale } = useLocale();
+  const x0 = 90;
+  const x1 = 560;
+  const cy = 108;
+  const toX = (v: number) => x0 + (x1 - x0) * (Math.min(Math.max(v, 0), L) / L);
+  const loadX = toX(a);
+  const maxX = toX(xMax);
+  const showMaxMarker = Math.abs(maxX - loadX) > 4;
+
+  return (
+    <svg
+      className="w-full max-w-2xl text-ink"
+      viewBox="0 0 640 200"
+      role="img"
+      aria-label={
+        end === "cant"
+          ? tx(
+              locale,
+              "Uitkraging, ingeklemd links, puntlast P op afstand a vanaf de inklemming",
+              "Cantilever, fixed at the left, point load P at distance a from the fixed end",
+            )
+          : tx(
+              locale,
+              "Vrij opgelegde balk, puntlast P op afstand a vanaf het linker steunpunt",
+              "Simply supported beam, point load P at distance a from the left support",
+            )
+      }
+    >
+      <line x1={x0} y1={cy} x2={x1} y2={cy} stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+      {end === "ss" ? (
+        <>
+          <BuckleSupportH kind="pin" x={x0} y={cy} dir={-1} />
+          <BuckleSupportH kind="pin" x={x1} y={cy} dir={1} />
+        </>
+      ) : (
+        <BuckleSupportH kind="fixed" x={x0} y={cy} dir={-1} />
+      )}
+
+      <line x1={loadX} y1={cy - 40} x2={loadX} y2={cy - 6} stroke="var(--accent)" strokeWidth="2" />
+      <path
+        d={`M${loadX - 5},${cy - 12} L${loadX},${cy - 4} L${loadX + 5},${cy - 12}`}
+        fill="none"
+        stroke="var(--accent)"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <text x={loadX} y={cy - 46} textAnchor="middle" fill="var(--accent)" fontSize="13" fontFamily={FONT} fontWeight={500}>
+        P
+      </text>
+
+      {showMaxMarker ? (
+        <>
+          <line x1={maxX} y1={cy + 6} x2={maxX} y2={cy + 18} stroke="currentColor" strokeWidth="1" opacity="0.6" />
+          <text x={maxX} y={cy + 32} textAnchor="middle" fill="currentColor" fontSize="10" fontFamily={FONT} opacity="0.75">
+            {tx(locale, "max", "max")}
+          </text>
+        </>
+      ) : null}
+
+      <Ext x1={x0} y1={cy} x2={x0} y2={cy + 50} />
+      <Ext x1={loadX} y1={cy} x2={loadX} y2={cy + 50} />
+      <DimH x1={x0} x2={loadX} y={cy + 50} label="a" side="down" />
     </svg>
   );
 }
