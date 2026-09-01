@@ -130,6 +130,60 @@ function DimV({
   );
 }
 
+/** Dimension line running parallel to a feature (e.g. an angled leg), offset to its outer side. */
+function DimAligned({
+  x1,
+  y1,
+  x2,
+  y2,
+  offset,
+  label,
+}: {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+  offset: number;
+  label: string;
+}) {
+  const dx = x2 - x1;
+  const dy = y2 - y1;
+  const len = Math.hypot(dx, dy) || 1;
+  const ux = dx / len;
+  const uy = dy / len;
+  const px = -uy;
+  const py = ux;
+  const ax1 = x1 + px * offset;
+  const ay1 = y1 + py * offset;
+  const ax2 = x2 + px * offset;
+  const ay2 = y2 + py * offset;
+  const tick = 5;
+  const mx = (ax1 + ax2) / 2 + px * 12;
+  const my = (ay1 + ay2) / 2 + py * 12;
+  return (
+    <g>
+      <Ext x1={x1} y1={y1} x2={ax1} y2={ay1} />
+      <Ext x1={x2} y1={y2} x2={ax2} y2={ay2} />
+      <g stroke="currentColor" fill="none" strokeWidth="1">
+        <line x1={ax1} y1={ay1} x2={ax2} y2={ay2} />
+        <line x1={ax1 - px * tick} y1={ay1 - py * tick} x2={ax1 + px * tick} y2={ay1 + py * tick} />
+        <line x1={ax2 - px * tick} y1={ay2 - py * tick} x2={ax2 + px * tick} y2={ay2 + py * tick} />
+      </g>
+      <text
+        x={mx}
+        y={my}
+        textAnchor="middle"
+        fill="currentColor"
+        stroke="none"
+        fontSize="12"
+        fontFamily={FONT}
+      >
+        {label}
+      </text>
+    </g>
+  );
+}
+
 function Ext({ x1, y1, x2, y2 }: { x1: number; y1: number; x2: number; y2: number }) {
   return (
     <line
@@ -603,19 +657,18 @@ export function BendSection({
   const uid = useId().replace(/:/g, "");
   const sharp = kind === "scherp";
 
+  // The sheet sits in the die's V-groove at the bottom of the stroke, legs
+  // following the die's own 45°/45° walls out into the open air — this is
+  // the same for every bend kind; only the Ri/s/w values differ.
   const bendX = 220;
-  // Haaks (90°): the sheet sits in the die's V-groove at the bottom of the
-  // stroke, legs following the die's own 45°/45° walls out into the open
-  // air above it — not resting flat on the die's top surface.
-  const bendY = sharp ? 190 : 224;
-  const leg1End = sharp ? { x: 380, y: 190 } : { x: 370, y: 74 };
-  const leg2End = sharp ? { x: 150, y: 75 } : { x: 70, y: 74 };
+  const bendY = 224;
+  const leg1End = { x: 370, y: 74 };
+  const leg2End = { x: 70, y: 74 };
   const path = `M${leg1End.x},${leg1End.y} L${bendX},${bendY} L${leg2End.x},${leg2End.y}`;
 
   const wl = w != null ? `w ${dashMm(w)}` : "w";
   const sl = s != null ? `s ${dashMm(s)}` : "s";
   const ril = ri != null ? `Ri ${dashMm(ri)}` : "Ri";
-  const sDimY = sharp ? 125 : 40;
 
   return (
     <svg
@@ -648,13 +701,7 @@ export function BendSection({
       <path d={path} fill="none" stroke="currentColor" strokeWidth="20" strokeLinecap="butt" strokeLinejoin="round" />
       <path d={path} fill="none" stroke="var(--accent)" strokeWidth="17" strokeLinecap="butt" strokeLinejoin="round" />
 
-      <text
-        x={sharp ? bendX + 14 : bendX - 25}
-        y={sharp ? bendY - 16 : bendY + 12}
-        fill="currentColor"
-        fontSize="11"
-        fontFamily={FONT}
-      >
+      <text x={bendX - 65} y={bendY + 14} fill="currentColor" fontSize="11" fontFamily={FONT}>
         {ril}
       </text>
 
@@ -662,9 +709,7 @@ export function BendSection({
       <Ext x1={254} y1={190} x2={254} y2={144} />
       <DimH x1={186} x2={254} y={144} label={wl} side="up" />
 
-      <Ext x1={bendX} y1={bendY} x2={bendX} y2={sDimY} />
-      <Ext x1={leg1End.x} y1={leg1End.y} x2={leg1End.x} y2={sDimY} />
-      <DimH x1={bendX} x2={leg1End.x} y={sDimY} label={sl} side="up" />
+      <DimAligned x1={bendX} y1={bendY} x2={leg1End.x} y2={leg1End.y} offset={18} label={sl} />
     </svg>
   );
 }
