@@ -190,8 +190,8 @@ export function MotorCalc() {
           <Note>
             {tx(
               locale,
-              "Standaard η = 0,85 en f_b = 1,2. Versnelling staat uit (a = 0). Bij hijsen telt μ niet mee.",
-              "Default η = 0.85 and f_b = 1.2. Acceleration is off (a = 0). For hoisting, μ does not count.",
+              "Standaard η = 0,85 en f_b = 1,2. Versnelling staat uit (a = 0). Bij hijsen telt μ niet mee. η = 0,85 past bij een parallelas- of kegelwielreductor; een wormreductor ligt vaak lager (η ≈ 0,5–0,85, afhankelijk van de overbrengverhouding) — pas η aan zodra de reductorfamilie bekend is.",
+              "Default η = 0.85 and f_b = 1.2. Acceleration is off (a = 0). For hoisting, μ does not count. η = 0.85 fits a parallel-shaft or bevel-helical reducer; a worm reducer is often lower (η ≈ 0.5–0.85, depending on the ratio) — adjust η once the reducer family is known.",
             )}
           </Note>
         </details>
@@ -212,7 +212,10 @@ export function MotorCalc() {
                   value: `${fmtDotComma(result.n_rpm, 1)} min⁻¹`,
                 },
                 { label: "F", value: `${fmtNl(result.F, 0)} N` },
-                { label: "T", value: `${fmtDotComma(result.T, 2)} Nm` },
+                {
+                  label: tx(locale, "T (as rol, zonder f_b)", "T (roller shaft, no f_b)"),
+                  value: `${fmtDotComma(result.T, 2)} Nm`,
+                },
                 {
                   label: "P_as",
                   value: `${fmtDotComma(result.P_as_kW, 3)} kW`,
@@ -246,6 +249,13 @@ export function MotorCalc() {
                 },
               ]}
             />
+            <Note>
+              {tx(
+                locale,
+                `T is het kale asmoment (F · D/2), zonder bedrijfsfactor f_b. P_motor is al met f_b vermenigvuldigd. Voor een reductor die op uitgangskoppel wordt geselecteerd: gebruik T × f_b = ${fmtDotComma(result.T * result.fb, 2)} Nm, niet het kale T.`,
+                `T is the bare shaft torque (F · D/2), without the service factor f_b. P_motor already has f_b applied. When sizing a reducer on output torque: use T × f_b = ${fmtDotComma(result.T * result.fb, 2)} Nm, not the bare T.`,
+              )}
+            </Note>
             <CopyResult text={copy} />
           </>
         ) : (

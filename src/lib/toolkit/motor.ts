@@ -95,6 +95,7 @@ export type MotorResult = {
   i: number | null;
   familyHint: string;
   duty: Duty;
+  fb: number;
 };
 
 export function sizeMotor(input: MotorInput): MotorResult | null {
@@ -137,6 +138,7 @@ export function sizeMotor(input: MotorInput): MotorResult | null {
     i: n_rpm > 0 ? N_4POLE_50HZ / n_rpm : null,
     familyHint: FAMILY_HINT[duty],
     duty,
+    fb,
   };
 }
 
