@@ -2,10 +2,28 @@ import type { ReactNode } from "react";
 import { DisplayTitle } from "@/components/display-title";
 import { JsonLd } from "@/components/json-ld";
 import { PageWrap, SiteShell } from "@/components/site-shell";
+import { SourceBadge } from "@/components/toolkit/calc-ui";
 import { RelatedTools } from "@/components/toolkit/related-tools";
 import { Breadcrumb, ToolSwitcher } from "@/components/toolkit/tool-switcher";
+import { tx, useLocale } from "@/lib/i18n/locale";
 import { breadcrumbJsonLd } from "@/lib/seo";
-import type { ToolId } from "@/lib/toolkit/tools";
+import { fmtIsoDateNl, nextReviewIso, TOOLS, type ToolId } from "@/lib/toolkit/tools";
+
+function VerifiedBadge({ active }: { active?: ToolId }) {
+  const { locale } = useLocale();
+  const tool = active ? TOOLS.find((t) => t.id === active) : undefined;
+  if (!tool) return null;
+  const next = nextReviewIso(tool.verifiedAt, tool.reviewMonths);
+  return (
+    <SourceBadge>
+      {tx(
+        locale,
+        `Laatst gecontroleerd: ${fmtIsoDateNl(tool.verifiedAt)} · volgende check rond ${fmtIsoDateNl(next)}`,
+        `Last checked: ${fmtIsoDateNl(tool.verifiedAt)} · next check around ${fmtIsoDateNl(next)}`,
+      )}
+    </SourceBadge>
+  );
+}
 
 export function ToolkitFrame({
   active,
@@ -38,6 +56,7 @@ export function ToolkitFrame({
         </p>
         <DisplayTitle text={title} accent={accent} className="mt-3" />
         <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted">{lede}</p>
+        <VerifiedBadge active={active} />
         <div className="mt-10">{children}</div>
         {active ? <RelatedTools active={active} /> : null}
       </PageWrap>
