@@ -102,6 +102,13 @@ export function Iso2768Calc() {
             "Title-block default when a dimension has no tolerance box. Not a fit (that is ISO 286). Standard callout ISO 2768-mK.",
           )}
         </Note>
+        <Note>
+          {tx(
+            locale,
+            "Eén invoer, drie verschillende betekenissen: nominale maat voor lineair/radii, kortste been voor hoek (2768-1), langste zijde van het vlak voor rechtheid/vlakheid/haaksheid/symmetrie (2768-2). Voor een hoek of vormtolerantie: vul de lengte van dát kenmerk in, niet de lineaire maat ernaast.",
+            "One input, three different meanings: nominal size for linear/radii, shorter leg for angle (2768-1), longer side of the surface for straightness/flatness/perpendicularity/symmetry (2768-2). For an angle or form tolerance: enter that feature's own length, not the linear dimension next to it.",
+          )}
+        </Note>
         <SourceBadge>
           {tx(
             locale,
