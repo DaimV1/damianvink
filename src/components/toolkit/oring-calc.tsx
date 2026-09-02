@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import {
   D2_OPTIONS,
+  fillRatio,
   GROOVE,
   ORING_LABELS,
   ORING_LABELS_EN,
@@ -35,6 +36,7 @@ export function OringCalc() {
       `${tx(locale, "Groefdiepte t", "Groove depth t")}  ${fmtMm(g.t)} mm (+0,05)`,
       `${tx(locale, "Groefbreedte b", "Groove width b")}  ${fmtMm(g.b)} mm (+0,25)`,
       `${tx(locale, "Samendrukking", "Compression")}  ca. ${squeeze(d2n, g.t)} %`,
+      `${tx(locale, "Vulgraad", "Fill ratio")}  ca. ${fillRatio(d2n, g.t, g.b)} %`,
     ].join("\n");
   }, [d2n, g, kindLabel, locale]);
 
@@ -45,6 +47,10 @@ export function OringCalc() {
         {
           label: tx(locale, "Nominale samendrukking", "Nominal compression"),
           value: `ca. ${squeeze(d2n, g.t)} %`,
+        },
+        {
+          label: tx(locale, "Vulgraad (nominaal)", "Fill ratio (nominal)"),
+          value: `ca. ${fillRatio(d2n, g.t, g.b)} %`,
         },
         g.C != null
           ? { label: tx(locale, "Inloop C", "Lead-in C"), value: `${fmtMm(g.C)} mm` }
@@ -62,8 +68,15 @@ export function OringCalc() {
         <Note>
           {tx(
             locale,
-            "ISO-koorden A–E. t +0,05 mm, b +0,25 mm (Dichtomatik). Samendrukking = (d₂ − t)/d₂: nominale compressie, geen plus-mintolerantie.",
-            "ISO cords A–E. t +0.05 mm, b +0.25 mm (Dichtomatik). Compression = (d₂ − t)/d₂: nominal compression, not a plus/minus tolerance.",
+            "ISO-koorden A–E. t +0,05 mm, b +0,25 mm (Dichtomatik). Samendrukking = (d₂ − t)/d₂: nominale compressie, geen plus-mintolerantie. Vulgraad = doorsnede-oppervlak ring t.o.v. groefoppervlak (b × t); richtwaarde 75–90%, met ruimte voor thermische uitzetting.",
+            "ISO cords A–E. t +0.05 mm, b +0.25 mm (Dichtomatik). Compression = (d₂ − t)/d₂: nominal compression, not a plus/minus tolerance. Fill ratio = ring cross-section area vs. groove area (b × t); target 75–90%, leaving room for thermal expansion.",
+          )}
+        </Note>
+        <Note>
+          {tx(
+            locale,
+            "Radiale rek van het koord over de groefdiameter: max. ca. 5% bij montage. Deze tool rekent niet vanaf een boring-/as-diameter — controleer zelf. Extrusiespleet en back-up ring bij hoge druk of dynamische toepassingen: niet in deze tool.",
+            "Radial stretch of the cord over the groove diameter: max. ca. 5% at assembly. This tool does not work from a bore/shaft diameter — check separately. Extrusion gap and back-up ring for high pressure or dynamic use: not covered here.",
           )}
         </Note>
         <div className="mt-6 grid gap-4 sm:grid-cols-2">

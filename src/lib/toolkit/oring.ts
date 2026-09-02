@@ -47,3 +47,10 @@ export const D2_OPTIONS = [
 export function squeeze(d2: number, t: number) {
   return Math.round(((d2 - t) / d2) * 100);
 }
+
+/** Vulgraad: o-ring doorsnede-oppervlak t.o.v. groefoppervlak (b × t), in %. Richtwaarde 75–90%. */
+export function fillRatio(d2: number, t: number, b: number) {
+  const ringArea = (Math.PI * d2 ** 2) / 4;
+  const grooveArea = b * t;
+  return Math.round((ringArea / grooveArea) * 100);
+}
