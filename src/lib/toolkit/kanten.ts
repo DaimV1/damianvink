@@ -401,6 +401,25 @@ export function lookupKanten(
 export const KANTEN_SOURCE =
   "https://247tailorsteel.com/nl/aanleverspecificaties/richtlijnen-voor-kanten";
 
+/** Richtwaarde K-factor voor een generieke plaatbuiging. Varieert 0,3–0,5 met materiaal en Ri/t. */
+export const DEFAULT_K_FACTOR = 0.33;
+
+/**
+ * Bend allowance voor een 90°-buiging: booglengte van de neutrale lijn,
+ * BA = (π/2)·(Ri + K·t). Alleen voor haaks (90°) — scherp heeft geen vaste hoek.
+ */
+export function bendAllowance90(ri: number, t: number, k: number): number {
+  return (Math.PI / 2) * (ri + k * t);
+}
+
+/**
+ * Bend deduction voor een 90°-buiging: hoeveel korter de platte lengte is dan
+ * de som van de buitenmaten (OML). BD = 2·(Ri + t) − BA.
+ */
+export function bendDeduction90(ri: number, t: number, k: number): number {
+  return 2 * (ri + t) - bendAllowance90(ri, t, k);
+}
+
 /**
  * Ri-cellen die niet monotoon oplopen met t, letterlijk overgenomen van de
  * 247-pagina (geen invoerfout). Gemarkeerd zodat lezers geen typo vermoeden.
@@ -420,7 +439,7 @@ export function dashMm(n: number | null) {
   return String(n).replace(".", ",");
 }
 
-export function copyLine(row: KantenRow) {
+export function copyLine(row: KantenRow, bend?: { ba: number; bd: number } | null) {
   const mat =
     row.material === "hoogsterkte"
       ? "hoogsterkte"
@@ -429,7 +448,10 @@ export function copyLine(row: KantenRow) {
         : row.material === "alu"
           ? "alu"
           : "staal";
-  return `Ri=${dashMm(row.ri)} mm, s=${dashMm(row.s)} mm (min. been), w=${dashMm(row.w)} mm (groef), ${dashMm(row.t)} mm ${mat} ${row.kind}`;
+  const bendPart = bend
+    ? `, BA=${bend.ba.toFixed(2).replace(".", ",")} mm, BD=${bend.bd.toFixed(2).replace(".", ",")} mm`
+    : "";
+  return `Ri=${dashMm(row.ri)} mm, s=${dashMm(row.s)} mm (min. been), w=${dashMm(row.w)} mm (groef), ${dashMm(row.t)} mm ${mat} ${row.kind}${bendPart}`;
 }
 
 export const RI_T_HAAKS = [0.8, 1, 1.25, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10, 12] as const;

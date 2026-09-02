@@ -1,6 +1,9 @@
 import { Fragment, useMemo, useState } from "react";
 import {
   BL_T_SCHERP,
+  bendAllowance90,
+  bendDeduction90,
+  DEFAULT_K_FACTOR,
   KANTEN_SOURCE,
   KINDS,
   MATERIALS,
@@ -21,19 +24,37 @@ import {
   CopyResult,
   Field,
   Note,
+  NumInput,
   ResultGrid,
   SelectInput,
 } from "./calc-ui";
 import { BendSection, SchemaPanel } from "./schema";
+
+function parseK(raw: string): number | null {
+  const t = raw.trim().replace(",", ".");
+  if (t === "") return null;
+  const n = Number.parseFloat(t);
+  return Number.isFinite(n) && n > 0 ? n : null;
+}
 
 export function KantenCalc() {
   const { locale } = useLocale();
   const [tRaw, setTRaw] = useState("2");
   const [material, setMaterial] = useState<Material>("rvs");
   const [kind, setKind] = useState<Kind>("haaks");
+  const [kRaw, setKRaw] = useState(String(DEFAULT_K_FACTOR).replace(".", ","));
   const t = Number(tRaw);
   const row = Number.isFinite(t) ? lookupKanten(t, material, kind) : null;
-  const copy = useMemo(() => (row ? copyLine(row) : ""), [row]);
+  const kFactor = parseK(kRaw);
+  const ri = row?.ri ?? null;
+  const bendMath = useMemo(
+    () =>
+      kind === "haaks" && ri != null && kFactor != null
+        ? { ba: bendAllowance90(ri, t, kFactor), bd: bendDeduction90(ri, t, kFactor) }
+        : null,
+    [kind, ri, t, kFactor],
+  );
+  const copy = useMemo(() => (row ? copyLine(row, bendMath) : ""), [row, bendMath]);
 
   return (
     <>
@@ -80,6 +101,11 @@ export function KantenCalc() {
               ))}
             </SelectInput>
           </Field>
+          {kind === "haaks" ? (
+            <Field label={tx(locale, "K-factor (bend allowance)", "K-factor (bend allowance)")}>
+              <NumInput id="kanten-k" value={kRaw} onChange={setKRaw} />
+            </Field>
+          ) : null}
         </div>
         {row ? (
           <>
@@ -101,8 +127,38 @@ export function KantenCalc() {
                   label: tx(locale, "x (Z-buiging)", "x (Z-bend)"),
                   value: `${dashMm(row.x)} mm`,
                 },
-              ]}
+                bendMath
+                  ? {
+                      label: tx(locale, "Bend allowance (90°)", "Bend allowance (90°)"),
+                      value: `${bendMath.ba.toFixed(2).replace(".", ",")} mm`,
+                    }
+                  : null,
+                bendMath
+                  ? {
+                      label: tx(locale, "Bend deduction (90°)", "Bend deduction (90°)"),
+                      value: `${bendMath.bd.toFixed(2).replace(".", ",")} mm`,
+                    }
+                  : null,
+              ].filter(Boolean) as { label: string; value: string }[]}
             />
+            {bendMath ? (
+              <Note>
+                {tx(
+                  locale,
+                  "Alleen voor haaks (90°) — scherp heeft geen vaste hoek. Platte lengte = som beenlengtes tot de buigraaklijn + bend allowance, of som buitenmaten (OML) − bend deduction. K-factor is een richtwaarde (0,3–0,5, afhankelijk van materiaal en Ri/t) — pas aan of meet na op je eigen machine/materiaal.",
+                  "Right angle (90°) only — sharp has no fixed angle. Flat length = sum of leg lengths to the bend tangent + bend allowance, or sum of outside dimensions (OML) − bend deduction. K-factor is indicative (0.3–0.5, depending on material and Ri/t) — adjust or verify on your own machine/material.",
+                )}
+              </Note>
+            ) : null}
+            {row.ri != null ? (
+              <Note>
+                {tx(
+                  locale,
+                  `Gat/inkeping bij een kant: richtwaarde minimaal ca. ${(2.5 * t).toFixed(1).replace(".", ",")}–${(3 * t).toFixed(1).replace(".", ",")} mm (2,5–3 × t) vanaf de buigraaklijn, anders vervormt het gat mee. Niet als harde regel van de fabrikant te lezen — vraag na bij 247.`,
+                  `Hole/notch near a bend: rule-of-thumb minimum ca. ${(2.5 * t).toFixed(1)}–${(3 * t).toFixed(1)} mm (2.5–3 × t) from the bend tangent, otherwise the hole distorts with the bend. Not a hard rule from the manufacturer — check with 247.`,
+                )}
+              </Note>
+            ) : null}
             {row.thickPlate ? (
               <Note>
                 {tx(
