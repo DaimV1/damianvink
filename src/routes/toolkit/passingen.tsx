@@ -8,7 +8,7 @@ import { useLocale } from "@/lib/i18n/locale";
 import { pageHead, softwareJsonLd } from "@/lib/seo";
 
 const DESCRIPTION =
-  "ISO 286 voorkeurpassingen tot Ø50 mm. H7/g6, H7/h6, JS7. Rekenhulp voor speling en overmaat plus naslagtabel, eenheidsgatstelsel.";
+  "ISO 286 voorkeurpassingen tot Ø3150 mm. H7/g6, H7/h6, JS7. Rekenhulp voor speling en overmaat plus naslagtabel, eenheidsgatstelsel.";
 
 export const Route = createFileRoute("/toolkit/passingen")({
   head: () =>

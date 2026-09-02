@@ -2,14 +2,18 @@ import { useMemo, useState } from "react";
 import {
   BANDS,
   FITS,
-  HOLE,
   HOLE_FIELDS,
-  SHAFT,
   SHAFT_FIELDS,
   bandIndex,
   clearanceRange,
   computeFit,
+  fitExtendable,
+  holeDeviationAt,
+  holeExtendable,
+  isExtendedBand,
   pairRange,
+  shaftDeviationAt,
+  shaftExtendable,
 } from "@/lib/toolkit/iso286";
 import { readStoredDiameter, storeDiameter } from "@/lib/toolkit/tools";
 import { mmFromUm } from "@/lib/utils";
@@ -30,7 +34,7 @@ import {
 export function PassingenCalc() {
   const { locale } = useLocale();
   const [diameter, setDiameter] = useState(() =>
-    readStoredDiameter({ min: 4, max: 50 }),
+    readStoredDiameter({ min: 4, max: 3150 }),
   );
   const [fitId, setFitId] = useState("H7/h6");
 
@@ -44,6 +48,9 @@ export function PassingenCalc() {
   const d = parsed.status === "ok" ? parsed.mm : Number.NaN;
   const result = parsed.status === "ok" ? computeFit(d, fitId) : null;
   const activeBand = parsed.status === "ok" ? bandIndex(d) : -1;
+  const activeBandExtended = activeBand >= 0 && isExtendedBand(activeBand);
+  const fitOutOfBandRange =
+    parsed.status === "ok" && activeBand >= 0 && activeBandExtended && !fitExtendable(fitId);
 
   const copy = useMemo(() => {
     if (!result) return "";
@@ -68,8 +75,8 @@ export function PassingenCalc() {
         <Note>
           {tx(
             locale,
-            "Nominale Ø in hele millimeters. Tabellen: boven 3 t/m 50 mm. Zelfde getallen als de naslag hieronder.",
-            "Nominal Ø in whole millimeters. Tables: over 3 through 50 mm. Same figures as the reference below.",
+            "Nominale Ø in hele millimeters, boven 3 t/m 3150 mm (de volledige ISO 286-reeks). H/h, JS/js, G/g, F/f en D/d zijn berekend uit de ISO 286-1-formules en gelden over de hele reeks. c11, k6, n6, p6 en s6 hebben geen eenvoudige formule en blijven beperkt tot t/m 50 mm — zie hieronder.",
+            "Nominal Ø in whole millimeters, over 3 through 3150 mm (the full ISO 286 series). H/h, JS/js, G/g, F/f and D/d are computed from the ISO 286-1 formulas and apply across the whole series. c11, k6, n6, p6 and s6 have no simple formula and stay capped at 50 mm — see below.",
           )}
         </Note>
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -81,6 +88,9 @@ export function PassingenCalc() {
               {FITS.map((f) => (
                 <option key={f.id} value={f.id}>
                   {f.id}
+                  {fitExtendable(f.id)
+                    ? ""
+                    : tx(locale, " (t/m 50 mm)", " (up to 50 mm)")}
                 </option>
               ))}
             </SelectInput>
@@ -91,12 +101,20 @@ export function PassingenCalc() {
           <p className="mt-5 text-sm text-muted">
             {tx(locale, "Vul een nominale Ø in.", "Enter a nominal Ø.")}
           </p>
+        ) : fitOutOfBandRange ? (
+          <p className="mt-5 text-sm text-muted">
+            {tx(
+              locale,
+              `${fitId} heeft geen formule voor c, k, n, p of s en is alleen beschikbaar t/m 50 mm. Ø ${d} mm valt in band ${BANDS[activeBand].label} mm. Kies H7/h6, H7/g6, H8/f7 of H9/d9 voor de volledige reeks, of blijf onder 50 mm.`,
+              `${fitId} has no formula for c, k, n, p or s and is only available up to 50 mm. Ø ${d} mm falls in band ${BANDS[activeBand].labelEn} mm. Choose H7/h6, H7/g6, H8/f7 or H9/d9 for the full series, or stay under 50 mm.`,
+            )}
+          </p>
         ) : !result ? (
           <p className="mt-5 text-sm text-muted">
             {tx(
               locale,
-              `Geen ISO-band voor Ø ${d} mm. Tabellen: boven 3 t/m 50 mm (Ø 3 valt erbuiten).`,
-              `No ISO band for Ø ${d} mm. Tables: over 3 through 50 mm (Ø 3 falls outside).`,
+              `Geen ISO-band voor Ø ${d} mm. Tabellen: boven 3 t/m 3150 mm (Ø 3 valt erbuiten).`,
+              `No ISO band for Ø ${d} mm. Tables: over 3 through 3150 mm (Ø 3 falls outside).`,
             )}
           </p>
         ) : (
@@ -131,6 +149,15 @@ export function PassingenCalc() {
             <p className="mt-4 text-sm leading-relaxed text-muted">
               {tx(locale, result.fit.use, result.fit.useEn)}
             </p>
+            {activeBandExtended ? (
+              <Note>
+                {tx(
+                  locale,
+                  "Berekend uit de ISO 286-1-formules (boven 50 mm zijn dit geen tabelwaarden meer).",
+                  "Computed from the ISO 286-1 formulas (above 50 mm these are no longer table values).",
+                )}
+              </Note>
+            ) : null}
             <CopyResult text={copy} />
           </>
         )}
@@ -155,6 +182,7 @@ export function PassingenCalc() {
                 {FITS.map((f) => (
                   <th key={f.id} className="normal-case">
                     {f.id}
+                    {fitExtendable(f.id) ? "" : " *"}
                   </th>
                 ))}
               </tr>
@@ -187,7 +215,7 @@ export function PassingenCalc() {
           >
             RoyMech ISO 286-2
           </a>
-          .
+          . {tx(locale, "* alleen t/m 50 mm (geen formule voor c, k, n, p of s).", "* only up to 50 mm (no formula for c, k, n, p or s).")}
         </p>
       </section>
 
@@ -239,7 +267,10 @@ export function PassingenCalc() {
               <tr>
                 <th>Ø (mm)</th>
                 {HOLE_FIELDS.map((k) => (
-                  <th key={k}>{k}</th>
+                  <th key={k}>
+                    {k}
+                    {holeExtendable(k) ? "" : " *"}
+                  </th>
                 ))}
               </tr>
             </thead>
@@ -247,9 +278,10 @@ export function PassingenCalc() {
               {BANDS.map((band, i) => (
                 <tr key={band.label} className={i === activeBand ? "is-active" : ""}>
                   <th scope="row">{tx(locale, band.label, band.labelEn)}</th>
-                  {HOLE_FIELDS.map((k) => (
-                    <td key={k}>{pairRange(HOLE[k].ES[i], HOLE[k].EI[i])}</td>
-                  ))}
+                  {HOLE_FIELDS.map((k) => {
+                    const dev = holeDeviationAt(k, i);
+                    return <td key={k}>{dev ? pairRange(dev.ES, dev.EI) : "—"}</td>;
+                  })}
                 </tr>
               ))}
             </tbody>
@@ -265,6 +297,11 @@ export function PassingenCalc() {
           >
             RoyMech ISO 286-2 hole tolerances
           </a>
+          . {tx(
+            locale,
+            "H6–H11, F8, G7 en JS7 zijn berekend uit de ISO 286-1-formules boven 50 mm. * K7 en N7 hebben geen formule en blijven t/m 50 mm.",
+            "H6–H11, F8, G7 and JS7 are computed from the ISO 286-1 formulas above 50 mm. * K7 and N7 have no formula and stay capped at 50 mm.",
+          )}
         </p>
       </section>
 
@@ -287,6 +324,7 @@ export function PassingenCalc() {
                 {SHAFT_FIELDS.map((k) => (
                   <th key={k} className="normal-case">
                     {k}
+                    {shaftExtendable(k) ? "" : " *"}
                   </th>
                 ))}
               </tr>
@@ -295,9 +333,10 @@ export function PassingenCalc() {
               {BANDS.map((band, i) => (
                 <tr key={band.label} className={i === activeBand ? "is-active" : ""}>
                   <th scope="row">{tx(locale, band.label, band.labelEn)}</th>
-                  {SHAFT_FIELDS.map((k) => (
-                    <td key={k}>{pairRange(SHAFT[k].es[i], SHAFT[k].ei[i])}</td>
-                  ))}
+                  {SHAFT_FIELDS.map((k) => {
+                    const dev = shaftDeviationAt(k, i);
+                    return <td key={k}>{dev ? pairRange(dev.es, dev.ei) : "—"}</td>;
+                  })}
                 </tr>
               ))}
             </tbody>
@@ -317,8 +356,8 @@ export function PassingenCalc() {
           .{" "}
           {tx(
             locale,
-            "Waarden omgerekend van µm naar mm. Diameters: boven de ondergrens tot en met de bovengrens. JS7 is ±IT7/2 volgens ISO 286-2, zonder afronding naar hele µm. Naslag, geen vervanging van de norm.",
-            "Values converted from µm to mm. Diameters: over the lower bound up to and including the upper bound. JS7 is ±IT7/2 per ISO 286-2, without rounding to whole µm. Reference only, not a substitute for the standard.",
+            "Waarden omgerekend van µm naar mm. Diameters: boven de ondergrens tot en met de bovengrens. JS7 is ±IT7/2 volgens ISO 286-2, zonder afronding naar hele µm. d9, f7, g6, h6 en h7 zijn berekend uit de ISO 286-1-formules boven 50 mm. * c11, k6, n6, p6 en s6 hebben geen formule en blijven t/m 50 mm. Naslag, geen vervanging van de norm.",
+            "Values converted from µm to mm. Diameters: over the lower bound up to and including the upper bound. JS7 is ±IT7/2 per ISO 286-2, without rounding to whole µm. d9, f7, g6, h6 and h7 are computed from the ISO 286-1 formulas above 50 mm. * c11, k6, n6, p6 and s6 have no formula and stay capped at 50 mm. Reference only, not a substitute for the standard.",
           )}
         </p>
       </section>

@@ -23,8 +23,8 @@ export const TOOLS = [
     kind: "rekenhulp",
     group: "maat",
     related: ["lager", "iso2768"],
-    blurb: "Voorkeurpassingen tot Ø 50 mm. JS7 = ±IT7/2, niet afgerond.",
-    blurbEn: "Preferred fits to Ø 50 mm. JS7 = ±IT7/2, not rounded.",
+    blurb: "Voorkeurpassingen; H/JS/G/F/D tot Ø 3150 mm. JS7 = ±IT7/2, niet afgerond.",
+    blurbEn: "Preferred fits; H/JS/G/F/D to Ø 3150 mm. JS7 = ±IT7/2, not rounded.",
     tags: ["h7", "g6", "h6", "js7", "speling", "overmaat", "boring", "fits", "clearance", "interference"],
   },
   {

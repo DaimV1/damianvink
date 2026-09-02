@@ -57,7 +57,7 @@ const pages = {
       title: "Passingen (ISO 286).",
       accent: "(ISO 286).",
       crumb: "Passingen",
-      lede: "ISO 286, eenheidsgatstelsel. Diameters: boven 3 mm tot en met 50 mm.",
+      lede: "ISO 286, eenheidsgatstelsel. Diameters: boven 3 mm tot en met 3150 mm. H, JS, G, F en D volgen de volledige reeks; c, k, n, p en s tot en met 50 mm.",
       faq: [
         { q: "Wat is het eenheidsgatstelsel in ISO 286?", a: "Het gat krijgt een H-afwijking (ondermaat 0). De as (c, d, f, g, h, k, n, p, s) bepaalt of de passing los, overgang of vast is." },
         { q: "Wat betekent H7/g6?", a: "Losse passing: gat H7, as g6. Altijd speling. Typisch voor glijdende of nauwkeurig verschuifbare delen." },
@@ -70,7 +70,7 @@ const pages = {
       title: "Fits (ISO 286).",
       accent: "(ISO 286).",
       crumb: "Fits",
-      lede: "ISO 286, hole-basis system. Diameters: above 3 mm through 50 mm.",
+      lede: "ISO 286, hole-basis system. Diameters: above 3 mm through 3150 mm. H, JS, G, F and D follow the full series; c, k, n, p and s up to 50 mm.",
       faq: [
         { q: "What is the hole-basis system in ISO 286?", a: "The hole gets an H deviation (lower deviation 0). The shaft (c, d, f, g, h, k, n, p, s) decides whether the fit is clearance, transition or interference." },
         { q: "What does H7/g6 mean?", a: "Clearance fit: hole H7, shaft g6. Always clearance. Typical for sliding or accurately movable parts." },

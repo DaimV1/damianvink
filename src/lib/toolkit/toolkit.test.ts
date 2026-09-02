@@ -3,7 +3,7 @@ import { describe, it } from "node:test";
 import { computeBearing, pickBearing } from "./bearing.ts";
 import { lookupFastener } from "./fastener.ts";
 import { FRICTION, scaleMa } from "./friction.ts";
-import { HOLE, bandIndex, computeFit } from "./iso286.ts";
+import { HOLE, bandIndex, computeFit, fitExtendable } from "./iso286.ts";
 import { designation, lookupIso2768 } from "./iso2768.ts";
 import { keyWidthTol, lookupKeyway } from "./keyway.ts";
 import {
@@ -45,10 +45,49 @@ describe("ISO 286 passingen", () => {
     assert.ok(large.maxC < 0);
   });
 
-  it("returns null outside 3–50 mm", () => {
+  it("returns null at/below 3 mm (below the table's first band)", () => {
     assert.equal(computeFit(3, "H7/h6"), null);
-    assert.equal(computeFit(51, "H7/h6"), null);
-    assert.equal(computeFit(60, "H7/h6"), null);
+  });
+
+  it("H7/h6 (formula-extendable) works past 50 mm, band 50-80", () => {
+    const r = computeFit(60, "H7/h6");
+    assert.ok(r);
+    assert.equal(r.ES, 30);
+    assert.equal(r.EI, 0);
+    assert.equal(r.es, 0);
+    assert.equal(r.ei, -19);
+    assert.equal(r.minC, 0);
+    assert.equal(r.maxC, 49);
+    // same ISO band (50-80) at both ends, so identical result
+    assert.deepEqual(computeFit(51, "H7/h6"), r);
+  });
+
+  it("H7/h6 formula still resolves deep into the norm (e.g. Ø1000)", () => {
+    const r = computeFit(1000, "H7/h6");
+    assert.ok(r);
+    assert.ok(r.ES > 0);
+    assert.equal(r.EI, 0);
+    assert.equal(r.es, 0);
+    assert.ok(r.ei < 0);
+    assert.equal(r.minC, 0);
+    assert.ok(r.maxC > 0);
+  });
+
+  it("H7/k6 (no formula for k) stays capped at 50 mm", () => {
+    assert.ok(computeFit(40, "H7/k6"));
+    assert.equal(computeFit(60, "H7/k6"), null);
+  });
+
+  it("fitExtendable matches which fits have a formula on both sides", () => {
+    assert.equal(fitExtendable("H7/h6"), true);
+    assert.equal(fitExtendable("H7/g6"), true);
+    assert.equal(fitExtendable("H8/f7"), true);
+    assert.equal(fitExtendable("H9/d9"), true);
+    assert.equal(fitExtendable("H11/c11"), false);
+    assert.equal(fitExtendable("H7/k6"), false);
+    assert.equal(fitExtendable("H7/n6"), false);
+    assert.equal(fitExtendable("H7/p6"), false);
+    assert.equal(fitExtendable("H7/s6"), false);
   });
 });
 

@@ -1,13 +1,47 @@
 import { mmFromUm } from "@/lib/utils";
 
-export const BANDS = [
+type Band = {
+  over: number;
+  to: number;
+  label: string;
+  labelEn: string;
+  /** Only set when the ISO calculation band differs from the displayed sub-range (30-40 and 40-50 both use the combined 30-50 band). */
+  calcOver?: number;
+  calcTo?: number;
+};
+
+/**
+ * 3 through 50 mm: the original, hand-verified table (unchanged). 50 mm and up:
+ * the standard ISO 286 size steps, formula-computed on demand — see
+ * computeHoleDeviation/computeShaftDeviation. 30-40 and 40-50 are a display
+ * split of ISO's single combined 30-50 band (see calcOver/calcTo below).
+ */
+export const BANDS: Band[] = [
   { over: 3, to: 6, label: "boven 3 t/m 6", labelEn: "over 3 to 6" },
   { over: 6, to: 10, label: "boven 6 t/m 10", labelEn: "over 6 to 10" },
   { over: 10, to: 18, label: "boven 10 t/m 18", labelEn: "over 10 to 18" },
   { over: 18, to: 30, label: "boven 18 t/m 30", labelEn: "over 18 to 30" },
-  { over: 30, to: 40, label: "boven 30 t/m 40", labelEn: "over 30 to 40" },
-  { over: 40, to: 50, label: "boven 40 t/m 50", labelEn: "over 40 to 50" },
-] as const;
+  { over: 30, to: 40, label: "boven 30 t/m 40", labelEn: "over 30 to 40", calcOver: 30, calcTo: 50 },
+  { over: 40, to: 50, label: "boven 40 t/m 50", labelEn: "over 40 to 50", calcOver: 30, calcTo: 50 },
+  { over: 50, to: 80, label: "boven 50 t/m 80", labelEn: "over 50 to 80" },
+  { over: 80, to: 120, label: "boven 80 t/m 120", labelEn: "over 80 to 120" },
+  { over: 120, to: 180, label: "boven 120 t/m 180", labelEn: "over 120 to 180" },
+  { over: 180, to: 250, label: "boven 180 t/m 250", labelEn: "over 180 to 250" },
+  { over: 250, to: 315, label: "boven 250 t/m 315", labelEn: "over 250 to 315" },
+  { over: 315, to: 400, label: "boven 315 t/m 400", labelEn: "over 315 to 400" },
+  { over: 400, to: 500, label: "boven 400 t/m 500", labelEn: "over 400 to 500" },
+  { over: 500, to: 630, label: "boven 500 t/m 630", labelEn: "over 500 to 630" },
+  { over: 630, to: 800, label: "boven 630 t/m 800", labelEn: "over 630 to 800" },
+  { over: 800, to: 1000, label: "boven 800 t/m 1000", labelEn: "over 800 to 1000" },
+  { over: 1000, to: 1250, label: "boven 1000 t/m 1250", labelEn: "over 1000 to 1250" },
+  { over: 1250, to: 1600, label: "boven 1250 t/m 1600", labelEn: "over 1250 to 1600" },
+  { over: 1600, to: 2000, label: "boven 1600 t/m 2000", labelEn: "over 1600 to 2000" },
+  { over: 2000, to: 2500, label: "boven 2000 t/m 2500", labelEn: "over 2000 to 2500" },
+  { over: 2500, to: 3150, label: "boven 2500 t/m 3150", labelEn: "over 2500 to 3150" },
+];
+
+/** Index of the last band backed by the original hand-verified table (3-50 mm). Bands after this are formula-only. */
+const LAST_TABLE_BAND = 5;
 
 export const HOLE: Record<string, { ES: number[]; EI: number[] }> = {
   H6: { ES: [8, 9, 11, 13, 16, 16], EI: [0, 0, 0, 0, 0, 0] },
@@ -40,6 +74,103 @@ export const SHAFT: Record<string, { es: number[]; ei: number[] }> = {
   p6: { es: [20, 24, 29, 35, 42, 42], ei: [12, 15, 18, 22, 26, 26] },
   s6: { es: [27, 32, 39, 48, 59, 59], ei: [19, 23, 28, 35, 43, 43] },
 };
+
+/**
+ * ISO 286-1 formulas, validated against the hand-verified table above before
+ * trusting them for the extended (>50 mm) range: computed values matched the
+ * table to within rounding for H/h, JS/js, G/g, F/f, D/d across every 3-50 mm
+ * band. The "c" formula recalled from memory did NOT match (off by up to
+ * 12 µm, growing with size) and was dropped rather than guessed — c11, and
+ * the other letters with no clean closed-form formula (j, k, m, n, p, s),
+ * stay table-only and capped at 50 mm.
+ */
+const FORMULA_HOLE_LETTERS = new Set(["H", "G", "F", "D"]);
+const FORMULA_SHAFT_LETTERS = new Set(["h", "g", "f", "d"]);
+
+function toleranceUnit(D: number): number {
+  return D <= 500 ? 0.45 * Math.cbrt(D) + 0.001 * D : 0.004 * D + 2.1;
+}
+
+const IT_MULTIPLIER: Record<number, number> = { 5: 7, 6: 10, 7: 16, 8: 25, 9: 40, 10: 64, 11: 100 };
+
+function itWidth(D: number, grade: number): number | null {
+  const mult = IT_MULTIPLIER[grade];
+  return mult == null ? null : mult * toleranceUnit(D);
+}
+
+/** Fundamental deviation magnitude (µm) for a-h letters, before sign/mirroring. */
+function deviationMagnitude(letter: "h" | "g" | "f" | "d", D: number): number {
+  if (letter === "h") return 0;
+  if (letter === "g") return 2.5 * D ** 0.34;
+  if (letter === "f") return 5.5 * D ** 0.41;
+  return 16 * D ** 0.44; // "d"
+}
+
+function geoMeanD(band: Band): number {
+  return Math.sqrt((band.calcOver ?? band.over) * (band.calcTo ?? band.to));
+}
+
+function parseClassId(id: string): { letter: string; grade: number } | null {
+  const m = /^([A-Za-z]{1,2})(\d{1,2})$/.exec(id);
+  if (!m) return null;
+  return { letter: m[1], grade: Number(m[2]) };
+}
+
+function computeHoleDeviation(id: string, band: Band): { ES: number; EI: number } | null {
+  const parsed = parseClassId(id);
+  if (!parsed) return null;
+  const { letter, grade } = parsed;
+  if (letter === "JS") {
+    const D = geoMeanD(band);
+    const IT = itWidth(D, grade);
+    return IT == null ? null : { ES: IT / 2, EI: -IT / 2 };
+  }
+  if (!FORMULA_HOLE_LETTERS.has(letter)) return null;
+  const D = geoMeanD(band);
+  const IT = itWidth(D, grade);
+  if (IT == null) return null;
+  const EI = letter === "H" ? 0 : Math.round(deviationMagnitude(letter.toLowerCase() as "g" | "f" | "d", D));
+  return { ES: EI + Math.round(IT), EI };
+}
+
+function computeShaftDeviation(id: string, band: Band): { es: number; ei: number } | null {
+  const parsed = parseClassId(id);
+  if (!parsed) return null;
+  const { letter, grade } = parsed;
+  if (letter === "js") {
+    const D = geoMeanD(band);
+    const IT = itWidth(D, grade);
+    return IT == null ? null : { es: IT / 2, ei: -IT / 2 };
+  }
+  if (!FORMULA_SHAFT_LETTERS.has(letter)) return null;
+  const D = geoMeanD(band);
+  const IT = itWidth(D, grade);
+  if (IT == null) return null;
+  const es = letter === "h" ? 0 : -Math.round(deviationMagnitude(letter as "g" | "f" | "d", D));
+  return { es, ei: es - Math.round(IT) };
+}
+
+/** Hole limit deviations for `id` (e.g. "H7") at `bandIdx`: table lookup for 3-50 mm, formula beyond. */
+export function holeDeviationAt(id: string, bandIdx: number): { ES: number; EI: number } | null {
+  const band = BANDS[bandIdx];
+  if (!band) return null;
+  if (bandIdx <= LAST_TABLE_BAND) {
+    const row = HOLE[id];
+    return row ? { ES: row.ES[bandIdx], EI: row.EI[bandIdx] } : null;
+  }
+  return computeHoleDeviation(id, band);
+}
+
+/** Shaft limit deviations for `id` (e.g. "g6") at `bandIdx`: table lookup for 3-50 mm, formula beyond. */
+export function shaftDeviationAt(id: string, bandIdx: number): { es: number; ei: number } | null {
+  const band = BANDS[bandIdx];
+  if (!band) return null;
+  if (bandIdx <= LAST_TABLE_BAND) {
+    const row = SHAFT[id];
+    return row ? { es: row.es[bandIdx], ei: row.ei[bandIdx] } : null;
+  }
+  return computeShaftDeviation(id, band);
+}
 
 export type FitKind = "los" | "overgang" | "lijn" | "vast";
 
@@ -118,6 +249,30 @@ export const FITS = [
   },
 ] as const;
 
+/** True once bandIdx is past the hand-verified 3-50 mm table, i.e. formula-only territory. */
+export function isExtendedBand(bandIdx: number): boolean {
+  return bandIdx > LAST_TABLE_BAND;
+}
+
+/** True if this hole class (e.g. "H7", "K7") has a formula and so works beyond 50 mm. */
+export function holeExtendable(id: string): boolean {
+  const parsed = parseClassId(id);
+  if (!parsed) return false;
+  return parsed.letter === "JS" || FORMULA_HOLE_LETTERS.has(parsed.letter);
+}
+
+/** True if this shaft class (e.g. "g6", "k6") has a formula and so works beyond 50 mm. */
+export function shaftExtendable(id: string): boolean {
+  const parsed = parseClassId(id);
+  if (!parsed) return false;
+  return parsed.letter === "js" || FORMULA_SHAFT_LETTERS.has(parsed.letter);
+}
+
+export function fitExtendable(fitId: string): boolean {
+  const fit = FITS.find((f) => f.id === fitId);
+  return !!fit && holeExtendable(fit.hole) && shaftExtendable(fit.shaft);
+}
+
 export function bandIndex(d: number) {
   return BANDS.findIndex((b) => d > b.over && d <= b.to);
 }
@@ -147,12 +302,11 @@ export function computeFit(d: number, fitId: string) {
   const fit = FITS.find((f) => f.id === fitId);
   const i = bandIndex(d);
   if (!fit || i < 0) return null;
-  const hole = HOLE[fit.hole];
-  const shaft = SHAFT[fit.shaft];
-  const ES = hole.ES[i];
-  const EI = hole.EI[i];
-  const es = shaft.es[i];
-  const ei = shaft.ei[i];
+  const holeDev = holeDeviationAt(fit.hole, i);
+  const shaftDev = shaftDeviationAt(fit.shaft, i);
+  if (!holeDev || !shaftDev) return null;
+  const { ES, EI } = holeDev;
+  const { es, ei } = shaftDev;
   const minC = EI - es;
   const maxC = ES - ei;
   return {
