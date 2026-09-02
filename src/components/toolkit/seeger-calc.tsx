@@ -1,9 +1,7 @@
 import { useMemo, useState } from "react";
 import {
-  SEEGER,
   fmtSeeger,
   fmtSeeger3,
-  grooveDepth,
   lookupSeeger,
   seegerFor,
   type SeegerKind,
@@ -170,65 +168,27 @@ export function SeegerCalc() {
         </SchemaPanel>
       </section>
 
-      <section className="mt-10">
-        <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-          {tx(locale, "Seegerringgroef (DIN 471 / 472)", "Circlip groove (DIN 471 / 472)")}
-        </h2>
-        <div className="table-scroll mt-4">
-          <table className="ref-table">
-            <thead>
-              <tr>
-                <th>d₁</th>
-                <th>{tx(locale, "d₂ as", "d₂ shaft")}</th>
-                <th>{tx(locale, "d₂ boring", "d₂ bore")}</th>
-                <th>b</th>
-                <th>{tx(locale, "t as", "t shaft")}</th>
-                <th>{tx(locale, "t boring", "t bore")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {SEEGER.map((k) => {
-                const tAs = k.d2as != null ? grooveDepth(k.d1, k.d2as) : null;
-                const tBor = k.d2bor != null ? grooveDepth(k.d1, k.d2bor) : null;
-                return (
-                  <tr
-                    key={k.d1}
-                    className={row?.d1 === k.d1 ? "is-active" : ""}
-                  >
-                    <th scope="row">{k.d1}</th>
-                    <td>{k.d2as != null ? fmtSeeger(k.d2as) : "—"}</td>
-                    <td>{k.d2bor != null ? fmtSeeger(k.d2bor) : "—"}</td>
-                    <td>{fmtSeeger(k.b)}</td>
-                    <td>{tAs != null ? fmtSeeger(tAs) : "—"}</td>
-                    <td>{tBor != null ? fmtSeeger(tBor) : "—"}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-        <p className="mt-4 text-xs leading-relaxed text-subtle">
-          {tx(locale, "Bron:", "Source:")}{" "}
-          {tx(
-            locale,
-            "werkplaatstabel seegerringgroef (samenvatting van DIN 471 as / DIN 472 boring), o.a.",
-            "shop table for the circlip groove (summary of DIN 471 shaft / DIN 472 bore), incl.",
-          )}{" "}
-          <a
-            href="https://verspanenmuzo.wordpress.com/2015/02/24/seegerring-groef-tabbel/"
-            className="text-accent hover:underline"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            verspanen-metaal
-          </a>
-          {tx(
-            locale,
-            ". b = groefbreedte H13 uit die tabel — niet 1:1 overnemen uit de officiële DIN zonder check. t = |d₁ − d₂| / 2 (nominaal). d₂ as = h11, d₂ boring = H11: t wordt daardoor 0 / +IT11/2 — dieper mag, ondieper niet. Geen n-min. (schouder). Controleer kritieke maten in de actuele DIN.",
-            ". b = groove width H13 from that table — do not copy 1:1 from the official DIN without checking. t = |d₁ − d₂| / 2 (nominal). d₂ shaft = h11, d₂ bore = H11: t therefore becomes 0 / +IT11/2 — deeper is allowed, shallower is not. No n-min. (shoulder). Verify critical dimensions in the current DIN.",
-          )}
-        </p>
-      </section>
+      <p className="mt-8 text-sm leading-relaxed text-muted">
+        {tx(locale, "Bron:", "Source:")}{" "}
+        {tx(
+          locale,
+          "werkplaatstabel seegerringgroef (samenvatting van DIN 471 as / DIN 472 boring), o.a.",
+          "shop table for the circlip groove (summary of DIN 471 shaft / DIN 472 bore), incl.",
+        )}{" "}
+        <a
+          href="https://verspanenmuzo.wordpress.com/2015/02/24/seegerring-groef-tabbel/"
+          className="text-accent hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          verspanen-metaal
+        </a>
+        {tx(
+          locale,
+          ". b = groefbreedte H13 uit die tabel — niet 1:1 overnemen uit de officiële DIN zonder check. t = |d₁ − d₂| / 2 (nominaal). d₂ as = h11, d₂ boring = H11: t wordt daardoor 0 / +IT11/2 — dieper mag, ondieper niet. Geen n-min. (schouder). Controleer kritieke maten in de actuele DIN.",
+          ". b = groove width H13 from that table — do not copy 1:1 from the official DIN without checking. t = |d₁ − d₂| / 2 (nominal). d₂ shaft = h11, d₂ bore = H11: t therefore becomes 0 / +IT11/2 — deeper is allowed, shallower is not. No n-min. (shoulder). Verify critical dimensions in the current DIN.",
+        )}
+      </p>
     </>
   );
 }

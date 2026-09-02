@@ -189,7 +189,7 @@ const pages = {
       title: "Seegerringgroef.",
       accent: "groef.",
       crumb: "Seegerringgroef",
-      lede: "Borgringgroef op de as (DIN 471) of in de boring (DIN 472). Vul de nominale Ø in; de tabel markeert d₂, b en t.",
+      lede: "Borgringgroef op de as (DIN 471) of in de boring (DIN 472). Vul de nominale Ø in voor d₂, b en t.",
       faq: [
         { q: "Wat is het verschil tussen DIN 471 en DIN 472?", a: "DIN 471 is de seegerring voor een as: groef aan de buitenkant, d₂ kleiner dan d₁. DIN 472 is voor een boring: groef aan de binnenkant, d₂ groter dan d₁." },
         { q: "Hoe volgt t uit de tabel?", a: "t is de nominale groefdiepte: |d₁ − d₂| / 2. Bij Ø 20 mm as is d₂ = 19 mm, dus t = 0,5 mm." },
@@ -202,7 +202,7 @@ const pages = {
       title: "Circlip groove.",
       accent: "groove.",
       crumb: "Circlip groove",
-      lede: "Retaining-ring groove on the shaft (DIN 471) or in the bore (DIN 472). Enter nominal Ø; the table highlights d₂, b and t.",
+      lede: "Retaining-ring groove on the shaft (DIN 471) or in the bore (DIN 472). Enter nominal Ø for d₂, b and t.",
       faq: [
         { q: "Difference between DIN 471 and DIN 472?", a: "DIN 471 is the circlip for a shaft: groove on the outside, d₂ smaller than d₁. DIN 472 is for a bore: groove on the inside, d₂ larger than d₁." },
         { q: "How does t follow from the table?", a: "t is nominal groove depth: |d₁ − d₂| / 2. At Ø 20 mm shaft, d₂ = 19 mm, so t = 0.5 mm." },
@@ -243,7 +243,7 @@ const pages = {
       title: "O-ringgroef.",
       accent: "groef.",
       crumb: "O-ringgroef",
-      lede: "ISO-koorden 1,80–7,00 mm: groef t / b, schema radiaal en axiaal. Kies koord en inbouw; de tabel markeert de rij.",
+      lede: "ISO-koorden 1,80–7,00 mm: groef t / b, schema radiaal en axiaal. Kies koord en inbouw voor de groefmaten.",
       faq: [
         { q: "Wat is d₂?", a: "Koorddiameter volgens ISO 3601-1. Vijf groepen: 1,80 / 2,65 / 3,55 / 5,30 / 7,00 mm." },
         { q: "Groef voor 2,65 mm radiaal statisch?", a: "t = 2,0 mm (+0,05), b = 3,6 mm (+0,25). Nominale samendrukking ongeveer 25 % — geen plus-mintolerantie." },
@@ -253,7 +253,7 @@ const pages = {
       title: "O-ring groove.",
       accent: "groove.",
       crumb: "O-ring groove",
-      lede: "ISO cords 1.80–7.00 mm: groove t / b, radial and axial layout. Pick cord and installation; the table highlights the row.",
+      lede: "ISO cords 1.80–7.00 mm: groove t / b, radial and axial layout. Pick cord and installation for the groove dimensions.",
       faq: [
         { q: "What is d₂?", a: "Cord diameter per ISO 3601-1. Five groups: 1.80 / 2.65 / 3.55 / 5.30 / 7.00 mm." },
         { q: "Groove for 2.65 mm radial static?", a: "t = 2.0 mm (+0.05), b = 3.6 mm (+0.25). Nominal squeeze about 25 % — not a plus-minus tolerance." },

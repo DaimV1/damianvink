@@ -137,62 +137,14 @@ export function OringCalc() {
         </SchemaPanel>
       </section>
 
-      <section className="mt-12">
-        <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-          {tx(locale, "Groefmaten", "Groove dimensions")}
-        </h2>
-        <div className="table-scroll mt-4">
-          <table className="ref-table">
-            <thead>
-              <tr>
-                <th>d₂ (mm)</th>
-                <th>{tx(locale, "Groep", "Group")}</th>
-                <th>{tx(locale, "Radiaal statisch t / b", "Radial static t / b")}</th>
-                <th>{tx(locale, "Axiaal statisch t / b", "Axial static t / b")}</th>
-                <th>{tx(locale, "Hydrauliek t / b", "Hydraulic t / b")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {(
-                [
-                  [1.8, "A"],
-                  [2.65, "B"],
-                  [3.55, "C"],
-                  [5.3, "D"],
-                  [7, "E"],
-                ] as const
-              ).map(([dia, group]) => {
-                const r = GROOVE.radial[dia];
-                const a = GROOVE.axial[dia];
-                const h = GROOVE.hydro[dia];
-                return (
-                  <tr key={dia} className={dia === d2n ? "is-active" : ""}>
-                    <th scope="row">{fmtMm(dia, 2)}</th>
-                    <td>{group}</td>
-                    <td>
-                      {fmtMm(r.t)} / {fmtMm(r.b)}
-                    </td>
-                    <td>
-                      {fmtMm(a.t)} / {fmtMm(a.b)}
-                    </td>
-                    <td>
-                      {fmtMm(h.t)} / {fmtMm(h.b)}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-        <p className="mt-4 text-xs leading-relaxed text-subtle">
-          {tx(locale, "Bron:", "Source:")}{" "}
-          {tx(
-            locale,
-            "Dichtomatik O-ring brochure, static radial / axial / dynamic hydraulics. Trapezium, driehoek en vacuüm weggelaten.",
-            "Dichtomatik O-ring brochure, static radial / axial / dynamic hydraulics. Trapezoidal, triangular and vacuum grooves omitted.",
-          )}
-        </p>
-      </section>
+      <p className="mt-8 text-sm leading-relaxed text-muted">
+        {tx(locale, "Bron:", "Source:")}{" "}
+        {tx(
+          locale,
+          "Dichtomatik O-ring brochure, static radial / axial / dynamic hydraulics. Trapezium, driehoek en vacuüm weggelaten.",
+          "Dichtomatik O-ring brochure, static radial / axial / dynamic hydraulics. Trapezoidal, triangular and vacuum grooves omitted.",
+        )}
+      </p>
     </>
   );
 }

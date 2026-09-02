@@ -190,173 +190,22 @@ export function LagerCalc() {
         </SchemaPanel>
       </section>
 
-      <section className="mt-12">
-        <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-          {tx(locale, "As — groefkogellager", "Shaft — deep-groove bearing")}
-        </h2>
-        <Note>
-          {tx(
-            locale,
-            "SKF, massieve stalen as, cilindrische boring. Alleen rijen tot 50 mm. P is de equivalente lagerbelasting, C het dynamische draaggetal.",
-            "SKF, solid steel shaft, cylindrical bore. Rows up to 50 mm only. P is the equivalent bearing load, C the dynamic load rating.",
-          )}
-        </Note>
-        <div className="table-scroll mt-4">
-          <table className="ref-table">
-            <thead>
-              <tr>
-                <th>{tx(locale, "Last", "Load")}</th>
-                <th>{tx(locale, "As-Ø (mm)", "Shaft Ø (mm)")}</th>
-                <th>{tx(locale, "Klasse", "Class")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row" rowSpan={2}>
-                  {tx(locale, "Licht, P ≤ 0,05 C", "Light, P ≤ 0.05 C")}
-                </th>
-                <td>≤ 17</td>
-                <td>js5</td>
-              </tr>
-              <tr>
-                <td>{tx(locale, "(17) t/m 50", "(17) through 50")}</td>
-                <td>j6</td>
-              </tr>
-              <tr>
-                <th scope="row" rowSpan={3}>
-                  {tx(locale, "Normaal tot hoog, P > 0,05 C", "Normal to high, P > 0.05 C")}
-                </th>
-                <td>≤ 10</td>
-                <td>js5</td>
-              </tr>
-              <tr>
-                <td>{tx(locale, "(10) t/m 17", "(10) through 17")}</td>
-                <td>j5</td>
-              </tr>
-              <tr>
-                <td>{tx(locale, "(17) t/m 50", "(17) through 50")}</td>
-                <td>k5</td>
-              </tr>
-              <tr>
-                <th scope="row">
-                  {tx(
-                    locale,
-                    "Binnenring stil, verschuiven gewenst",
-                    "Inner ring stationary, shift desired",
-                  )}
-                </th>
-                <td>{tx(locale, "alle Ø", "all Ø")}</td>
-                <td>g6</td>
-              </tr>
-              <tr>
-                <th scope="row">
-                  {tx(
-                    locale,
-                    "Binnenring stil, verschuiven niet nodig",
-                    "Inner ring stationary, shift not needed",
-                  )}
-                </th>
-                <td>{tx(locale, "alle Ø", "all Ø")}</td>
-                <td>h6</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <p className="mt-4 text-xs leading-relaxed text-subtle">
-          {tx(locale, "Bron:", "Source:")}{" "}
-          <a
-            href="https://www.skf.com/us/products/rolling-bearings/principles-of-rolling-bearing-selection/bearing-selection-process/bearing-interfaces/seat-tolerances-for-standard-conditions"
-            className="text-accent hover:underline"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            SKF — seat tolerances for standard conditions
-          </a>
-        </p>
-      </section>
-
-      <section className="mt-10">
-        <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
-          {tx(locale, "Huis — gietijzer / staal", "Housing — cast iron / steel")}
-        </h2>
-        <div className="table-scroll mt-4">
-          <table className="ref-table">
-            <thead>
-              <tr>
-                <th>{tx(locale, "Situatie", "Situation")}</th>
-                <th>{tx(locale, "Klasse", "Class")}</th>
-                <th>{tx(locale, "Buitenring", "Outer ring")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">
-                  {tx(locale, "Stilstaande buitenring, algemeen", "Stationary outer ring, general")}
-                </th>
-                <td>H7</td>
-                <td>{tx(locale, "verschuifbaar", "slidable")}</td>
-              </tr>
-              <tr>
-                <th scope="row">
-                  {tx(locale, "Licht tot normaal, schuiven gewenst", "Light to normal, sliding desired")}
-                </th>
-                <td>J7</td>
-                <td>{tx(locale, "meestal verschuifbaar", "usually slidable")}</td>
-              </tr>
-              <tr>
-                <th scope="row">
-                  {tx(
-                    locale,
-                    "Normaal tot hoog, schuiven niet nodig",
-                    "Normal to high, sliding not needed",
-                  )}
-                </th>
-                <td>K7</td>
-                <td>{tx(locale, "meestal vast", "usually fixed")}</td>
-              </tr>
-              <tr>
-                <th scope="row">
-                  {tx(locale, "Buitenring draait, licht (P ≤ 0,05 C)", "Outer ring rotates, light (P ≤ 0.05 C)")}
-                </th>
-                <td>M7</td>
-                <td>{tx(locale, "vast", "fixed")}</td>
-              </tr>
-              <tr>
-                <th scope="row">
-                  {tx(
-                    locale,
-                    "Buitenring draait, normaal tot hoog",
-                    "Outer ring rotates, normal to high",
-                  )}
-                </th>
-                <td>N7</td>
-                <td>{tx(locale, "vast", "fixed")}</td>
-              </tr>
-              <tr>
-                <th scope="row">{tx(locale, "Gedeeld huis", "Split housing")}</th>
-                <td>{tx(locale, "G of H, max. K", "G or H, max. K")}</td>
-                <td>—</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <p className="mt-4 text-xs leading-relaxed text-subtle">
-          {tx(locale, "Bron:", "Source:")}{" "}
-          <a
-            href="https://www.skf.com/us/products/rolling-bearings/principles-of-rolling-bearing-selection/bearing-selection-process/bearing-interfaces/seat-tolerances-for-standard-conditions"
-            className="text-accent hover:underline"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            SKF — seat tolerances for standard conditions
-          </a>
-          {tx(
-            locale,
-            ". js5 alleen tot en met 17 mm; Ø 20 mm licht is j6. Naslag, geen vervanging van de catalogus.",
-            ". js5 only up to and including 17 mm; Ø 20 mm light is j6. Reference only, not a substitute for the catalog.",
-          )}
-        </p>
-      </section>
+      <p className="mt-8 text-sm leading-relaxed text-muted">
+        {tx(locale, "Bron:", "Source:")}{" "}
+        <a
+          href="https://www.skf.com/us/products/rolling-bearings/principles-of-rolling-bearing-selection/bearing-selection-process/bearing-interfaces/seat-tolerances-for-standard-conditions"
+          className="text-accent hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          SKF — seat tolerances for standard conditions
+        </a>
+        {tx(
+          locale,
+          ". js5 alleen tot en met 17 mm; Ø 20 mm licht is j6. Naslag, geen vervanging van de catalogus.",
+          ". js5 only up to and including 17 mm; Ø 20 mm light is j6. Reference only, not a substitute for the catalog.",
+        )}
+      </p>
     </>
   );
 }
