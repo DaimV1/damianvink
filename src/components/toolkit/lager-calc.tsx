@@ -144,6 +144,13 @@ export function LagerCalc() {
             <p className="mt-4 text-sm leading-relaxed text-muted">
               {tx(locale, result.note, result.noteEn)}
             </p>
+            <Note>
+              {tx(
+                locale,
+                "\"Normale tot hoge last\" dekt hier P > 0,05 C in één klasse. Bij zware of stotende last (SKF-vuistregel: P > ca. 0,1–0,15 C) vraagt SKF vaak een strakkere as-passing (m5/m6) dan hier getoond — check de actuele SKF-tabel. Ook niet in deze tool: de lagerboring zelf is getolereerd volgens ISO 492 (niet ISO 286), en cilindriciteit, opsluitvlak-rondloop en Ra van de as staan hier niet — die bepalen samen met de klasse de werkelijke passing.",
+                "\"Normal to high load\" covers P > 0.05 C as one class here. For heavy or shock loads (SKF rule of thumb: P > roughly 0.1–0.15 C) SKF often calls for a tighter shaft fit (m5/m6) than shown — check the current SKF table. Also not covered: the bearing bore itself is toleranced per ISO 492 (not ISO 286), and shaft cylindricity, shoulder runout and Ra aren't shown — together with the class these set the actual interference.",
+              )}
+            </Note>
             <CopyResult text={copy} />
           </>
         )}
