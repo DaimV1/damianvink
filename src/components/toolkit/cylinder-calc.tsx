@@ -162,6 +162,13 @@ export function CylinderCalc() {
                 },
               ]}
             />
+            <Note>
+              {tx(
+                locale,
+                "Lucht/cyclus is alleen het geveegde volume (zuiger × slag). Dode ruimte in de eindkappen, poortkanalen, leidingwerk en het ventiel tellen niet mee — reken op de compressor-/leidingdimensionering met +10–20% erbovenop.",
+                "Air/cycle is swept volume only (piston × stroke). Dead volume in the end caps, port passages, tubing and the valve are not included — add 10–20% on top when sizing the compressor or piping.",
+              )}
+            </Note>
             <CopyResult text={copy} />
           </>
         ) : loadN != null && p != null && sFac != null && p > 0 && loadN > 0 ? (
