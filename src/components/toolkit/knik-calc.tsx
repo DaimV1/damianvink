@@ -7,8 +7,9 @@ import {
   fmtDotComma,
   fmtN,
   kFor,
-  LAMBDA_WARN,
+  lambdaLimit,
   MATERIALS_E,
+  rp02For,
   SECTION_KINDS,
   sectionProps,
   type EndConditionId,
@@ -87,7 +88,8 @@ export function KnikCalc() {
     [result, endLabel, locale],
   );
 
-  const lowLambda = result != null && result.lambda < LAMBDA_WARN;
+  const lambdaWarn = lambdaLimit(E, rp02For(materialId));
+  const lowLambda = result != null && result.lambda < lambdaWarn;
   const unsafe = result?.safety != null && result.safety < 1;
 
   return (
@@ -238,8 +240,8 @@ export function KnikCalc() {
                 <Note>
                   {tx(
                     locale,
-                    `λ = ${fmtDotComma(result.lambda, 1)} — laag (< ${LAMBDA_WARN}). Euler geldt voor slanke staven; bij lage slankheid overschat Euler de sterkte. Controleer met Tetmajer of de Johnson-parabool.`,
-                    `λ = ${fmtDotComma(result.lambda, 1)} — low (< ${LAMBDA_WARN}). Euler applies to slender struts; at low slenderness Euler overestimates strength. Check with Tetmajer or the Johnson parabola.`,
+                    `λ = ${fmtDotComma(result.lambda, 1)} — laag (< ${fmtDotComma(lambdaWarn, 0)} voor ${tx(locale, material.label, material.labelEn)}, richtwaarde λ_grens = π√(E/Rp0,2)). Euler geldt voor slanke staven; bij lage slankheid overschat Euler de sterkte. Controleer met Tetmajer of de Johnson-parabool.`,
+                    `λ = ${fmtDotComma(result.lambda, 1)} — low (< ${fmtDotComma(lambdaWarn, 0)} for ${tx(locale, material.label, material.labelEn)}, indicative λ_limit = π√(E/Rp0.2)). Euler applies to slender struts; at low slenderness Euler overestimates strength. Check with Tetmajer or the Johnson parabola.`,
                   )}
                 </Note>
               ) : null}
@@ -287,12 +289,20 @@ export function KnikCalc() {
         <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
           {tx(locale, "Knikgevallen (Euler)", "Buckling cases (Euler)")}
         </h2>
+        <Note>
+          {tx(
+            locale,
+            "k is de theoretische waarde; k (ontwerp) is de gangbare, conservatievere ontwerpwaarde (AISC/Shigley) — volledig starre inklemming bestaat niet in de praktijk.",
+            "k is the theoretical value; k (design) is the customary, more conservative design value (AISC/Shigley) — perfectly rigid fixity does not exist in practice.",
+          )}
+        </Note>
         <div className="table-scroll mt-4">
           <table className="ref-table">
             <thead>
               <tr>
                 <th>{tx(locale, "Inklemming", "End condition")}</th>
                 <th>k</th>
+                <th>{tx(locale, "k (ontwerp)", "k (design)")}</th>
                 <th>L_eff</th>
               </tr>
             </thead>
@@ -301,6 +311,7 @@ export function KnikCalc() {
                 <tr key={c.id} className={c.id === endCondition ? "is-active" : ""}>
                   <th scope="row">{tx(locale, c.label, c.labelEn)}</th>
                   <td>{fmtDotComma(c.k, 3).replace(/,?0+$/, "")}</td>
+                  <td>{fmtDotComma(c.kDesign, 2).replace(/,?0+$/, "")}</td>
                   <td>k · L</td>
                 </tr>
               ))}

@@ -2,17 +2,22 @@
 
 export type EndConditionId = "hh" | "fc" | "ff" | "fp";
 
-/** Vier klassieke Euler-gevallen. k is de knikfactor: L_eff = k · L. */
+/**
+ * Vier klassieke Euler-gevallen. k is de knikfactor: L_eff = k · L.
+ * kDesign is de gangbare ontwerpwaarde (AISC/Shigley) die rekening houdt met
+ * onvolmaakte inklemming — ideale volledige inklemming bestaat niet in de praktijk.
+ */
 export const END_CONDITIONS: {
   id: EndConditionId;
   k: number;
+  kDesign: number;
   label: string;
   labelEn: string;
 }[] = [
-  { id: "hh", k: 1, label: "Scharnier – scharnier", labelEn: "Pinned – pinned" },
-  { id: "fc", k: 2, label: "Ingeklemd – vrij", labelEn: "Fixed – free" },
-  { id: "ff", k: 0.5, label: "Ingeklemd – ingeklemd", labelEn: "Fixed – fixed" },
-  { id: "fp", k: 0.699, label: "Ingeklemd – scharnier", labelEn: "Fixed – pinned" },
+  { id: "hh", k: 1, kDesign: 1, label: "Scharnier – scharnier", labelEn: "Pinned – pinned" },
+  { id: "fc", k: 2, kDesign: 2.1, label: "Ingeklemd – vrij", labelEn: "Fixed – free" },
+  { id: "ff", k: 0.5, kDesign: 0.65, label: "Ingeklemd – ingeklemd", labelEn: "Fixed – fixed" },
+  { id: "fp", k: 0.699, kDesign: 0.8, label: "Ingeklemd – scharnier", labelEn: "Fixed – pinned" },
 ];
 
 export function kFor(id: EndConditionId): number {
@@ -162,8 +167,15 @@ export function computeBuckling({
   return { I, A, Leff, i, lambda, Fcr, sigmaCr, safety };
 }
 
-/** Vuistregel: onder deze slankheid overschat Euler de sterkte (gedrongen staaf). */
-export const LAMBDA_WARN = 100;
+/**
+ * Grensslankheid λ_grens = π·√(E / Rp0,2) — de slankheid waaronder Euler de
+ * sterkte overschat, per materiaal. Voor staal ≈ 94 (dicht bij de vuistregel
+ * 100); voor aluminium ≈ 54 — bijna de helft, dus een vaste grens van 100
+ * waarschuwt bij aluminium veel te laat.
+ */
+export function lambdaLimit(E: number, rp02: number): number {
+  return Math.PI * Math.sqrt(E / rp02);
+}
 
 export function fmtN(n: number) {
   if (Math.abs(n) >= 1000) {
