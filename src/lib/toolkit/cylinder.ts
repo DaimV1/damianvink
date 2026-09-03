@@ -1,8 +1,9 @@
 /**
  * Theoretical pneumatic cylinder force. F = p·A, gauge pressure.
  * ISO 15552 / ISO 6432 basic piston-rod diameters (not oversized rods).
- * No buckling, no friction, no Festo/SMC type code.
+ * No friction, no Festo/SMC type code.
  */
+import { computeBuckling } from "./knik";
 
 /** 1 bar (gauge) = 0,1 N/mm². */
 export const BAR_N_PER_MM2 = 0.1;
@@ -107,6 +108,31 @@ export function cycleLiters(row: CylinderRow, pBar: number, strokeMm: number) {
   if (!(strokeMm > 0) || !(pBar >= 0)) return null;
   const { A, Aann } = forcesAt(row, pBar);
   return ((A + Aann) * strokeMm * (pBar + 1)) / 1e6;
+}
+
+/**
+ * Fixed–free (kDesign 2,1, per knik.ts) — the conservative default when the
+ * actual mounting (clevis, trunnion, foot) isn't known. Exposed rod length
+ * ≈ stroke; any guide/bearing length inside the head isn't subtracted. Rod
+ * assumed hardened/ground steel (E ≈ 210 000 N/mm²) regardless of body
+ * material. Indicative worst case, push (F_uit) direction only — for a known
+ * mounting and length, use the general Euler-knik tool.
+ */
+export const ROD_BUCKLING_K_DESIGN = 2.1;
+export const ROD_STEEL_E = 210000;
+
+export function rodBucklingCheck(rodMm: number, strokeMm: number, pushForceN: number) {
+  if (!(rodMm > 0) || !(strokeMm > 0)) return null;
+  const I = (Math.PI * rodMm ** 4) / 64;
+  const A = (Math.PI * rodMm ** 2) / 4;
+  return computeBuckling({
+    L: strokeMm,
+    k: ROD_BUCKLING_K_DESIGN,
+    E: ROD_STEEL_E,
+    I,
+    A,
+    F: pushForceN,
+  });
 }
 
 export function seriesLabel(series: SeriesId) {

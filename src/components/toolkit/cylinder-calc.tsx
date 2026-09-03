@@ -6,10 +6,12 @@ import {
   cycleLiters,
   forcesAt,
   minPistonMm,
+  rodBucklingCheck,
   seriesLabel,
   sizeCylinder,
   type StrokeDir,
 } from "@/lib/toolkit/cylinder";
+import { fmtDotComma, fmtN } from "@/lib/toolkit/knik";
 import { tx, useLocale } from "@/lib/i18n/locale";
 import { fmtNl } from "@/lib/utils";
 import {
@@ -111,6 +113,11 @@ export function CylinderCalc() {
   const liters =
     pick && p != null && strokeMm != null ? cycleLiters(pick, p, strokeMm) : null;
   const rows = p != null && p > 0 ? CATALOG : [];
+  const buckling =
+    dir === "uit" && pick && forces && strokeMm != null
+      ? rodBucklingCheck(pick.rod, strokeMm, forces.F_uit)
+      : null;
+  const bucklingUnsafe = buckling?.safety != null && buckling.safety < 1;
 
   const copy = useMemo(() => {
     if (!pick || !forces || loadN == null || p == null || sFac == null) return "";
@@ -188,6 +195,38 @@ export function CylinderCalc() {
                 "Air/cycle is swept volume only (piston × stroke). Dead volume in the end caps, port passages, tubing and the valve are not included — add 10–20% on top when sizing the compressor or piping.",
               )}
             </Note>
+            {buckling ? (
+              <>
+                <p className="mt-5 text-sm text-muted">
+                  {tx(
+                    locale,
+                    `Stangknik (indicatief): F_cr ${fmtN(buckling.Fcr)} N bij stang Ø${pick.rod} mm, slag ${fmtNl(strokeMm ?? 0, 0)} mm als knik-lengte.`,
+                    `Rod buckling (indicative): F_cr ${fmtN(buckling.Fcr)} N at rod Ø${pick.rod} mm, stroke ${fmtNl(strokeMm ?? 0, 0)} mm as buckling length.`,
+                  )}
+                </p>
+                <ResultGrid
+                  items={[
+                    { label: "F_cr", value: `${fmtN(buckling.Fcr)} N` },
+                    buckling.safety != null
+                      ? { label: "S = F_cr / F_uit", value: fmtDotComma(buckling.safety, 2) }
+                      : null,
+                  ].filter(Boolean) as { label: string; value: string }[]}
+                />
+                <Note>
+                  {bucklingUnsafe
+                    ? tx(
+                        locale,
+                        "F_uit ≥ F_cr — de stang knikt volgens Euler bij deze slag en druk. Kortere slag, dikkere stang of andere bevestiging nodig.",
+                        "F_uit ≥ F_cr — the rod buckles per Euler at this stroke and pressure. Needs a shorter stroke, thicker rod or a different mounting.",
+                      )
+                    : tx(
+                        locale,
+                        "Aanname: stang massief staal, ingeklemd–vrij (k=2,1, onbekende bevestiging), knik-lengte = slag zonder geleidingsreserve. Alleen voor uitgaan (drukstang). Zie de Euler-knik rekenhulp voor een echte bevestiging en materiaal.",
+                        "Assumption: solid steel rod, fixed–free (k=2.1, unknown mounting), buckling length = stroke with no guide-length allowance. Extend (push) direction only. See the Euler buckling tool for an actual mounting and material.",
+                      )}
+                </Note>
+              </>
+            ) : null}
             <div className="flex flex-wrap gap-2">
               <CopyResult text={copy} />
               <CopyLink />

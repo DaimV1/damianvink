@@ -8,7 +8,7 @@ import { useLocale } from "@/lib/i18n/locale";
 import { pageHead, softwareJsonLd } from "@/lib/seo";
 
 const DESCRIPTION =
-  "Pneumatische cilinder: F = p·A, dubbelwerkend. ISO 15552 en ISO 6432, manometerdruk, lastfactor. Theoretisch, geen knik, geen Festo-type.";
+  "Pneumatische cilinder: F = p·A, dubbelwerkend. ISO 15552 en ISO 6432, manometerdruk, lastfactor, indicatieve stangknik. Theoretisch, geen Festo-type.";
 
 const NUM_RE = /^\d{1,6}([.,]\d{1,2})?$/;
 
@@ -58,6 +58,7 @@ function CilinderPage() {
             "F_in",
             "lastfactor",
             "normaal liters",
+            "stangknik",
           ],
         })}
       />
