@@ -1,15 +1,35 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { tx, useLocale } from "@/lib/i18n/locale";
 import { TOOL_GROUPS, TOOLS, type ToolId, toolShort } from "@/lib/toolkit/tools";
 import { cn } from "@/lib/utils";
 
 export function ToolSwitcher({ active }: { active?: ToolId }) {
   const { locale } = useLocale();
+  const navigate = useNavigate();
   return (
     <div className="border-b border-line bg-paper">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+      <div className="mx-auto max-w-6xl px-4 py-2.5 sm:px-6 sm:py-0">
+        <select
+          aria-label={tx(locale, "Kies een tool", "Choose a tool")}
+          value={TOOLS.find((tool) => tool.id === active)?.href ?? ""}
+          onChange={(e) => {
+            if (e.target.value) navigate({ to: e.target.value });
+          }}
+          className="h-11 w-full rounded-md border border-line-strong bg-elevated px-3 text-sm text-ink outline-none transition-[border-color,box-shadow] duration-150 focus:border-accent focus:ring-2 focus:ring-accent/30 sm:hidden"
+        >
+          {!active ? <option value="" /> : null}
+          {TOOL_GROUPS.map((group) => (
+            <optgroup key={group.id} label={tx(locale, group.label, group.labelEn)}>
+              {TOOLS.filter((tool) => tool.group === group.id).map((tool) => (
+                <option key={tool.id} value={tool.href}>
+                  {tx(locale, tool.title, tool.titleEn)}
+                </option>
+              ))}
+            </optgroup>
+          ))}
+        </select>
         <nav
-          className="-mx-1 flex items-center gap-1 overflow-x-auto py-2.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="-mx-1 hidden items-center gap-1 overflow-x-auto py-2.5 [scrollbar-width:none] sm:flex [&::-webkit-scrollbar]:hidden"
           aria-label="Engineering tools"
         >
           {TOOL_GROUPS.map((group, groupIndex) => (
