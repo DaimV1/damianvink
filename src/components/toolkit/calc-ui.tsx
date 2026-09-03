@@ -1,4 +1,4 @@
-import { Check, Copy, Info } from "lucide-react";
+import { Check, Copy, Info, Link2 } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { JsonLd } from "@/components/json-ld";
@@ -177,6 +177,35 @@ export function CopyResult({ text }: { text: string }) {
       {done ? <CopyLabel done /> : <CopyLabel done={false} />}
     </Button>
   );
+}
+
+/** Copies the current page URL (with its query-string state) so a result can be pasted into a mail or a ticket. */
+export function CopyLink() {
+  const [done, setDone] = useState(false);
+  return (
+    <Button
+      type="button"
+      variant="secondary"
+      className="mt-5"
+      onClick={async () => {
+        try {
+          await navigator.clipboard.writeText(window.location.href);
+          setDone(true);
+          window.setTimeout(() => setDone(false), 1600);
+        } catch {
+          /* ignore */
+        }
+      }}
+    >
+      {done ? <Check className="size-4" /> : <Link2 className="size-4" />}
+      <LinkLabel done={done} />
+    </Button>
+  );
+}
+
+function LinkLabel({ done }: { done: boolean }) {
+  const { locale } = useLocale();
+  return <>{done ? tx(locale, "Gekopieerd", "Copied") : tx(locale, "Kopieer link", "Copy link")}</>;
 }
 
 function CopyLabel({ done }: { done: boolean }) {

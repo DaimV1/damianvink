@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate, useSearch } from "@tanstack/react-router";
 import {
   BANDS,
   FITS,
@@ -21,6 +22,7 @@ import { tx, useLocale } from "@/lib/i18n/locale";
 import {
   CalcEyebrow,
   CalcPanel,
+  CopyLink,
   CopyResult,
   Field,
   KindDot,
@@ -33,10 +35,22 @@ import {
 
 export function PassingenCalc() {
   const { locale } = useLocale();
+  const search = useSearch({ from: "/toolkit/passingen" });
+  const navigate = useNavigate({ from: "/toolkit/passingen" });
   const [diameter, setDiameter] = useState(() =>
-    readStoredDiameter({ min: 4, max: 3150 }),
+    search.d ?? readStoredDiameter({ min: 4, max: 3150 }),
   );
-  const [fitId, setFitId] = useState("H7/h6");
+  const [fitId, setFitId] = useState(() =>
+    search.fit && FITS.some((f) => f.id === search.fit) ? search.fit : "H7/h6",
+  );
+
+  useEffect(() => {
+    navigate({
+      search: (prev) => ({ ...prev, d: diameter || undefined, fit: fitId }),
+      replace: true,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [diameter, fitId]);
 
   function onDia(v: string) {
     setDiameter(v);
@@ -158,7 +172,10 @@ export function PassingenCalc() {
                 )}
               </Note>
             ) : null}
-            <CopyResult text={copy} />
+            <div className="flex flex-wrap gap-2">
+              <CopyResult text={copy} />
+              <CopyLink />
+            </div>
           </>
         )}
       </CalcPanel>

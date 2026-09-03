@@ -11,6 +11,10 @@ const DESCRIPTION =
   "ISO 286 voorkeurpassingen tot Ø3150 mm. H7/g6, H7/h6, JS7. Rekenhulp voor speling en overmaat plus naslagtabel, eenheidsgatstelsel.";
 
 export const Route = createFileRoute("/toolkit/passingen")({
+  validateSearch: (s: Record<string, unknown>): { d?: string; fit?: string } => ({
+    d: typeof s.d === "string" && /^\d{1,4}$/.test(s.d) ? s.d : undefined,
+    fit: typeof s.fit === "string" && s.fit.trim() ? s.fit : undefined,
+  }),
   head: () =>
     pageHead({
       title: "Passingen ISO 286 (H7/g6, JS7) — Damian Vink",
