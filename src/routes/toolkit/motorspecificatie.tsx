@@ -10,7 +10,40 @@ import { pageHead, softwareJsonLd } from "@/lib/seo";
 const DESCRIPTION =
   "Motorspecificatie voor een aangedreven rol of trommel: n, F, T, P en de volgende IEC 60034 kW-stap.";
 
+const NUM_RE = /^-?\d{0,6}([.,]\d{1,4})?$/;
+
 export const Route = createFileRoute("/toolkit/motorspecificatie")({
+  validateSearch: (
+    s: Record<string, unknown>,
+  ): {
+    speed?: string;
+    unit?: string;
+    d?: string;
+    mass?: string;
+    duty?: string;
+    mu?: string;
+    alpha?: string;
+    eta?: string;
+    fb?: string;
+    a?: string;
+  } => {
+    const num = (v: unknown) => (typeof v === "string" && NUM_RE.test(v) ? v : undefined);
+    return {
+      speed: num(s.speed),
+      unit: s.unit === "m/min" || s.unit === "m/s" ? s.unit : undefined,
+      d: num(s.d),
+      mass: num(s.mass),
+      duty:
+        s.duty === "rollenbaan" || s.duty === "band" || s.duty === "helling" || s.duty === "hijsen"
+          ? s.duty
+          : undefined,
+      mu: num(s.mu),
+      alpha: num(s.alpha),
+      eta: num(s.eta),
+      fb: num(s.fb),
+      a: num(s.a),
+    };
+  },
   head: () =>
     pageHead({
       title: "Motorspecificatie aandrijving — Damian Vink",

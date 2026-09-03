@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate, useSearch } from "@tanstack/react-router";
 import {
   BEAM_END_CONDITIONS,
   bendingStress,
@@ -22,6 +23,7 @@ import { tx, useLocale } from "@/lib/i18n/locale";
 import {
   CalcEyebrow,
   CalcPanel,
+  CopyLink,
   CopyResult,
   Field,
   Note,
@@ -40,18 +42,44 @@ function parseNum(raw: string): number | null {
 
 export function DeflectionCalc() {
   const { locale } = useLocale();
-  const [sectionKind, setSectionKind] = useState<SectionKind>("rond");
-  const [D, setD] = useState("20");
-  const [dIn, setDIn] = useState("14");
-  const [bDim, setBDim] = useState("40");
-  const [hDim, setHDim] = useState("10");
-  const [aDim, setADim] = useState("10");
-  const [tDim, setTDim] = useState("3");
-  const [L, setL] = useState("1000");
-  const [endCondition, setEndCondition] = useState<BeamEndCondition>("ss");
-  const [materialId, setMaterialId] = useState("rvs");
-  const [P, setP] = useState("1000");
-  const [posA, setPosA] = useState("500");
+  const search = useSearch({ from: "/toolkit/doorbuiging-balk" });
+  const navigate = useNavigate({ from: "/toolkit/doorbuiging-balk" });
+  const [sectionKind, setSectionKind] = useState<SectionKind>((search.section as SectionKind) ?? "rond");
+  const [D, setD] = useState(search.D ?? "20");
+  const [dIn, setDIn] = useState(search.dIn ?? "14");
+  const [bDim, setBDim] = useState(search.b ?? "40");
+  const [hDim, setHDim] = useState(search.h ?? "10");
+  const [aDim, setADim] = useState(search.a ?? "10");
+  const [tDim, setTDim] = useState(search.t ?? "3");
+  const [L, setL] = useState(search.L ?? "1000");
+  const [endCondition, setEndCondition] = useState<BeamEndCondition>(
+    (search.end as BeamEndCondition) ?? "ss",
+  );
+  const [materialId, setMaterialId] = useState(search.material ?? "rvs");
+  const [P, setP] = useState(search.P ?? "1000");
+  const [posA, setPosA] = useState(search.posA ?? "500");
+
+  useEffect(() => {
+    navigate({
+      search: (prev) => ({
+        ...prev,
+        section: sectionKind,
+        D: D || undefined,
+        dIn: dIn || undefined,
+        b: bDim || undefined,
+        h: hDim || undefined,
+        a: aDim || undefined,
+        t: tDim || undefined,
+        L: L || undefined,
+        end: endCondition,
+        material: materialId,
+        P: P || undefined,
+        posA: posA || undefined,
+      }),
+      replace: true,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sectionKind, D, dIn, bDim, hDim, aDim, tDim, L, endCondition, materialId, P, posA]);
 
   const dims = useMemo(() => {
     switch (sectionKind) {
@@ -246,7 +274,10 @@ export function DeflectionCalc() {
                   )}
                 </Note>
               ) : null}
-              <CopyResult text={copy} />
+              <div className="flex flex-wrap gap-2">
+                <CopyResult text={copy} />
+                <CopyLink />
+              </div>
             </>
           ) : outOfRange ? (
             <p className="mt-5 text-sm text-muted">

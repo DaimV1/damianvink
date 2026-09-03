@@ -11,6 +11,10 @@ const DESCRIPTION =
   "Seegerringgroef DIN 471 (as) en DIN 472 (boring). Groef d2, breedte b en diepte t tot Ø100 mm. Rekenhulp plus werkplaatstabel.";
 
 export const Route = createFileRoute("/toolkit/seegerring-groef")({
+  validateSearch: (s: Record<string, unknown>): { d?: string; kind?: string } => ({
+    d: typeof s.d === "string" && /^\d{1,4}$/.test(s.d) ? s.d : undefined,
+    kind: s.kind === "as" || s.kind === "boring" ? s.kind : undefined,
+  }),
   head: () =>
     pageHead({
       title: "Seegerringgroef DIN 471 / DIN 472 — Damian Vink",

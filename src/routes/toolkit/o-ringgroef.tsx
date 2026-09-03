@@ -11,6 +11,10 @@ const DESCRIPTION =
   "O-ringgroef volgens ISO 3601. Koorden 1,80–7,00 mm: groefdiepte t en breedte b, radiaal en axiaal. Rekenhulp plus naslagtabel.";
 
 export const Route = createFileRoute("/toolkit/o-ringgroef")({
+  validateSearch: (s: Record<string, unknown>): { d2?: string; kind?: string } => ({
+    d2: typeof s.d2 === "string" && /^\d{1,2}(\.\d{1,2})?$/.test(s.d2) ? s.d2 : undefined,
+    kind: s.kind === "radial" || s.kind === "axial" || s.kind === "hydro" ? s.kind : undefined,
+  }),
   head: () =>
     pageHead({
       title: "O-ringgroef ISO 3601 — Damian Vink",

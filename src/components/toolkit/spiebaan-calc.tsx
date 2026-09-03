@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate, useSearch } from "@tanstack/react-router";
 import { KEYWAYS, lookupKeyway } from "@/lib/toolkit/keyway";
 import { readStoredDiameter, storeDiameter } from "@/lib/toolkit/tools";
 import { fmtMm } from "@/lib/utils";
@@ -6,6 +7,7 @@ import { tx, useLocale } from "@/lib/i18n/locale";
 import {
   CalcEyebrow,
   CalcPanel,
+  CopyLink,
   CopyResult,
   Field,
   KindDot,
@@ -18,9 +20,16 @@ import { KeywaySection, SchemaPanel } from "./schema";
 
 export function SpiebaanCalc() {
   const { locale } = useLocale();
+  const search = useSearch({ from: "/toolkit/spiebaan-toleranties" });
+  const navigate = useNavigate({ from: "/toolkit/spiebaan-toleranties" });
   const [diameter, setDiameter] = useState(() =>
-    readStoredDiameter({ min: 7, max: 110 }),
+    search.d ?? readStoredDiameter({ min: 7, max: 110 }),
   );
+
+  useEffect(() => {
+    navigate({ search: (prev) => ({ ...prev, d: diameter || undefined }), replace: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [diameter]);
   const parsed = parseWholeMm(diameter);
   const d = parsed.status === "ok" ? parsed.mm : Number.NaN;
   const row = parsed.status === "ok" ? lookupKeyway(d) : null;
@@ -94,7 +103,10 @@ export function SpiebaanCalc() {
                 },
               ]}
             />
-            <CopyResult text={copy} />
+            <div className="flex flex-wrap gap-2">
+              <CopyResult text={copy} />
+              <CopyLink />
+            </div>
           </>
         )}
       </CalcPanel>

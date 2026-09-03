@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate, useSearch } from "@tanstack/react-router";
 import { fmtMm } from "@/lib/utils";
 import { tx, useLocale, type Locale } from "@/lib/i18n/locale";
 import {
@@ -28,6 +29,7 @@ import { readStoredDiameter, storeDiameter } from "@/lib/toolkit/tools";
 import {
   CalcEyebrow,
   CalcPanel,
+  CopyLink,
   CopyResult,
   Field,
   Note,
@@ -47,10 +49,22 @@ function parseLen(raw: string): number | null {
 
 export function Iso2768Calc() {
   const { locale } = useLocale();
-  const [len, setLen] = useState(() => readStoredDiameter({ min: 0, max: 4000, fallback: "42" }));
-  const [linear, setLinear] = useState<LinearClass>("m");
-  const [form, setForm] = useState<FormClass>("K");
+  const search = useSearch({ from: "/toolkit/iso-2768" });
+  const navigate = useNavigate({ from: "/toolkit/iso-2768" });
+  const [len, setLen] = useState(
+    () => search.len ?? readStoredDiameter({ min: 0, max: 4000, fallback: "42" }),
+  );
+  const [linear, setLinear] = useState<LinearClass>((search.linear as LinearClass) ?? "m");
+  const [form, setForm] = useState<FormClass>((search.form as FormClass) ?? "K");
   const L = parseLen(len);
+
+  useEffect(() => {
+    navigate({
+      search: (prev) => ({ ...prev, len: len || undefined, linear, form }),
+      replace: true,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [len, linear, form]);
   const row = L == null ? null : lookupIso2768(L, linear, form);
 
   const copy = useMemo(() => {
@@ -198,7 +212,10 @@ export function Iso2768Calc() {
                 },
               ]}
             />
-            <CopyResult text={copy} />
+            <div className="flex flex-wrap gap-2">
+              <CopyResult text={copy} />
+              <CopyLink />
+            </div>
           </>
         ) : (
           <p className="mt-5 text-sm text-muted">

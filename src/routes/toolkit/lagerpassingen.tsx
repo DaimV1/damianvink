@@ -11,6 +11,11 @@ const DESCRIPTION =
   "Lagerpassingen voor groefkogellagers tot Ø50 mm. SKF-klassen, vast/los, as j6/k5, huis H7. Rekenhulp plus naslag volgens ISO 286.";
 
 export const Route = createFileRoute("/toolkit/lagerpassingen")({
+  validateSearch: (s: Record<string, unknown>): { d?: string; rot?: string; load?: string } => ({
+    d: typeof s.d === "string" && /^\d{1,4}$/.test(s.d) ? s.d : undefined,
+    rot: s.rot === "binnen" || s.rot === "buiten" || s.rot === "stil" ? s.rot : undefined,
+    load: s.load === "licht" || s.load === "normaal" ? s.load : undefined,
+  }),
   head: () =>
     pageHead({
       title: "Lagerpassingen SKF / ISO 286 — Damian Vink",

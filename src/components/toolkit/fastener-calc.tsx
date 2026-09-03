@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate, useSearch } from "@tanstack/react-router";
 import {
   FASTENERS,
   fmtForce,
@@ -13,6 +14,7 @@ import { tx, useLocale } from "@/lib/i18n/locale";
 import {
   CalcEyebrow,
   CalcPanel,
+  CopyLink,
   CopyResult,
   Field,
   Note,
@@ -24,10 +26,17 @@ import { BoltSection, SchemaPanel } from "./schema";
 
 export function FastenerCalc() {
   const { locale } = useLocale();
-  const [size, setSize] = useState("8");
-  const [klass, setKlass] = useState<Strength>("8.8");
-  const [fit, setFit] = useState<FitSeries>("middel");
+  const search = useSearch({ from: "/toolkit/bevestigers" });
+  const navigate = useNavigate({ from: "/toolkit/bevestigers" });
+  const [size, setSize] = useState(search.size ?? "8");
+  const [klass, setKlass] = useState<Strength>((search.klass as Strength) ?? "8.8");
+  const [fit, setFit] = useState<FitSeries>((search.fit as FitSeries) ?? "middel");
   const d = parseInt(size, 10);
+
+  useEffect(() => {
+    navigate({ search: (prev) => ({ ...prev, size, klass, fit }), replace: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [size, klass, fit]);
   const row = lookupFastener(d);
   const hole = row?.hole[fit];
   const ma = row?.ma?.[klass];
@@ -119,7 +128,10 @@ export function FastenerCalc() {
                   : { label: tx(locale, "Voorspanning Fv", "Preload Fv"), value: "—" },
               ]}
             />
-            <CopyResult text={copy} />
+            <div className="flex flex-wrap gap-2">
+              <CopyResult text={copy} />
+              <CopyLink />
+            </div>
           </>
         ) : (
           <p className="mt-5 text-sm text-muted">{tx(locale, "Kies een M-maat.", "Choose an M size.")}</p>

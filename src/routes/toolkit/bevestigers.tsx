@@ -11,6 +11,13 @@ const DESCRIPTION =
   "Bevestigingsmateriaal M3–M24: doorlaat ISO 273, zeskant en inbus, aandraaimoment 8.8 / 10.9 / 12.9 volgens VDI 2230.";
 
 export const Route = createFileRoute("/toolkit/bevestigers")({
+  validateSearch: (
+    s: Record<string, unknown>,
+  ): { size?: string; klass?: string; fit?: string } => ({
+    size: typeof s.size === "string" && /^\d{1,2}$/.test(s.size) ? s.size : undefined,
+    klass: s.klass === "8.8" || s.klass === "10.9" || s.klass === "12.9" ? s.klass : undefined,
+    fit: s.fit === "fijn" || s.fit === "middel" || s.fit === "grof" ? s.fit : undefined,
+  }),
   head: () =>
     pageHead({
       title: "Bevestigingsmateriaal ISO 273 / VDI 2230 — Damian Vink",

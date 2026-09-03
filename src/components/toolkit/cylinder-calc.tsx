@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate, useSearch } from "@tanstack/react-router";
 import {
   CATALOG,
   copyLine,
@@ -14,6 +15,7 @@ import { fmtNl } from "@/lib/utils";
 import {
   CalcEyebrow,
   CalcPanel,
+  CopyLink,
   CopyResult,
   Field,
   Note,
@@ -71,11 +73,28 @@ function QtyInput({
 
 export function CylinderCalc() {
   const { locale } = useLocale();
-  const [load, setLoad] = useState("1000");
-  const [pBar, setPBar] = useState("6");
-  const [S, setS] = useState("1,25");
-  const [dir, setDir] = useState<StrokeDir>("uit");
-  const [stroke, setStroke] = useState("100");
+  const search = useSearch({ from: "/toolkit/cilinder" });
+  const navigate = useNavigate({ from: "/toolkit/cilinder" });
+  const [load, setLoad] = useState(search.load ?? "1000");
+  const [pBar, setPBar] = useState(search.p ?? "6");
+  const [S, setS] = useState(search.s ?? "1,25");
+  const [dir, setDir] = useState<StrokeDir>((search.dir as StrokeDir) ?? "uit");
+  const [stroke, setStroke] = useState(search.stroke ?? "100");
+
+  useEffect(() => {
+    navigate({
+      search: (prev) => ({
+        ...prev,
+        load: load || undefined,
+        p: pBar || undefined,
+        s: S || undefined,
+        dir,
+        stroke: stroke || undefined,
+      }),
+      replace: true,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [load, pBar, S, dir, stroke]);
 
   const loadN = parseNum(load);
   const p = parseNum(pBar);
@@ -169,7 +188,10 @@ export function CylinderCalc() {
                 "Air/cycle is swept volume only (piston × stroke). Dead volume in the end caps, port passages, tubing and the valve are not included — add 10–20% on top when sizing the compressor or piping.",
               )}
             </Note>
-            <CopyResult text={copy} />
+            <div className="flex flex-wrap gap-2">
+              <CopyResult text={copy} />
+              <CopyLink />
+            </div>
           </>
         ) : loadN != null && p != null && sFac != null && p > 0 && loadN > 0 ? (
           <p className="mt-5 text-sm text-muted">

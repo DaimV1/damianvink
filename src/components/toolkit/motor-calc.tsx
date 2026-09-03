@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate, useSearch } from "@tanstack/react-router";
 import {
   DUTY_DEFAULT_MU,
   FAMILY_HINT,
@@ -17,6 +18,7 @@ import { tx, useLocale } from "@/lib/i18n/locale";
 import {
   CalcEyebrow,
   CalcPanel,
+  CopyLink,
   CopyResult,
   Field,
   Note,
@@ -39,16 +41,38 @@ function fmtInput(n: number) {
 
 export function MotorCalc() {
   const { locale } = useLocale();
-  const [speed, setSpeed] = useState("30");
-  const [speedUnit, setSpeedUnit] = useState<SpeedUnit>("m/min");
-  const [diameterMm, setDiameterMm] = useState("100");
-  const [mass, setMass] = useState("500");
-  const [duty, setDuty] = useState<Duty>("rollenbaan");
-  const [mu, setMu] = useState("0,03");
-  const [alpha, setAlpha] = useState("0");
-  const [eta, setEta] = useState("0,85");
-  const [fb, setFb] = useState("1,2");
-  const [accel, setAccel] = useState("0");
+  const search = useSearch({ from: "/toolkit/motorspecificatie" });
+  const navigate = useNavigate({ from: "/toolkit/motorspecificatie" });
+  const [speed, setSpeed] = useState(search.speed ?? "30");
+  const [speedUnit, setSpeedUnit] = useState<SpeedUnit>((search.unit as SpeedUnit) ?? "m/min");
+  const [diameterMm, setDiameterMm] = useState(search.d ?? "100");
+  const [mass, setMass] = useState(search.mass ?? "500");
+  const [duty, setDuty] = useState<Duty>((search.duty as Duty) ?? "rollenbaan");
+  const [mu, setMu] = useState(search.mu ?? "0,03");
+  const [alpha, setAlpha] = useState(search.alpha ?? "0");
+  const [eta, setEta] = useState(search.eta ?? "0,85");
+  const [fb, setFb] = useState(search.fb ?? "1,2");
+  const [accel, setAccel] = useState(search.a ?? "0");
+
+  useEffect(() => {
+    navigate({
+      search: (prev) => ({
+        ...prev,
+        speed: speed || undefined,
+        unit: speedUnit,
+        d: diameterMm || undefined,
+        mass: mass || undefined,
+        duty,
+        mu: mu || undefined,
+        alpha: alpha || undefined,
+        eta: eta || undefined,
+        fb: fb || undefined,
+        a: accel || undefined,
+      }),
+      replace: true,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [speed, speedUnit, diameterMm, mass, duty, mu, alpha, eta, fb, accel]);
 
   function onDuty(next: string) {
     const d = next as Duty;
@@ -256,7 +280,10 @@ export function MotorCalc() {
                 `T is the bare shaft torque (F · D/2), without the service factor f_b. P_motor already has f_b applied. When sizing a reducer on output torque: use T × f_b = ${fmtDotComma(result.T * result.fb, 2)} Nm, not the bare T.`,
               )}
             </Note>
-            <CopyResult text={copy} />
+            <div className="flex flex-wrap gap-2">
+              <CopyResult text={copy} />
+              <CopyLink />
+            </div>
           </>
         ) : (
           <p className="mt-5 text-sm text-muted">

@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate, useSearch } from "@tanstack/react-router";
 import {
   fmtSeeger,
   fmtSeeger3,
@@ -11,6 +12,7 @@ import { tx, useLocale } from "@/lib/i18n/locale";
 import {
   CalcEyebrow,
   CalcPanel,
+  CopyLink,
   CopyResult,
   Field,
   Note,
@@ -24,14 +26,24 @@ import { CirclipSection, SchemaPanel } from "./schema";
 
 export function SeegerCalc() {
   const { locale } = useLocale();
+  const search = useSearch({ from: "/toolkit/seegerring-groef" });
+  const navigate = useNavigate({ from: "/toolkit/seegerring-groef" });
   const [diameter, setDiameter] = useState(() =>
-    readStoredDiameter({ min: 3, max: 100 }),
+    search.d ?? readStoredDiameter({ min: 3, max: 100 }),
   );
-  const [kind, setKind] = useState<SeegerKind>("as");
+  const [kind, setKind] = useState<SeegerKind>((search.kind as SeegerKind) ?? "as");
   const parsed = parseWholeMm(diameter);
   const d = parsed.status === "ok" ? parsed.mm : Number.NaN;
   const row = parsed.status === "ok" ? lookupSeeger(d) : null;
   const result = row ? seegerFor(row, kind) : null;
+
+  useEffect(() => {
+    navigate({
+      search: (prev) => ({ ...prev, d: diameter || undefined, kind }),
+      replace: true,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [diameter, kind]);
 
   function onDia(v: string) {
     setDiameter(v);
@@ -135,7 +147,10 @@ export function SeegerCalc() {
                 "Width b comes from a shop table, not the official DIN PDF. For production work, verify b in DIN 471/472.",
               )}
             </p>
-            <CopyResult text={copy} />
+            <div className="flex flex-wrap gap-2">
+              <CopyResult text={copy} />
+              <CopyLink />
+            </div>
           </>
         )}
       </CalcPanel>

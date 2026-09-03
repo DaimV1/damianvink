@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate, useSearch } from "@tanstack/react-router";
 import {
   computeBuckling,
   copyLine,
@@ -19,6 +20,7 @@ import { tx, useLocale } from "@/lib/i18n/locale";
 import {
   CalcEyebrow,
   CalcPanel,
+  CopyLink,
   CopyResult,
   Field,
   Note,
@@ -37,17 +39,40 @@ function parseNum(raw: string): number | null {
 
 export function KnikCalc() {
   const { locale } = useLocale();
-  const [sectionKind, setSectionKind] = useState<SectionKind>("rond");
-  const [D, setD] = useState("20");
-  const [dIn, setDIn] = useState("14");
-  const [b, setB] = useState("40");
-  const [h, setH] = useState("10");
-  const [a, setA] = useState("10");
-  const [t, setT] = useState("3");
-  const [L, setL] = useState("1000");
-  const [endCondition, setEndCondition] = useState<EndConditionId>("hh");
-  const [materialId, setMaterialId] = useState("rvs");
-  const [F, setF] = useState("");
+  const search = useSearch({ from: "/toolkit/knikberekening" });
+  const navigate = useNavigate({ from: "/toolkit/knikberekening" });
+  const [sectionKind, setSectionKind] = useState<SectionKind>((search.section as SectionKind) ?? "rond");
+  const [D, setD] = useState(search.D ?? "20");
+  const [dIn, setDIn] = useState(search.dIn ?? "14");
+  const [b, setB] = useState(search.b ?? "40");
+  const [h, setH] = useState(search.h ?? "10");
+  const [a, setA] = useState(search.a ?? "10");
+  const [t, setT] = useState(search.t ?? "3");
+  const [L, setL] = useState(search.L ?? "1000");
+  const [endCondition, setEndCondition] = useState<EndConditionId>((search.end as EndConditionId) ?? "hh");
+  const [materialId, setMaterialId] = useState(search.material ?? "rvs");
+  const [F, setF] = useState(search.F ?? "");
+
+  useEffect(() => {
+    navigate({
+      search: (prev) => ({
+        ...prev,
+        section: sectionKind,
+        D: D || undefined,
+        dIn: dIn || undefined,
+        b: b || undefined,
+        h: h || undefined,
+        a: a || undefined,
+        t: t || undefined,
+        L: L || undefined,
+        end: endCondition,
+        material: materialId,
+        F: F || undefined,
+      }),
+      replace: true,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sectionKind, D, dIn, b, h, a, t, L, endCondition, materialId, F]);
 
   const dims = useMemo(() => {
     switch (sectionKind) {
@@ -245,7 +270,10 @@ export function KnikCalc() {
                   )}
                 </Note>
               ) : null}
-              <CopyResult text={copy} />
+              <div className="flex flex-wrap gap-2">
+                <CopyResult text={copy} />
+                <CopyLink />
+              </div>
             </>
           ) : (
             <p className="mt-5 text-sm text-muted">

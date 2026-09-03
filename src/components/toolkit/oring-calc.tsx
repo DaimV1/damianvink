@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate, useSearch } from "@tanstack/react-router";
 import {
   D2_OPTIONS,
   fillRatio,
@@ -13,6 +14,7 @@ import { tx, useLocale } from "@/lib/i18n/locale";
 import {
   CalcEyebrow,
   CalcPanel,
+  CopyLink,
   CopyResult,
   Field,
   Note,
@@ -23,9 +25,16 @@ import { OringGroove, SchemaPanel } from "./schema";
 
 export function OringCalc() {
   const { locale } = useLocale();
-  const [d2, setD2] = useState("2.65");
-  const [kind, setKind] = useState<OringKind>("radial");
+  const search = useSearch({ from: "/toolkit/o-ringgroef" });
+  const navigate = useNavigate({ from: "/toolkit/o-ringgroef" });
+  const [d2, setD2] = useState(search.d2 ?? "2.65");
+  const [kind, setKind] = useState<OringKind>((search.kind as OringKind) ?? "radial");
   const d2n = parseFloat(d2);
+
+  useEffect(() => {
+    navigate({ search: (prev) => ({ ...prev, d2, kind }), replace: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [d2, kind]);
   const g = GROOVE[kind][d2n as keyof (typeof GROOVE)[typeof kind]];
   const kindLabel = tx(locale, ORING_LABELS[kind], ORING_LABELS_EN[kind]);
 
@@ -106,7 +115,10 @@ export function OringCalc() {
             <p className="mt-4 text-sm leading-relaxed text-muted">
               {tx(locale, "Dichtomatik; geen vervanging van ISO 3601-2.", "Dichtomatik; not a substitute for ISO 3601-2.")}
             </p>
-            <CopyResult text={copy} />
+            <div className="flex flex-wrap gap-2">
+              <CopyResult text={copy} />
+              <CopyLink />
+            </div>
           </>
         ) : (
           <p className="mt-5 text-sm text-muted">

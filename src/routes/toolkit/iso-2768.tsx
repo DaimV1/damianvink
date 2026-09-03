@@ -11,6 +11,13 @@ const DESCRIPTION =
   "ISO 2768 algemene toleranties: lineair f/m/c/v en vorm H/K/L. Titelblok-default als een maat geen vakje heeft. Geen passing (ISO 286).";
 
 export const Route = createFileRoute("/toolkit/iso-2768")({
+  validateSearch: (
+    s: Record<string, unknown>,
+  ): { len?: string; linear?: string; form?: string } => ({
+    len: typeof s.len === "string" && /^\d{1,4}([.,]\d{1,2})?$/.test(s.len) ? s.len : undefined,
+    linear: typeof s.linear === "string" && ["f", "m", "c", "v"].includes(s.linear) ? s.linear : undefined,
+    form: typeof s.form === "string" && ["H", "K", "L"].includes(s.form) ? s.form : undefined,
+  }),
   head: () =>
     pageHead({
       title: "Algemene toleranties ISO 2768-mK — Damian Vink",

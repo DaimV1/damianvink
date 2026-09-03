@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate, useSearch } from "@tanstack/react-router";
 import {
   bendAllowance90,
   bendDeduction90,
@@ -17,6 +18,7 @@ import { tx, useLocale } from "@/lib/i18n/locale";
 import {
   CalcEyebrow,
   CalcPanel,
+  CopyLink,
   CopyResult,
   Field,
   Note,
@@ -35,10 +37,20 @@ function parseK(raw: string): number | null {
 
 export function KantenCalc() {
   const { locale } = useLocale();
-  const [tRaw, setTRaw] = useState("2");
-  const [material, setMaterial] = useState<Material>("rvs");
-  const [kind, setKind] = useState<Kind>("haaks");
-  const [kRaw, setKRaw] = useState(String(DEFAULT_K_FACTOR).replace(".", ","));
+  const search = useSearch({ from: "/toolkit/kanten" });
+  const navigate = useNavigate({ from: "/toolkit/kanten" });
+  const [tRaw, setTRaw] = useState(search.t ?? "2");
+  const [material, setMaterial] = useState<Material>((search.material as Material) ?? "rvs");
+  const [kind, setKind] = useState<Kind>((search.kind as Kind) ?? "haaks");
+  const [kRaw, setKRaw] = useState(search.k ?? String(DEFAULT_K_FACTOR).replace(".", ","));
+
+  useEffect(() => {
+    navigate({
+      search: (prev) => ({ ...prev, t: tRaw || undefined, material, kind, k: kRaw || undefined }),
+      replace: true,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tRaw, material, kind, kRaw]);
   const t = Number(tRaw);
   const row = Number.isFinite(t) ? lookupKanten(t, material, kind) : null;
   const kFactor = parseK(kRaw);
@@ -173,7 +185,10 @@ export function KantenCalc() {
                 )}
               </Note>
             ) : null}
-            <CopyResult text={copy} />
+            <div className="flex flex-wrap gap-2">
+              <CopyResult text={copy} />
+              <CopyLink />
+            </div>
           </>
         ) : (
           <p className="mt-5 text-sm text-muted">

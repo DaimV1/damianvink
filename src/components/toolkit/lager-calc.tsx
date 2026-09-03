@@ -1,4 +1,5 @@
-import { useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useNavigate, useSearch } from "@tanstack/react-router";
 import { computeBearing } from "@/lib/toolkit/bearing";
 import { readStoredDiameter, storeDiameter } from "@/lib/toolkit/tools";
 import { mmFromUm } from "@/lib/utils";
@@ -6,6 +7,7 @@ import { tx, useLocale } from "@/lib/i18n/locale";
 import {
   CalcEyebrow,
   CalcPanel,
+  CopyLink,
   CopyResult,
   Field,
   Note,
@@ -18,15 +20,25 @@ import { BearingFitChart, SchemaPanel } from "./schema";
 
 export function LagerCalc() {
   const { locale } = useLocale();
+  const search = useSearch({ from: "/toolkit/lagerpassingen" });
+  const navigate = useNavigate({ from: "/toolkit/lagerpassingen" });
   const [diameter, setDiameter] = useState(() =>
-    readStoredDiameter({ min: 4, max: 50 }),
+    search.d ?? readStoredDiameter({ min: 4, max: 50 }),
   );
-  const [rot, setRot] = useState("binnen");
-  const [load, setLoad] = useState("normaal");
+  const [rot, setRot] = useState(search.rot ?? "binnen");
+  const [load, setLoad] = useState(search.load ?? "normaal");
   const parsed = parseWholeMm(diameter);
   const d = parsed.status === "ok" ? parsed.mm : Number.NaN;
   const stil = rot === "stil";
   const result = parsed.status === "ok" ? computeBearing(d, rot, load) : null;
+
+  useEffect(() => {
+    navigate({
+      search: (prev) => ({ ...prev, d: diameter || undefined, rot, load }),
+      replace: true,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [diameter, rot, load]);
 
   function onDia(v: string) {
     setDiameter(v);
@@ -151,7 +163,10 @@ export function LagerCalc() {
                 "\"Normal to high load\" covers P > 0.05 C as one class here. For heavy or shock loads (SKF rule of thumb: P > roughly 0.1–0.15 C) SKF often calls for a tighter shaft fit (m5/m6) than shown — check the current SKF table. Also not covered: the bearing bore itself is toleranced per ISO 492 (not ISO 286), and shaft cylindricity, shoulder runout and Ra aren't shown — together with the class these set the actual interference.",
               )}
             </Note>
-            <CopyResult text={copy} />
+            <div className="flex flex-wrap gap-2">
+              <CopyResult text={copy} />
+              <CopyLink />
+            </div>
           </>
         )}
       </CalcPanel>

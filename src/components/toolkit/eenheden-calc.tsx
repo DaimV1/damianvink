@@ -1,5 +1,6 @@
 import { ArrowLeftRight } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate, useSearch } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { tx, useLocale } from "@/lib/i18n/locale";
 import {
@@ -14,7 +15,7 @@ import {
   type CategoryId,
 } from "@/lib/toolkit/units";
 import { CalcEyebrow,
-  CalcPanel, CopyResult, Field, Note, SelectInput } from "./calc-ui";
+  CalcPanel, CopyLink, CopyResult, Field, Note, SelectInput } from "./calc-ui";
 
 const CAT_EN: Record<CategoryId, string> = {
   lengte: "Length",
@@ -36,12 +37,24 @@ const controlClass =
 
 export function EenhedenCalc() {
   const { locale } = useLocale();
-  const [catId, setCatId] = useState<CategoryId>("lengte");
-  const [fromId, setFromId] = useState("in");
-  const [toId, setToId] = useState("mm");
-  const [rawFrom, setRawFrom] = useState("80");
-  const [edited, setEdited] = useState<"from" | "to">("from");
-  const [rawToEdit, setRawToEdit] = useState("");
+  const search = useSearch({ from: "/toolkit/eenheden" });
+  const navigate = useNavigate({ from: "/toolkit/eenheden" });
+  const initialSide: "from" | "to" = search.side === "to" ? "to" : "from";
+  const [catId, setCatId] = useState<CategoryId>((search.cat as CategoryId) ?? "lengte");
+  const [fromId, setFromId] = useState(search.from ?? "in");
+  const [toId, setToId] = useState(search.to ?? "mm");
+  const [rawFrom, setRawFrom] = useState(initialSide === "from" ? (search.val ?? "80") : "");
+  const [edited, setEdited] = useState<"from" | "to">(initialSide);
+  const [rawToEdit, setRawToEdit] = useState(initialSide === "to" ? (search.val ?? "") : "");
+
+  useEffect(() => {
+    const val = edited === "from" ? rawFrom : rawToEdit;
+    navigate({
+      search: (prev) => ({ ...prev, cat: catId, from: fromId, to: toId, val: val || undefined, side: edited }),
+      replace: true,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [catId, fromId, toId, edited, rawFrom, rawToEdit]);
 
   const category = categoryById(catId);
   const from = unitById(category, fromId);
@@ -199,7 +212,10 @@ export function EenhedenCalc() {
             ) : (
               <p className="mt-4 text-sm text-muted">{category.note}</p>
             )}
-            <CopyResult text={copy} />
+            <div className="flex flex-wrap gap-2">
+              <CopyResult text={copy} />
+              <CopyLink />
+            </div>
           </>
         ) : (
           <p className="mt-5 text-sm text-muted">{tx(locale, "Voer een getal in.", "Enter a number.")}</p>
