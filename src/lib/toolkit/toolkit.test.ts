@@ -406,7 +406,7 @@ describe("Euler-knik", () => {
   it("rectangle takes the weaker axis", () => {
     const section = sectionProps("rechthoek", { b: 40, h: 10 });
     assert.ok(section);
-    assert.ok(Math.abs(section.I - (10 * 40 ** 3) / 12) < 1e-6);
+    assert.ok(Math.abs(section.I - (40 * 10 ** 3) / 12) < 1e-6);
   });
 
   it("safety factor is F_cr / F when a load is given", () => {

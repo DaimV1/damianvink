@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
-import { mkdirSync, mkdtempSync, symlinkSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, symlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { test } from "node:test";
@@ -16,6 +16,15 @@ import {
 const execFileAsync = promisify(execFile);
 const WRAPPER = join(projectRoot(), "scripts/with-app-env.mjs");
 const PRINT_FLAG = "process.stdout.write(String(process.env.VITE_AUTH_ENABLED));";
+
+// .grok/app-env.json is provisioned locally by the platform per-workspace,
+// gitignored, and never present in a plain checkout (a fresh clone or CI).
+// projectRoot() always resolves to this real repo (it's derived from this
+// script's own on-disk location), so the tests below that exercise the
+// wrapper against it — rather than a hermetic makeWorkspace() — have nothing
+// to check without it.
+const templateShipsAppEnv = existsSync(join(projectRoot(), APP_ENV_REL_PATH));
+const NO_APP_ENV_SKIP = "no .grok/app-env.json in this checkout (platform-provisioned, not in git)";
 
 function makeWorkspace(appEnvJson) {
   const root = mkdtempSync(join(tmpdir(), "app-env-"));
@@ -59,7 +68,7 @@ test("an explicit process-env override wins over the file", () => {
   assert.equal(merged.PATH, "/usr/bin");
 });
 
-test("the template ships auth off", () => {
+test("the template ships auth off", { skip: !templateShipsAppEnv && NO_APP_ENV_SKIP }, () => {
   assert.deepEqual(readAppEnv(projectRoot()), { VITE_AUTH_ENABLED: "false" });
 });
 
@@ -73,15 +82,19 @@ test("vite loadEnv resolves the wrapped value", () => {
   assert.equal(merged.VITE_AUTH_ENABLED, "false");
 });
 
-test("the wrapped command runs with the app env applied", async () => {
-  const { stdout } = await execFileAsync(process.execPath, [
-    WRAPPER,
-    process.execPath,
-    "-e",
-    PRINT_FLAG,
-  ]);
-  assert.equal(stdout, "false");
-});
+test(
+  "the wrapped command runs with the app env applied",
+  { skip: !templateShipsAppEnv && NO_APP_ENV_SKIP },
+  async () => {
+    const { stdout } = await execFileAsync(process.execPath, [
+      WRAPPER,
+      process.execPath,
+      "-e",
+      PRINT_FLAG,
+    ]);
+    assert.equal(stdout, "false");
+  },
+);
 
 test("the wrapped command sees an explicit override, not the file value", async () => {
   const { stdout } = await execFileAsync(
@@ -113,16 +126,21 @@ test("a signal-killed command is never reported as success", async () => {
   );
 });
 
-test("the CLI still runs when invoked through a symlinked path", async () => {
-  // node realpaths import.meta.url but not process.argv[1], so a raw comparison
-  // turns the wrapper into a no-op that exits 0 without starting anything.
-  const link = join(mkdtempSync(join(tmpdir(), "app-env-link-")), "scripts");
-  symlinkSync(join(projectRoot(), "scripts"), link);
-  const { stdout } = await execFileAsync(process.execPath, [
-    join(link, "with-app-env.mjs"),
-    process.execPath,
-    "-e",
-    PRINT_FLAG,
-  ]);
-  assert.equal(stdout, "false");
-});
+test(
+  "the CLI still runs when invoked through a symlinked path",
+  { skip: !templateShipsAppEnv && NO_APP_ENV_SKIP },
+  async () => {
+    // node realpaths import.meta.url but not process.argv[1], so a raw
+    // comparison turns the wrapper into a no-op that exits 0 without starting
+    // anything.
+    const link = join(mkdtempSync(join(tmpdir(), "app-env-link-")), "scripts");
+    symlinkSync(join(projectRoot(), "scripts"), link);
+    const { stdout } = await execFileAsync(process.execPath, [
+      join(link, "with-app-env.mjs"),
+      process.execPath,
+      "-e",
+      PRINT_FLAG,
+    ]);
+    assert.equal(stdout, "false");
+  },
+);
