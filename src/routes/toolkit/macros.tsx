@@ -1,11 +1,22 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Download } from "lucide-react";
 import { JsonLd } from "@/components/json-ld";
-import { Faq } from "@/components/toolkit/calc-ui";
+import { CopyResult, Faq } from "@/components/toolkit/calc-ui";
 import { ToolkitFrame } from "@/components/toolkit/toolkit-frame";
 import { toolkitCopy } from "@/lib/i18n/toolkit-pages";
 import { tx, useLocale, type Locale } from "@/lib/i18n/locale";
 import { pageHead, webPageJsonLd } from "@/lib/seo";
+
+import swExportStep from "../../../public/macros/solidworks-export-step.bas?raw";
+import swBatchPdf from "../../../public/macros/solidworks-batch-pdf.bas?raw";
+import swShowProperties from "../../../public/macros/solidworks-show-properties.bas?raw";
+import swSaveAll from "../../../public/macros/solidworks-save-all.bas?raw";
+import swFlatPatternDxf from "../../../public/macros/solidworks-flat-pattern-dxf.bas?raw";
+import invExportStep from "../../../public/macros/inventor-export-step.bas?raw";
+import invSaveAll from "../../../public/macros/inventor-save-all.bas?raw";
+import invShowIproperties from "../../../public/macros/inventor-show-iproperties.bas?raw";
+import invBatchPdf from "../../../public/macros/inventor-batch-pdf.bas?raw";
+import invFlatPatternDxf from "../../../public/macros/inventor-flat-pattern-dxf.bas?raw";
 
 const DESCRIPTION =
   "Downloadbare VBA-macro's voor SolidWorks 2024 en Inventor 2024: STEP-export, batch opslaan, eigenschappen tonen. Basis-hulpmiddelen, geen productiecode.";
@@ -32,6 +43,7 @@ function groups(locale: Locale) {
       macros: [
         {
           file: "/macros/solidworks-export-step.bas",
+          code: swExportStep,
           name: tx(locale, "Exporteer naar STEP", "Export to STEP"),
           note: tx(
             locale,
@@ -41,6 +53,7 @@ function groups(locale: Locale) {
         },
         {
           file: "/macros/solidworks-batch-pdf.bas",
+          code: swBatchPdf,
           name: tx(locale, "Batch-export tekeningen naar PDF", "Batch-export drawings to PDF"),
           note: tx(
             locale,
@@ -50,6 +63,7 @@ function groups(locale: Locale) {
         },
         {
           file: "/macros/solidworks-show-properties.bas",
+          code: swShowProperties,
           name: tx(locale, "Toon custom properties", "Show custom properties"),
           note: tx(
             locale,
@@ -59,6 +73,7 @@ function groups(locale: Locale) {
         },
         {
           file: "/macros/solidworks-save-all.bas",
+          code: swSaveAll,
           name: tx(locale, "Sla alles op", "Save all"),
           note: tx(
             locale,
@@ -68,6 +83,7 @@ function groups(locale: Locale) {
         },
         {
           file: "/macros/solidworks-flat-pattern-dxf.bas",
+          code: swFlatPatternDxf,
           name: tx(locale, "Exporteer vlak patroon naar DXF", "Export flat pattern to DXF"),
           note: tx(
             locale,
@@ -87,6 +103,7 @@ function groups(locale: Locale) {
       macros: [
         {
           file: "/macros/inventor-export-step.bas",
+          code: invExportStep,
           name: tx(locale, "Exporteer naar STEP", "Export to STEP"),
           note: tx(
             locale,
@@ -96,6 +113,7 @@ function groups(locale: Locale) {
         },
         {
           file: "/macros/inventor-save-all.bas",
+          code: invSaveAll,
           name: tx(locale, "Sla alles op", "Save all"),
           note: tx(
             locale,
@@ -105,6 +123,7 @@ function groups(locale: Locale) {
         },
         {
           file: "/macros/inventor-show-iproperties.bas",
+          code: invShowIproperties,
           name: tx(locale, "Toon iProperties", "Show iProperties"),
           note: tx(
             locale,
@@ -114,6 +133,7 @@ function groups(locale: Locale) {
         },
         {
           file: "/macros/inventor-batch-pdf.bas",
+          code: invBatchPdf,
           name: tx(locale, "Batch-export tekeningen naar PDF", "Batch-export drawings to PDF"),
           note: tx(
             locale,
@@ -123,6 +143,7 @@ function groups(locale: Locale) {
         },
         {
           file: "/macros/inventor-flat-pattern-dxf.bas",
+          code: invFlatPatternDxf,
           name: tx(locale, "Exporteer vlak patroon naar DXF", "Export flat pattern to DXF"),
           note: tx(
             locale,
@@ -172,11 +193,11 @@ function MacrosPage() {
             <p className="mt-2 text-sm text-muted">{group.install}</p>
             <ul className="mt-4 space-y-2">
               {group.macros.map((macro) => (
-                <li key={macro.file}>
+                <li key={macro.file} className="rounded-lg border border-line bg-elevated">
                   <a
                     href={macro.file}
                     download
-                    className="flex items-start justify-between gap-3 rounded-lg border border-line bg-elevated p-4 transition-colors hover:border-line-strong"
+                    className="flex items-start justify-between gap-3 p-4 transition-colors hover:border-line-strong"
                   >
                     <span>
                       <strong className="block text-ink">{macro.name}</strong>
@@ -184,6 +205,20 @@ function MacrosPage() {
                     </span>
                     <Download className="mt-1 size-4 shrink-0 text-subtle" />
                   </a>
+                  <details className="group border-t border-line px-4 py-2 print:hidden">
+                    <summary className="flex cursor-pointer list-none items-center justify-between gap-3 py-2 text-sm font-medium text-ink [&::-webkit-details-marker]:hidden">
+                      {tx(locale, "Bekijk code", "View code")}
+                      <span className="text-subtle transition-transform duration-150 group-open:rotate-45">
+                        +
+                      </span>
+                    </summary>
+                    <div className="pb-4">
+                      <pre className="max-h-80 overflow-auto rounded-md border border-line bg-paper p-3 font-mono text-xs leading-relaxed text-ink">
+                        <code>{macro.code}</code>
+                      </pre>
+                      <CopyResult text={macro.code} />
+                    </div>
+                  </details>
                 </li>
               ))}
             </ul>
