@@ -1,0 +1,11 @@
+Copyright (c) 2026 Damian Vink. All rights reserved.
+
+This repository and its contents (source code, design, and text) are
+proprietary and confidential. No part of this repository may be
+reproduced, distributed, or used to create derivative works, in any
+form or by any means, without the prior written permission of the
+copyright holder.
+
+Third-party libraries used by this project remain under their own
+respective licenses, as declared in package.json and their published
+packages.
