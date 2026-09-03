@@ -23,6 +23,13 @@ export function VinkRun() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    // Re-bind to fresh consts: TS's control-flow narrowing above doesn't carry
+    // into the nested function declarations below (resize, draw, ...), even
+    // though these can never be reassigned.
+    const canvasEl = canvas;
+    const wrapEl = wrap;
+    const ctx2d = ctx;
+
     let W = 720;
     let state: Mode = "ready";
     let y = 0;
@@ -52,11 +59,11 @@ export function VinkRun() {
     }
 
     function resize() {
-      const next = Math.max(320, Math.floor(wrap.clientWidth));
+      const next = Math.max(320, Math.floor(wrapEl.clientWidth));
       if (next === W) return;
       W = next;
-      canvas.width = W;
-      canvas.height = H;
+      canvasEl.width = W;
+      canvasEl.height = H;
     }
 
     function floorY() {
@@ -127,13 +134,13 @@ export function VinkRun() {
 
     function roundRect(x: number, y: number, w: number, h: number, r: number) {
       const rr = Math.min(r, w / 2, h / 2);
-      ctx.beginPath();
-      ctx.moveTo(x + rr, y);
-      ctx.arcTo(x + w, y, x + w, y + h, rr);
-      ctx.arcTo(x + w, y + h, x, y + h, rr);
-      ctx.arcTo(x, y + h, x, y, rr);
-      ctx.arcTo(x, y, x + w, y, rr);
-      ctx.closePath();
+      ctx2d.beginPath();
+      ctx2d.moveTo(x + rr, y);
+      ctx2d.arcTo(x + w, y, x + w, y + h, rr);
+      ctx2d.arcTo(x + w, y + h, x, y + h, rr);
+      ctx2d.arcTo(x, y + h, x, y, rr);
+      ctx2d.arcTo(x, y, x + w, y, rr);
+      ctx2d.closePath();
     }
 
     function drawVink(c: ReturnType<typeof colors>) {
@@ -141,100 +148,100 @@ export function VinkRun() {
       const cx = b.x + b.w * 0.45;
       const cy = b.y + b.h * 0.55;
       const run = state === "play" && y >= floorY() - 0.5 ? Math.sin(performance.now() / 70) * 2 : 0;
-      ctx.save();
-      ctx.translate(cx, cy + run);
-      if (v < -1) ctx.rotate(-0.25);
-      else if (v > 4) ctx.rotate(0.35);
-      ctx.fillStyle = c.blue;
-      ctx.beginPath();
-      ctx.ellipse(0, 0, duck ? 14 : 13, duck ? 6.5 : 8.5, 0, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.beginPath();
-      ctx.moveTo(11, -2);
-      ctx.lineTo(20, 1);
-      ctx.lineTo(11, 4);
-      ctx.closePath();
-      ctx.fill();
-      ctx.fillStyle = c.paper;
-      ctx.beginPath();
-      ctx.arc(4, -2.2, 2.1, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
+      ctx2d.save();
+      ctx2d.translate(cx, cy + run);
+      if (v < -1) ctx2d.rotate(-0.25);
+      else if (v > 4) ctx2d.rotate(0.35);
+      ctx2d.fillStyle = c.blue;
+      ctx2d.beginPath();
+      ctx2d.ellipse(0, 0, duck ? 14 : 13, duck ? 6.5 : 8.5, 0, 0, Math.PI * 2);
+      ctx2d.fill();
+      ctx2d.beginPath();
+      ctx2d.moveTo(11, -2);
+      ctx2d.lineTo(20, 1);
+      ctx2d.lineTo(11, 4);
+      ctx2d.closePath();
+      ctx2d.fill();
+      ctx2d.fillStyle = c.paper;
+      ctx2d.beginPath();
+      ctx2d.arc(4, -2.2, 2.1, 0, Math.PI * 2);
+      ctx2d.fill();
+      ctx2d.restore();
     }
 
     function draw() {
       const c = colors();
-      ctx.fillStyle = c.paper;
-      ctx.fillRect(0, 0, W, H);
-      ctx.strokeStyle = c.line;
-      ctx.lineWidth = 1;
+      ctx2d.fillStyle = c.paper;
+      ctx2d.fillRect(0, 0, W, H);
+      ctx2d.strokeStyle = c.line;
+      ctx2d.lineWidth = 1;
       for (let gx = 0; gx < W; gx += 24) {
-        ctx.beginPath();
-        ctx.moveTo(gx, 0);
-        ctx.lineTo(gx, H - GROUND);
-        ctx.stroke();
+        ctx2d.beginPath();
+        ctx2d.moveTo(gx, 0);
+        ctx2d.lineTo(gx, H - GROUND);
+        ctx2d.stroke();
       }
 
-      ctx.fillStyle = c.line;
-      ctx.globalAlpha = 0.55;
-      ctx.beginPath();
-      ctx.ellipse((groundX * 0.3 + 80) % (W + 80) - 40, 38, 22, 8, 0, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.beginPath();
-      ctx.ellipse((groundX * 0.22 + 320) % (W + 80) - 40, 58, 30, 10, 0, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.globalAlpha = 1;
+      ctx2d.fillStyle = c.line;
+      ctx2d.globalAlpha = 0.55;
+      ctx2d.beginPath();
+      ctx2d.ellipse((groundX * 0.3 + 80) % (W + 80) - 40, 38, 22, 8, 0, 0, Math.PI * 2);
+      ctx2d.fill();
+      ctx2d.beginPath();
+      ctx2d.ellipse((groundX * 0.22 + 320) % (W + 80) - 40, 58, 30, 10, 0, 0, Math.PI * 2);
+      ctx2d.fill();
+      ctx2d.globalAlpha = 1;
 
-      ctx.fillStyle = c.line;
-      ctx.fillRect(0, H - GROUND, W, GROUND);
-      ctx.fillStyle = c.blue;
-      ctx.fillRect(0, H - GROUND, W, 3);
-      ctx.fillStyle = c.grey;
+      ctx2d.fillStyle = c.line;
+      ctx2d.fillRect(0, H - GROUND, W, GROUND);
+      ctx2d.fillStyle = c.blue;
+      ctx2d.fillRect(0, H - GROUND, W, 3);
+      ctx2d.fillStyle = c.grey;
       const dash = 18;
       const off = groundX % (dash * 2);
-      for (let x = -off; x < W; x += dash * 2) ctx.fillRect(x, H - 14, dash, 2);
+      for (let x = -off; x < W; x += dash * 2) ctx2d.fillRect(x, H - 14, dash, 2);
 
       for (const o of obstacles) {
         const oy = o.kind === "air" ? floorY() - 62 : floorY() - o.h;
-        ctx.fillStyle = c.line;
+        ctx2d.fillStyle = c.line;
         roundRect(o.x, oy, o.w, o.h, o.kind === "pole" ? 3 : 5);
-        ctx.fill();
+        ctx2d.fill();
         if (o.kind !== "air") {
-          ctx.fillStyle = c.blue;
-          ctx.fillRect(o.x, oy, o.w, 3);
+          ctx2d.fillStyle = c.blue;
+          ctx2d.fillRect(o.x, oy, o.w, 3);
         }
       }
 
       drawVink(c);
 
-      ctx.fillStyle = c.ink;
-      ctx.font = "700 22px Space Grotesk, sans-serif";
-      ctx.textAlign = "right";
-      if (state === "play" || state === "dead") ctx.fillText(String(Math.floor(score)), W - 16, 28);
-      ctx.font = "12px IBM Plex Mono, monospace";
-      ctx.fillStyle = c.grey;
-      ctx.textAlign = "left";
-      ctx.fillText("record " + bestLocal, 16, H - 14);
-      ctx.textAlign = "right";
-      ctx.fillText("spatie / \u2193", W - 16, H - 14);
+      ctx2d.fillStyle = c.ink;
+      ctx2d.font = "700 22px Space Grotesk, sans-serif";
+      ctx2d.textAlign = "right";
+      if (state === "play" || state === "dead") ctx2d.fillText(String(Math.floor(score)), W - 16, 28);
+      ctx2d.font = "12px IBM Plex Mono, monospace";
+      ctx2d.fillStyle = c.grey;
+      ctx2d.textAlign = "left";
+      ctx2d.fillText("record " + bestLocal, 16, H - 14);
+      ctx2d.textAlign = "right";
+      ctx2d.fillText("spatie / \u2193", W - 16, H - 14);
 
       if (state === "ready") {
-        ctx.textAlign = "center";
-        ctx.fillStyle = c.ink;
-        ctx.font = "700 20px Space Grotesk, sans-serif";
-        ctx.fillText("Vink vliegt door.", W / 2, 78);
-        ctx.font = "14px IBM Plex Sans, sans-serif";
-        ctx.fillStyle = c.muted;
-        ctx.fillText("Spatie of tik om te springen", W / 2, 102);
+        ctx2d.textAlign = "center";
+        ctx2d.fillStyle = c.ink;
+        ctx2d.font = "700 20px Space Grotesk, sans-serif";
+        ctx2d.fillText("Vink vliegt door.", W / 2, 78);
+        ctx2d.font = "14px IBM Plex Sans, sans-serif";
+        ctx2d.fillStyle = c.muted;
+        ctx2d.fillText("Spatie of tik om te springen", W / 2, 102);
       }
       if (state === "dead") {
-        ctx.textAlign = "center";
-        ctx.fillStyle = c.ink;
-        ctx.font = "700 20px Space Grotesk, sans-serif";
-        ctx.fillText("Raak.", W / 2, 78);
-        ctx.font = "14px IBM Plex Sans, sans-serif";
-        ctx.fillStyle = c.muted;
-        ctx.fillText("Tik voor opnieuw", W / 2, 102);
+        ctx2d.textAlign = "center";
+        ctx2d.fillStyle = c.ink;
+        ctx2d.font = "700 20px Space Grotesk, sans-serif";
+        ctx2d.fillText("Raak.", W / 2, 78);
+        ctx2d.font = "14px IBM Plex Sans, sans-serif";
+        ctx2d.fillStyle = c.muted;
+        ctx2d.fillText("Tik voor opnieuw", W / 2, 102);
       }
     }
 
@@ -296,15 +303,15 @@ export function VinkRun() {
     resize();
     y = floorY();
     const ro = new ResizeObserver(resize);
-    ro.observe(wrap);
-    canvas.addEventListener("pointerdown", onPointer);
+    ro.observe(wrapEl);
+    canvasEl.addEventListener("pointerdown", onPointer);
     window.addEventListener("keydown", onKey);
     window.addEventListener("keyup", onKeyUp);
     raf = requestAnimationFrame(step);
     return () => {
       cancelAnimationFrame(raf);
       ro.disconnect();
-      canvas.removeEventListener("pointerdown", onPointer);
+      canvasEl.removeEventListener("pointerdown", onPointer);
       window.removeEventListener("keydown", onKey);
       window.removeEventListener("keyup", onKeyUp);
     };
