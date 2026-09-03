@@ -7,19 +7,18 @@ import { RelatedTools } from "@/components/toolkit/related-tools";
 import { Breadcrumb, ToolSwitcher } from "@/components/toolkit/tool-switcher";
 import { tx, useLocale } from "@/lib/i18n/locale";
 import { breadcrumbJsonLd } from "@/lib/seo";
-import { fmtIsoDateNl, nextReviewIso, TOOLS, type ToolId } from "@/lib/toolkit/tools";
+import { fmtIsoDateNl, TOOLS, type ToolId } from "@/lib/toolkit/tools";
 
 function VerifiedBadge({ active }: { active?: ToolId }) {
   const { locale } = useLocale();
   const tool = active ? TOOLS.find((t) => t.id === active) : undefined;
   if (!tool) return null;
-  const next = nextReviewIso(tool.verifiedAt, tool.reviewMonths);
   return (
     <SourceBadge>
       {tx(
         locale,
-        `Laatst gecontroleerd: ${fmtIsoDateNl(tool.verifiedAt)} · volgende check rond ${fmtIsoDateNl(next)}`,
-        `Last checked: ${fmtIsoDateNl(tool.verifiedAt)} · next check around ${fmtIsoDateNl(next)}`,
+        `Laatst gecontroleerd: ${fmtIsoDateNl(tool.verifiedAt)}`,
+        `Last checked: ${fmtIsoDateNl(tool.verifiedAt)}`,
       )}
     </SourceBadge>
   );

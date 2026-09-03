@@ -19,7 +19,6 @@ export const TOOLS = [
     titleEn: "Fits",
     standard: "ISO 286",
     verifiedAt: "2026-09-02",
-    reviewMonths: 12,
     kind: "rekenhulp",
     group: "maat",
     related: ["lager", "iso2768"],
@@ -36,7 +35,6 @@ export const TOOLS = [
     titleEn: "General tolerances",
     standard: "ISO 2768",
     verifiedAt: "2026-09-02",
-    reviewMonths: 12,
     kind: "rekenhulp",
     group: "maat",
     related: ["passingen"],
@@ -53,7 +51,6 @@ export const TOOLS = [
     titleEn: "Keyway tolerances",
     standard: "DIN 6885",
     verifiedAt: "2026-09-02",
-    reviewMonths: 12,
     kind: "rekenhulp",
     group: "maat",
     related: ["passingen"],
@@ -70,7 +67,6 @@ export const TOOLS = [
     titleEn: "Bearing fits",
     standard: "SKF · ISO 286",
     verifiedAt: "2026-09-02",
-    reviewMonths: 6,
     kind: "rekenhulp",
     group: "maat",
     related: ["passingen"],
@@ -87,7 +83,6 @@ export const TOOLS = [
     titleEn: "Circlip groove",
     standard: "DIN 471 / 472",
     verifiedAt: "2026-09-02",
-    reviewMonths: 6,
     kind: "rekenhulp",
     group: "verb",
     related: ["oring"],
@@ -104,7 +99,6 @@ export const TOOLS = [
     titleEn: "Fasteners",
     standard: "ISO 273 · VDI 2230",
     verifiedAt: "2026-09-02",
-    reviewMonths: 6,
     kind: "rekenhulp",
     group: "verb",
     related: ["bronnen"],
@@ -121,7 +115,6 @@ export const TOOLS = [
     titleEn: "O-ring groove",
     standard: "ISO 3601",
     verifiedAt: "2026-09-02",
-    reviewMonths: 6,
     kind: "rekenhulp",
     group: "verb",
     related: ["seeger"],
@@ -138,7 +131,6 @@ export const TOOLS = [
     titleEn: "Motor specification",
     standard: "P = F·v",
     verifiedAt: "2026-09-02",
-    reviewMonths: 12,
     kind: "rekenhulp",
     group: "aand",
     related: ["eenheden", "bronnen", "cilinder"],
@@ -157,7 +149,6 @@ export const TOOLS = [
     titleEn: "Pneumatic cylinder",
     standard: "ISO 15552 · 6432",
     verifiedAt: "2026-09-02",
-    reviewMonths: 12,
     kind: "rekenhulp",
     group: "aand",
     related: ["motor", "eenheden", "knik"],
@@ -176,7 +167,6 @@ export const TOOLS = [
     titleEn: "Bending guidelines",
     standard: "247TailorSteel",
     verifiedAt: "2026-09-02",
-    reviewMonths: 6,
     kind: "rekenhulp",
     group: "aand",
     related: ["bronnen", "macros"],
@@ -195,7 +185,6 @@ export const TOOLS = [
     titleEn: "Buckling calculation",
     standard: "Euler",
     verifiedAt: "2026-09-02",
-    reviewMonths: 12,
     kind: "rekenhulp",
     group: "aand",
     related: ["cilinder", "eenheden", "doorbuiging"],
@@ -214,7 +203,6 @@ export const TOOLS = [
     titleEn: "Beam deflection",
     standard: "Puntlast",
     verifiedAt: "2026-09-02",
-    reviewMonths: 12,
     kind: "rekenhulp",
     group: "aand",
     related: ["knik", "eenheden"],
@@ -233,7 +221,6 @@ export const TOOLS = [
     titleEn: "Units",
     standard: "SI · imperial",
     verifiedAt: "2026-09-02",
-    reviewMonths: 12,
     kind: "rekenhulp",
     group: "eh",
     related: ["motor", "bevestigers", "cilinder"],
@@ -250,7 +237,6 @@ export const TOOLS = [
     titleEn: "CAD libraries",
     standard: "Bronnen",
     verifiedAt: "2026-09-02",
-    reviewMonths: 6,
     kind: "naslag",
     group: "eh",
     related: ["bevestigers", "kanten", "macros"],
@@ -267,7 +253,6 @@ export const TOOLS = [
     titleEn: "Macro library",
     standard: "SolidWorks · Inventor",
     verifiedAt: "2026-09-02",
-    reviewMonths: 12,
     kind: "naslag",
     group: "eh",
     related: ["bronnen", "kanten"],
@@ -294,13 +279,6 @@ export function toolShort(tool: Tool, locale: "nl" | "en") {
 export function fmtIsoDateNl(iso: string) {
   const [y, m, d] = iso.split("-");
   return `${d}-${m}-${y}`;
-}
-
-/** verifiedAt + reviewMonths, as an ISO "yyyy-mm-dd" — when this tool's data is next due a recheck. */
-export function nextReviewIso(verifiedAt: string, reviewMonths: number) {
-  const d = new Date(`${verifiedAt}T00:00:00Z`);
-  d.setUTCMonth(d.getUTCMonth() + reviewMonths);
-  return d.toISOString().slice(0, 10);
 }
 
 export function toolBlurb(tool: Tool, locale: "nl" | "en") {
