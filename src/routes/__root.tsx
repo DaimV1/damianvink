@@ -9,6 +9,7 @@ import { AuthProvider } from "@/lib/auth/provider";
 import { ThemeProvider } from "@/lib/theme";
 import { LocaleProvider, tx, useLocale } from "@/lib/i18n/locale";
 import { PreviewHostBridge } from "@/components/preview-host-bridge";
+import { ToolkitOfflineCache } from "@/components/toolkit-offline";
 import { JsonLd } from "@/components/json-ld";
 import { PageWrap, SiteShell } from "@/components/site-shell";
 import { VinkRun } from "@/components/vink-run";
@@ -67,6 +68,7 @@ function RootDocument() {
         <JsonLd data={personJsonLd} />
         <JsonLd data={websiteJsonLd} />
         <PreviewHostBridge />
+        <ToolkitOfflineCache />
         <AuthProvider>
           <ThemeProvider>
             <LocaleProvider>
