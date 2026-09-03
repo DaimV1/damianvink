@@ -225,6 +225,24 @@ describe("motor", () => {
     assert.equal(nextIecKw(0.104), 0.12);
   });
 
+  it("roller inertia adds 0.5*m*a to F, T and P during acceleration", () => {
+    const r = sizeMotor({ ...base, a_ms2: 0.5, rollerMass_kg: 50 });
+    assert.ok(r);
+    // F_load = m g mu + m a = 147.15 + 250 = 397.15; roller adds 0.5*50*0.5 = 12.5
+    assert.ok(Math.abs(r.rollerAccelForce - 12.5) < 1e-9);
+    assert.ok(Math.abs(r.F - 409.65) < 0.01);
+    assert.ok(Math.abs(r.T - 409.65 * 0.05) < 0.001);
+    assert.ok(Math.abs(r.P_as_kW - (409.65 * 0.5) / 1000) < 1e-6);
+  });
+
+  it("roller inertia is zero without a roller mass or without acceleration", () => {
+    const noMass = sizeMotor({ ...base, a_ms2: 0.5 });
+    const noAccel = sizeMotor({ ...base, rollerMass_kg: 50 });
+    assert.ok(noMass && noAccel);
+    assert.equal(noMass.rollerAccelForce, 0);
+    assert.equal(noAccel.rollerAccelForce, 0);
+  });
+
   it("copy line contains P and n", () => {
     const r = sizeMotor(base);
     assert.ok(r);

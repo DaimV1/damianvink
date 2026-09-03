@@ -80,7 +80,22 @@ export type MotorInput = {
   eta: number;
   fb: number;
   a_ms2?: number;
+  /** Roller/drum own mass, solid cylinder. Only matters when a_ms2 != 0. */
+  rollerMass_kg?: number;
 };
+
+/**
+ * Equivalent tangential force from spinning up the roller itself during
+ * acceleration — solid cylinder J = 0.5·m·r², T_j = J·(a/r), F_eq = T_j/r =
+ * 0.5·m·a. Radius cancels, so this adds straight onto F without touching
+ * the T = F·r / P = F·v chain below. Gearbox and motor-rotor inertia stay
+ * out of scope: their reflected value depends on the motor/ratio this tool
+ * is sizing, so modeling them here would be circular — a real second pass
+ * once a motor is picked, not a number this calculator can hand back.
+ */
+export function rollerInertiaForceN(rollerMass_kg: number | undefined, a_ms2: number) {
+  return (rollerMass_kg ?? 0) * 0.5 * a_ms2;
+}
 
 export type MotorResult = {
   n_rpm: number;
@@ -96,6 +111,8 @@ export type MotorResult = {
   familyHint: string;
   duty: Duty;
   fb: number;
+  /** Included in F/T/P above when rollerMass_kg + a_ms2 are both set; broken out for display. */
+  rollerAccelForce: number;
 };
 
 export function sizeMotor(input: MotorInput): MotorResult | null {
@@ -109,13 +126,15 @@ export function sizeMotor(input: MotorInput): MotorResult | null {
     eta,
     fb,
     a_ms2 = 0,
+    rollerMass_kg,
   } = input;
   if (!(v_ms > 0) || !(D_m > 0) || !(mass_kg > 0) || !(eta > 0) || !(fb > 0)) {
     return null;
   }
 
   const n_rpm = (v_ms / (Math.PI * D_m)) * 60;
-  const F = tractionForceN({ mass_kg, duty, mu, alpha_deg, a_ms2 });
+  const rollerAccelForce = rollerInertiaForceN(rollerMass_kg, a_ms2);
+  const F = tractionForceN({ mass_kg, duty, mu, alpha_deg, a_ms2 }) + rollerAccelForce;
   const T = F * (D_m / 2);
   const P_as_W = F * v_ms;
   const P_motor_W = (P_as_W / eta) * fb;
@@ -139,6 +158,7 @@ export function sizeMotor(input: MotorInput): MotorResult | null {
     familyHint: FAMILY_HINT[duty],
     duty,
     fb,
+    rollerAccelForce,
   };
 }
 

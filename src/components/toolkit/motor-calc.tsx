@@ -53,6 +53,7 @@ export function MotorCalc() {
   const [eta, setEta] = useState(search.eta ?? "0,85");
   const [fb, setFb] = useState(search.fb ?? "1,2");
   const [accel, setAccel] = useState(search.a ?? "0");
+  const [rollerMass, setRollerMass] = useState(search.rm ?? "");
 
   useEffect(() => {
     navigate({
@@ -68,11 +69,12 @@ export function MotorCalc() {
         eta: eta || undefined,
         fb: fb || undefined,
         a: accel || undefined,
+        rm: rollerMass || undefined,
       }),
       replace: true,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [speed, speedUnit, diameterMm, mass, duty, mu, alpha, eta, fb, accel]);
+  }, [speed, speedUnit, diameterMm, mass, duty, mu, alpha, eta, fb, accel, rollerMass]);
 
   function onDuty(next: string) {
     const d = next as Duty;
@@ -100,6 +102,8 @@ export function MotorCalc() {
   const etaRaw = parseNum(eta);
   const fbRaw = parseNum(fb);
   const aRaw = parseNum(accel);
+  const rollerMassRaw = parseNum(rollerMass);
+  const showRollerMass = aRaw != null && aRaw !== 0;
 
   const v_ms = vRaw != null ? toMetersPerSecond(vRaw, speedUnit) : null;
   const D_m = dRaw != null ? dRaw / 1000 : null;
@@ -121,6 +125,7 @@ export function MotorCalc() {
           eta: etaRaw,
           fb: fbRaw,
           a_ms2: aRaw ?? 0,
+          rollerMass_kg: rollerMassRaw ?? undefined,
         })
       : null;
 
@@ -210,6 +215,11 @@ export function MotorCalc() {
             <Field label={tx(locale, "Versnelling a (m/s²)", "Acceleration a (m/s²)")}>
               <NumInput id="motor-accel" value={accel} onChange={setAccel} />
             </Field>
+            {showRollerMass ? (
+              <Field label={tx(locale, "Rolmassa (kg, optioneel)", "Roller mass (kg, optional)")}>
+                <NumInput id="motor-roller-mass" value={rollerMass} onChange={setRollerMass} />
+              </Field>
+            ) : null}
           </div>
           <Note>
             {tx(
@@ -218,6 +228,15 @@ export function MotorCalc() {
               "Default η = 0.85 and f_b = 1.2. Acceleration is off (a = 0). For hoisting, μ does not count. η = 0.85 fits a parallel-shaft or bevel-helical reducer; a worm reducer is often lower (η ≈ 0.5–0.85, depending on the ratio) — adjust η once the reducer family is known.",
             )}
           </Note>
+          {showRollerMass ? (
+            <Note>
+              {tx(
+                locale,
+                "Bij versnelling telt de rotatietraagheid van de rol zelf mee (massieve cilinder, J = 0,5·m·r² — vul de rolmassa in om dit mee te nemen). De teruggerekende inertie van reductor en motorrotor zit hier niet in: die hangt af van de overbrengverhouding, dus pas te bepalen na motorkeuze — reken dat na als tweede stap.",
+                "Under acceleration, the roller's own rotational inertia counts too (solid cylinder, J = 0.5·m·r² — enter the roller mass to include it). Gearbox and motor-rotor inertia reflected through the ratio aren't included: that depends on the ratio, only known after picking a motor — check that as a second pass.",
+              )}
+            </Note>
+          ) : null}
         </details>
 
         {result ? (
@@ -280,6 +299,15 @@ export function MotorCalc() {
                 `T is the bare shaft torque (F · D/2), without the service factor f_b. P_motor already has f_b applied. When sizing a reducer on output torque: use T × f_b = ${fmtDotComma(result.T * result.fb, 2)} Nm, not the bare T.`,
               )}
             </Note>
+            {result.rollerAccelForce !== 0 ? (
+              <Note>
+                {tx(
+                  locale,
+                  `Waarvan ${fmtDotComma(result.rollerAccelForce, 0)} N (in F, T en P hierboven) door de rotatietraagheid van de rol zelf tijdens versnellen.`,
+                  `Of which ${fmtDotComma(result.rollerAccelForce, 0)} N (in F, T and P above) is the roller's own rotational inertia during acceleration.`,
+                )}
+              </Note>
+            ) : null}
             <div className="flex flex-wrap gap-2">
               <CopyResult text={copy} />
               <CopyLink />

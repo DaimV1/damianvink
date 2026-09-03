@@ -26,6 +26,7 @@ export const Route = createFileRoute("/toolkit/motorspecificatie")({
     eta?: string;
     fb?: string;
     a?: string;
+    rm?: string;
   } => {
     const num = (v: unknown) => (typeof v === "string" && NUM_RE.test(v) ? v : undefined);
     return {
@@ -42,6 +43,7 @@ export const Route = createFileRoute("/toolkit/motorspecificatie")({
       eta: num(s.eta),
       fb: num(s.fb),
       a: num(s.a),
+      rm: num(s.rm),
     };
   },
   head: () =>
