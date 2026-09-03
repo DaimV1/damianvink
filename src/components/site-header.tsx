@@ -28,7 +28,7 @@ export function SiteHeader() {
   }
 
   return (
-    <header className="border-b border-line bg-paper">
+    <header className="border-b border-line bg-paper print:hidden">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
         <div className="flex min-w-0 items-center gap-3">
           <VinkMark />

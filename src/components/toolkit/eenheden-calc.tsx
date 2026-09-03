@@ -198,7 +198,7 @@ export function EenhedenCalc() {
           </div>
         </div>
 
-        <div className="mt-4">
+        <div className="mt-4 print:hidden">
           <Button type="button" variant="secondary" onClick={swap}>
             <ArrowLeftRight className="size-4" />
             {tx(locale, "Wissel van/naar", "Swap from/to")}

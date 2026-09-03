@@ -242,3 +242,37 @@
   font-size: 0.6875rem;
   color: var(--ink-subtle);
 }
+
+/* Reference tables and calculator results get taped next to a drawing —
+   force light/black-on-white regardless of the on-screen theme, and let
+   wide tables wrap onto the page instead of being clipped by the
+   horizontal-scroll container that only makes sense on screen. */
+@media print {
+  :root,
+  [data-theme="dark"],
+  [data-theme="light"] {
+    --paper: #fff;
+    --paper-elevated: #fff;
+    --paper-muted: #f3f3f3;
+    --ink: #000;
+    --ink-muted: #333;
+    --ink-subtle: #555;
+    --line: #ccc;
+    --line-strong: #999;
+    --shadow: none;
+  }
+
+  .table-scroll {
+    overflow: visible;
+    border-width: 0;
+  }
+
+  .ref-table {
+    font-size: 0.7rem;
+  }
+
+  .ref-table th,
+  .ref-table td {
+    white-space: normal;
+  }
+}

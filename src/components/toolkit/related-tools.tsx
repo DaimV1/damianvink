@@ -12,7 +12,10 @@ export function RelatedTools({ active }: { active: ToolId }) {
   if (related.length === 0) return null;
 
   return (
-    <aside className="mt-12 border-t border-line pt-8" aria-label={tx(locale, "Gerelateerde tools", "Related tools")}>
+    <aside
+      className="mt-12 border-t border-line pt-8 print:hidden"
+      aria-label={tx(locale, "Gerelateerde tools", "Related tools")}
+    >
       <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">
         {tx(locale, "Ook in de toolkit", "Also in the toolkit")}
       </p>

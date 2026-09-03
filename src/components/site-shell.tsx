@@ -11,8 +11,8 @@ export function SiteShell({
 }) {
   return (
     <div className="relative flex min-h-dvh flex-col bg-paper text-ink">
-      <div className="grid-bg" aria-hidden="true" />
-      <div className="sticky top-0 z-40 bg-paper">
+      <div className="grid-bg print:hidden" aria-hidden="true" />
+      <div className="sticky top-0 z-40 bg-paper print:hidden">
         <SiteHeader />
         {subnav}
       </div>

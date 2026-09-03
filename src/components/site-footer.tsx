@@ -12,7 +12,7 @@ export function SiteFooter() {
   ] as const;
 
   return (
-    <footer className="mt-auto border-t border-line">
+    <footer className="mt-auto border-t border-line print:hidden">
       <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-6">
         <nav className="flex flex-wrap gap-x-5 gap-y-2" aria-label="Footer">
           {footer.map((item) => (

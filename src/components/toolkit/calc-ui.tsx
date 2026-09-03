@@ -162,7 +162,7 @@ export function CopyResult({ text }: { text: string }) {
     <Button
       type="button"
       variant="secondary"
-      className="mt-5"
+      className="mt-5 print:hidden"
       onClick={async () => {
         try {
           await navigator.clipboard.writeText(text);
@@ -186,7 +186,7 @@ export function CopyLink() {
     <Button
       type="button"
       variant="secondary"
-      className="mt-5"
+      className="mt-5 print:hidden"
       onClick={async () => {
         try {
           await navigator.clipboard.writeText(window.location.href);
@@ -258,7 +258,7 @@ export function Faq({
 }) {
   const { locale } = useLocale();
   return (
-    <section className="mt-12">
+    <section className="mt-12 print:hidden">
       <JsonLd data={faqJsonLd(items)} />
       <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
         {tx(locale, "Vragen", "Questions")}
