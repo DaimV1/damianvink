@@ -25,7 +25,7 @@ export const TOOLS = [
     related: ["lager", "iso2768"],
     blurb: "Voorkeurpassingen; H/JS/G/F/D tot Ø 3150 mm. JS7 = ±IT7/2, niet afgerond.",
     blurbEn: "Preferred fits; H/JS/G/F/D to Ø 3150 mm. JS7 = ±IT7/2, not rounded.",
-    tags: ["h7", "g6", "h6", "js7", "speling", "overmaat", "boring", "fits", "clearance", "interference"],
+    tags: ["h7", "g6", "h6", "js7", "f7", "d9", "k6", "n6", "p6", "s6", "c11", "speling", "overmaat", "boring", "fits", "clearance", "interference"],
   },
   {
     id: "iso2768",
@@ -42,7 +42,7 @@ export const TOOLS = [
     related: ["passingen"],
     blurb: "Titelblok-default f/m/c/v en H/K/L. Geen passing (dat is ISO 286).",
     blurbEn: "Title-block default f/m/c/v and H/K/L. Not a fit (that is ISO 286).",
-    tags: ["titelblok", "algemeen", "maat", "title block", "general"],
+    tags: ["titelblok", "algemeen", "maat", "title block", "general", "iso 2768", "iso 22081", "mk"],
   },
   {
     id: "spiebaan",
@@ -59,7 +59,7 @@ export const TOOLS = [
     related: ["passingen"],
     blurb: "Spiemaat, t₁/t₂. As-Ø: boven de ondergrens t/m de bovengrens.",
     blurbEn: "Key size, t₁/t₂. Shaft Ø: above the lower bound through the upper bound.",
-    tags: ["spie", "naaf", "as", "keyway", "key", "hub", "shaft"],
+    tags: ["spie", "naaf", "as", "keyway", "key", "hub", "shaft", "din 6885", "p9", "n9", "js9"],
   },
   {
     id: "lager",
@@ -76,7 +76,7 @@ export const TOOLS = [
     related: ["passingen"],
     blurb: "Groefkogellagers: vast/los, SKF-klassen tot Ø 50 mm.",
     blurbEn: "Deep-groove ball bearings: locating/non-locating, SKF classes to Ø 50 mm.",
-    tags: ["kogel", "vast", "los", "bearing", "locating"],
+    tags: ["kogel", "vast", "los", "bearing", "locating", "j6", "k5", "skf"],
   },
   {
     id: "seeger",
@@ -93,7 +93,7 @@ export const TOOLS = [
     related: ["oring"],
     blurb: "Groef d₂, breedte b en diepte t op as of in boring, tot Ø 100 mm.",
     blurbEn: "Groove d₂, width b and depth t on shaft or in bore, to Ø 100 mm.",
-    tags: ["borgveer", "circlip", "as", "boring", "retaining"],
+    tags: ["borgveer", "circlip", "as", "boring", "retaining", "din 471", "din 472"],
   },
   {
     id: "bevestigers",
@@ -110,7 +110,7 @@ export const TOOLS = [
     related: ["bronnen"],
     blurb: "M3–M24: doorlaat, zeskant/inbus, aandraaimoment 8.8 / 10.9 / 12.9.",
     blurbEn: "M3–M24: clearance hole, hex/socket, tightening torque 8.8 / 10.9 / 12.9.",
-    tags: ["bout", "moer", "moment", "inbus", "m8", "bolt", "torque", "nut"],
+    tags: ["bout", "moer", "moment", "inbus", "m8", "bolt", "torque", "nut", "vdi 2230", "iso 273", "8.8", "10.9", "12.9"],
   },
   {
     id: "oring",
@@ -127,7 +127,7 @@ export const TOOLS = [
     related: ["seeger"],
     blurb: "ISO-koorden 1,80–7,00 mm: groef t / b, radiaal en axiaal.",
     blurbEn: "ISO cords 1.80–7.00 mm: groove t / b, radial and axial.",
-    tags: ["afdichting", "koord", "radiaal", "axiaal", "seal", "cord"],
+    tags: ["afdichting", "koord", "radiaal", "axiaal", "seal", "cord", "iso 3601", "dichtomatik"],
   },
   {
     id: "motor",
@@ -184,7 +184,7 @@ export const TOOLS = [
       "Haaks/scherp: Ri, min. beenlengte s, groefwijdte w, Z-buiging. Shop-spec Sophia, geen ISO.",
     blurbEn:
       "Square/acute: Ri, min. leg length s, groove width w, Z-bend. Sophia shop-spec, not ISO.",
-    tags: ["buigen", "plaat", "sophia", "zetwerk", "bending", "sheet"],
+    tags: ["buigen", "plaat", "sophia", "zetwerk", "bending", "sheet", "247tailorsteel", "k-factor", "bend allowance"],
   },
   {
     id: "knik",
@@ -239,7 +239,7 @@ export const TOOLS = [
     related: ["motor", "bevestigers", "cilinder"],
     blurb: "Inch ↔ mm, °C ↔ K, dm³ ↔ L, lbf ↔ N, psi ↔ bar. SI en imperial.",
     blurbEn: "Inch ↔ mm, °C ↔ K, dm³ ↔ L, lbf ↔ N, psi ↔ bar. SI and imperial.",
-    tags: ["omrekenen", "inch", "kelvin", "newton", "liter", "units", "convert"],
+    tags: ["omrekenen", "inch", "kelvin", "newton", "liter", "units", "convert", "psi", "bar", "pascal", "fahrenheit", "celsius", "gallon", "pound", "lbf"],
   },
   {
     id: "bronnen",
