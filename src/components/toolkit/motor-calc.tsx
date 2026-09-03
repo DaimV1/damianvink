@@ -209,7 +209,7 @@ export function MotorCalc() {
               items={[
                 {
                   label: "n_rol",
-                  value: `${fmtDotComma(result.n_rpm, 1)} min⁻¹`,
+                  value: `${fmtDotComma(result.n_rpm, 1)} ${tx(locale, "omw/min", "RPM")}`,
                 },
                 { label: "F", value: `${fmtNl(result.F, 0)} N` },
                 {
