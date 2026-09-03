@@ -24,7 +24,7 @@ Custom domain: `www.damianvink.nl` (apex 308’t naar www).
 
 ## Findability
 
-- `public/robots.txt` — sitemap-verwijzing, `/spel` en `/project` uitgesloten
+- `public/robots.txt` — sitemap-verwijzing, `/spel`, `/podcast` en `/projecten` uitgesloten. `/project` blijft crawlbaar en gebruikt in plaats daarvan een noindex meta-tag per pagina.
 - `public/sitemap.xml` — indexeerbare pagina’s, www, geen trailing slash
 - `public/llms.txt` — korte inhoudsopgave voor AI-crawlers
 

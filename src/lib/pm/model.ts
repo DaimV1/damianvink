@@ -1,4 +1,5 @@
 import type { Activity } from "@/lib/pm/activity";
+import type { WorkspaceWithExport } from "@/lib/pm/export-freshness";
 
 export const PHASES = [
   { id: "orientatie", n: "01", label: "Oriëntatie", labelEn: "Framing", question: "Moet dit een project zijn?", questionEn: "Should this be a project?", result: "Kader en werkvorm", resultEn: "Frame and work form" },
@@ -159,7 +160,7 @@ export function euro(n: number | null | undefined) {
   return n.toLocaleString("nl-NL", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
 }
 
-export function emptyWorkspace(): Workspace {
+export function emptyWorkspace(): WorkspaceWithExport {
   const project = emptyProject();
   return { version: 2, activeId: project.id, projects: { [project.id]: project } };
 }

@@ -13,7 +13,7 @@ Main nav: Toolkit, Project, Marathon, About, Contact.
 - [Home](https://www.damianvink.nl/): Project Engineer machine building; toolkit, project, marathon, contact
 - [Toolkit](https://www.damianvink.nl/toolkit): calculator + reference. Search: `/toolkit?q={term}` (H7, inch, ISO, torque, …)
 - [Units](https://www.damianvink.nl/toolkit/eenheden): SI · imperial; inch↔mm, °C↔K, dm³↔L, lbf↔N, psi↔bar
-- [Fits ISO 286](https://www.damianvink.nl/toolkit/passingen): preferred fits to Ø50 mm, hole-basis H7/g6, H7/h6, JS7
+- [Fits ISO 286](https://www.damianvink.nl/toolkit/passingen): preferred fits to Ø3150 mm (H/JS/G/F/D formula-derived; C/K/N/P/S capped at Ø50 mm), hole-basis H7/g6, H7/h6, JS7
 - [General tolerances ISO 2768](https://www.damianvink.nl/toolkit/iso-2768): title-block default f/m/c/v and H/K/L; not a fit
 - [Keyway DIN 6885](https://www.damianvink.nl/toolkit/spiebaan-toleranties): t1/t2, b×h; shaft Ø above lower bound through upper bound
 - [Bearing fits](https://www.damianvink.nl/toolkit/lagerpassingen): deep-groove ball, SKF classes to Ø50 mm
