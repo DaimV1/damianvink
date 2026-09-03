@@ -192,7 +192,7 @@ export function LagerCalc() {
                 {result.holeAlt ? ` / ${result.holeAlt}` : ""}
               </>
             ) : (
-              tx(locale, "Band boven 18 t/m 30 mm — vul een Ø in", "Band >18 – ≤30 mm — enter an Ø")
+              tx(locale, "Band >18 – ≤30 mm — vul een Ø in", "Band >18 – ≤30 mm — enter an Ø")
             )
           }
         >
