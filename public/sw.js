@@ -1,8 +1,8 @@
 // Minimal, narrowly-scoped offline cache for the engineering toolkit —
 // a workshop with bad wifi should still be able to reopen a reference
 // page it already visited. Deliberately does NOT touch /project (live,
-// authenticated data), the platform's own /__grok/* PWA chrome, or
-// anything outside /toolkit — this is not an app-shell precache.
+// authenticated data) or anything outside /toolkit — this is not an
+// app-shell precache.
 
 const CACHE_NAME = "toolkit-offline-v1";
 
