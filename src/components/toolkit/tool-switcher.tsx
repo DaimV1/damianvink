@@ -1,17 +1,39 @@
 import { Link, useNavigate } from "@tanstack/react-router";
+import { ChevronDown } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { tx, useLocale } from "@/lib/i18n/locale";
-import { TOOL_GROUPS, TOOLS, type ToolId, toolShort } from "@/lib/toolkit/tools";
+import { TOOL_GROUPS, TOOLS, type ToolId, toolShort, toolTitle } from "@/lib/toolkit/tools";
 import { cn } from "@/lib/utils";
 
 export function ToolSwitcher({ active }: { active?: ToolId }) {
   const { locale } = useLocale();
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const activeTool = TOOLS.find((tool) => tool.id === active);
+
+  useEffect(() => {
+    if (!open) return;
+    function onPointerDown(e: PointerEvent) {
+      if (rootRef.current && !rootRef.current.contains(e.target as Node)) setOpen(false);
+    }
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") setOpen(false);
+    }
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
+
   return (
-    <div className="border-b border-line bg-paper">
-      <div className="mx-auto max-w-6xl px-4 py-2.5 sm:px-6 sm:py-0">
+    <div ref={rootRef} className="relative border-b border-line bg-paper">
+      <div className="mx-auto max-w-6xl px-4 py-2.5 sm:px-6">
         <select
           aria-label={tx(locale, "Kies een tool", "Choose a tool")}
-          value={TOOLS.find((tool) => tool.id === active)?.href ?? ""}
+          value={activeTool?.href ?? ""}
           onChange={(e) => {
             if (e.target.value) navigate({ to: e.target.value });
           }}
@@ -28,40 +50,74 @@ export function ToolSwitcher({ active }: { active?: ToolId }) {
             </optgroup>
           ))}
         </select>
-        <nav
-          className="-mx-1 hidden items-center gap-1 overflow-x-auto py-2.5 [scrollbar-width:none] sm:flex [&::-webkit-scrollbar]:hidden"
-          aria-label="Engineering tools"
+        <button
+          type="button"
+          className="hidden h-11 w-full items-center justify-between gap-2 rounded-md border border-line-strong bg-elevated px-4 text-sm text-ink transition-colors duration-150 hover:border-line-strong sm:flex"
+          aria-expanded={open}
+          aria-controls="toolkit-switcher-panel"
+          onClick={() => setOpen((v) => !v)}
         >
-          {TOOL_GROUPS.map((group, groupIndex) => (
-            <span key={group.id} className="flex shrink-0 items-center gap-1">
-              {groupIndex > 0 ? (
-                <span
-                  aria-hidden="true"
-                  className="mx-1 h-6 w-px shrink-0 bg-line-strong"
-                />
-              ) : null}
-              {TOOLS.filter((tool) => tool.group === group.id).map((tool) => {
-                const isOn = tool.id === active;
-                return (
-                  <Link
-                    key={tool.id}
-                    to={tool.href}
-                    aria-current={isOn ? "page" : undefined}
-                    className={cn(
-                      "flex h-11 shrink-0 items-center rounded-full border px-4 text-sm transition-[background-color,border-color,color] duration-150",
-                      isOn
-                        ? "border-accent bg-accent text-accent-fg"
-                        : "border-line bg-elevated text-muted hover:border-line-strong hover:text-ink",
-                    )}
-                  >
-                    {toolShort(tool, locale)}
-                  </Link>
-                );
-              })}
+          <span className="flex items-center gap-2">
+            <span className="font-mono text-xs uppercase tracking-[0.12em] text-muted">
+              {tx(locale, "Toolkit", "Toolkit")}
             </span>
-          ))}
-        </nav>
+            {activeTool ? (
+              <>
+                <span aria-hidden="true" className="text-subtle">
+                  /
+                </span>
+                <span className="font-medium">{toolTitle(activeTool, locale)}</span>
+              </>
+            ) : null}
+          </span>
+          <ChevronDown
+            className={cn("size-4 shrink-0 text-muted transition-transform duration-150", open ? "rotate-180" : "")}
+            aria-hidden="true"
+          />
+        </button>
       </div>
+
+      {open ? (
+        <div
+          id="toolkit-switcher-panel"
+          className="hidden border-t border-line bg-paper sm:block"
+        >
+          <nav
+            className="mx-auto grid max-w-6xl gap-x-8 gap-y-6 px-4 py-6 sm:px-6 sm:grid-cols-2 lg:grid-cols-4"
+            aria-label="Engineering tools"
+          >
+            {TOOL_GROUPS.map((group) => (
+              <div key={group.id}>
+                <p className="font-mono text-xs uppercase tracking-[0.12em] text-subtle">
+                  {tx(locale, group.label, group.labelEn)}
+                </p>
+                <ul className="mt-2 space-y-0.5">
+                  {TOOLS.filter((tool) => tool.group === group.id).map((tool) => {
+                    const isOn = tool.id === active;
+                    return (
+                      <li key={tool.id}>
+                        <Link
+                          to={tool.href}
+                          aria-current={isOn ? "page" : undefined}
+                          onClick={() => setOpen(false)}
+                          className={cn(
+                            "block rounded-md px-2 py-1.5 -mx-2 text-sm transition-colors duration-150",
+                            isOn
+                              ? "bg-accent text-accent-fg"
+                              : "text-ink hover:bg-muted-bg",
+                          )}
+                        >
+                          {toolShort(tool, locale)}
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            ))}
+          </nav>
+        </div>
+      ) : null}
     </div>
   );
 }
