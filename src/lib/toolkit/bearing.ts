@@ -1,4 +1,4 @@
-import { BANDS, HOLE, SHAFT, bandIndex } from "./iso286.ts";
+import { BANDS, bandIndex, holeDeviationAt, shaftDeviationAt } from "./iso286.ts";
 
 /** Housing classes in SKF-style chart order: clearance → interference. */
 export const HOUSING_CHART = [
@@ -80,13 +80,20 @@ export function computeBearing(d: number, rot: string, load: string) {
   const i = bandIndex(d);
   if (i < 0) return null;
   const rec = pickBearing(d, rot, load);
+  // Band-aware lookup (not a raw array index): a class can be unavailable at
+  // a given band (currently only the >0-3 mm band, see iso286.ts's M-2 note),
+  // and the lager tool must degrade to "no SKF row" rather than read a null.
+  const shaftDev = shaftDeviationAt(rec.shaft, i);
+  const holeDev = holeDeviationAt(rec.hole, i);
+  const h6 = shaftDeviationAt("h6", i);
+  if (!shaftDev || !holeDev || !h6) return null;
   return {
     ...rec,
     band: BANDS[i],
-    shaftDev: SHAFT[rec.shaft],
-    holeDev: HOLE[rec.hole],
-    holeAltDev: rec.holeAlt ? HOLE[rec.holeAlt] : null,
-    h6: SHAFT.h6,
+    shaftDev,
+    holeDev,
+    holeAltDev: rec.holeAlt ? holeDeviationAt(rec.holeAlt, i) : null,
+    h6,
     i,
   };
 }

@@ -3,7 +3,16 @@ import { describe, it } from "node:test";
 import { computeBearing, pickBearing } from "./bearing.ts";
 import { lookupFastener } from "./fastener.ts";
 import { FRICTION, scaleMa } from "./friction.ts";
-import { BANDS, HOLE, bandIndex, computeFit, fitExtendable, holeDeviationAt } from "./iso286.ts";
+import {
+  BANDS,
+  HOLE,
+  bandIndex,
+  computeFit,
+  fitExtendable,
+  holeDeviationAt,
+  isExtendedBand,
+  shaftDeviationAt,
+} from "./iso286.ts";
 import { designation, lookupIso2768 } from "./iso2768.ts";
 import { keyWidthTol, lookupKeyway } from "./keyway.ts";
 import {
@@ -46,8 +55,32 @@ describe("ISO 286 passingen", () => {
     assert.ok(large.maxC < 0);
   });
 
-  it("returns null at/below 3 mm (below the table's first band)", () => {
-    assert.equal(computeFit(3, "H7/h6"), null);
+  it("returns null at/below 0 mm (below the table's first band)", () => {
+    assert.equal(computeFit(0, "H7/h6"), null);
+  });
+
+  it("M-2: Ø3 mm now resolves via the added >0-3 mm band, for H/h/JS7/p6 only", () => {
+    const r = computeFit(3, "H7/h6");
+    assert.ok(r);
+    assert.equal(r.ES, 10);
+    assert.equal(r.EI, 0);
+    assert.equal(r.es, 0);
+    assert.equal(r.ei, -6);
+    assert.equal(r.minC, 0);
+    assert.equal(r.maxC, 16);
+
+    // p6 is derived (not tabulated): line fit up to 18 mm holds at >0-3 mm too.
+    const p6 = computeFit(3, "H7/p6");
+    assert.ok(p6);
+    assert.equal(p6.maxC, 0);
+    assert.ok(p6.minC < 0);
+
+    // Classes with no verified >0-3 mm data stay null there (render "—"), not a guess.
+    assert.equal(holeDeviationAt("K7", bandIndex(3)), null);
+    assert.equal(holeDeviationAt("F8", bandIndex(3)), null);
+    assert.equal(shaftDeviationAt("c11", bandIndex(3)), null);
+    assert.equal(shaftDeviationAt("k6", bandIndex(3)), null);
+    assert.equal(computeFit(3, "H11/c11"), null);
   });
 
   it("H7/h6 (formula-extendable) works past 50 mm, band 50-80", () => {
@@ -117,7 +150,8 @@ describe("ISO 286 passingen", () => {
   });
 
   it("H-4: JS7 = ±H7/2 for every extended band, not just below 50 mm", () => {
-    for (let idx = 6; idx < BANDS.length; idx++) {
+    for (let idx = 0; idx < BANDS.length; idx++) {
+      if (!isExtendedBand(idx)) continue;
       const h7 = holeDeviationAt("H7", idx);
       const js7 = holeDeviationAt("JS7", idx);
       assert.ok(h7 && js7, `band index ${idx}`);
@@ -169,13 +203,18 @@ describe("lagerpassingen", () => {
     assert.equal(rec.hole, "H7");
     const r = computeBearing(20, "binnen", "normaal");
     assert.ok(r);
-    assert.equal(r.shaftDev.es[r.i], 11);
-    assert.equal(r.shaftDev.ei[r.i], 2);
+    assert.equal(r.shaftDev.es, 11);
+    assert.equal(r.shaftDev.ei, 2);
   });
 
   it("light load at Ø 20 is j6 not js5", () => {
     assert.equal(pickBearing(20, "binnen", "licht").shaft, "j6");
     assert.equal(pickBearing(17, "binnen", "licht").shaft, "js5");
+  });
+
+  it("M-2: the tool's own 4-50 mm range never touches the >0-3 mm band, but an out-of-range Ø there degrades to null instead of reading a missing (js5/j5/k5) class", () => {
+    assert.equal(computeBearing(2, "binnen", "licht"), null);
+    assert.equal(computeBearing(2, "binnen", "normaal"), null);
   });
 });
 

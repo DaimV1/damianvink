@@ -48,15 +48,14 @@ export function LagerCalc() {
 
   const copy = useMemo(() => {
     if (!result) return "";
-    const i = result.i;
     const shaftL = tx(locale, "As", "Shaft");
     const houseL = tx(locale, "Huis", "Housing");
     const bearingL = tx(locale, "Groefkogellager", "Deep-groove bearing");
     const altL = tx(locale, "(alternatief)", "(alternative)");
     return [
       `${bearingL} · ${shaftL.toLowerCase()} Ø ${d} mm · band ${tx(locale, result.band.label, result.band.labelEn)} mm`,
-      `${shaftL} ${result.shaft}  ${mmFromUm(result.shaftDev.es[i])} / ${mmFromUm(result.shaftDev.ei[i])} mm`,
-      `${houseL} ${result.hole}  ${mmFromUm(result.holeDev.ES[i])} / ${mmFromUm(result.holeDev.EI[i])} mm`,
+      `${shaftL} ${result.shaft}  ${mmFromUm(result.shaftDev.es)} / ${mmFromUm(result.shaftDev.ei)} mm`,
+      `${houseL} ${result.hole}  ${mmFromUm(result.holeDev.ES)} / ${mmFromUm(result.holeDev.EI)} mm`,
       result.holeAlt ? `${houseL} ${result.holeAlt} ${altL}` : "",
     ]
       .filter(Boolean)
@@ -72,16 +71,16 @@ export function LagerCalc() {
                 {tx(locale, "As", "Shaft")} <span className="normal-case">{result.shaft}</span>
               </>
             ),
-            value: `${mmFromUm(result.shaftDev.es[result.i])} / ${mmFromUm(result.shaftDev.ei[result.i])} mm`,
+            value: `${mmFromUm(result.shaftDev.es)} / ${mmFromUm(result.shaftDev.ei)} mm`,
           },
           {
             label: `${tx(locale, "Huis", "Housing")} ${result.hole}`,
-            value: `${mmFromUm(result.holeDev.ES[result.i])} / ${mmFromUm(result.holeDev.EI[result.i])} mm`,
+            value: `${mmFromUm(result.holeDev.ES)} / ${mmFromUm(result.holeDev.EI)} mm`,
           },
           result.holeAltDev
             ? {
                 label: `${tx(locale, "Huis", "Housing")} ${result.holeAlt} ${tx(locale, "(alternatief)", "(alternative)")}`,
-                value: `${mmFromUm(result.holeAltDev.ES[result.i])} / ${mmFromUm(result.holeAltDev.EI[result.i])} mm`,
+                value: `${mmFromUm(result.holeAltDev.ES)} / ${mmFromUm(result.holeAltDev.EI)} mm`,
               }
             : null,
           stil
@@ -93,7 +92,7 @@ export function LagerCalc() {
                     {tx(locale, "(geen verschuiving nodig)", "(no shift needed)")}
                   </>
                 ),
-                value: `${mmFromUm(result.h6.es[result.i])} / ${mmFromUm(result.h6.ei[result.i])} mm`,
+                value: `${mmFromUm(result.h6.es)} / ${mmFromUm(result.h6.ei)} mm`,
               }
             : null,
         ].filter(Boolean) as { label: ReactNode; value: string }[])

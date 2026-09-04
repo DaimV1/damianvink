@@ -89,8 +89,8 @@ export function PassingenCalc() {
         <Note>
           {tx(
             locale,
-            "Nominale Ø in hele millimeters, boven 3 t/m 3150 mm (de volledige ISO 286-reeks). H/h, JS/js, G/g, F/f en D/d zijn berekend uit de ISO 286-1-formules en gelden over de hele reeks. c11, k6, n6, p6 en s6 hebben geen eenvoudige formule en blijven beperkt tot t/m 50 mm — zie hieronder.",
-            "Nominal Ø in whole millimeters, over 3 through 3150 mm (the full ISO 286 series). H/h, JS/js, G/g, F/f and D/d are computed from the ISO 286-1 formulas and apply across the whole series. c11, k6, n6, p6 and s6 have no simple formula and stay capped at 50 mm — see below.",
+            "Nominale Ø in hele millimeters, boven 0 t/m 3150 mm (de volledige ISO 286-reeks). H/h, JS/js, G/g, F/f en D/d zijn berekend uit de ISO 286-1-formules en gelden over de hele reeks. c11, k6, n6, p6 en s6 hebben geen eenvoudige formule en blijven beperkt tot t/m 50 mm — zie hieronder. In de kleinste band (>0–≤3 mm) zijn alleen H6–H11, JS7, h6, h7 en p6 geverifieerd; de overige klassen tonen daar \"—\" (nog geen bron gecontroleerd) in plaats van een gok.",
+            "Nominal Ø in whole millimeters, over 0 through 3150 mm (the full ISO 286 series). H/h, JS/js, G/g, F/f and D/d are computed from the ISO 286-1 formulas and apply across the whole series. c11, k6, n6, p6 and s6 have no simple formula and stay capped at 50 mm — see below. In the smallest band (>0–≤3 mm) only H6–H11, JS7, h6, h7 and p6 are verified; the other classes show \"—\" there (no source checked yet) rather than a guess.",
           )}
         </Note>
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -127,8 +127,8 @@ export function PassingenCalc() {
           <p className="mt-5 text-sm text-muted">
             {tx(
               locale,
-              `Geen ISO-band voor Ø ${d} mm. Tabellen: boven 3 t/m 3150 mm (Ø 3 valt erbuiten).`,
-              `No ISO band for Ø ${d} mm. Tables: over 3 through 3150 mm (Ø 3 falls outside).`,
+              `Geen ISO-band voor Ø ${d} mm, of ${fitId} heeft nog geen geverifieerde waarde in die band (zie de kleinste band hierboven). Tabellen: boven 0 t/m 3150 mm.`,
+              `No ISO band for Ø ${d} mm, or ${fitId} has no verified value in that band yet (see the smallest band above). Tables: over 0 through 3150 mm.`,
             )}
           </p>
         ) : (
@@ -316,8 +316,8 @@ export function PassingenCalc() {
           </a>
           . {tx(
             locale,
-            "H6–H11, F8, G7 en JS7 zijn berekend uit de ISO 286-1-formules boven 50 mm. * K7 en N7 hebben geen formule en blijven t/m 50 mm.",
-            "H6–H11, F8, G7 and JS7 are computed from the ISO 286-1 formulas above 50 mm. * K7 and N7 have no formula and stay capped at 50 mm.",
+            "H6–H11, F8, G7 en JS7 zijn berekend uit de ISO 286-1-formules boven 50 mm. * K7 en N7 hebben geen formule en blijven t/m 50 mm. In de >0–≤3 mm-band tonen F8, G7, K7 en N7 \"—\": niet gegokt, nog niet tegen een primaire bron gecontroleerd (netwerktoegang tot naslagsites was tijdens deze fix geblokkeerd).",
+            "H6–H11, F8, G7 and JS7 are computed from the ISO 286-1 formulas above 50 mm. * K7 and N7 have no formula and stay capped at 50 mm. In the >0–≤3 mm band, F8, G7, K7 and N7 show \"—\": not guessed, not yet checked against a primary source (network access to reference sites was blocked while making this fix).",
           )}
         </p>
       </section>
@@ -373,8 +373,8 @@ export function PassingenCalc() {
           .{" "}
           {tx(
             locale,
-            "Waarden omgerekend van µm naar mm. Diameters: boven de ondergrens tot en met de bovengrens. JS7 is ±IT7/2 volgens ISO 286-2, zonder afronding naar hele µm. d9, f7, g6, h6 en h7 zijn berekend uit de ISO 286-1-formules boven 50 mm. * c11, k6, n6, p6 en s6 hebben geen formule en blijven t/m 50 mm. Naslag, geen vervanging van de norm.",
-            "Values converted from µm to mm. Diameters: over the lower bound up to and including the upper bound. JS7 is ±IT7/2 per ISO 286-2, without rounding to whole µm. d9, f7, g6, h6 and h7 are computed from the ISO 286-1 formulas above 50 mm. * c11, k6, n6, p6 and s6 have no formula and stay capped at 50 mm. Reference only, not a substitute for the standard.",
+            "Waarden omgerekend van µm naar mm. Diameters: boven de ondergrens tot en met de bovengrens. JS7 is ±IT7/2 volgens ISO 286-2, zonder afronding naar hele µm. d9, f7, g6, h6 en h7 zijn berekend uit de ISO 286-1-formules boven 50 mm. * c11, k6, n6, p6 en s6 hebben geen formule en blijven t/m 50 mm. In de >0–≤3 mm-band zijn alleen h6, h7 en p6 geverifieerd (p6 afgeleid uit de al geverifieerde \"lijnpassing tot 18 mm\"-regel hierboven); c11, d9, f7, g6, k6, n6 en s6 tonen daar \"—\" — nog niet tegen een primaire bron gecontroleerd. Naslag, geen vervanging van de norm.",
+            "Values converted from µm to mm. Diameters: over the lower bound up to and including the upper bound. JS7 is ±IT7/2 per ISO 286-2, without rounding to whole µm. d9, f7, g6, h6 and h7 are computed from the ISO 286-1 formulas above 50 mm. * c11, k6, n6, p6 and s6 have no formula and stay capped at 50 mm. In the >0–≤3 mm band only h6, h7 and p6 are verified (p6 derived from the already-verified \"line fit up to 18 mm\" rule above); c11, d9, f7, g6, k6, n6 and s6 show \"—\" there — not yet checked against a primary source. Reference only, not a substitute for the standard.",
           )}
         </p>
       </section>

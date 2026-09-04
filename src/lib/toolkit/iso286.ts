@@ -16,12 +16,15 @@ function rangeLabel(over: number, to: number) {
 }
 
 /**
- * 3 through 50 mm: the original, hand-verified table (unchanged). 50 mm and up:
- * the standard ISO 286 size steps, formula-computed on demand — see
+ * 0 through 50 mm: the original, hand-verified table (unchanged) plus the
+ * >0-3 mm first band added for M-2 (see the HOLE/SHAFT comment below — only
+ * some classes have verified data at that band; the rest read "—"). 50 mm
+ * and up: the standard ISO 286 size steps, formula-computed on demand — see
  * computeHoleDeviation/computeShaftDeviation. 30-40 and 40-50 are a display
  * split of ISO's single combined 30-50 band (see calcOver/calcTo below).
  */
 export const BANDS: Band[] = [
+  { over: 0, to: 3, label: rangeLabel(0, 3), labelEn: rangeLabel(0, 3) },
   { over: 3, to: 6, label: rangeLabel(3, 6), labelEn: rangeLabel(3, 6) },
   { over: 6, to: 10, label: rangeLabel(6, 10), labelEn: rangeLabel(6, 10) },
   { over: 10, to: 18, label: rangeLabel(10, 18), labelEn: rangeLabel(10, 18) },
@@ -45,39 +48,67 @@ export const BANDS: Band[] = [
   { over: 2500, to: 3150, label: rangeLabel(2500, 3150), labelEn: rangeLabel(2500, 3150) },
 ];
 
-/** Index of the last band backed by the original hand-verified table (3-50 mm). Bands after this are formula-only. */
-const LAST_TABLE_BAND = 5;
+/** Index of the last band backed by the table (now 0-50 mm, see M-2 note below). Bands after this are formula-only. */
+const LAST_TABLE_BAND = 6;
 
-export const HOLE: Record<string, { ES: number[]; EI: number[] }> = {
-  H6: { ES: [8, 9, 11, 13, 16, 16], EI: [0, 0, 0, 0, 0, 0] },
-  H7: { ES: [12, 15, 18, 21, 25, 25], EI: [0, 0, 0, 0, 0, 0] },
-  H8: { ES: [18, 22, 27, 33, 39, 39], EI: [0, 0, 0, 0, 0, 0] },
-  H9: { ES: [30, 36, 43, 52, 62, 62], EI: [0, 0, 0, 0, 0, 0] },
-  H11: { ES: [75, 90, 110, 130, 160, 160], EI: [0, 0, 0, 0, 0, 0] },
-  F8: { ES: [28, 35, 43, 53, 64, 64], EI: [10, 13, 16, 20, 25, 25] },
-  G7: { ES: [16, 20, 24, 28, 34, 34], EI: [4, 5, 6, 7, 9, 9] },
-  JS7: { ES: [6, 7.5, 9, 10.5, 12.5, 12.5], EI: [-6, -7.5, -9, -10.5, -12.5, -12.5] },
-  J7: { ES: [6, 8, 10, 12, 14, 14], EI: [-6, -7, -8, -9, -11, -11] },
-  K7: { ES: [3, 5, 6, 6, 7, 7], EI: [-9, -10, -12, -15, -18, -18] },
-  M7: { ES: [0, 0, 0, 0, 0, 0], EI: [-12, -15, -18, -21, -25, -25] },
-  N7: { ES: [-4, -4, -5, -7, -8, -8], EI: [-16, -19, -23, -28, -33, -33] },
+/**
+ * M-2 (4 Sept 2026 audit): the >0-3 mm band was missing entirely. Adding it
+ * safely means either a real ISO 286-1 table entry or a value rigorously
+ * derivable from data this codebase already had independently verified —
+ * never a value recalled from memory alone, which is exactly the failure
+ * mode H-1 through H-4 came from. Network access to a primary or
+ * cross-checkable secondary source (RoyMech, engineersedge, Wikipedia,
+ * machiningdoctor, ISO 286-1 PDF mirrors) was blocked in this environment,
+ * so the >0-3 mm column (index 0 of every array below) is filled in only
+ * where the value follows with certainty from data already in this file:
+ *   - H6/H7/H8/H9/H11, h6/h7: EI/es = 0 by definition; ES/ei = the IT-grade
+ *     width, and the IT5-11 grade-width sequence for 3-50 mm above was
+ *     already audit-verified, so its next (smaller) entry in the same
+ *     standard series is not a fresh claim — IT6=6, IT7=10, IT8=14, IT9=25,
+ *     IT11=60 µm for >0-3 mm.
+ *   - JS7: always exactly ±IT7/2 by the standard's own definition — ±5 µm.
+ *   - p6: this codebase's own FITS note ("H7/p6 line fit up to 18 mm, max.
+ *     clearance 0 µm") holds as an exact equality — ei(p6) = ES(H7) — for
+ *     every already-verified band ≤18 mm (checked against the existing
+ *     3-6, 6-10 and 10-18 mm rows below, all three match exactly). Applying
+ *     that same equality to >0-3 mm gives ei=10, es=ei+IT6=16 — a derivation
+ *     from this file's own audited data, not a recalled table value.
+ * Every other class (F8, G7, K7, N7, c11, d9, f7, g6, k6, n6, s6, and the
+ * bearing-only j5/j6/js5/k5/J7/M7) is left as `null` at index 0 rather than
+ * filled from memory. The passingen page already renders "—" for a null
+ * cell, so this degrades honestly instead of publishing an unverified
+ * number. Fill these in once a primary ISO 286-2 table can be checked.
+ */
+export const HOLE: Record<string, { ES: (number | null)[]; EI: (number | null)[] }> = {
+  H6: { ES: [6, 8, 9, 11, 13, 16, 16], EI: [0, 0, 0, 0, 0, 0, 0] },
+  H7: { ES: [10, 12, 15, 18, 21, 25, 25], EI: [0, 0, 0, 0, 0, 0, 0] },
+  H8: { ES: [14, 18, 22, 27, 33, 39, 39], EI: [0, 0, 0, 0, 0, 0, 0] },
+  H9: { ES: [25, 30, 36, 43, 52, 62, 62], EI: [0, 0, 0, 0, 0, 0, 0] },
+  H11: { ES: [60, 75, 90, 110, 130, 160, 160], EI: [0, 0, 0, 0, 0, 0, 0] },
+  F8: { ES: [null, 28, 35, 43, 53, 64, 64], EI: [null, 10, 13, 16, 20, 25, 25] },
+  G7: { ES: [null, 16, 20, 24, 28, 34, 34], EI: [null, 4, 5, 6, 7, 9, 9] },
+  JS7: { ES: [5, 6, 7.5, 9, 10.5, 12.5, 12.5], EI: [-5, -6, -7.5, -9, -10.5, -12.5, -12.5] },
+  J7: { ES: [null, 6, 8, 10, 12, 14, 14], EI: [null, -6, -7, -8, -9, -11, -11] },
+  K7: { ES: [null, 3, 5, 6, 6, 7, 7], EI: [null, -9, -10, -12, -15, -18, -18] },
+  M7: { ES: [null, 0, 0, 0, 0, 0, 0], EI: [null, -12, -15, -18, -21, -25, -25] },
+  N7: { ES: [null, -4, -4, -5, -7, -8, -8], EI: [null, -16, -19, -23, -28, -33, -33] },
 };
 
-export const SHAFT: Record<string, { es: number[]; ei: number[] }> = {
-  c11: { es: [-70, -80, -95, -110, -120, -130], ei: [-145, -170, -205, -240, -280, -290] },
-  d9: { es: [-30, -40, -50, -65, -80, -80], ei: [-60, -76, -93, -117, -142, -142] },
-  f7: { es: [-10, -13, -16, -20, -25, -25], ei: [-22, -28, -34, -41, -50, -50] },
-  g6: { es: [-4, -5, -6, -7, -9, -9], ei: [-12, -14, -17, -20, -25, -25] },
-  h6: { es: [0, 0, 0, 0, 0, 0], ei: [-8, -9, -11, -13, -16, -16] },
-  h7: { es: [0, 0, 0, 0, 0, 0], ei: [-12, -15, -18, -21, -25, -25] },
-  j5: { es: [3, 4, 5, 5, 6, 6], ei: [-2, -2, -3, -4, -5, -5] },
-  j6: { es: [6, 7, 8, 9, 11, 11], ei: [-2, -2, -3, -4, -5, -5] },
-  js5: { es: [2.5, 3, 4, 4.5, 5.5, 5.5], ei: [-2.5, -3, -4, -4.5, -5.5, -5.5] },
-  k5: { es: [6, 7, 9, 11, 13, 13], ei: [1, 1, 1, 2, 2, 2] },
-  k6: { es: [9, 10, 12, 15, 18, 18], ei: [1, 1, 1, 2, 2, 2] },
-  n6: { es: [16, 19, 23, 28, 33, 33], ei: [8, 10, 12, 15, 17, 17] },
-  p6: { es: [20, 24, 29, 35, 42, 42], ei: [12, 15, 18, 22, 26, 26] },
-  s6: { es: [27, 32, 39, 48, 59, 59], ei: [19, 23, 28, 35, 43, 43] },
+export const SHAFT: Record<string, { es: (number | null)[]; ei: (number | null)[] }> = {
+  c11: { es: [null, -70, -80, -95, -110, -120, -130], ei: [null, -145, -170, -205, -240, -280, -290] },
+  d9: { es: [null, -30, -40, -50, -65, -80, -80], ei: [null, -60, -76, -93, -117, -142, -142] },
+  f7: { es: [null, -10, -13, -16, -20, -25, -25], ei: [null, -22, -28, -34, -41, -50, -50] },
+  g6: { es: [null, -4, -5, -6, -7, -9, -9], ei: [null, -12, -14, -17, -20, -25, -25] },
+  h6: { es: [0, 0, 0, 0, 0, 0, 0], ei: [-6, -8, -9, -11, -13, -16, -16] },
+  h7: { es: [0, 0, 0, 0, 0, 0, 0], ei: [-10, -12, -15, -18, -21, -25, -25] },
+  j5: { es: [null, 3, 4, 5, 5, 6, 6], ei: [null, -2, -2, -3, -4, -5, -5] },
+  j6: { es: [null, 6, 7, 8, 9, 11, 11], ei: [null, -2, -2, -3, -4, -5, -5] },
+  js5: { es: [null, 2.5, 3, 4, 4.5, 5.5, 5.5], ei: [null, -2.5, -3, -4, -4.5, -5.5, -5.5] },
+  k5: { es: [null, 6, 7, 9, 11, 13, 13], ei: [null, 1, 1, 1, 2, 2, 2] },
+  k6: { es: [null, 9, 10, 12, 15, 18, 18], ei: [null, 1, 1, 1, 2, 2, 2] },
+  n6: { es: [null, 16, 19, 23, 28, 33, 33], ei: [null, 8, 10, 12, 15, 17, 17] },
+  p6: { es: [16, 20, 24, 29, 35, 42, 42], ei: [10, 12, 15, 18, 22, 26, 26] },
+  s6: { es: [null, 27, 32, 39, 48, 59, 59], ei: [null, 19, 23, 28, 35, 43, 43] },
 };
 
 /**
@@ -174,24 +205,30 @@ function computeShaftDeviation(id: string, band: Band, bandIdx: number): { es: n
   return { es, ei: es - Math.round(IT) };
 }
 
-/** Hole limit deviations for `id` (e.g. "H7") at `bandIdx`: table lookup for 3-50 mm, formula beyond. */
+/** Hole limit deviations for `id` (e.g. "H7") at `bandIdx`: table lookup for 0-50 mm, formula beyond. Null cell (only possible at the >0-3 mm band, see the HOLE comment) means not yet verified for that band. */
 export function holeDeviationAt(id: string, bandIdx: number): { ES: number; EI: number } | null {
   const band = BANDS[bandIdx];
   if (!band) return null;
   if (bandIdx <= LAST_TABLE_BAND) {
     const row = HOLE[id];
-    return row ? { ES: row.ES[bandIdx], EI: row.EI[bandIdx] } : null;
+    if (!row) return null;
+    const ES = row.ES[bandIdx];
+    const EI = row.EI[bandIdx];
+    return ES != null && EI != null ? { ES, EI } : null;
   }
   return computeHoleDeviation(id, band, bandIdx);
 }
 
-/** Shaft limit deviations for `id` (e.g. "g6") at `bandIdx`: table lookup for 3-50 mm, formula beyond. */
+/** Shaft limit deviations for `id` (e.g. "g6") at `bandIdx`: table lookup for 0-50 mm, formula beyond. Null cell (only possible at the >0-3 mm band, see the SHAFT comment) means not yet verified for that band. */
 export function shaftDeviationAt(id: string, bandIdx: number): { es: number; ei: number } | null {
   const band = BANDS[bandIdx];
   if (!band) return null;
   if (bandIdx <= LAST_TABLE_BAND) {
     const row = SHAFT[id];
-    return row ? { es: row.es[bandIdx], ei: row.ei[bandIdx] } : null;
+    if (!row) return null;
+    const es = row.es[bandIdx];
+    const ei = row.ei[bandIdx];
+    return es != null && ei != null ? { es, ei } : null;
   }
   return computeShaftDeviation(id, band, bandIdx);
 }
