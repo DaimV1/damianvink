@@ -22,6 +22,8 @@ export function lookupKeyway(d: number) {
 
 export type WidthFit = "P9" | "N9" | "JS9" | "H9" | "D10";
 
+export const WIDTH_FITS: WidthFit[] = ["P9", "N9", "JS9", "H9", "D10"];
+
 const WIDTH_BANDS = [
   { over: 0, to: 3, it9: 25, it10: 40, P: -6, N: -4, D: 20 },
   { over: 3, to: 6, it9: 30, it10: 48, P: -12, N: -8, D: 30 },

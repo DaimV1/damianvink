@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearch } from "@tanstack/react-router";
-import { KEYWAYS, lookupKeyway } from "@/lib/toolkit/keyway";
+import { KEYWAYS, keyWidthTol, lookupKeyway, WIDTH_FITS } from "@/lib/toolkit/keyway";
 import { readStoredDiameter, storeDiameter } from "@/lib/toolkit/tools";
-import { fmtMm } from "@/lib/utils";
+import { fmtMm, mmFromUm } from "@/lib/utils";
 import { tx, useLocale } from "@/lib/i18n/locale";
 import {
   CalcEyebrow,
@@ -214,6 +214,48 @@ export function SpiebaanCalc() {
             </p>
           </article>
         </div>
+
+        {row ? (
+          <div className="table-scroll mt-6">
+            <table className="ref-table">
+              <thead>
+                <tr>
+                  <th>{tx(locale, "Klasse", "Class")}</th>
+                  <th>{tx(locale, "Bovenmaat / ondermaat", "Upper / lower deviation")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {WIDTH_FITS.map((fit) => {
+                  const t = keyWidthTol(row.b, fit);
+                  return (
+                    <tr key={fit}>
+                      <th scope="row" className="normal-case">
+                        {fit}
+                      </th>
+                      <td>{t ? `${mmFromUm(t.ES)} / ${mmFromUm(t.EI)} mm` : "—"}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+            <p className="mt-2 text-xs text-subtle">
+              {tx(
+                locale,
+                `Voor b = ${row.b} mm (Ø ${d} mm). Spleet = gatbasis, per ISO 286-2.`,
+                `For b = ${row.b} mm (Ø ${d} mm). Clearance = hole basis, per ISO 286-2.`,
+              )}
+            </p>
+          </div>
+        ) : (
+          <p className="mt-6 text-sm text-muted">
+            {tx(
+              locale,
+              "Vul een as-Ø in bovenaan de pagina voor de numerieke boven-/ondermaat van b.",
+              "Enter a shaft Ø at the top of the page for the numeric upper/lower deviation of b.",
+            )}
+          </p>
+        )}
+
         <p className="mt-4 text-xs leading-relaxed text-subtle">
           {tx(locale, "Bron:", "Source:")}{" "}
           <a
@@ -226,8 +268,8 @@ export function SpiebaanCalc() {
           </a>
           {tx(
             locale,
-            " (hoge vorm). DIN 6885-2 is de lage vorm. H9/D10 is werkplaats-/UNI-conventie, niet de benoemde glijdpassing in DIN 6885-1:2021. Controleer kritieke maten in de actuele norm.",
-            " (high type). DIN 6885-2 is the low type. H9/D10 is shop/UNI convention, not the named sliding fit in DIN 6885-1:2021. Verify critical dimensions in the current standard.",
+            " (hoge vorm). DIN 6885-2 is de lage vorm. H9/D10 is werkplaats-/UNI-conventie, niet de benoemde glijdpassing in DIN 6885-1:2021. b-toleranties berekend uit ISO 286-2 IT9/IT10 en de P/N/D-fundamenteelafwijkingen voor breedtes t/m 30 mm — apart van de as-passingen tool. Controleer kritieke maten in de actuele norm.",
+            " (high type). DIN 6885-2 is the low type. H9/D10 is shop/UNI convention, not the named sliding fit in DIN 6885-1:2021. b tolerances computed from ISO 286-2 IT9/IT10 and the P/N/D fundamental deviations for widths up to 30 mm — separate from the shaft-fits tool. Verify critical dimensions in the current standard.",
           )}
         </p>
       </section>
