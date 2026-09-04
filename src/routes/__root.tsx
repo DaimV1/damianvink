@@ -10,10 +10,12 @@ import { ThemeProvider } from "@/lib/theme";
 import { LocaleProvider, tx, useLocale } from "@/lib/i18n/locale";
 import { PreviewHostBridge } from "@/components/preview-host-bridge";
 import { ToolkitOfflineCache } from "@/components/toolkit-offline";
+import { GoogleAnalytics } from "@/components/google-analytics";
 import { JsonLd } from "@/components/json-ld";
 import { PageWrap, SiteShell } from "@/components/site-shell";
 import { VinkRun } from "@/components/vink-run";
 import { AppErrorComponent } from "@/lib/error-component";
+import { GA_BOOT_SCRIPT, GA_MEASUREMENT_ID } from "@/lib/analytics";
 import {
   DEFAULT_DESCRIPTION,
   personJsonLd,
@@ -48,6 +50,8 @@ export const Route = createRootRoute({
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Space+Grotesk:wght@500;600;700&display=swap",
       },
+      { rel: "preconnect", href: "https://www.googletagmanager.com" },
+      { rel: "preconnect", href: "https://www.google-analytics.com" },
     ],
   }),
   errorComponent: AppErrorComponent,
@@ -59,6 +63,11 @@ function RootDocument() {
   return (
     <html lang="nl" data-theme="dark" suppressHydrationWarning>
       <head>
+        <script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+        />
+        <script dangerouslySetInnerHTML={{ __html: GA_BOOT_SCRIPT }} />
         <HeadContent />
       </head>
       <body className="antialiased">
@@ -73,6 +82,7 @@ function RootDocument() {
               <SkipLink />
               <Outlet />
               <Analytics />
+              <GoogleAnalytics />
             </LocaleProvider>
           </ThemeProvider>
         </AuthProvider>
