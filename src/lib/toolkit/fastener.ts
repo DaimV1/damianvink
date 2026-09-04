@@ -25,6 +25,11 @@ export const FASTENERS: FastenerRow[] = [
     k: 2,
     s: 2.5,
     dk: 5.5,
+    // 8.8 from VDI 2230-1:2015 Table A1, μ=0.14. 10.9/12.9 scaled from the
+    // 8.8 value by the property class proof-stress ratio (940/640, 1100/640)
+    // — not an independent Table A1 lookup like the rest of this column.
+    ma: { "8.8": 1.44, "10.9": 2.1, "12.9": 2.5 },
+    fv: { "8.8": 2480, "10.9": 3640, "12.9": 4260 },
   },
   {
     d: 4,
@@ -90,7 +95,7 @@ export const FASTENERS: FastenerRow[] = [
     d: 12,
     p: 1.75,
     tap: 10.2,
-    hole: { fijn: 13, middel: 14, grof: 15 },
+    hole: { fijn: 13, middel: 13.5, grof: 14.5 },
     sw: 18,
     k: 7.5,
     s: 10,
@@ -102,7 +107,7 @@ export const FASTENERS: FastenerRow[] = [
     d: 14,
     p: 2,
     tap: 12,
-    hole: { fijn: 15, middel: 16, grof: 17 },
+    hole: { fijn: 15, middel: 15.5, grof: 16.5 },
     sw: 21,
     k: 8.8,
     s: 12,
@@ -114,7 +119,7 @@ export const FASTENERS: FastenerRow[] = [
     d: 16,
     p: 2,
     tap: 14,
-    hole: { fijn: 17, middel: 18, grof: 19 },
+    hole: { fijn: 17, middel: 17.5, grof: 18.5 },
     sw: 24,
     k: 10,
     s: 14,

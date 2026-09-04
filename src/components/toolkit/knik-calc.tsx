@@ -7,7 +7,7 @@ import {
   eFor,
   fmtDotComma,
   fmtN,
-  kFor,
+  kDesignFor,
   lambdaLimit,
   MATERIALS_E,
   rp02For,
@@ -95,7 +95,11 @@ export function KnikCalc() {
   );
   const Lraw = parseNum(L);
   const Fraw = parseNum(F);
-  const k = kFor(endCondition);
+  // Design k, not theoretical k: this is what a real check should use (ideal
+  // rigid clamping doesn't exist), and it's what the cylinder tool's rod
+  // buckling check already uses — using theoretical k here made the two
+  // tools disagree by ~10% for the same load case.
+  const k = kDesignFor(endCondition);
   const E = eFor(materialId);
   const material = MATERIALS_E.find((m) => m.id === materialId) ?? MATERIALS_E[0];
   const endLabel = END_CONDITIONS.find((c) => c.id === endCondition);
@@ -127,8 +131,8 @@ export function KnikCalc() {
         <Note>
           {tx(
             locale,
-            "Kritieke knikkracht F_cr = π² E I / L_eff². Ideale Euler-theorie: geen initiële kromming, geen partiële veiligheidsfactoren. Geen vervanging van EN 1993-1-1 bij kritieke constructies.",
-            "Critical load F_cr = π² E I / L_eff². Ideal Euler theory: no initial curvature, no partial safety factors. Not a substitute for EN 1993-1-1 on critical structures.",
+            "Kritieke knikkracht F_cr = π² E I / L_eff². Rechthoek en koker rekenen met I_min (de zwakke as) — die knikt eerst. Ideale Euler-theorie: geen initiële kromming, geen partiële veiligheidsfactoren. Geen vervanging van EN 1993-1-1 bij kritieke constructies.",
+            "Critical load F_cr = π² E I / L_eff². Rectangular and box sections use I_min (the weak axis) — that's the one that buckles first. Ideal Euler theory: no initial curvature, no partial safety factors. Not a substitute for EN 1993-1-1 on critical structures.",
           )}
         </Note>
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -142,7 +146,7 @@ export function KnikCalc() {
             >
               {END_CONDITIONS.map((c) => (
                 <option key={c.id} value={c.id}>
-                  {tx(locale, c.label, c.labelEn)} (k={fmtDotComma(c.k, 3).replace(/,?0+$/, "")})
+                  {tx(locale, c.label, c.labelEn)} (k={fmtDotComma(c.kDesign, 3).replace(/,?0+$/, "")})
                 </option>
               ))}
             </SelectInput>
@@ -366,8 +370,8 @@ export function KnikCalc() {
         <Note>
           {tx(
             locale,
-            "Richtwaarden. Voor een specifieke legering of kwaliteit: materiaalcertificaat of norm nalopen.",
-            "Indicative values. For a specific alloy or grade: check the material certificate or standard.",
+            "Richtwaarden. Aluminium is expliciet 6082-T6 (harde temper); zacht/gegloeid aluminium vloeit al bij 30-100 N/mm², wat λ_grens flink verlaagt. Voor een specifieke legering of kwaliteit: materiaalcertificaat of norm nalopen.",
+            "Indicative values. Aluminium is explicitly 6082-T6 (a hard temper); soft/annealed aluminium already yields at 30-100 N/mm², which lowers λ_limit considerably. For a specific alloy or grade: check the material certificate or standard.",
           )}
         </Note>
         <div className="table-scroll mt-4">

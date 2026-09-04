@@ -24,6 +24,11 @@ export function kFor(id: EndConditionId): number {
   return END_CONDITIONS.find((c) => c.id === id)?.k ?? 1;
 }
 
+/** The design k (AISC/Shigley), used for the actual F_cr calculation — see kFor for the theoretical value shown for reference. */
+export function kDesignFor(id: EndConditionId): number {
+  return END_CONDITIONS.find((c) => c.id === id)?.kDesign ?? 1;
+}
+
 export type SectionKind = "rond" | "buis" | "rechthoek" | "vierkant" | "koker";
 
 export const SECTION_KINDS: { id: SectionKind; label: string; labelEn: string }[] = [
@@ -34,11 +39,17 @@ export const SECTION_KINDS: { id: SectionKind; label: string; labelEn: string }[
   { id: "koker", label: "Koker (rechthoekig, hol)", labelEn: "Box section (rectangular, hollow)" },
 ];
 
-/** Rp02: indicatieve vloeigrens (N/mm²). Generieke aanname per materiaalgroep, geen legering/temper-specifiek. */
+/**
+ * Rp02: indicatieve vloeigrens (N/mm²). Staal/RVS/messing zijn conservatief
+ * voor hun groep. Aluminium was dat niet: 240 N/mm² is 6082-T6 (een harde
+ * temper); zacht/gegloeid aluminium (1000/3000/5000-serie) ligt op 30-100
+ * N/mm² — de yield-waarschuwing zou daar niet afgaan. Nu expliciet
+ * legering-specifiek gelabeld i.p.v. generiek "Aluminium".
+ */
 export const MATERIALS_E: { id: string; label: string; labelEn: string; E: number; Rp02: number }[] = [
   { id: "staal", label: "Staal", labelEn: "Steel", E: 210000, Rp02: 235 },
   { id: "rvs", label: "RVS", labelEn: "Stainless steel", E: 193000, Rp02: 215 },
-  { id: "aluminium", label: "Aluminium", labelEn: "Aluminium", E: 70000, Rp02: 240 },
+  { id: "aluminium", label: "Aluminium (6082-T6)", labelEn: "Aluminium (6082-T6)", E: 70000, Rp02: 240 },
   { id: "messing", label: "Messing", labelEn: "Brass", E: 100000, Rp02: 130 },
   { id: "kunststof", label: "Kunststof (indicatief)", labelEn: "Plastic (indicative)", E: 3000, Rp02: 50 },
 ];

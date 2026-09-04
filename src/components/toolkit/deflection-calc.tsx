@@ -339,8 +339,8 @@ export function DeflectionCalc() {
         <Note>
           {tx(
             locale,
-            "Richtwaarden voor een generieke kwaliteit binnen de materiaalgroep, geen specifieke legering of temper. Voor een specifieke legering of kwaliteit: materiaalcertificaat of norm nalopen.",
-            "Indicative values for a generic grade within the material group, not a specific alloy or temper. For a specific alloy or grade: check the material certificate or standard.",
+            "Richtwaarden voor een generieke kwaliteit binnen de materiaalgroep, geen specifieke legering of temper — behalve aluminium, dat expliciet 6082-T6 is: zacht/gegloeid aluminium (1000/3000/5000-serie) vloeit al bij 30-100 N/mm², ver onder de 240 hier. Kunststof gebruikt elastische balktheorie met een kortetermijn-E; kruip (tijdsafhankelijke doorbuiging onder blijvende last) zit hier niet in — voor een langdurig belaste kunststof balk is de werkelijke doorbuiging na verloop van tijd groter dan getoond. Voor een specifieke legering of kwaliteit: materiaalcertificaat of norm nalopen.",
+            "Indicative values for a generic grade within the material group, not a specific alloy or temper — except aluminium, which is explicitly 6082-T6: soft/annealed aluminium (1000/3000/5000 series) already yields at 30-100 N/mm², well below the 240 used here. Plastic uses elastic beam theory with a short-term E; creep (time-dependent deflection under sustained load) is not included — for a plastic beam under long-term load, the real deflection grows larger over time than shown. For a specific alloy or grade: check the material certificate or standard.",
           )}
         </Note>
         <div className="table-scroll mt-4">

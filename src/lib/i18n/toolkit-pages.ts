@@ -92,7 +92,7 @@ const pages = {
         { q: "Waarom lastfactor 1,25?", a: "Vuistregel voor wrijving en dynamiek. Geen normwaarde. Verhoog bij verticale last, stoppen op de stang, of onbekende wrijving. S = 1 is puur theoretisch." },
         { q: "ISO 15552 of 6432?", a: "Volgt uit de boring. Ø8–25 is ISO 6432 (rond, mini). Ø32–320 is ISO 15552 (profiel). De kleinste boring die F·S haalt, wint." },
         { q: "Kiest deze tool een Festo- of SMC-type?", a: "Nee. Alleen de ISO-boring en basisstang. Geen typecode, geen demping, geen sensorsleuf." },
-        { q: "Wat is de stangknik-check?", a: "Indicatief: massieve stalen stang, ingeklemd-vrij (k=2,1), knik-lengte = slag. Alleen bij uitgaan (drukstang). Werkelijke bevestiging, geleidingsreserve en stangmateriaal kunnen dit flink verschuiven — gebruik de Euler-knik rekenhulp voor een echte bevestiging." },
+        { q: "Wat is de stangknik-check?", a: "Indicatief: massieve stalen stang, ingeklemd-vrij (k=2,1), knik-lengte = slag. Onder de Euler-slankheidsgrens rekent de check op de plooilast (A·Rp0,2) in plaats van Euler — anders overschat Euler de sterkte flink. Richtwaarde S ≥ 3,5. Alleen bij uitgaan (drukstang). Werkelijke bevestiging, geleidingsreserve en stangmateriaal kunnen dit flink verschuiven — gebruik de Euler-knik rekenhulp voor een echte bevestiging." },
       ],
     },
     en: {
@@ -106,7 +106,7 @@ const pages = {
         { q: "Why load factor 1.25?", a: "Rule of thumb for friction and dynamics. Not a standard value. Raise it for vertical load, stopping on the rod, or unknown friction. S = 1 is purely theoretical." },
         { q: "ISO 15552 or 6432?", a: "Follows from the bore. Ø8–25 is ISO 6432 (round, mini). Ø32–320 is ISO 15552 (profile). The smallest bore that covers F·S wins." },
         { q: "Does this pick a Festo or SMC type?", a: "No. ISO bore and basic rod only. No type code, no cushioning, no sensor slot." },
-        { q: "What is the rod buckling check?", a: "Indicative: solid steel rod, fixed-free (k=2.1), buckling length = stroke. Extend (push) direction only. Actual mounting, guide-length allowance and rod material can shift this significantly — use the Euler buckling tool for a real mounting." },
+        { q: "What is the rod buckling check?", a: "Indicative: solid steel rod, fixed-free (k=2.1), buckling length = stroke. Below the Euler slenderness limit the check uses the squash load (A·Rp0.2) instead of Euler — otherwise Euler overstates the real strength considerably. Target S ≥ 3.5. Extend (push) direction only. Actual mounting, guide-length allowance and rod material can shift this significantly — use the Euler buckling tool for a real mounting." },
       ],
     },
   },
@@ -319,7 +319,7 @@ const pages = {
       title: "Knikberekening.",
       accent: "berekening.",
       crumb: "Knikberekening",
-      lede: "Euler-knik van een slanke staaf: kritieke last F_cr, kritieke spanning σ_cr en slankheid λ. Vier inklemgevallen, vier doorsnedevormen.",
+      lede: "Euler-knik van een slanke staaf: kritieke last F_cr, kritieke spanning σ_cr en slankheid λ. Vier inklemgevallen, vijf doorsnedevormen.",
       faq: [
         { q: "Wat is F_cr?", a: "De kritieke Euler-last: F_cr = π² E I / L_eff². Boven deze last knikt de staaf elastisch, ongeacht de sterkte van het materiaal." },
         { q: "Wat is L_eff?", a: "De knik-lengte L_eff = k · L. k volgt uit de inklemming: scharnier-scharnier k=1, ingeklemd-vrij k=2, ingeklemd-ingeklemd k=0,5, ingeklemd-scharnier k≈0,699." },
@@ -331,7 +331,7 @@ const pages = {
       title: "Buckling calculation.",
       accent: "calculation.",
       crumb: "Buckling calculation",
-      lede: "Euler buckling of a slender strut: critical load F_cr, critical stress σ_cr and slenderness λ. Four end conditions, four cross-section shapes.",
+      lede: "Euler buckling of a slender strut: critical load F_cr, critical stress σ_cr and slenderness λ. Four end conditions, five cross-section shapes.",
       faq: [
         { q: "What is F_cr?", a: "The critical Euler load: F_cr = π² E I / L_eff². Above this load the strut buckles elastically, regardless of material strength." },
         { q: "What is L_eff?", a: "The buckling length L_eff = k · L. k follows from the end condition: pinned-pinned k=1, fixed-free k=2, fixed-fixed k=0.5, fixed-pinned k≈0.699." },

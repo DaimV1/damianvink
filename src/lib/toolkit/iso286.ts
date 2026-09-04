@@ -98,7 +98,28 @@ function toleranceUnit(D: number): number {
 
 const IT_MULTIPLIER: Record<number, number> = { 5: 7, 6: 10, 7: 16, 8: 25, 9: 40, 10: 64, 11: 100 };
 
-function itWidth(D: number, grade: number): number | null {
+/**
+ * ISO 286-1 IT grade widths (µm), standardized table — NOT the raw tolerance-
+ * unit formula rounded to the nearest µm. ISO 286-1 tabulates these; the i-
+ * formula only approximates them, and the approximation is off by several µm
+ * at the band edges (up to 18 µm at IT11, >2500-3150). One row per grade,
+ * one column per extended band (BANDS[6..20], i.e. >50 mm and up — the 3-50 mm
+ * range stays on the hand-verified HOLE/SHAFT tables and never reaches this).
+ * Verified against 24 independently spot-checked cells across grades 6-11.
+ */
+const IT_TABLE_EXTENDED: Record<number, number[]> = {
+  5: [13, 15, 18, 20, 23, 25, 27, 32, 36, 40, 47, 55, 65, 78, 96],
+  6: [19, 22, 25, 29, 32, 36, 40, 44, 50, 56, 66, 78, 92, 110, 135],
+  7: [30, 35, 40, 46, 52, 57, 63, 70, 80, 90, 105, 125, 150, 175, 210],
+  8: [46, 54, 63, 72, 81, 89, 97, 110, 125, 140, 165, 195, 230, 280, 330],
+  9: [74, 87, 100, 115, 130, 140, 155, 175, 200, 230, 260, 310, 370, 440, 540],
+  10: [120, 140, 160, 185, 210, 230, 250, 280, 320, 360, 420, 500, 600, 700, 860],
+  11: [190, 220, 250, 290, 320, 360, 400, 440, 500, 560, 660, 780, 920, 1100, 1350],
+};
+
+function itWidth(bandIdx: number, D: number, grade: number): number | null {
+  const extended = IT_TABLE_EXTENDED[grade]?.[bandIdx - LAST_TABLE_BAND - 1];
+  if (extended != null) return extended;
   const mult = IT_MULTIPLIER[grade];
   return mult == null ? null : mult * toleranceUnit(D);
 }
@@ -121,35 +142,33 @@ function parseClassId(id: string): { letter: string; grade: number } | null {
   return { letter: m[1], grade: Number(m[2]) };
 }
 
-function computeHoleDeviation(id: string, band: Band): { ES: number; EI: number } | null {
+function computeHoleDeviation(id: string, band: Band, bandIdx: number): { ES: number; EI: number } | null {
   const parsed = parseClassId(id);
   if (!parsed) return null;
   const { letter, grade } = parsed;
+  const D = geoMeanD(band);
   if (letter === "JS") {
-    const D = geoMeanD(band);
-    const IT = itWidth(D, grade);
+    const IT = itWidth(bandIdx, D, grade);
     return IT == null ? null : { ES: IT / 2, EI: -IT / 2 };
   }
   if (!FORMULA_HOLE_LETTERS.has(letter)) return null;
-  const D = geoMeanD(band);
-  const IT = itWidth(D, grade);
+  const IT = itWidth(bandIdx, D, grade);
   if (IT == null) return null;
   const EI = letter === "H" ? 0 : Math.round(deviationMagnitude(letter.toLowerCase() as "g" | "f" | "d", D));
   return { ES: EI + Math.round(IT), EI };
 }
 
-function computeShaftDeviation(id: string, band: Band): { es: number; ei: number } | null {
+function computeShaftDeviation(id: string, band: Band, bandIdx: number): { es: number; ei: number } | null {
   const parsed = parseClassId(id);
   if (!parsed) return null;
   const { letter, grade } = parsed;
+  const D = geoMeanD(band);
   if (letter === "js") {
-    const D = geoMeanD(band);
-    const IT = itWidth(D, grade);
+    const IT = itWidth(bandIdx, D, grade);
     return IT == null ? null : { es: IT / 2, ei: -IT / 2 };
   }
   if (!FORMULA_SHAFT_LETTERS.has(letter)) return null;
-  const D = geoMeanD(band);
-  const IT = itWidth(D, grade);
+  const IT = itWidth(bandIdx, D, grade);
   if (IT == null) return null;
   const es = letter === "h" ? 0 : -Math.round(deviationMagnitude(letter as "g" | "f" | "d", D));
   return { es, ei: es - Math.round(IT) };
@@ -163,7 +182,7 @@ export function holeDeviationAt(id: string, bandIdx: number): { ES: number; EI: 
     const row = HOLE[id];
     return row ? { ES: row.ES[bandIdx], EI: row.EI[bandIdx] } : null;
   }
-  return computeHoleDeviation(id, band);
+  return computeHoleDeviation(id, band, bandIdx);
 }
 
 /** Shaft limit deviations for `id` (e.g. "g6") at `bandIdx`: table lookup for 3-50 mm, formula beyond. */
@@ -174,7 +193,7 @@ export function shaftDeviationAt(id: string, bandIdx: number): { es: number; ei:
     const row = SHAFT[id];
     return row ? { es: row.es[bandIdx], ei: row.ei[bandIdx] } : null;
   }
-  return computeShaftDeviation(id, band);
+  return computeShaftDeviation(id, band, bandIdx);
 }
 
 export type FitKind = "los" | "overgang" | "lijn" | "vast";

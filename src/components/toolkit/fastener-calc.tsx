@@ -270,8 +270,8 @@ export function FastenerCalc() {
           </a>
           {tx(
             locale,
-            ". Gesmeerd (μ lager) geeft een lager toelaatbaar moment. M3 heeft geen A1-rij. Controleer kritieke verbindingen in VDI 2230.",
-            ". Lubricated (lower μ) gives a lower permissible torque. M3 has no A1 row. Verify critical joints in VDI 2230.",
+            ". Gesmeerd (μ lager) geeft een lager toelaatbaar moment. M3 10.9/12.9 geschaald vanaf 8.8 (proportioneel aan de vloeigrens); niet los uit tabel A1 nagerekend. Controleer kritieke verbindingen in VDI 2230.",
+            ". Lubricated (lower μ) gives a lower permissible torque. M3 10.9/12.9 scaled from 8.8 (proportional to yield strength); not independently checked against table A1. Verify critical joints in VDI 2230.",
           )}
         </p>
       </section>

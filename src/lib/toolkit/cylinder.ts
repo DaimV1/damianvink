@@ -3,7 +3,7 @@
  * ISO 15552 / ISO 6432 basic piston-rod diameters (not oversized rods).
  * No friction, no Festo/SMC type code.
  */
-import { computeBuckling } from "./knik";
+import { computeBuckling, END_CONDITIONS } from "./knik.ts";
 
 /** 1 bar (gauge) = 0,1 N/mm². */
 export const BAR_N_PER_MM2 = 0.1;
@@ -118,21 +118,60 @@ export function cycleLiters(row: CylinderRow, pBar: number, strokeMm: number) {
  * material. Indicative worst case, push (F_uit) direction only — for a known
  * mounting and length, use the general Euler-knik tool.
  */
-export const ROD_BUCKLING_K_DESIGN = 2.1;
+/** Single source of truth: knik.ts's END_CONDITIONS "fc" (fixed-free) kDesign — the same value the Euler-knik tool now uses for its own fixed-free case. */
+export const ROD_BUCKLING_K_DESIGN = END_CONDITIONS.find((c) => c.id === "fc")!.kDesign;
 export const ROD_STEEL_E = 210000;
+/** Conservative generic steel yield, matching knik.ts's own "staal" entry — deliberately low, not a specific hardened-rod-steel grade. */
+export const ROD_STEEL_RP02 = 235;
+/** Pneumatic rod buckling is conventionally checked at 3.5-5, not "any S above 1". */
+export const ROD_BUCKLING_MIN_SAFETY = 3.5;
 
-export function rodBucklingCheck(rodMm: number, strokeMm: number, pushForceN: number) {
+export type RodBucklingResult = ReturnType<typeof computeBuckling> & {
+  /** True when λ is below the Euler validity limit: F_cr above is capped at the squash load (A·Rp0.2), not a real Euler value. */
+  belowEulerLimit: boolean;
+  /** S below this is a real concern even if S ≥ 1 — see ROD_BUCKLING_MIN_SAFETY. */
+  belowRecommendedSafety: boolean;
+};
+
+/**
+ * Buckling length = stroke + rod protrusion into the mounting (guide/bearing
+ * length inside the head is not stroke). No protrusion figure is known here,
+ * so this stays a worst-case default (protrusion = 0) unless the caller
+ * supplies one.
+ */
+export function rodBucklingCheck(
+  rodMm: number,
+  strokeMm: number,
+  pushForceN: number,
+  protrusionMm = 0,
+): RodBucklingResult | null {
   if (!(rodMm > 0) || !(strokeMm > 0)) return null;
   const I = (Math.PI * rodMm ** 4) / 64;
   const A = (Math.PI * rodMm ** 2) / 4;
-  return computeBuckling({
-    L: strokeMm,
-    k: ROD_BUCKLING_K_DESIGN,
-    E: ROD_STEEL_E,
-    I,
-    A,
-    F: pushForceN,
-  });
+  const L = strokeMm + Math.max(0, protrusionMm);
+  const raw = computeBuckling({ L, k: ROD_BUCKLING_K_DESIGN, E: ROD_STEEL_E, I, A, F: pushForceN });
+  if (!raw) return null;
+
+  // Euler only applies above the slenderness limit λ = π√(E/Rp0.2); below it
+  // the rod squashes before it buckles, and the Euler formula overestimates
+  // the real capacity — sometimes by a large factor. Cap F_cr at the squash
+  // load (A·Rp0.2) in that regime instead of publishing the (unsafe) Euler
+  // number, per lambdaLimit() in knik.ts.
+  const lambdaLim = Math.PI * Math.sqrt(ROD_STEEL_E / ROD_STEEL_RP02);
+  const belowEulerLimit = raw.lambda < lambdaLim;
+  const squashLoad = A * ROD_STEEL_RP02;
+  const Fcr = belowEulerLimit ? Math.min(raw.Fcr, squashLoad) : raw.Fcr;
+  const sigmaCr = Fcr / A;
+  const safety = pushForceN > 0 ? Fcr / pushForceN : null;
+
+  return {
+    ...raw,
+    Fcr,
+    sigmaCr,
+    safety,
+    belowEulerLimit,
+    belowRecommendedSafety: safety != null && safety < ROD_BUCKLING_MIN_SAFETY,
+  };
 }
 
 export function seriesLabel(series: SeriesId) {

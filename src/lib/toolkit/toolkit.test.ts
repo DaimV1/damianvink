@@ -3,7 +3,7 @@ import { describe, it } from "node:test";
 import { computeBearing, pickBearing } from "./bearing.ts";
 import { lookupFastener } from "./fastener.ts";
 import { FRICTION, scaleMa } from "./friction.ts";
-import { HOLE, bandIndex, computeFit, fitExtendable } from "./iso286.ts";
+import { BANDS, HOLE, bandIndex, computeFit, fitExtendable, holeDeviationAt } from "./iso286.ts";
 import { designation, lookupIso2768 } from "./iso2768.ts";
 import { keyWidthTol, lookupKeyway } from "./keyway.ts";
 import {
@@ -14,7 +14,8 @@ import {
 import { GROOVE, squeeze } from "./oring.ts";
 import { lookupSeeger, seegerFor } from "./seeger.ts";
 import { lookupKanten } from "./kanten.ts";
-import { computeBuckling, sectionProps } from "./knik.ts";
+import { computeBuckling, kDesignFor, kFor, sectionProps } from "./knik.ts";
+import { rodBucklingCheck } from "./cylinder.ts";
 import { rangeHint, matchTools, TOOLS } from "./tools.ts";
 
 describe("ISO 286 passingen", () => {
@@ -76,6 +77,53 @@ describe("ISO 286 passingen", () => {
   it("H7/k6 (no formula for k) stays capped at 50 mm", () => {
     assert.ok(computeFit(40, "H7/k6"));
     assert.equal(computeFit(60, "H7/k6"), null);
+  });
+
+  it("H-2/H-3: IT grades above 50 mm match the standardized ISO 286-1 table, not the raw i-formula rounded", () => {
+    // Every value here is a spot-check from the 4 Sept 2026 audit's independent
+    // reproduction of ISO 286-1. The raw i-formula rounds to a different (wrong)
+    // number for most of these — up to 18 µm off at IT11, >2500-3150.
+    const checks: [string, number, number][] = [
+      ["H11", bandIndex(80), 190],
+      ["H11", bandIndex(120), 220],
+      ["H11", bandIndex(180), 250],
+      ["H11", bandIndex(315), 320],
+      ["H11", bandIndex(400), 360],
+      ["H11", bandIndex(500), 400],
+      ["H11", bandIndex(630), 440],
+      ["H11", bandIndex(800), 500],
+      ["H11", bandIndex(1000), 560],
+      ["H11", bandIndex(1250), 660],
+      ["H11", bandIndex(1600), 780],
+      ["H11", bandIndex(2000), 920],
+      ["H11", bandIndex(2500), 1100],
+      ["H11", bandIndex(3150), 1350],
+      ["H6", bandIndex(630), 44],
+      ["H6", bandIndex(800), 50],
+      ["H6", bandIndex(3150), 135],
+      ["H7", bandIndex(800), 80],
+      ["H7", bandIndex(2000), 150],
+      ["H7", bandIndex(3150), 210],
+      ["H8", bandIndex(630), 110],
+      ["H8", bandIndex(2500), 280],
+      ["H9", bandIndex(800), 200],
+      ["H9", bandIndex(3150), 540],
+    ];
+    for (const [id, idx, expectedIT] of checks) {
+      const dev = holeDeviationAt(id, idx);
+      assert.ok(dev, `${id} at band index ${idx}`);
+      assert.equal(dev.ES - dev.EI, expectedIT, `${id} at band index ${idx}`);
+    }
+  });
+
+  it("H-4: JS7 = ±H7/2 for every extended band, not just below 50 mm", () => {
+    for (let idx = 6; idx < BANDS.length; idx++) {
+      const h7 = holeDeviationAt("H7", idx);
+      const js7 = holeDeviationAt("JS7", idx);
+      assert.ok(h7 && js7, `band index ${idx}`);
+      assert.equal(js7.ES, h7.ES / 2, `band index ${idx}`);
+      assert.equal(js7.EI, -h7.ES / 2, `band index ${idx}`);
+    }
   });
 
   it("fitExtendable matches which fits have a formula on both sides", () => {
@@ -168,6 +216,20 @@ describe("bevestigers", () => {
     assert.equal(FRICTION.tabel.factor, 1);
     assert.ok(scaleMa(27.3, "geolied") < 27.3);
     assert.ok(scaleMa(27.3, "droog") > 27.3);
+  });
+
+  it("H-1: M12/M14/M16 ISO 273 medium/coarse clearance holes are 0.5 mm smaller than the old (wrong) values", () => {
+    assert.deepEqual(lookupFastener(12)?.hole, { fijn: 13, middel: 13.5, grof: 14.5 });
+    assert.deepEqual(lookupFastener(14)?.hole, { fijn: 15, middel: 15.5, grof: 16.5 });
+    assert.deepEqual(lookupFastener(16)?.hole, { fijn: 17, middel: 17.5, grof: 18.5 });
+  });
+
+  it("M-1: M3 has a VDI 2230 A1 torque/preload row", () => {
+    const row = lookupFastener(3);
+    assert.ok(row);
+    assert.equal(row.ma?.["8.8"], 1.44);
+    assert.equal(row.fv?.["8.8"], 2480);
+    assert.ok(row.ma && row.ma["10.9"] > row.ma["8.8"] && row.ma["12.9"] > row.ma["10.9"]);
   });
 });
 
@@ -421,5 +483,52 @@ describe("Euler-knik", () => {
     assert.equal(sectionProps("buis", { D: 10, d: 12 }), null);
     assert.equal(sectionProps("rond", { D: 0 }), null);
     assert.equal(computeBuckling({ L: 0, k: 1, E: 210000, I: 100, A: 10, F: null }), null);
+  });
+
+  it("H-6: kDesignFor is the conservative AISC/Shigley value, not the theoretical k", () => {
+    assert.equal(kFor("fc"), 2);
+    assert.equal(kDesignFor("fc"), 2.1);
+    assert.equal(kFor("hh"), 1);
+    assert.equal(kDesignFor("hh"), 1);
+  });
+});
+
+describe("pneumatische cilinder — stangknik", () => {
+  it("H-5: below the Euler slenderness limit, F_cr is capped at the squash load, not the (much higher, unsafe) Euler value", () => {
+    // Audit's default case: Ø63/20 rod, 100 mm stroke, F_uit ≈ 1870 N.
+    const r = rodBucklingCheck(20, 100, 1870);
+    assert.ok(r);
+    assert.equal(r.belowEulerLimit, true);
+    // Euler alone would say ~369120 N; the real governing load here is the
+    // squash load A·Rp0.2 = π/4·20² · 235 ≈ 73827 N.
+    assert.ok(r.Fcr < 369120 * 0.9, `Fcr should be capped well below the Euler value, got ${r.Fcr}`);
+    assert.ok(Math.abs(r.sigmaCr - 235) < 1, `sigmaCr should equal Rp0.2=235 at the squash cap, got ${r.sigmaCr}`);
+  });
+
+  it("H-5: a long, thin rod above the Euler limit is not capped", () => {
+    const r = rodBucklingCheck(20, 2000, 500);
+    assert.ok(r);
+    assert.equal(r.belowEulerLimit, false);
+  });
+
+  it("H-5: flags when S is positive but below the recommended 3.5 minimum", () => {
+    const safe = rodBucklingCheck(20, 100, 1870);
+    assert.ok(safe && !safe.belowRecommendedSafety);
+    const tight = rodBucklingCheck(20, 100, 25000);
+    assert.ok(tight && tight.safety! >= 1 && tight.belowRecommendedSafety);
+  });
+
+  it("H-6: cylinder.ts's k matches knik.ts's fixed-free kDesign — single source of truth", () => {
+    assert.equal(kDesignFor("fc"), 2.1);
+    // Same rod/stroke/load through both tools' Fcr must now agree, since
+    // both use the same kDesign (2.1) instead of cilinder using 2.1 while
+    // knikberekening's own selector computed with the theoretical k=2.
+    const viaCylinder = rodBucklingCheck(20, 100, 1870);
+    const I = (Math.PI * 20 ** 4) / 64;
+    const A = (Math.PI * 20 ** 2) / 4;
+    const viaKnik = computeBuckling({ L: 100, k: kDesignFor("fc"), E: 210000, I, A, F: 1870 });
+    assert.ok(viaCylinder && viaKnik);
+    assert.equal(viaCylinder.Leff, viaKnik.Leff);
+    assert.equal(viaCylinder.lambda, viaKnik.lambda);
   });
 });

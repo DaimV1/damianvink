@@ -198,15 +198,24 @@ export function CylinderCalc() {
             {buckling ? (
               <>
                 <p className="mt-5 text-sm text-muted">
-                  {tx(
-                    locale,
-                    `Stangknik (indicatief): F_cr ${fmtN(buckling.Fcr)} N bij stang Ø${pick.rod} mm, slag ${fmtNl(strokeMm ?? 0, 0)} mm als knik-lengte.`,
-                    `Rod buckling (indicative): F_cr ${fmtN(buckling.Fcr)} N at rod Ø${pick.rod} mm, stroke ${fmtNl(strokeMm ?? 0, 0)} mm as buckling length.`,
-                  )}
+                  {buckling.belowEulerLimit
+                    ? tx(
+                        locale,
+                        `Stangknik (indicatief): λ onder de Euler-grens — de rekgrens (plooien/vloeien) is maatgevend, niet Euler-knik. F_cr hier is de plooilast A·Rp0,2.`,
+                        `Rod buckling (indicative): λ is below the Euler limit — the yield/squash load governs, not Euler buckling. F_cr here is the squash load A·Rp0.2.`,
+                      )
+                    : tx(
+                        locale,
+                        `Stangknik (indicatief): F_cr ${fmtN(buckling.Fcr)} N bij stang Ø${pick.rod} mm, slag ${fmtNl(strokeMm ?? 0, 0)} mm als knik-lengte.`,
+                        `Rod buckling (indicative): F_cr ${fmtN(buckling.Fcr)} N at rod Ø${pick.rod} mm, stroke ${fmtNl(strokeMm ?? 0, 0)} mm as buckling length.`,
+                      )}
                 </p>
                 <ResultGrid
                   items={[
-                    { label: "F_cr", value: `${fmtN(buckling.Fcr)} N` },
+                    {
+                      label: buckling.belowEulerLimit ? "F_cr (plooilast)" : "F_cr (Euler)",
+                      value: `${fmtN(buckling.Fcr)} N`,
+                    },
                     buckling.safety != null
                       ? { label: "S = F_cr / F_uit", value: fmtDotComma(buckling.safety, 2) }
                       : null,
@@ -216,14 +225,20 @@ export function CylinderCalc() {
                   {bucklingUnsafe
                     ? tx(
                         locale,
-                        "F_uit ≥ F_cr — de stang knikt volgens Euler bij deze slag en druk. Kortere slag, dikkere stang of andere bevestiging nodig.",
-                        "F_uit ≥ F_cr — the rod buckles per Euler at this stroke and pressure. Needs a shorter stroke, thicker rod or a different mounting.",
+                        "F_uit ≥ F_cr — de stang bezwijkt bij deze slag en druk. Kortere slag, dikkere stang of andere bevestiging nodig.",
+                        "F_uit ≥ F_cr — the rod fails at this stroke and pressure. Needs a shorter stroke, thicker rod or a different mounting.",
                       )
-                    : tx(
-                        locale,
-                        "Aanname: stang massief staal, ingeklemd–vrij (k=2,1, onbekende bevestiging), knik-lengte = slag zonder geleidingsreserve. Alleen voor uitgaan (drukstang). Zie de Euler-knik rekenhulp voor een echte bevestiging en materiaal.",
-                        "Assumption: solid steel rod, fixed–free (k=2.1, unknown mounting), buckling length = stroke with no guide-length allowance. Extend (push) direction only. See the Euler buckling tool for an actual mounting and material.",
-                      )}
+                    : buckling.belowRecommendedSafety
+                      ? tx(
+                          locale,
+                          `S = ${fmtDotComma(buckling.safety ?? 0, 2)} — onder de gangbare ondergrens van 3,5 voor stangknik. Geldt formeel (S ≥ 1), maar krap voor productie; overweeg een dikkere stang.`,
+                          `S = ${fmtDotComma(buckling.safety ?? 0, 2)} — below the conventional minimum of 3.5 for rod buckling. Technically passes (S ≥ 1), but tight for production; consider a thicker rod.`,
+                        )
+                      : tx(
+                          locale,
+                          "Aanname: stang massief staal (Rp0,2 235 N/mm², conservatief), ingeklemd–vrij (k=2,1 ontwerp, onbekende bevestiging), knik-lengte = slag zonder geleidingsreserve. Richtwaarde S ≥ 3,5. Alleen voor uitgaan (drukstang). Zie de Euler-knik rekenhulp voor een echte bevestiging en materiaal.",
+                          "Assumption: solid steel rod (Rp0.2 235 N/mm², conservative), fixed–free (k=2.1 design, unknown mounting), buckling length = stroke with no guide-length allowance. Target S ≥ 3.5. Extend (push) direction only. See the Euler buckling tool for an actual mounting and material.",
+                        )}
                 </Note>
               </>
             ) : null}
