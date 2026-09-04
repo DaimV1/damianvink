@@ -35,7 +35,7 @@ Sub main()
             Dim docPath As String
             docPath = swDoc.GetPathName
 
-            If docPath = "" Then
+            If docPath = "" Or InStrRev(docPath, ".") = 0 Then
                 skipped = skipped + 1
             Else
                 Dim pdfPath As String
@@ -44,7 +44,17 @@ Sub main()
                 Dim saveErrors As Long
                 Dim saveWarnings As Long
                 Dim ok As Boolean
+
+                ' Eén beschadigd of vergrendeld document mag de rest van de
+                ' batch niet afbreken — vang fouten per document af, net als
+                ' de Inventor-twin.
+                On Error Resume Next
                 ok = swDoc.Extension.SaveAs(pdfPath, swSaveAsCurrentVersion, swSaveAsOptions_Silent, Nothing, saveErrors, saveWarnings)
+                If Err.Number <> 0 Then
+                    ok = False
+                    Err.Clear
+                End If
+                On Error GoTo 0
 
                 If ok And saveErrors = 0 Then
                     exported = exported + 1

@@ -34,7 +34,7 @@ Sub BatchExportTekeningenNaarPDF()
 
         If oDoc.DocumentType = kDrawingDocumentObject Then
 
-            If oDoc.FullFileName = "" Then
+            If oDoc.FullFileName = "" Or InStrRev(oDoc.FullFileName, ".") = 0 Then
                 skipped = skipped + 1
             Else
 

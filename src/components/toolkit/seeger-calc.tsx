@@ -3,8 +3,10 @@ import { useNavigate, useSearch } from "@tanstack/react-router";
 import {
   fmtSeeger,
   fmtSeeger3,
+  grooveDepth,
   lookupSeeger,
   seegerFor,
+  SEEGER,
   type SeegerKind,
 } from "@/lib/toolkit/seeger";
 import { readStoredDiameter, storeDiameter } from "@/lib/toolkit/tools";
@@ -181,6 +183,45 @@ export function SeegerCalc() {
             t={result?.t}
           />
         </SchemaPanel>
+      </section>
+
+      <section className="mt-12">
+        <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
+          {tx(locale, "Naslagtabel", "Reference table")}
+        </h2>
+        <Note>
+          {tx(
+            locale,
+            "Alle nominale diameters uit de werkplaatstabel (Ø 3–100 mm), zodat de volledige tabel te controleren is zonder de rekenhulp te bedienen.",
+            "Every nominal diameter from the shop table (Ø 3–100 mm), so the full table can be checked without operating the calculator.",
+          )}
+        </Note>
+        <div className="table-scroll mt-4">
+          <table className="ref-table">
+            <thead>
+              <tr>
+                <th>d₁</th>
+                <th>d₂ as (h11)</th>
+                <th>t as</th>
+                <th>d₂ boring (H11)</th>
+                <th>t boring</th>
+                <th>b</th>
+              </tr>
+            </thead>
+            <tbody>
+              {SEEGER.map((r) => (
+                <tr key={r.d1} className={r.d1 === d ? "is-active" : ""}>
+                  <th scope="row">{r.d1}</th>
+                  <td>{r.d2as != null ? fmtSeeger(r.d2as) : "—"}</td>
+                  <td>{r.d2as != null ? fmtSeeger(grooveDepth(r.d1, r.d2as)) : "—"}</td>
+                  <td>{r.d2bor != null ? fmtSeeger(r.d2bor) : "—"}</td>
+                  <td>{r.d2bor != null ? fmtSeeger(grooveDepth(r.d1, r.d2bor)) : "—"}</td>
+                  <td>{fmtSeeger(r.b)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <p className="mt-8 text-sm leading-relaxed text-muted">

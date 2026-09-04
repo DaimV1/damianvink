@@ -88,6 +88,13 @@ export function OringCalc() {
             "Radial stretch of the cord over the groove diameter: max. ca. 5% at assembly. This tool does not work from a bore/shaft diameter — check separately. Extrusion gap and back-up ring for high pressure or dynamic use: not covered here.",
           )}
         </Note>
+        <Note>
+          {tx(
+            locale,
+            "Vlakheid/Ra van de afdichtvlakken staat hier niet in — algemene richtwaarde (niet uit deze tabel geverifieerd): Ra ≤ 1,6 µm statisch, Ra ≤ 0,4 µm dynamisch, met een lichte afrondstraal op de groefranden om het koord niet te snijden bij montage. Controleer tegen ISO 3601-2 voor een normwaarde.",
+            "Sealing-surface flatness/Ra isn't covered here — general guidance (not verified against this table): Ra ≤ 1.6 µm static, Ra ≤ 0.4 µm dynamic, with a light break on the groove edges so the cord isn't cut during assembly. Check ISO 3601-2 for a normative value.",
+          )}
+        </Note>
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
           <Field label={tx(locale, "Koord d₂", "Cord d₂")}>
             <SelectInput value={d2} onChange={setD2}>
@@ -147,6 +154,49 @@ export function OringCalc() {
         >
           <OringGroove kind={kind} t={g?.t} b={g?.b} />
         </SchemaPanel>
+      </section>
+
+      <section className="mt-12">
+        <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
+          {tx(locale, "Naslagtabel", "Reference table")}
+        </h2>
+        <Note>
+          {tx(
+            locale,
+            "Alle vijf koorden en alle drie inbouwtypes, zodat de volledige groeftabel te controleren is zonder de rekenhulp te bedienen.",
+            "All five cords and all three installation types, so the full groove table can be checked without operating the calculator.",
+          )}
+        </Note>
+        <div className="table-scroll mt-4">
+          <table className="ref-table">
+            <thead>
+              <tr>
+                <th>d₂</th>
+                <th>{tx(locale, "Inbouw", "Installation")}</th>
+                <th>t</th>
+                <th>b</th>
+                <th>C</th>
+              </tr>
+            </thead>
+            <tbody>
+              {D2_OPTIONS.flatMap((opt) =>
+                (Object.keys(ORING_LABELS) as OringKind[]).map((k) => {
+                  const row = GROOVE[k][opt.value as keyof (typeof GROOVE)[typeof k]];
+                  const active = opt.value === d2n && k === kind;
+                  return (
+                    <tr key={`${opt.value}-${k}`} className={active ? "is-active" : ""}>
+                      <th scope="row">{tx(locale, opt.label, opt.labelEn)}</th>
+                      <td>{tx(locale, ORING_LABELS[k], ORING_LABELS_EN[k])}</td>
+                      <td>{fmtMm(row.t)}</td>
+                      <td>{fmtMm(row.b)}</td>
+                      <td>{row.C != null ? fmtMm(row.C) : "—"}</td>
+                    </tr>
+                  );
+                }),
+              )}
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <p className="mt-8 text-sm leading-relaxed text-muted">

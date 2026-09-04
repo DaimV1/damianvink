@@ -113,7 +113,7 @@ export const TOOLS = [
     shortEn: "O-ring",
     title: "O-ringgroef",
     titleEn: "O-ring groove",
-    standard: "ISO 3601",
+    standard: "ISO 3601-1 / Dichtomatik",
     verifiedAt: "2026-09-02",
     kind: "rekenhulp",
     group: "verb",

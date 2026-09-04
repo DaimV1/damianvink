@@ -13,13 +13,15 @@ Option Explicit
 
 Sub ToonIProperties()
 
-    Dim oDoc As Document
-    Set oDoc = ThisApplication.ActiveDocument
-
-    If oDoc Is Nothing Then
+    ' ActiveDocument raises when no document is open (it does not return
+    ' Nothing), so check Documents.Count first.
+    If ThisApplication.Documents.Count = 0 Then
         MsgBox "Geen actief document.", vbExclamation
         Exit Sub
     End If
+
+    Dim oDoc As Document
+    Set oDoc = ThisApplication.ActiveDocument
 
     Dim oSummary As PropertySet
     Set oSummary = oDoc.PropertySets.Item("Inventor Summary Information")

@@ -205,6 +205,63 @@ export function LagerCalc() {
         </SchemaPanel>
       </section>
 
+      <section className="mt-12">
+        <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
+          {tx(locale, "Naslagtabel", "Reference table")}
+        </h2>
+        <Note>
+          {tx(
+            locale,
+            "De volledige keuzeregel achter de rekenhulp, zodat die te controleren is zonder de widget te bedienen. Klassen volgens SKF; de µm-waarden per klasse staan op de passingen-pagina.",
+            "The full selection rule behind the calculator, so it can be checked without operating the widget. Classes per SKF; the µm values per class are on the fits (passingen) page.",
+          )}
+        </Note>
+        <div className="table-scroll mt-4">
+          <table className="ref-table">
+            <thead>
+              <tr>
+                <th>{tx(locale, "Rotatie", "Rotation")}</th>
+                <th>{tx(locale, "Last", "Load")}</th>
+                <th>{tx(locale, "As", "Shaft")}</th>
+                <th>{tx(locale, "Huis", "Housing")}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className={rot === "binnen" && load === "licht" ? "is-active" : ""}>
+                <th scope="row">{tx(locale, "Binnenring draait", "Inner ring rotates")}</th>
+                <td>{tx(locale, "Licht, P ≤ 0,05 C", "Light, P ≤ 0.05 C")}</td>
+                <td>js5 (≤17 mm) / j6 (&gt;17 mm)</td>
+                <td>H7 / J7 {tx(locale, "(alt.)", "(alt.)")}</td>
+              </tr>
+              <tr className={rot === "binnen" && load === "normaal" ? "is-active" : ""}>
+                <th scope="row">{tx(locale, "Binnenring draait", "Inner ring rotates")}</th>
+                <td>{tx(locale, "Normaal–hoog, P > 0,05 C", "Normal–high, P > 0.05 C")}</td>
+                <td>js5 (≤10 mm) / j5 (≤17 mm) / k5 (&gt;17 mm)</td>
+                <td>H7 / K7 {tx(locale, "(alt.)", "(alt.)")}</td>
+              </tr>
+              <tr className={rot === "buiten" && load === "licht" ? "is-active" : ""}>
+                <th scope="row">{tx(locale, "Buitenring draait", "Outer ring rotates")}</th>
+                <td>{tx(locale, "Licht, P ≤ 0,05 C", "Light, P ≤ 0.05 C")}</td>
+                <td>g6</td>
+                <td>M7</td>
+              </tr>
+              <tr className={rot === "buiten" && load === "normaal" ? "is-active" : ""}>
+                <th scope="row">{tx(locale, "Buitenring draait", "Outer ring rotates")}</th>
+                <td>{tx(locale, "Normaal–hoog, P > 0,05 C", "Normal–high, P > 0.05 C")}</td>
+                <td>g6</td>
+                <td>N7</td>
+              </tr>
+              <tr className={rot === "stil" ? "is-active" : ""}>
+                <th scope="row">{tx(locale, "Binnenring stil", "Inner ring stationary")}</th>
+                <td>—</td>
+                <td>g6 / h6 {tx(locale, "(geen verschuiving)", "(no shift needed)")}</td>
+                <td>H7</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       <p className="mt-8 text-sm leading-relaxed text-muted">
         {tx(locale, "Bron:", "Source:")}{" "}
         <a

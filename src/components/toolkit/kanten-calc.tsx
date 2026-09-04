@@ -7,9 +7,12 @@ import {
   KANTEN_SOURCE,
   KINDS,
   MATERIALS,
+  RI_T_HAAKS,
+  RI_T_SCHERP,
   THICKNESSES,
   copyLine,
   dashMm,
+  isRiNonMonotone,
   lookupKanten,
   type Kind,
   type Material,
@@ -63,6 +66,10 @@ export function KantenCalc() {
     [kind, ri, t, kFactor],
   );
   const copy = useMemo(() => (row ? copyLine(row, bendMath) : ""), [row, bendMath]);
+  const materialLabel = MATERIALS.find((m) => m.id === material)?.label ?? "";
+  const materialLabelEn = MATERIALS.find((m) => m.id === material)?.labelEn ?? "";
+  const kindLabel = KINDS.find((k) => k.id === kind)?.label ?? "";
+  const kindLabelEn = KINDS.find((k) => k.id === kind)?.labelEn ?? "";
 
   return (
     <>
@@ -200,6 +207,57 @@ export function KantenCalc() {
           </p>
         )}
       </CalcPanel>
+
+      <section className="mt-12">
+        <h2 className="font-display text-xl font-semibold tracking-tight text-ink">
+          {tx(locale, "Naslagtabel", "Reference table")} — {tx(locale, materialLabel, materialLabelEn)},{" "}
+          {tx(locale, kindLabel, kindLabelEn)}
+        </h2>
+        <Note>
+          {tx(
+            locale,
+            "Alle diktes uit de 247-tabellen voor deze materiaal/kant-combinatie, zodat de onderliggende data zonder de rekenhulp te bedienen te controleren is.",
+            "Every thickness from the 247 tables for this material/bend combination, so the underlying data can be checked without operating the calculator.",
+          )}
+        </Note>
+        <div className="table-scroll mt-4">
+          <table className="ref-table">
+            <thead>
+              <tr>
+                <th>t (mm)</th>
+                <th>Ri</th>
+                <th>s</th>
+                <th>w</th>
+                <th>{kind === "haaks" ? "x" : "—"}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {(kind === "haaks" ? RI_T_HAAKS : RI_T_SCHERP).map((rt) => {
+                const r = lookupKanten(rt, material, kind);
+                return (
+                  <tr key={rt} className={rt === t ? "is-active" : ""}>
+                    <th scope="row">{dashMm(rt)}</th>
+                    <td>
+                      {dashMm(r?.ri ?? null)}
+                      {r && isRiNonMonotone(kind, material, rt) ? " *" : ""}
+                    </td>
+                    <td>{dashMm(r?.s ?? null)}</td>
+                    <td>{dashMm(r?.w ?? null)}</td>
+                    <td>{kind === "haaks" ? dashMm(r?.x ?? null) : "—"}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+        <p className="mt-2 text-xs text-subtle">
+          {tx(
+            locale,
+            "* niet-monotoon in de 247-brontabel, geen invoerfout hier.",
+            "* not monotonic in the 247 source table, not a transcription error here.",
+          )}
+        </p>
+      </section>
 
       <section className="mt-12">
         <h2 className="font-display text-xl font-semibold tracking-tight text-ink">

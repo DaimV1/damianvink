@@ -70,20 +70,39 @@ Sub main()
         swFlatFeat.SetSuppression2 swUnSuppressFeature, swThisConfiguration, Nothing
     End If
 
+    If InStrRev(docPath, ".") = 0 Then
+        MsgBox "Bestandspad heeft geen extensie.", vbExclamation
+        Exit Sub
+    End If
+
     Dim dxfPath As String
     dxfPath = Left(docPath, InStrRev(docPath, ".")) & "dxf"
 
     Dim saveErrors As Long
     Dim saveWarnings As Long
     Dim ok As Boolean
-    ok = swModel.Extension.SaveAs(dxfPath, swSaveAsCurrentVersion, swSaveAsOptions_Silent, Nothing, saveErrors, saveWarnings)
+    ' swSaveAsOptions_Copy: exporteer een kopie zonder het open document aan
+    ' het nieuwe bestand te koppelen (zie ook export-step.bas).
+    '
+    ' LET OP — dit is SaveAs op het part-document zelf, niet de documenteerde
+    ' ExportToDWG2-route (met bSelectedFeature op de Flat-Pattern-feature) of
+    ' ExportFlatPatternView. Met de Flat-Pattern-feature unsuppressed
+    ' exporteert SaveAs in de praktijk meestal het vlakke patroon, maar dat
+    ' gedrag is per SolidWorks-versie en tekeningsjabloon niet gegarandeerd.
+    ' Controleer het geëxporteerde bestand altijd zelf: open de DXF en
+    ' bevestig dat je het UITGEVOUWEN vlakke patroon ziet (rechte omtrek +
+    ' buiglijnen), niet een projectie van het gevouwen deel. Stuur nooit
+    ' ongecontroleerd naar de laser.
+    ok = swModel.Extension.SaveAs(dxfPath, swSaveAsCurrentVersion, swSaveAsOptions_Silent Or swSaveAsOptions_Copy, Nothing, saveErrors, saveWarnings)
 
     If wasSuppressed Then
         swFlatFeat.SetSuppression2 swSuppressFeature, swThisConfiguration, Nothing
     End If
 
     If ok And saveErrors = 0 Then
-        MsgBox "Opgeslagen als:" & vbCrLf & dxfPath, vbInformation
+        MsgBox "Opgeslagen als:" & vbCrLf & dxfPath & vbCrLf & vbCrLf & _
+            "Controleer de DXF vóór gebruik: dit moet het uitgevouwen vlakke " & _
+            "patroon zijn, niet een projectie van het gevouwen deel.", vbInformation
     Else
         MsgBox "Exporteren mislukt (foutcode " & saveErrors & ").", vbCritical
     End If

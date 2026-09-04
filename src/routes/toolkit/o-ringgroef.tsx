@@ -8,7 +8,7 @@ import { useLocale } from "@/lib/i18n/locale";
 import { pageHead, softwareJsonLd } from "@/lib/seo";
 
 const DESCRIPTION =
-  "O-ringgroef volgens ISO 3601. Koorden 1,80–7,00 mm: groefdiepte t en breedte b, radiaal en axiaal. Rekenhulp plus naslagtabel.";
+  "O-ringgroef, koorddiameter volgens ISO 3601-1. Groefdiepte t en breedte b (Dichtomatik-tabel) voor koorden 1,80–7,00 mm, radiaal en axiaal. Rekenhulp plus naslagtabel.";
 
 export const Route = createFileRoute("/toolkit/o-ringgroef")({
   validateSearch: (s: Record<string, unknown>): { d2?: string; kind?: string } => ({
@@ -17,7 +17,7 @@ export const Route = createFileRoute("/toolkit/o-ringgroef")({
   }),
   head: () =>
     pageHead({
-      title: "O-ringgroef ISO 3601 — Damian Vink",
+      title: "O-ringgroef (ISO 3601-1 koord) — Damian Vink",
       description: DESCRIPTION,
       path: "/toolkit/o-ringgroef",
     }),
@@ -40,10 +40,10 @@ function OringPage() {
     >
       <JsonLd
         data={softwareJsonLd({
-          name: "O-ringgroef ISO 3601",
+          name: "O-ringgroef (ISO 3601-1 koord)",
           path: "/toolkit/o-ringgroef",
           description: DESCRIPTION,
-          featureList: ["ISO 3601", "radiaal", "axiaal", "koorddiameter"],
+          featureList: ["ISO 3601-1 koorddiameter", "radiaal", "axiaal", "groeftabel"],
         })}
       />
       <OringCalc />

@@ -14,16 +14,24 @@ Option Explicit
 
 Sub ExportActiefNaarSTEP()
 
-    Dim oDoc As Document
-    Set oDoc = ThisApplication.ActiveDocument
-
-    If oDoc Is Nothing Then
+    ' ActiveDocument raises when no document is open (it does not return
+    ' Nothing), so check Documents.Count first rather than testing the
+    ' result of ActiveDocument for Nothing.
+    If ThisApplication.Documents.Count = 0 Then
         MsgBox "Geen actief document.", vbExclamation
         Exit Sub
     End If
 
+    Dim oDoc As Document
+    Set oDoc = ThisApplication.ActiveDocument
+
     If oDoc.FullFileName = "" Then
         MsgBox "Sla het document eerst één keer op (nog geen bestandspad).", vbExclamation
+        Exit Sub
+    End If
+
+    If InStrRev(oDoc.FullFileName, ".") = 0 Then
+        MsgBox "Bestandspad heeft geen extensie.", vbExclamation
         Exit Sub
     End If
 
@@ -50,8 +58,13 @@ Sub ExportActiefNaarSTEP()
     stepPath = Left(oDoc.FullFileName, InStrRev(oDoc.FullFileName, ".")) & "stp"
     oData.FileName = stepPath
 
+    ' Application protocol wordt hier vast gezet — anders bepaalt de laatst
+    ' gebruikte UI-instelling stilzwijgend welk protocol de export gebruikt.
+    ' Kies AP242 (moderne standaard) of AP214 (breder ondersteund, ouder);
+    ' controleer de exacte enum-naam in de Inventor Object Browser (VBA-editor,
+    ' F2) onder ApplicationProtocolTypeEnum voor jouw Inventor-versie.
     If oStepTranslator.HasSaveCopyAsOptions(oDoc, oContext, oOptions) Then
-        ' Standaardopties van de vertaler; pas hier evt. AP242/AP214 aan.
+        oOptions.Value("ApplicationProtocolType") = kAP242ApplicationProtocolType
     End If
 
     Call oStepTranslator.SaveCopyAs(oDoc, oContext, oOptions, oData)

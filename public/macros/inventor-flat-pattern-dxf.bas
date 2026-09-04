@@ -16,15 +16,21 @@ Attribute VB_Name = "ExporteerVlakPatroonNaarDXF"
 '
 Option Explicit
 
+' Vertaleropties hier aanpassen, niet verderop in de functie.
+Private Const ACAD_VERSION As String = "2010"
+Private Const OUTER_PROFILE_LAYER As String = "IV_OUTER_PROFILE"
+
 Sub ExporteerVlakPatroonNaarDXF()
 
-    Dim oDoc As Document
-    Set oDoc = ThisApplication.ActiveDocument
-
-    If oDoc Is Nothing Then
+    ' ActiveDocument raises when no document is open (it does not return
+    ' Nothing), so check Documents.Count first.
+    If ThisApplication.Documents.Count = 0 Then
         MsgBox "Geen actief document.", vbExclamation
         Exit Sub
     End If
+
+    Dim oDoc As Document
+    Set oDoc = ThisApplication.ActiveDocument
 
     If oDoc.DocumentType <> kPartDocumentObject Then
         MsgBox "Geen part-document. Open een plaatwerk-part.", vbExclamation
@@ -49,21 +55,35 @@ Sub ExporteerVlakPatroonNaarDXF()
     Dim oCompDef As SheetMetalComponentDefinition
     Set oCompDef = oPartDoc.ComponentDefinition
 
-    If Not oCompDef.HasFlatPattern Then
+    ' Onthoud of het vlakke patroon al bestond — zo niet, ruim het na export
+    ' weer op zodat het document niet gewijzigd (dirty) achterblijft, net als
+    ' de SolidWorks-twin die de suppress-staat terugzet.
+    Dim createdFlatPattern As Boolean
+    createdFlatPattern = Not oCompDef.HasFlatPattern
+
+    If createdFlatPattern Then
         oCompDef.Unfold
     End If
 
     Dim oFlatPattern As FlatPattern
     Set oFlatPattern = oCompDef.FlatPattern
 
+    If InStrRev(oDoc.FullFileName, ".") = 0 Then
+        MsgBox "Bestandspad heeft geen extensie.", vbExclamation
+        Exit Sub
+    End If
+
     Dim dxfPath As String
     dxfPath = Left(oDoc.FullFileName, InStrRev(oDoc.FullFileName, ".")) & "dxf"
 
-    ' Vertaleropties; pas AcadVersion of de laagnaam hier evt. aan.
     Dim sOptions As String
-    sOptions = "FLAT PATTERN DXF?AcadVersion=2010&OuterProfileLayer=IV_OUTER_PROFILE"
+    sOptions = "FLAT PATTERN DXF?AcadVersion=" & ACAD_VERSION & "&OuterProfileLayer=" & OUTER_PROFILE_LAYER
 
     oFlatPattern.DataIO.WriteDataToFile sOptions, dxfPath
+
+    If createdFlatPattern Then
+        oFlatPattern.Delete
+    End If
 
     MsgBox "Opgeslagen als:" & vbCrLf & dxfPath, vbInformation
 

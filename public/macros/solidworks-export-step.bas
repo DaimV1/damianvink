@@ -34,6 +34,11 @@ Sub main()
         Exit Sub
     End If
 
+    If InStrRev(docPath, ".") = 0 Then
+        MsgBox "Bestandspad heeft geen extensie.", vbExclamation
+        Exit Sub
+    End If
+
     Dim stepPath As String
     stepPath = Left(docPath, InStrRev(docPath, ".")) & "step"
 
@@ -41,7 +46,10 @@ Sub main()
     Dim saveWarnings As Long
 
     Dim ok As Boolean
-    ok = swModel.Extension.SaveAs(stepPath, swSaveAsCurrentVersion, swSaveAsOptions_Silent, Nothing, saveErrors, saveWarnings)
+    ' swSaveAsOptions_Copy: exporteer een kopie zonder het open document aan
+    ' het nieuwe bestand te koppelen. Zonder deze vlag kan SolidWorks het
+    ' geopende document laten verwijzen naar het geëxporteerde bestand.
+    ok = swModel.Extension.SaveAs(stepPath, swSaveAsCurrentVersion, swSaveAsOptions_Silent Or swSaveAsOptions_Copy, Nothing, saveErrors, saveWarnings)
 
     If ok And saveErrors = 0 Then
         MsgBox "Opgeslagen als:" & vbCrLf & stepPath, vbInformation
