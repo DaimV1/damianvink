@@ -3,6 +3,7 @@ import { DisplayTitle } from "@/components/display-title";
 import { JsonLd } from "@/components/json-ld";
 import { PageWrap, SiteShell } from "@/components/site-shell";
 import { SourceBadge } from "@/components/toolkit/calc-ui";
+import { FeedbackWidget } from "@/components/toolkit/feedback-widget";
 import { RelatedTools } from "@/components/toolkit/related-tools";
 import { Breadcrumb, ToolSwitcher } from "@/components/toolkit/tool-switcher";
 import { tx, useLocale } from "@/lib/i18n/locale";
@@ -57,6 +58,7 @@ export function ToolkitFrame({
         <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted">{lede}</p>
         <VerifiedBadge active={active} />
         <div className="mt-10">{children}</div>
+        {active ? <FeedbackWidget toolId={active} /> : null}
         {active ? <RelatedTools active={active} /> : null}
       </PageWrap>
     </SiteShell>
