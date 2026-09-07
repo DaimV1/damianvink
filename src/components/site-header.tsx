@@ -13,7 +13,7 @@ export function SiteHeader() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   const nav = [
-    { to: "/ai-lab", label: "AI Lab", match: "/ai-lab" },
+    { to: "/ai-lab", label: "Interactive Lab", match: "/ai-lab" },
     { to: "/toolkit", label: "Toolkit", match: "/toolkit" },
     { to: "/project", label: tx(locale, "Project", "Project"), match: "/project" },
     { to: "/marathon", label: "Marathon", match: "/marathon" },

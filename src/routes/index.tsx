@@ -46,14 +46,14 @@ function Home() {
           <div className="grid gap-3">
             <Door
               num="AI"
-              title="AI Lab"
+              title="Interactive Lab"
               body={tx(
                 locale,
-                "Van ruwe tekst naar heldere taal, projectacties en nieuwe ideeën. Probeer het zelf.",
-                "Turn rough text into clear writing, project actions and fresh ideas. Try it yourself.",
+                "Ontdek een 3D-exploded view en een interactieve wereldbol. Jij bestuurt de beweging.",
+                "Explore a 3D exploded view and an interactive globe. You control the motion.",
               )}
               href="/ai-lab"
-              link="AI Lab"
+              link="Interactive Lab"
               meta={tx(locale, "Interactieve demo", "Interactive demo")}
             />
             <Door
