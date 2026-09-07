@@ -167,8 +167,8 @@ export function PassingenCalc() {
               <Note>
                 {tx(
                   locale,
-                  "Berekend uit de ISO 286-1-formules (boven 50 mm zijn dit geen tabelwaarden meer).",
-                  "Computed from the ISO 286-1 formulas (above 50 mm these are no longer table values).",
+                  "Boven 50 mm: de IT-breedte komt uit de ISO 286-1-tabel (exact), de fundamentele afwijking van G/F/D en g/f/d uit de formule — boven Ø400 kan die 1 µm van de tabelwaarde verschillen.",
+                  "Above 50 mm: the IT width comes from the ISO 286-1 table (exact); the fundamental deviation of G/F/D and g/f/d comes from the formula — above Ø400 it can differ from the tabulated value by 1 µm.",
                 )}
               </Note>
             ) : null}
@@ -316,8 +316,8 @@ export function PassingenCalc() {
           </a>
           . {tx(
             locale,
-            "H6–H11, F8, G7 en JS7 zijn berekend uit de ISO 286-1-formules boven 50 mm. * K7 en N7 hebben geen formule en blijven t/m 50 mm. In de >0–≤3 mm-band tonen F8, G7, K7 en N7 \"—\": niet gegokt, nog niet tegen een primaire bron gecontroleerd (netwerktoegang tot naslagsites was tijdens deze fix geblokkeerd).",
-            "H6–H11, F8, G7 and JS7 are computed from the ISO 286-1 formulas above 50 mm. * K7 and N7 have no formula and stay capped at 50 mm. In the >0–≤3 mm band, F8, G7, K7 and N7 show \"—\": not guessed, not yet checked against a primary source (network access to reference sites was blocked while making this fix).",
+            "H6–H11, F8, G7 en JS7 zijn berekend uit de ISO 286-1-formules boven 50 mm. * K7 en N7 hebben geen formule en blijven t/m 50 mm. In de >0–≤3 mm-band tonen F8, G7, K7 en N7 \"—\": niet gegokt, nog niet tegen een primaire bron gecontroleerd. De IT-breedtes zelf zijn tabelwaarden uit ISO 286-1 en exact; de fundamentele afwijking van F en G komt nog uit de formule en kan boven Ø400 1 µm afwijken van de getabelleerde waarde.",
+            "H6–H11, F8, G7 and JS7 are computed from the ISO 286-1 formulas above 50 mm. * K7 and N7 have no formula and stay capped at 50 mm. In the >0–≤3 mm band, F8, G7, K7 and N7 show \"—\": not guessed, not yet checked against a primary source. The IT widths themselves are tabulated ISO 286-1 values and exact; the fundamental deviation of F and G is still formula-derived and can differ by 1 µm from the tabulated value above Ø400.",
           )}
         </p>
       </section>
@@ -373,8 +373,8 @@ export function PassingenCalc() {
           .{" "}
           {tx(
             locale,
-            "Waarden omgerekend van µm naar mm. Diameters: boven de ondergrens tot en met de bovengrens. JS7 is ±IT7/2 volgens ISO 286-2, zonder afronding naar hele µm. d9, f7, g6, h6 en h7 zijn berekend uit de ISO 286-1-formules boven 50 mm. * c11, k6, n6, p6 en s6 hebben geen formule en blijven t/m 50 mm. In de >0–≤3 mm-band zijn alleen h6, h7 en p6 geverifieerd (p6 afgeleid uit de al geverifieerde \"lijnpassing tot 18 mm\"-regel hierboven); c11, d9, f7, g6, k6, n6 en s6 tonen daar \"—\" — nog niet tegen een primaire bron gecontroleerd. Naslag, geen vervanging van de norm.",
-            "Values converted from µm to mm. Diameters: over the lower bound up to and including the upper bound. JS7 is ±IT7/2 per ISO 286-2, without rounding to whole µm. d9, f7, g6, h6 and h7 are computed from the ISO 286-1 formulas above 50 mm. * c11, k6, n6, p6 and s6 have no formula and stay capped at 50 mm. In the >0–≤3 mm band only h6, h7 and p6 are verified (p6 derived from the already-verified \"line fit up to 18 mm\" rule above); c11, d9, f7, g6, k6, n6 and s6 show \"—\" there — not yet checked against a primary source. Reference only, not a substitute for the standard.",
+            "Waarden omgerekend van µm naar mm. Diameters: boven de ondergrens tot en met de bovengrens. JS7 is ±IT7/2 volgens ISO 286-2, zonder afronding naar hele µm. d9, f7, g6, h6 en h7 zijn berekend uit de ISO 286-1-formules boven 50 mm. * c11, k6, n6, p6 en s6 hebben geen formule en blijven t/m 50 mm. In de >0–≤3 mm-band zijn alleen h6, h7 en p6 geverifieerd (p6 afgeleid uit de al geverifieerde \"lijnpassing tot 18 mm\"-regel hierboven); c11, d9, f7, g6, k6, n6 en s6 tonen daar \"—\" — nog niet tegen een primaire bron gecontroleerd. Boven Ø400 komt de fundamentele afwijking van d, f en g uit de ISO 286-1-formule en kan die 1 µm afwijken van de getabelleerde waarde (bijv. d bij Ø500–630: −259 berekend, −260 getabelleerd); de IT-breedte zelf is wel exact. Naslag, geen vervanging van de norm.",
+            "Values converted from µm to mm. Diameters: over the lower bound up to and including the upper bound. JS7 is ±IT7/2 per ISO 286-2, without rounding to whole µm. d9, f7, g6, h6 and h7 are computed from the ISO 286-1 formulas above 50 mm. * c11, k6, n6, p6 and s6 have no formula and stay capped at 50 mm. In the >0–≤3 mm band only h6, h7 and p6 are verified (p6 derived from the already-verified \"line fit up to 18 mm\" rule above); c11, d9, f7, g6, k6, n6 and s6 show \"—\" there — not yet checked against a primary source. Above Ø400 the fundamental deviation of d, f and g comes from the ISO 286-1 formula and can differ by 1 µm from the tabulated value (e.g. d at Ø500–630: −259 computed, −260 tabulated); the IT width itself is exact. Reference only, not a substitute for the standard.",
           )}
         </p>
       </section>

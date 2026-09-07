@@ -108,8 +108,8 @@ export function LagerCalc() {
         <Note>
           {tx(
             locale,
-            "As-Ø in hele mm (4 t/m 50). Klassen volgens SKF; µm → mm volgens ISO 286-2.",
-            "Shaft Ø in whole mm (4 through 50). Classes per SKF; µm → mm per ISO 286-2.",
+            "As-Ø in hele mm (4 t/m 50). Klassen volgens SKF; µm → mm volgens ISO 286-2. Bepalend is niet wélke ring draait, maar welke ring een omlopende (rondgaande) last ziet: die ring krijgt de vaste passing, de ring met puntbelasting mag losser. Meestal vallen die samen — maar niet bij een stilstaande as met roterende onbalans, of bij een meedraaiende last op een draaiende binnenring. Kies daar op de belasting, niet op de rotatie.",
+            "Shaft Ø in whole mm (4 through 50). Classes per SKF; µm → mm per ISO 286-2. What decides the fit is not which ring turns but which ring sees a circumferential (rotating) load: that ring gets the tight fit, the ring under a point load may be looser. Usually they coincide — but not for a stationary shaft with a rotating unbalance, or a co-rotating load on a rotating inner ring. In those cases choose on the load, not the rotation.",
           )}
         </Note>
         <div className="mt-6 grid gap-4 sm:grid-cols-3">
@@ -118,9 +118,9 @@ export function LagerCalc() {
           </Field>
           <Field label={tx(locale, "Rotatie", "Rotation")}>
             <SelectInput value={rot} onChange={setRot}>
-              <option value="binnen">{tx(locale, "Binnenring draait (as)", "Inner ring rotates (shaft)")}</option>
-              <option value="buiten">{tx(locale, "Buitenring draait (naaf)", "Outer ring rotates (hub)")}</option>
-              <option value="stil">{tx(locale, "Binnenring stil", "Inner ring stationary")}</option>
+              <option value="binnen">{tx(locale, "Omlopende last op binnenring (meestal: as draait)", "Circumferential load on inner ring (usually: shaft rotates)")}</option>
+              <option value="buiten">{tx(locale, "Omlopende last op buitenring (meestal: naaf draait)", "Circumferential load on outer ring (usually: hub rotates)")}</option>
+              <option value="stil">{tx(locale, "Puntbelasting op binnenring, verschuifbaar", "Point load on inner ring, axially free")}</option>
             </SelectInput>
           </Field>
           <Field label={tx(locale, "Last", "Load")}>
@@ -227,31 +227,31 @@ export function LagerCalc() {
             </thead>
             <tbody>
               <tr className={rot === "binnen" && load === "licht" ? "is-active" : ""}>
-                <th scope="row">{tx(locale, "Binnenring draait", "Inner ring rotates")}</th>
+                <th scope="row">{tx(locale, "Omlopende last binnenring", "Circumferential load, inner")}</th>
                 <td>{tx(locale, "Licht, P ≤ 0,05 C", "Light, P ≤ 0.05 C")}</td>
                 <td>js5 (≤17 mm) / j6 (&gt;17 mm)</td>
                 <td>H7 / J7 {tx(locale, "(alt.)", "(alt.)")}</td>
               </tr>
               <tr className={rot === "binnen" && load === "normaal" ? "is-active" : ""}>
-                <th scope="row">{tx(locale, "Binnenring draait", "Inner ring rotates")}</th>
+                <th scope="row">{tx(locale, "Omlopende last binnenring", "Circumferential load, inner")}</th>
                 <td>{tx(locale, "Normaal–hoog, P > 0,05 C", "Normal–high, P > 0.05 C")}</td>
                 <td>js5 (≤10 mm) / j5 (≤17 mm) / k5 (&gt;17 mm)</td>
                 <td>H7 / K7 {tx(locale, "(alt.)", "(alt.)")}</td>
               </tr>
               <tr className={rot === "buiten" && load === "licht" ? "is-active" : ""}>
-                <th scope="row">{tx(locale, "Buitenring draait", "Outer ring rotates")}</th>
+                <th scope="row">{tx(locale, "Omlopende last buitenring", "Circumferential load, outer")}</th>
                 <td>{tx(locale, "Licht, P ≤ 0,05 C", "Light, P ≤ 0.05 C")}</td>
                 <td>g6</td>
                 <td>M7</td>
               </tr>
               <tr className={rot === "buiten" && load === "normaal" ? "is-active" : ""}>
-                <th scope="row">{tx(locale, "Buitenring draait", "Outer ring rotates")}</th>
+                <th scope="row">{tx(locale, "Omlopende last buitenring", "Circumferential load, outer")}</th>
                 <td>{tx(locale, "Normaal–hoog, P > 0,05 C", "Normal–high, P > 0.05 C")}</td>
                 <td>g6</td>
                 <td>N7</td>
               </tr>
               <tr className={rot === "stil" ? "is-active" : ""}>
-                <th scope="row">{tx(locale, "Binnenring stil", "Inner ring stationary")}</th>
+                <th scope="row">{tx(locale, "Puntbelasting binnenring", "Point load, inner")}</th>
                 <td>—</td>
                 <td>g6 / h6 {tx(locale, "(geen verschuiving)", "(no shift needed)")}</td>
                 <td>H7</td>
