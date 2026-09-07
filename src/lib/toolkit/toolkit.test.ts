@@ -33,6 +33,7 @@ import {
   validateFeedbackInput,
 } from "./feedback.ts";
 import { ogSummary } from "../og/summary.ts";
+import { ogImageUrl } from "../seo.ts";
 
 describe("ISO 286 passingen", () => {
   it("H7/h6 at 20 mm is 0 to 34 µm clearance", () => {
@@ -674,5 +675,32 @@ describe("OG share cards", () => {
       assert.ok(s.headline.length > 0, tool.id);
       assert.ok(s.chips.length <= 3, tool.id);
     }
+  });
+});
+
+describe("OG card URLs", () => {
+  it("keeps calculator inputs and drops tracking params", () => {
+    const url = ogImageUrl("passingen", {
+      d: "20",
+      fit: "H7/p6",
+      fbclid: "abc",
+      utm_source: "linkedin",
+      _vercel_share: "tok",
+    });
+    assert.ok(url.includes("d=20"));
+    assert.ok(url.includes("fit=H7%2Fp6"));
+    for (const junk of ["fbclid", "utm_source", "_vercel_share"]) {
+      assert.ok(!url.includes(junk), junk);
+    }
+  });
+
+  it("is stable regardless of param order, so the CDN caches one image", () => {
+    const a = ogImageUrl("cilinder", { load: "1000", p: "6", dir: "uit" });
+    const b = ogImageUrl("cilinder", { dir: "uit", p: "6", load: "1000" });
+    assert.equal(a, b);
+  });
+
+  it("a bare page still gets a tool card, not the site image", () => {
+    assert.equal(ogImageUrl("kanten"), "https://www.damianvink.nl/api/og?tool=kanten");
   });
 });

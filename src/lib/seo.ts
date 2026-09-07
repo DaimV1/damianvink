@@ -9,14 +9,26 @@ export function absUrl(path: string) {
 }
 
 /**
+ * Params that ride on a shared link but say nothing about the calculation.
+ * Forwarding them would give the same card a different URL per click, so every
+ * crawler fetch would miss the CDN and re-render an identical image.
+ */
+function isCardInput(key: string): boolean {
+  return !key.startsWith("_") && !/^(utm_|fbclid$|gclid$|msclkid$|mc_(e|c)id$|ref$)/.test(key);
+}
+
+/**
  * Share-card URL for a toolkit page. The tool's own search params ride along,
  * so a deep-linked result previews as that result — see src/lib/og/.
  */
 export function ogImageUrl(toolId: string, search?: Record<string, unknown>): string {
   const params = new URLSearchParams({ tool: toolId });
   for (const [key, value] of Object.entries(search ?? {})) {
-    if (typeof value === "string" && value) params.set(key, value);
+    if (typeof value === "string" && value && isCardInput(key)) params.set(key, value);
   }
+  // Stable ordering: the same inputs must always produce the same URL, whatever
+  // order they arrived in, or the cache splits on that too.
+  params.sort();
   return `${SITE_ORIGIN}/api/og?${params.toString()}`;
 }
 
