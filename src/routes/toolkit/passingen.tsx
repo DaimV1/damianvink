@@ -5,7 +5,7 @@ import { Faq } from "@/components/toolkit/calc-ui";
 import { ToolkitFrame } from "@/components/toolkit/toolkit-frame";
 import { toolkitCopy } from "@/lib/i18n/toolkit-pages";
 import { useLocale } from "@/lib/i18n/locale";
-import { pageHead, softwareJsonLd } from "@/lib/seo";
+import { ogImageUrl, pageHead, softwareJsonLd } from "@/lib/seo";
 
 const DESCRIPTION =
   "ISO 286 voorkeurpassingen tot Ø3150 mm. H7/g6, H7/h6, JS7. Rekenhulp voor speling en overmaat plus naslagtabel, eenheidsgatstelsel.";
@@ -15,11 +15,12 @@ export const Route = createFileRoute("/toolkit/passingen")({
     d: typeof s.d === "string" && /^\d{1,4}$/.test(s.d) ? s.d : undefined,
     fit: typeof s.fit === "string" && s.fit.trim() ? s.fit : undefined,
   }),
-  head: () =>
+  head: ({ match }) =>
     pageHead({
       title: "Passingen ISO 286 (H7/g6, JS7) — Damian Vink",
       description: DESCRIPTION,
       path: "/toolkit/passingen",
+      image: ogImageUrl("passingen", match.search),
     }),
   component: PassingenPage,
 });

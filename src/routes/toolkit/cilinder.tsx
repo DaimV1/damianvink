@@ -5,7 +5,7 @@ import { CylinderCalc } from "@/components/toolkit/cylinder-calc";
 import { ToolkitFrame } from "@/components/toolkit/toolkit-frame";
 import { toolkitCopy } from "@/lib/i18n/toolkit-pages";
 import { useLocale } from "@/lib/i18n/locale";
-import { pageHead, softwareJsonLd } from "@/lib/seo";
+import { ogImageUrl, pageHead, softwareJsonLd } from "@/lib/seo";
 
 const DESCRIPTION =
   "Pneumatische cilinder: F = p·A, dubbelwerkend. ISO 15552 en ISO 6432, manometerdruk, lastfactor, indicatieve stangknik. Theoretisch, geen Festo-type.";
@@ -22,11 +22,12 @@ export const Route = createFileRoute("/toolkit/cilinder")({
     dir: s.dir === "uit" || s.dir === "in" ? s.dir : undefined,
     stroke: typeof s.stroke === "string" && NUM_RE.test(s.stroke) ? s.stroke : undefined,
   }),
-  head: () =>
+  head: ({ match }) =>
     pageHead({
       title: "Pneumatische cilinder ISO 15552 — Damian Vink",
       description: DESCRIPTION,
       path: "/toolkit/cilinder",
+      image: ogImageUrl("cilinder", match.search),
     }),
   component: CilinderPage,
 });

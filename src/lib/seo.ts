@@ -8,20 +8,36 @@ export function absUrl(path: string) {
   return `${SITE_ORIGIN}${path}`;
 }
 
+/**
+ * Share-card URL for a toolkit page. The tool's own search params ride along,
+ * so a deep-linked result previews as that result — see src/lib/og/.
+ */
+export function ogImageUrl(toolId: string, search?: Record<string, unknown>): string {
+  const params = new URLSearchParams({ tool: toolId });
+  for (const [key, value] of Object.entries(search ?? {})) {
+    if (typeof value === "string" && value) params.set(key, value);
+  }
+  return `${SITE_ORIGIN}/api/og?${params.toString()}`;
+}
+
 export function pageHead({
   title,
   description,
   path,
   noindex = false,
   ogType = "website",
+  image,
 }: {
   title: string;
   description: string;
   path: string;
   noindex?: boolean;
   ogType?: "website" | "profile" | "article";
+  /** Absolute URL; defaults to the static site card. */
+  image?: string;
 }) {
   const url = absUrl(path);
+  const ogImage = image ?? `${SITE_ORIGIN}/og.jpg`;
   return {
     meta: [
       { title },
@@ -34,12 +50,12 @@ export function pageHead({
       { property: "og:locale", content: "nl_NL" },
       { property: "og:locale:alternate", content: "en_US" },
       { property: "og:site_name", content: SITE_NAME },
-      { property: "og:image", content: `${SITE_ORIGIN}/og.jpg` },
+      { property: "og:image", content: ogImage },
       { property: "og:image:alt", content: title },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: title },
       { name: "twitter:description", content: description },
-      { name: "twitter:image", content: `${SITE_ORIGIN}/og.jpg` },
+      { name: "twitter:image", content: ogImage },
     ],
     links: [
       { rel: "canonical", href: url },

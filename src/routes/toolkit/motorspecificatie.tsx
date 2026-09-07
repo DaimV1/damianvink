@@ -5,7 +5,7 @@ import { MotorCalc } from "@/components/toolkit/motor-calc";
 import { ToolkitFrame } from "@/components/toolkit/toolkit-frame";
 import { toolkitCopy } from "@/lib/i18n/toolkit-pages";
 import { useLocale } from "@/lib/i18n/locale";
-import { pageHead, softwareJsonLd } from "@/lib/seo";
+import { ogImageUrl, pageHead, softwareJsonLd } from "@/lib/seo";
 
 const DESCRIPTION =
   "Motorspecificatie voor een aangedreven rol of trommel: n, F, T, P en de volgende IEC 60034 kW-stap.";
@@ -46,11 +46,12 @@ export const Route = createFileRoute("/toolkit/motorspecificatie")({
       rm: num(s.rm),
     };
   },
-  head: () =>
+  head: ({ match }) =>
     pageHead({
       title: "Motorspecificatie aandrijving — Damian Vink",
       description: DESCRIPTION,
       path: "/toolkit/motorspecificatie",
+      image: ogImageUrl("motor", match.search),
     }),
   component: MotorPage,
 });

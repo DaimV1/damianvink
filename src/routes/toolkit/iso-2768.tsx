@@ -5,7 +5,7 @@ import { Iso2768Calc } from "@/components/toolkit/iso2768-calc";
 import { ToolkitFrame } from "@/components/toolkit/toolkit-frame";
 import { toolkitCopy } from "@/lib/i18n/toolkit-pages";
 import { useLocale } from "@/lib/i18n/locale";
-import { pageHead, softwareJsonLd } from "@/lib/seo";
+import { ogImageUrl, pageHead, softwareJsonLd } from "@/lib/seo";
 
 const DESCRIPTION =
   "ISO 2768 algemene toleranties: lineair f/m/c/v en vorm H/K/L. Titelblok-default als een maat geen vakje heeft. Geen passing (ISO 286).";
@@ -18,11 +18,12 @@ export const Route = createFileRoute("/toolkit/iso-2768")({
     linear: typeof s.linear === "string" && ["f", "m", "c", "v"].includes(s.linear) ? s.linear : undefined,
     form: typeof s.form === "string" && ["H", "K", "L"].includes(s.form) ? s.form : undefined,
   }),
-  head: () =>
+  head: ({ match }) =>
     pageHead({
       title: "Algemene toleranties ISO 2768-mK — Damian Vink",
       description: DESCRIPTION,
       path: "/toolkit/iso-2768",
+      image: ogImageUrl("iso2768", match.search),
     }),
   component: Iso2768Page,
 });

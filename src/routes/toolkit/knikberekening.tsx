@@ -5,7 +5,7 @@ import { KnikCalc } from "@/components/toolkit/knik-calc";
 import { ToolkitFrame } from "@/components/toolkit/toolkit-frame";
 import { toolkitCopy } from "@/lib/i18n/toolkit-pages";
 import { useLocale } from "@/lib/i18n/locale";
-import { pageHead, softwareJsonLd } from "@/lib/seo";
+import { ogImageUrl, pageHead, softwareJsonLd } from "@/lib/seo";
 
 const DESCRIPTION =
   "Euler-knikberekening van een slanke staaf: kritieke last F_cr, kritieke spanning en slankheid λ voor vier inklemgevallen.";
@@ -45,11 +45,12 @@ export const Route = createFileRoute("/toolkit/knikberekening")({
       F: num(s.F),
     };
   },
-  head: () =>
+  head: ({ match }) =>
     pageHead({
       title: "Knikberekening balk Euler — Damian Vink",
       description: DESCRIPTION,
       path: "/toolkit/knikberekening",
+      image: ogImageUrl("knik", match.search),
     }),
   component: KnikPage,
 });

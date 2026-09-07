@@ -5,7 +5,7 @@ import { DeflectionCalc } from "@/components/toolkit/deflection-calc";
 import { ToolkitFrame } from "@/components/toolkit/toolkit-frame";
 import { toolkitCopy } from "@/lib/i18n/toolkit-pages";
 import { useLocale } from "@/lib/i18n/locale";
-import { pageHead, softwareJsonLd } from "@/lib/seo";
+import { ogImageUrl, pageHead, softwareJsonLd } from "@/lib/seo";
 
 const DESCRIPTION =
   "Doorbuiging van een balk onder een puntlast op afstand a: vrij opgelegd of uitkraging. Doorbuiging bij de last en de maximale doorbuiging.";
@@ -47,11 +47,12 @@ export const Route = createFileRoute("/toolkit/doorbuiging-balk")({
       posA: num(s.posA),
     };
   },
-  head: () =>
+  head: ({ match }) =>
     pageHead({
       title: "Doorbuiging balk puntlast — Damian Vink",
       description: DESCRIPTION,
       path: "/toolkit/doorbuiging-balk",
+      image: ogImageUrl("doorbuiging", match.search),
     }),
   component: DeflectionPage,
 });

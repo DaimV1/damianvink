@@ -5,7 +5,7 @@ import { CopyResult, Faq } from "@/components/toolkit/calc-ui";
 import { ToolkitFrame } from "@/components/toolkit/toolkit-frame";
 import { toolkitCopy } from "@/lib/i18n/toolkit-pages";
 import { tx, useLocale, type Locale } from "@/lib/i18n/locale";
-import { pageHead, webPageJsonLd } from "@/lib/seo";
+import { ogImageUrl, pageHead, webPageJsonLd } from "@/lib/seo";
 
 import swExportStep from "../../../public/macros/solidworks-export-step.bas?raw";
 import swBatchPdf from "../../../public/macros/solidworks-batch-pdf.bas?raw";
@@ -27,6 +27,7 @@ export const Route = createFileRoute("/toolkit/macros")({
       title: "Macro-bibliotheek SolidWorks & Inventor — Damian Vink",
       description: DESCRIPTION,
       path: "/toolkit/macros",
+      image: ogImageUrl("macros"),
     }),
   component: MacrosPage,
 });

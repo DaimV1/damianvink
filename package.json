@@ -11,7 +11,7 @@
   },
   "scripts": {
     "dev": "node scripts/with-app-env.mjs vite dev --host 0.0.0.0 --port 8080",
-    "build": "node scripts/with-app-env.mjs vite build && npm run db:migrate",
+    "build": "node scripts/with-app-env.mjs vite build && npm run og:assets && npm run db:migrate",
     "db:migrate": "node scripts/migrate.mjs",
     "build:dev": "node scripts/with-app-env.mjs vite build --mode development",
     "preview": "node scripts/with-app-env.mjs vite preview",
@@ -22,7 +22,8 @@
     "test": "node --test 'scripts/**/*.test.mjs' && node --experimental-strip-types --test src/lib/auth/gate-identity.test.ts src/lib/pm/workspace.test.ts src/lib/toolkit/toolkit.test.ts",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "feedback:list": "node scripts/feedback-list.mjs"
+    "feedback:list": "node scripts/feedback-list.mjs",
+    "og:assets": "node scripts/og-assets.mjs"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.5.4",
@@ -32,6 +33,7 @@
     "@tanstack/router-plugin": "^1.168.0",
     "@vercel/analytics": "^2.0.1",
     "@vercel/blob": "^2.8.0",
+    "@vercel/og": "^1.0.2",
     "better-auth": "~1.6.30",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

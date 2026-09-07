@@ -5,7 +5,7 @@ import { EenhedenCalc } from "@/components/toolkit/eenheden-calc";
 import { ToolkitFrame } from "@/components/toolkit/toolkit-frame";
 import { toolkitCopy } from "@/lib/i18n/toolkit-pages";
 import { useLocale } from "@/lib/i18n/locale";
-import { pageHead, softwareJsonLd } from "@/lib/seo";
+import { ogImageUrl, pageHead, softwareJsonLd } from "@/lib/seo";
 
 const DESCRIPTION =
   "Eenheden omrekenen: imperial ↔ metrisch en SI onderling. Inch naar mm, °C naar K, dm³ naar L, lbf naar N, psi naar bar, pk naar kW.";
@@ -36,11 +36,12 @@ export const Route = createFileRoute("/toolkit/eenheden")({
     val: typeof s.val === "string" && /^-?\d{0,9}([.,]\d{1,6})?$/.test(s.val) ? s.val : undefined,
     side: s.side === "from" || s.side === "to" ? s.side : undefined,
   }),
-  head: () =>
+  head: ({ match }) =>
     pageHead({
       title: "Eenheden omrekenen (SI · imperial) — Damian Vink",
       description: DESCRIPTION,
       path: "/toolkit/eenheden",
+      image: ogImageUrl("eenheden", match.search),
     }),
   component: EenhedenPage,
 });

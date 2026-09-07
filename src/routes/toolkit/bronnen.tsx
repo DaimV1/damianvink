@@ -4,7 +4,7 @@ import { JsonLd } from "@/components/json-ld";
 import { ToolkitFrame } from "@/components/toolkit/toolkit-frame";
 import { toolkitCopy } from "@/lib/i18n/toolkit-pages";
 import { tx, useLocale, type Locale } from "@/lib/i18n/locale";
-import { pageHead, webPageJsonLd } from "@/lib/seo";
+import { ogImageUrl, pageHead, webPageJsonLd } from "@/lib/seo";
 
 const DESCRIPTION =
   "CAD-bibliotheken en naslag voor machinebouw: TraceParts, 3Dfindit, MISUMI, 247 Tailor Steel, SKF, Fabory, ISO OBP.";
@@ -15,6 +15,7 @@ export const Route = createFileRoute("/toolkit/bronnen")({
       title: "CAD-bibliotheken machinebouw — Damian Vink",
       description: DESCRIPTION,
       path: "/toolkit/bronnen",
+      image: ogImageUrl("bronnen"),
     }),
   component: BronnenPage,
 });

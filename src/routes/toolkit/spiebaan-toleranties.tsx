@@ -5,7 +5,7 @@ import { SpiebaanCalc } from "@/components/toolkit/spiebaan-calc";
 import { ToolkitFrame } from "@/components/toolkit/toolkit-frame";
 import { toolkitCopy } from "@/lib/i18n/toolkit-pages";
 import { useLocale } from "@/lib/i18n/locale";
-import { pageHead, softwareJsonLd } from "@/lib/seo";
+import { ogImageUrl, pageHead, softwareJsonLd } from "@/lib/seo";
 
 const DESCRIPTION =
   "DIN 6885-1 spiebaan-toleranties: t1, t2, b×h. Vul de as-Ø in; de tabel markeert de rij. P9 vaste zitting, N9/JS9 lichte zitting.";
@@ -14,11 +14,12 @@ export const Route = createFileRoute("/toolkit/spiebaan-toleranties")({
   validateSearch: (s: Record<string, unknown>): { d?: string } => ({
     d: typeof s.d === "string" && /^\d{1,4}$/.test(s.d) ? s.d : undefined,
   }),
-  head: () =>
+  head: ({ match }) =>
     pageHead({
       title: "Spiebaan-toleranties DIN 6885 (t1/t2) — Damian Vink",
       description: DESCRIPTION,
       path: "/toolkit/spiebaan-toleranties",
+      image: ogImageUrl("spiebaan", match.search),
     }),
   component: SpiebaanPage,
 });

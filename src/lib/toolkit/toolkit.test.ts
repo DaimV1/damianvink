@@ -11,6 +11,7 @@ import {
   fitExtendable,
   holeDeviationAt,
   isExtendedBand,
+  pairRange,
   shaftDeviationAt,
 } from "./iso286.ts";
 import { designation, lookupIso2768 } from "./iso2768.ts";
@@ -31,6 +32,7 @@ import {
   FEEDBACK_PREFIX,
   validateFeedbackInput,
 } from "./feedback.ts";
+import { ogSummary } from "../og/summary.ts";
 
 describe("ISO 286 passingen", () => {
   it("H7/h6 at 20 mm is 0 to 34 µm clearance", () => {
@@ -623,5 +625,54 @@ describe("toolkit feedback", () => {
     assert.ok(older.pathname.localeCompare(newer.pathname) < 0);
     assert.equal(older.record.createdAt, "2026-09-06T10:00:00.000Z");
     assert.equal(older.record.toolId, "cilinder");
+  });
+});
+
+describe("OG share cards", () => {
+  it("cilinder card carries the same numbers the page shows", () => {
+    const s = ogSummary("cilinder", { load: "1000", p: "6", s: "1,25", dir: "uit" });
+    assert.ok(s);
+    assert.equal(s.standard, "ISO 15552 · 6432");
+    assert.equal(s.headline, "Ø63/20 · 1.870 N");
+    assert.deepEqual(
+      s.chips.map((c) => c.value),
+      ["ISO 15552", "1.870 N", "1.682 N"],
+    );
+  });
+
+  it("passingen card matches computeFit for the same inputs", () => {
+    const s = ogSummary("passingen", { d: "20", fit: "H7/p6" });
+    assert.ok(s);
+    assert.equal(s.headline, "Ø20 H7/p6");
+    const fit = computeFit(20, "H7/p6");
+    assert.ok(fit);
+    assert.equal(s.chips[0].value, `${pairRange(fit.ES, fit.EI)} mm`);
+  });
+
+  it("falls back to the tool's own blurb when inputs do not resolve", () => {
+    // Ø7 has no seegerring row, and a bare page has no inputs at all.
+    const noRow = ogSummary("seeger", { d: "9999" });
+    assert.ok(noRow);
+    assert.equal(noRow.chips.length, 0);
+    assert.equal(noRow.title, "Seegerringgroef");
+
+    const bare = ogSummary("kanten", {});
+    assert.ok(bare);
+    assert.equal(bare.chips.length, 0);
+    assert.ok(bare.headline.length > 0);
+  });
+
+  it("returns null for an unknown tool, so the route can 404", () => {
+    assert.equal(ogSummary("not-a-tool", {}), null);
+  });
+
+  it("every tool id produces a usable card", () => {
+    for (const tool of TOOLS) {
+      const s = ogSummary(tool.id, {});
+      assert.ok(s, tool.id);
+      assert.ok(s.title.length > 0, tool.id);
+      assert.ok(s.headline.length > 0, tool.id);
+      assert.ok(s.chips.length <= 3, tool.id);
+    }
   });
 });

@@ -5,7 +5,7 @@ import { KantenCalc } from "@/components/toolkit/kanten-calc";
 import { ToolkitFrame } from "@/components/toolkit/toolkit-frame";
 import { toolkitCopy } from "@/lib/i18n/toolkit-pages";
 import { useLocale } from "@/lib/i18n/locale";
-import { pageHead, softwareJsonLd } from "@/lib/seo";
+import { ogImageUrl, pageHead, softwareJsonLd } from "@/lib/seo";
 
 const DESCRIPTION =
   "Richtlijnen kanten: inwendige radius Ri, minimale beenlengte en Z-buiging. Shop-spec 247TailorSteel Sophia, geen ISO of DIN.";
@@ -22,11 +22,12 @@ export const Route = createFileRoute("/toolkit/kanten")({
     kind: typeof s.kind === "string" && KIND_IDS.has(s.kind) ? s.kind : undefined,
     k: typeof s.k === "string" && /^\d{1,2}[.,]?\d{0,2}$/.test(s.k) ? s.k : undefined,
   }),
-  head: () =>
+  head: ({ match }) =>
     pageHead({
       title: "Richtlijnen kanten 247TailorSteel — Damian Vink",
       description: DESCRIPTION,
       path: "/toolkit/kanten",
+      image: ogImageUrl("kanten", match.search),
     }),
   component: KantenPage,
 });

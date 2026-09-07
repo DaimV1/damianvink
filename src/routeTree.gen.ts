@@ -17,6 +17,7 @@ import { Route as PodcastRouteImport } from './routes/podcast'
 import { Route as ProjectRouteImport } from './routes/project'
 import { Route as ProjectenRouteImport } from './routes/projecten'
 import { Route as SpelRouteImport } from './routes/spel'
+import { Route as ApiOgRouteImport } from './routes/api/og'
 import { Route as BlogIndexRouteImport } from './routes/blog/index'
 import { Route as BlogUsbCLabtafelMhsRouteImport } from './routes/blog/usb-c-labtafel-mhs'
 import { Route as ToolkitIndexRouteImport } from './routes/toolkit/index'
@@ -74,6 +75,11 @@ const ProjectenRoute = ProjectenRouteImport.update({
 const SpelRoute = SpelRouteImport.update({
   id: '/spel',
   path: '/spel',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiOgRoute = ApiOgRouteImport.update({
+  id: '/api/og',
+  path: '/api/og',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BlogIndexRoute = BlogIndexRouteImport.update({
@@ -178,6 +184,7 @@ export interface FileRoutesByFullPath {
   '/project': typeof ProjectRoute
   '/projecten': typeof ProjectenRoute
   '/spel': typeof SpelRoute
+  '/api/og': typeof ApiOgRoute
   '/blog/usb-c-labtafel-mhs': typeof BlogUsbCLabtafelMhsRoute
   '/toolkit/bevestigers': typeof ToolkitBevestigersRoute
   '/toolkit/bronnen': typeof ToolkitBronnenRoute
@@ -206,6 +213,7 @@ export interface FileRoutesByTo {
   '/project': typeof ProjectRoute
   '/projecten': typeof ProjectenRoute
   '/spel': typeof SpelRoute
+  '/api/og': typeof ApiOgRoute
   '/blog/usb-c-labtafel-mhs': typeof BlogUsbCLabtafelMhsRoute
   '/toolkit/bevestigers': typeof ToolkitBevestigersRoute
   '/toolkit/bronnen': typeof ToolkitBronnenRoute
@@ -235,6 +243,7 @@ export interface FileRoutesById {
   '/project': typeof ProjectRoute
   '/projecten': typeof ProjectenRoute
   '/spel': typeof SpelRoute
+  '/api/og': typeof ApiOgRoute
   '/blog/usb-c-labtafel-mhs': typeof BlogUsbCLabtafelMhsRoute
   '/toolkit/bevestigers': typeof ToolkitBevestigersRoute
   '/toolkit/bronnen': typeof ToolkitBronnenRoute
@@ -265,6 +274,7 @@ export interface FileRouteTypes {
     | '/project'
     | '/projecten'
     | '/spel'
+    | '/api/og'
     | '/blog/usb-c-labtafel-mhs'
     | '/toolkit/bevestigers'
     | '/toolkit/bronnen'
@@ -293,6 +303,7 @@ export interface FileRouteTypes {
     | '/project'
     | '/projecten'
     | '/spel'
+    | '/api/og'
     | '/blog/usb-c-labtafel-mhs'
     | '/toolkit/bevestigers'
     | '/toolkit/bronnen'
@@ -321,6 +332,7 @@ export interface FileRouteTypes {
     | '/project'
     | '/projecten'
     | '/spel'
+    | '/api/og'
     | '/blog/usb-c-labtafel-mhs'
     | '/toolkit/bevestigers'
     | '/toolkit/bronnen'
@@ -350,6 +362,7 @@ export interface RootRouteChildren {
   ProjectRoute: typeof ProjectRoute
   ProjectenRoute: typeof ProjectenRoute
   SpelRoute: typeof SpelRoute
+  ApiOgRoute: typeof ApiOgRoute
   BlogUsbCLabtafelMhsRoute: typeof BlogUsbCLabtafelMhsRoute
   ToolkitBevestigersRoute: typeof ToolkitBevestigersRoute
   ToolkitBronnenRoute: typeof ToolkitBronnenRoute
@@ -426,6 +439,13 @@ declare module '@tanstack/react-router' {
       path: '/spel'
       fullPath: '/spel'
       preLoaderRoute: typeof SpelRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/og': {
+      id: '/api/og'
+      path: '/api/og'
+      fullPath: '/api/og'
+      preLoaderRoute: typeof ApiOgRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blog/': {
@@ -566,6 +586,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProjectRoute: ProjectRoute,
   ProjectenRoute: ProjectenRoute,
   SpelRoute: SpelRoute,
+  ApiOgRoute: ApiOgRoute,
   BlogUsbCLabtafelMhsRoute: BlogUsbCLabtafelMhsRoute,
   ToolkitBevestigersRoute: ToolkitBevestigersRoute,
   ToolkitBronnenRoute: ToolkitBronnenRoute,

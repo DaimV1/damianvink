@@ -5,7 +5,7 @@ import { SeegerCalc } from "@/components/toolkit/seeger-calc";
 import { ToolkitFrame } from "@/components/toolkit/toolkit-frame";
 import { toolkitCopy } from "@/lib/i18n/toolkit-pages";
 import { useLocale } from "@/lib/i18n/locale";
-import { pageHead, softwareJsonLd } from "@/lib/seo";
+import { ogImageUrl, pageHead, softwareJsonLd } from "@/lib/seo";
 
 const DESCRIPTION =
   "Seegerringgroef DIN 471 (as) en DIN 472 (boring). Groef d2, breedte b en diepte t tot Ø100 mm. Rekenhulp plus werkplaatstabel.";
@@ -15,11 +15,12 @@ export const Route = createFileRoute("/toolkit/seegerring-groef")({
     d: typeof s.d === "string" && /^\d{1,4}$/.test(s.d) ? s.d : undefined,
     kind: s.kind === "as" || s.kind === "boring" ? s.kind : undefined,
   }),
-  head: () =>
+  head: ({ match }) =>
     pageHead({
       title: "Seegerringgroef DIN 471 / DIN 472 — Damian Vink",
       description: DESCRIPTION,
       path: "/toolkit/seegerring-groef",
+      image: ogImageUrl("seeger", match.search),
     }),
   component: SeegerPage,
 });
