@@ -26,16 +26,36 @@ function Home() {
       <PageWrap wide>
         <section className="reveal pb-16 pt-6 sm:pb-24 sm:pt-10">
           <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">
-            {tx(locale, "Project Engineer · Werktuigbouwkunde", "Project Engineer · Mechanical engineering")}
+            {tx(
+              locale,
+              "Project Engineer · Werktuigbouwkunde",
+              "Project Engineer · Mechanical engineering",
+            )}
           </p>
           <DisplayTitle text="Damian Vink." accent="Vink." className="mt-4" />
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">
-            {tx(locale, "Ontwerp en projecten in machinebouw.", "Design and projects in machine building.")}
+            {tx(
+              locale,
+              "Ontwerp en projecten in machinebouw.",
+              "Design and projects in machine building.",
+            )}
           </p>
         </section>
 
         <section className="reveal reveal-delay-1 border-t border-line py-14 sm:py-16">
           <div className="grid gap-3">
+            <Door
+              num="AI"
+              title="AI Lab"
+              body={tx(
+                locale,
+                "Van ruwe tekst naar heldere taal, projectacties en nieuwe ideeën. Probeer het zelf.",
+                "Turn rough text into clear writing, project actions and fresh ideas. Try it yourself.",
+              )}
+              href="/ai-lab"
+              link="AI Lab"
+              meta={tx(locale, "Interactieve demo", "Interactive demo")}
+            />
             <Door
               num="01"
               title="Engineering toolkit"
@@ -46,7 +66,11 @@ function Home() {
               )}
               href="/toolkit"
               link="Toolkit"
-              meta={tx(locale, "Werktuigbouwkunde · Machinebouw", "Mechanical engineering · Machine building")}
+              meta={tx(
+                locale,
+                "Werktuigbouwkunde · Machinebouw",
+                "Mechanical engineering · Machine building",
+              )}
             />
             <Door
               num="02"
@@ -119,7 +143,10 @@ function Door({
           <p className="mt-1 text-sm leading-relaxed text-muted">{body}</p>
         </div>
       </div>
-      <Link to={href} className="mt-4 flex items-center justify-between gap-3 border-t border-line pt-4 text-sm">
+      <Link
+        to={href}
+        className="mt-4 flex items-center justify-between gap-3 border-t border-line pt-4 text-sm"
+      >
         <span>
           <strong className="font-medium text-ink">{link}</strong>
           <span className="ml-2 text-muted">{meta}</span>
@@ -132,15 +159,7 @@ function Door({
   );
 }
 
-function ContactCard({
-  href,
-  label,
-  value,
-}: {
-  href: string;
-  label: string;
-  value: string;
-}) {
+function ContactCard({ href, label, value }: { href: string; label: string; value: string }) {
   const external = href.startsWith("http");
   return (
     <a
