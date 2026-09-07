@@ -21,7 +21,8 @@
     "check:auth": "node scripts/check-auth-invariant.mjs",
     "test": "node --test 'scripts/**/*.test.mjs' && node --experimental-strip-types --test src/lib/auth/gate-identity.test.ts src/lib/pm/workspace.test.ts src/lib/toolkit/toolkit.test.ts",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "feedback:list": "node scripts/feedback-list.mjs"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.5.4",
@@ -30,6 +31,7 @@
     "@tanstack/react-start": "^1.168.0",
     "@tanstack/router-plugin": "^1.168.0",
     "@vercel/analytics": "^2.0.1",
+    "@vercel/blob": "^2.8.0",
     "better-auth": "~1.6.30",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

@@ -26,6 +26,11 @@ import { lookupKanten } from "./kanten.ts";
 import { computeBuckling, kDesignFor, kFor, sectionProps } from "./knik.ts";
 import { rodBucklingCheck } from "./cylinder.ts";
 import { rangeHint, matchTools, TOOLS } from "./tools.ts";
+import {
+  buildFeedbackRecord,
+  FEEDBACK_PREFIX,
+  validateFeedbackInput,
+} from "./feedback.ts";
 
 describe("ISO 286 passingen", () => {
   it("H7/h6 at 20 mm is 0 to 34 µm clearance", () => {
@@ -569,5 +574,54 @@ describe("pneumatische cilinder — stangknik", () => {
     assert.ok(viaCylinder && viaKnik);
     assert.equal(viaCylinder.Leff, viaKnik.Leff);
     assert.equal(viaCylinder.lambda, viaKnik.lambda);
+  });
+});
+
+describe("toolkit feedback", () => {
+  it("rejects a toolId that is not a real tool, and a path outside /toolkit/", () => {
+    assert.throws(() => validateFeedbackInput({ toolId: "nope", path: "/toolkit/cilinder" }));
+    assert.throws(() => validateFeedbackInput({ toolId: "cilinder", path: "/elders" }));
+    assert.throws(() => validateFeedbackInput(null));
+  });
+
+  it("keeps the message optional and trims/caps it", () => {
+    const empty = validateFeedbackInput({ toolId: "cilinder", path: "/toolkit/cilinder" });
+    assert.equal(empty.message, undefined);
+    const padded = validateFeedbackInput({
+      toolId: "cilinder",
+      path: "/toolkit/cilinder",
+      message: "   klopt niet   ",
+    });
+    assert.equal(padded.message, "klopt niet");
+    const long = validateFeedbackInput({
+      toolId: "cilinder",
+      path: "/toolkit/cilinder",
+      message: "x".repeat(5000),
+    });
+    assert.equal(long.message?.length, 2000);
+  });
+
+  it("falls back to nl for an unknown locale", () => {
+    assert.equal(
+      validateFeedbackInput({ toolId: "cilinder", path: "/toolkit/cilinder", locale: "de" }).locale,
+      "nl",
+    );
+    assert.equal(
+      validateFeedbackInput({ toolId: "cilinder", path: "/toolkit/cilinder", locale: "en" }).locale,
+      "en",
+    );
+  });
+
+  it("names each object so a lexical sort is chronological", () => {
+    const input = { toolId: "cilinder", path: "/toolkit/cilinder" };
+    const older = buildFeedbackRecord(input, new Date("2026-09-06T10:00:00.000Z"), "aaaaaaaa");
+    const newer = buildFeedbackRecord(input, new Date("2026-09-06T11:00:00.000Z"), "bbbbbbbb");
+    assert.ok(older.pathname.startsWith(FEEDBACK_PREFIX));
+    assert.ok(older.pathname.endsWith(".json"));
+    // No ":" or "." in the key apart from the extension.
+    assert.equal(older.pathname.slice(0, -".json".length).includes(":"), false);
+    assert.ok(older.pathname.localeCompare(newer.pathname) < 0);
+    assert.equal(older.record.createdAt, "2026-09-06T10:00:00.000Z");
+    assert.equal(older.record.toolId, "cilinder");
   });
 });
