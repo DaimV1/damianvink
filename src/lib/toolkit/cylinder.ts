@@ -3,7 +3,7 @@
  * ISO 15552 / ISO 6432 basic piston-rod diameters (not oversized rods).
  * No friction, no Festo/SMC type code.
  */
-import { computeBuckling, END_CONDITIONS } from "./knik.ts";
+import { columnCapacity, END_CONDITIONS } from "./knik.ts";
 
 /** 1 bar (gauge) = 0,1 N/mm². */
 export const BAR_N_PER_MM2 = 0.1;
@@ -126,7 +126,7 @@ export const ROD_STEEL_RP02 = 235;
 /** Pneumatic rod buckling is conventionally checked at 3.5-5, not "any S above 1". */
 export const ROD_BUCKLING_MIN_SAFETY = 3.5;
 
-export type RodBucklingResult = ReturnType<typeof computeBuckling> & {
+export type RodBucklingResult = NonNullable<ReturnType<typeof columnCapacity>> & {
   /** True when λ is below the Euler validity limit: F_cr above is capped at the squash load (A·Rp0.2), not a real Euler value. */
   belowEulerLimit: boolean;
   /** S below this is a real concern even if S ≥ 1 — see ROD_BUCKLING_MIN_SAFETY. */
@@ -149,28 +149,25 @@ export function rodBucklingCheck(
   const I = (Math.PI * rodMm ** 4) / 64;
   const A = (Math.PI * rodMm ** 2) / 4;
   const L = strokeMm + Math.max(0, protrusionMm);
-  const raw = computeBuckling({ L, k: ROD_BUCKLING_K_DESIGN, E: ROD_STEEL_E, I, A, F: pushForceN });
-  if (!raw) return null;
 
-  // Euler only applies above the slenderness limit λ = π√(E/Rp0.2); below it
-  // the rod squashes before it buckles, and the Euler formula overestimates
-  // the real capacity — sometimes by a large factor. Cap F_cr at the squash
-  // load (A·Rp0.2) in that regime instead of publishing the (unsafe) Euler
-  // number, per lambdaLimit() in knik.ts.
-  const lambdaLim = Math.PI * Math.sqrt(ROD_STEEL_E / ROD_STEEL_RP02);
-  const belowEulerLimit = raw.lambda < lambdaLim;
-  const squashLoad = A * ROD_STEEL_RP02;
-  const Fcr = belowEulerLimit ? Math.min(raw.Fcr, squashLoad) : raw.Fcr;
-  const sigmaCr = Fcr / A;
-  const safety = pushForceN > 0 ? Fcr / pushForceN : null;
+  // Shared with the Euler-knik tool (columnCapacity in knik.ts): below the
+  // slenderness limit the rod squashes before it buckles, so F_cr is capped at
+  // A·Rp0,2 instead of publishing the runaway Euler number. Calling the same
+  // function is what keeps the two tools agreeing on one rod — see H-6.
+  const res = columnCapacity({
+    L,
+    k: ROD_BUCKLING_K_DESIGN,
+    E: ROD_STEEL_E,
+    I,
+    A,
+    F: pushForceN,
+    rp02: ROD_STEEL_RP02,
+  });
+  if (!res) return null;
 
   return {
-    ...raw,
-    Fcr,
-    sigmaCr,
-    safety,
-    belowEulerLimit,
-    belowRecommendedSafety: safety != null && safety < ROD_BUCKLING_MIN_SAFETY,
+    ...res,
+    belowRecommendedSafety: res.safety != null && res.safety < ROD_BUCKLING_MIN_SAFETY,
   };
 }
 

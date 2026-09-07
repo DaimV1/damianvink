@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import {
-  computeBuckling,
+  columnCapacity,
   copyLine,
   END_CONDITIONS,
   eFor,
@@ -104,9 +104,22 @@ export function KnikCalc() {
   const material = MATERIALS_E.find((m) => m.id === materialId) ?? MATERIALS_E[0];
   const endLabel = END_CONDITIONS.find((c) => c.id === endCondition);
 
+  // columnCapacity, not raw computeBuckling: below λ_grens the bar squashes
+  // before it buckles and Euler runs away (Ø20 RVS at L=100: 1 496 kN Euler
+  // against a 68 kN squash load). F_cr is capped at A·Rp0,2 there, and the
+  // pneumatic-cilinder rod check calls the same function so the two tools
+  // cannot disagree about one bar.
   const result =
     section && Lraw != null
-      ? computeBuckling({ L: Lraw, k, E, I: section.I, A: section.A, F: Fraw })
+      ? columnCapacity({
+          L: Lraw,
+          k,
+          E,
+          I: section.I,
+          A: section.A,
+          F: Fraw,
+          rp02: rp02For(materialId),
+        })
       : null;
 
   const copy = useMemo(
@@ -250,7 +263,17 @@ export function KnikCalc() {
                   { label: "i", value: `${fmtDotComma(result.i, 1)} mm` },
                   { label: "L_eff", value: `${fmtN(result.Leff)} mm` },
                   { label: "λ", value: fmtDotComma(result.lambda, 1) },
-                  { label: "F_cr", value: `${fmtN(result.Fcr)} N` },
+                  {
+                    // Name the mechanism: below λ_grens this is the squash load
+                    // A·Rp0,2, not an Euler value, and calling both "F_cr" is
+                    // how a 22×-optimistic number reads as a buckling capacity.
+                    label: tx(
+                      locale,
+                      result.governing === "plooien" ? "F_cr (plooilast)" : "F_cr (Euler)",
+                      result.governing === "plooien" ? "F_cr (squash load)" : "F_cr (Euler)",
+                    ),
+                    value: `${fmtN(result.Fcr)} N`,
+                  },
                   { label: "σ_cr", value: `${fmtDotComma(result.sigmaCr, 1)} N/mm²` },
                   result.safety != null
                     ? { label: "S", value: fmtDotComma(result.safety, 2) }
@@ -269,8 +292,8 @@ export function KnikCalc() {
                 <Note>
                   {tx(
                     locale,
-                    `λ = ${fmtDotComma(result.lambda, 1)} — laag (< ${fmtDotComma(lambdaWarn, 0)} voor ${tx(locale, material.label, material.labelEn)}, richtwaarde λ_grens = π√(E/Rp0,2)). Euler geldt voor slanke staven; bij lage slankheid overschat Euler de sterkte. Controleer met Tetmajer of de Johnson-parabool.`,
-                    `λ = ${fmtDotComma(result.lambda, 1)} — low (< ${fmtDotComma(lambdaWarn, 0)} for ${tx(locale, material.label, material.labelEn)}, indicative λ_limit = π√(E/Rp0.2)). Euler applies to slender struts; at low slenderness Euler overestimates strength. Check with Tetmajer or the Johnson parabola.`,
+                    `λ = ${fmtDotComma(result.lambda, 1)} ligt onder λ_grens = ${fmtDotComma(lambdaWarn, 0)} voor ${tx(locale, material.label, material.labelEn)} (π√(E/Rp0,2)). Euler geldt hier niet: de staaf plooit/vloeit voordat hij knikt. F_cr hierboven is daarom de plooilast A·Rp0,2 = ${fmtN(result.squashLoad)} N, niet de Euler-last (${fmtN((Math.PI ** 2 * E * result.I) / result.Leff ** 2)} N — fors hoger, en niet haalbaar). Tussen beide regimes is Tetmajer of de Johnson-parabool nauwkeuriger dan deze harde overgang.`,
+                    `λ = ${fmtDotComma(result.lambda, 1)} is below λ_limit = ${fmtDotComma(lambdaWarn, 0)} for ${tx(locale, material.label, material.labelEn)} (π√(E/Rp0.2)). Euler does not apply here: the strut yields before it buckles. F_cr above is therefore the squash load A·Rp0.2 = ${fmtN(result.squashLoad)} N, not the Euler load (${fmtN((Math.PI ** 2 * E * result.I) / result.Leff ** 2)} N — far higher, and not achievable). Between the two regimes Tetmajer or the Johnson parabola is more accurate than this hard switch.`,
                   )}
                 </Note>
               ) : null}

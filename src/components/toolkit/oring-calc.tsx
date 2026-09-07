@@ -77,8 +77,8 @@ export function OringCalc() {
         <Note>
           {tx(
             locale,
-            "ISO-koorden A–E. t +0,05 mm, b +0,25 mm (Dichtomatik). Samendrukking = (d₂ − t)/d₂: nominale compressie, geen plus-mintolerantie. Vulgraad = doorsnede-oppervlak ring t.o.v. groefoppervlak (b × t); richtwaarde 75–90%, met ruimte voor thermische uitzetting.",
-            "ISO cords A–E. t +0.05 mm, b +0.25 mm (Dichtomatik). Compression = (d₂ − t)/d₂: nominal compression, not a plus/minus tolerance. Fill ratio = ring cross-section area vs. groove area (b × t); target 75–90%, leaving room for thermal expansion.",
+            "ISO-koorden A–E. t +0,05 mm, b +0,25 mm (Dichtomatik). Samendrukking = (d₂ − t)/d₂: nominale compressie, geen plus-mintolerantie. Vulgraad = doorsnede-oppervlak ring t.o.v. groefoppervlak (b × t). De harde grens is de bovenkant: boven ~90% is er geen ruimte meer voor thermische uitzetting en zwelling, en wordt de ring de groef uit gedrukt. Deze Dichtomatik-groeven liggen zelf op 69–82% (radiaal 71–82, axiaal 70–75, hydrauliek 69–71) — ruimer dan de vaak geciteerde 75%-ondergrens, wat hier geen fout is maar extra uitzettingsruimte.",
+            "ISO cords A–E. t +0.05 mm, b +0.25 mm (Dichtomatik). Compression = (d₂ − t)/d₂: nominal compression, not a plus/minus tolerance. Fill ratio = ring cross-section area vs. groove area (b × t). The hard limit is the upper one: above ~90% there is no room left for thermal expansion and swell, and the ring gets extruded out of the groove. These Dichtomatik grooves themselves sit at 69–82% (radial 71–82, axial 70–75, hydraulic 69–71) — looser than the often-quoted 75% lower bound, which here is not a defect but extra room to expand.",
           )}
         </Note>
         <Note>

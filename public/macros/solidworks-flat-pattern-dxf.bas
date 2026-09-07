@@ -68,6 +68,10 @@ Sub main()
 
     If wasSuppressed Then
         swFlatFeat.SetSuppression2 swUnSuppressFeature, swThisConfiguration, Nothing
+        ' Unsuppress alleen markeert de feature als te herbouwen; zonder een
+        ' expliciete rebuild kan SaveAs de VORIGE (verouderde) geometrie
+        ' exporteren. Forceer daarom een rebuild voordat we wegschrijven.
+        swModel.EditRebuild3
     End If
 
     If InStrRev(docPath, ".") = 0 Then

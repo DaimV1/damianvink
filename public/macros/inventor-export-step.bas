@@ -37,7 +37,12 @@ Sub ExportActiefNaarSTEP()
 
     ' Vaste, door Autodesk gedocumenteerde AddIn-id van de STEP-vertaler.
     Dim oStepTranslator As TranslatorAddIn
+    ' ItemById RAISES wanneer de AddIn ontbreekt — het geeft geen Nothing terug.
+    ' Zonder On Error is de vriendelijke melding hieronder onbereikbaar en
+    ' krijgt de gebruiker een VBA-foutdialoog.
+    On Error Resume Next
     Set oStepTranslator = ThisApplication.ApplicationAddIns.ItemById("{90AF7F40-0C01-11D5-8E83-0010B541CD80}")
+    On Error GoTo 0
 
     If oStepTranslator Is Nothing Then
         MsgBox "STEP-vertaler niet gevonden. Controleer of deze AddIn actief is.", vbCritical

@@ -188,6 +188,68 @@ export function lambdaLimit(E: number, rp02: number): number {
   return Math.PI * Math.sqrt(E / rp02);
 }
 
+export type ColumnCapacity = BucklingResult & {
+  /** λ below the Euler validity limit: the bar squashes before it buckles. */
+  belowEulerLimit: boolean;
+  /** π·√(E/Rp0,2) for this material. */
+  lambdaLim: number;
+  /** A · Rp0,2 — the plastic squash load. */
+  squashLoad: number;
+  /** Which mechanism sets the reported F_cr. */
+  governing: "euler" | "plooien";
+};
+
+/**
+ * Euler F_cr, capped at the squash load where Euler does not apply.
+ *
+ * Below λ_grens the bar yields before it buckles, and π²EI/L² runs away from
+ * reality fast — for a Ø20 RVS bar at L = 100 mm Euler says ~1 496 kN against
+ * a squash load of ~68 kN, a factor of 22. Reporting the Euler number there
+ * is optimistic in the direction that hurts, so F_cr is capped at A·Rp0,2 and
+ * the caller is told which mechanism governs.
+ *
+ * Deliberately the SAME hard cap the pneumatic-cilinder rod check uses (it now
+ * calls this function) rather than a Tetmajer/Johnson curve through the
+ * transition: two tools giving different answers for one bar is the failure
+ * the 4 Sept audit raised as H-6, and shared code is what keeps them equal. A
+ * transition curve would be more accurate between the regimes, but it has to
+ * land in both tools at once.
+ */
+export function columnCapacity({
+  L,
+  k,
+  E,
+  I,
+  A,
+  F,
+  rp02,
+}: {
+  L: number;
+  k: number;
+  E: number;
+  I: number;
+  A: number;
+  F: number | null;
+  rp02: number;
+}): ColumnCapacity | null {
+  const raw = computeBuckling({ L, k, E, I, A, F });
+  if (!raw || !(rp02 > 0)) return null;
+  const lambdaLim = lambdaLimit(E, rp02);
+  const belowEulerLimit = raw.lambda < lambdaLim;
+  const squashLoad = A * rp02;
+  const Fcr = belowEulerLimit ? Math.min(raw.Fcr, squashLoad) : raw.Fcr;
+  return {
+    ...raw,
+    Fcr,
+    sigmaCr: Fcr / A,
+    safety: F != null && F > 0 ? Fcr / F : null,
+    belowEulerLimit,
+    lambdaLim,
+    squashLoad,
+    governing: Fcr === squashLoad && belowEulerLimit ? "plooien" : "euler",
+  };
+}
+
 export function fmtN(n: number) {
   if (Math.abs(n) >= 1000) {
     return n.toLocaleString("nl-NL", { maximumFractionDigits: 0 });

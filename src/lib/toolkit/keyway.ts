@@ -24,6 +24,12 @@ export type WidthFit = "P9" | "N9" | "JS9" | "H9" | "D10";
 
 export const WIDTH_FITS: WidthFit[] = ["P9", "N9", "JS9", "H9", "D10"];
 
+/**
+ * `N` here is the fundamental deviation ES of hole N for grades UP TO AND
+ * INCLUDING IT8 — it does NOT apply to N9. See the special rule in
+ * keyWidthTol below; it is kept only for the ≤3 mm case, where that rule
+ * does not apply.
+ */
 const WIDTH_BANDS = [
   { over: 0, to: 3, it9: 25, it10: 40, P: -6, N: -4, D: 20 },
   { over: 3, to: 6, it9: 30, it10: 48, P: -12, N: -8, D: 30 },
@@ -46,6 +52,14 @@ export function keyWidthTol(b: number, fit: WidthFit): { ES: number; EI: number;
     return { ES: half, EI: -half, label: "JS9" };
   }
   if (fit === "P9") return { ES: band.P, EI: band.P - band.it9, label: "P9" };
-  if (fit === "N9") return { ES: band.N, EI: band.N - band.it9, label: "N9" };
+  if (fit === "N9") {
+    // ISO 286-1 special rule: for hole N at standard tolerance grades ABOVE
+    // IT8 and nominal sizes above 3 mm, the fundamental deviation ES is 0.
+    // N9 is grade 9, so every keyway width above 3 mm gets ES = 0 / EI = -IT9
+    // (b = 6 → 0 / -0,030 mm). Using band.N here instead published the ≤IT8
+    // deviation, i.e. -0,008 / -0,038 — a tighter band shifted the wrong way.
+    const ES = b > 3 ? 0 : band.N;
+    return { ES, EI: ES - band.it9, label: "N9" };
+  }
   return { ES: band.D + band.it10, EI: band.D, label: "D10" };
 }

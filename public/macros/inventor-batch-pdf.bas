@@ -17,7 +17,11 @@ Sub BatchExportTekeningenNaarPDF()
 
     ' Vaste, door Autodesk gedocumenteerde AddIn-id van de PDF-vertaler.
     Dim oPDFAddIn As TranslatorAddIn
+    ' ItemById RAISES wanneer de AddIn ontbreekt (geeft geen Nothing terug),
+    ' dus zonder On Error is de melding hieronder onbereikbaar.
+    On Error Resume Next
     Set oPDFAddIn = ThisApplication.ApplicationAddIns.ItemById("{0AC6FD96-2F4D-42CE-8BE0-8AEA580399E4}")
+    On Error GoTo 0
 
     If oPDFAddIn Is Nothing Then
         MsgBox "PDF-vertaler niet gevonden. Controleer of deze AddIn actief is.", vbCritical
@@ -27,8 +31,10 @@ Sub BatchExportTekeningenNaarPDF()
     Dim oDoc As Document
     Dim exported As Integer
     Dim skipped As Integer
+    Dim failures As String
     exported = 0
     skipped = 0
+    failures = ""
 
     For Each oDoc In ThisApplication.Documents
 
@@ -61,7 +67,11 @@ Sub BatchExportTekeningenNaarPDF()
                 If Err.Number = 0 Then
                     exported = exported + 1
                 Else
+                    ' Bewaar WAAROM dit document faalde. Zonder dit wordt elke
+                    ' oorzaak — vergrendeld bestand, ontbrekende referentie,
+                    ' volle schijf — hetzelfde nietszeggende "overgeslagen".
                     skipped = skipped + 1
+                    failures = failures & vbCrLf & "- " & oDoc.DisplayName & ": " & Err.Description
                     Err.Clear
                 End If
                 On Error GoTo 0
@@ -72,7 +82,12 @@ Sub BatchExportTekeningenNaarPDF()
 
     Next oDoc
 
-    MsgBox exported & " tekening(en) geëxporteerd naar PDF." & vbCrLf & _
-           skipped & " overgeslagen (geen tekening, of nog niet opgeslagen).", vbInformation
+    Dim msg As String
+    msg = exported & " tekening(en) geëxporteerd naar PDF." & vbCrLf & _
+          skipped & " overgeslagen (geen tekening, of nog niet opgeslagen)."
+    If Len(failures) > 0 Then
+        msg = msg & vbCrLf & vbCrLf & "Mislukt:" & failures
+    End If
+    MsgBox msg, vbInformation
 
 End Sub

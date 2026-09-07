@@ -24,7 +24,14 @@ import {
 import { GROOVE, squeeze } from "./oring.ts";
 import { lookupSeeger, seegerFor } from "./seeger.ts";
 import { lookupKanten } from "./kanten.ts";
-import { computeBuckling, kDesignFor, kFor, sectionProps } from "./knik.ts";
+import {
+  columnCapacity,
+  computeBuckling,
+  kDesignFor,
+  kFor,
+  lambdaLimit,
+  sectionProps,
+} from "./knik.ts";
 import { rodBucklingCheck } from "./cylinder.ts";
 import { rangeHint, matchTools, TOOLS } from "./tools.ts";
 import {
@@ -702,5 +709,83 @@ describe("OG card URLs", () => {
 
   it("a bare page still gets a tool card, not the site image", () => {
     assert.equal(ogImageUrl("kanten"), "https://www.damianvink.nl/api/og?tool=kanten");
+  });
+});
+
+describe("07-09 audit fixes", () => {
+  it("A3: N9 keyway width uses the ISO 286-1 rule ES=0 above 3 mm", () => {
+    // ES(N) is 0 for grades above IT8 at sizes over 3 mm. b=6 -> 0 / -IT9.
+    const n9 = keyWidthTol(6, "N9");
+    assert.ok(n9);
+    assert.equal(n9.ES, 0);
+    assert.equal(n9.EI, -30);
+    // Every keyway width above 3 mm: upper deviation is exactly 0.
+    for (const b of [4, 5, 6, 8, 10, 12, 14, 16, 18, 20, 22, 25, 28]) {
+      const t = keyWidthTol(b, "N9");
+      assert.ok(t, `b=${b}`);
+      assert.equal(t.ES, 0, `b=${b}`);
+    }
+    // At or below 3 mm the rule does not apply — tabulated deviation stands.
+    const small = keyWidthTol(3, "N9");
+    assert.ok(small);
+    assert.equal(small.ES, -4);
+    assert.equal(small.EI, -29);
+  });
+
+  it("A3: the other four width classes are unchanged", () => {
+    assert.deepEqual(keyWidthTol(6, "P9"), { ES: -12, EI: -42, label: "P9" });
+    assert.deepEqual(keyWidthTol(6, "JS9"), { ES: 15, EI: -15, label: "JS9" });
+    assert.deepEqual(keyWidthTol(6, "H9"), { ES: 30, EI: 0, label: "H9" });
+    assert.deepEqual(keyWidthTol(6, "D10"), { ES: 78, EI: 30, label: "D10" });
+  });
+
+  it("A4: a stubby strut reports the squash load, not the runaway Euler load", () => {
+    // Ø20 RVS, L=100, pinned: the audit's example. Euler says ~1 496 kN; the
+    // bar squashes at A·Rp0,2 = 314.2 * 215 = 67.5 kN.
+    const s = sectionProps("rond", { D: 20 });
+    assert.ok(s);
+    const r = columnCapacity({ L: 100, k: 1, E: 193000, I: s.I, A: s.A, F: null, rp02: 215 });
+    assert.ok(r);
+    assert.equal(r.governing, "plooien");
+    assert.ok(r.belowEulerLimit);
+    assert.ok(Math.abs(r.Fcr - s.A * 215) < 1);
+    assert.ok(r.Fcr < 70000, `capped F_cr should be ~67.5 kN, got ${r.Fcr}`);
+    // sigma_cr can never exceed the yield strength once capped.
+    assert.ok(r.sigmaCr <= 215 + 1e-9);
+  });
+
+  it("A4: a slender strut is untouched — Euler still governs", () => {
+    // Same bar at L=1000: the audit verified F_cr = 14 961 N against Euler.
+    const s = sectionProps("rond", { D: 20 });
+    assert.ok(s);
+    const r = columnCapacity({ L: 1000, k: 1, E: 193000, I: s.I, A: s.A, F: null, rp02: 215 });
+    assert.ok(r);
+    assert.equal(r.governing, "euler");
+    assert.ok(!r.belowEulerLimit);
+    assert.ok(Math.abs(r.Fcr - 14961) < 5, `expected ~14961 N, got ${r.Fcr}`);
+  });
+
+  it("A4/B8: lambda_grens is per material, not a flat 100", () => {
+    assert.ok(Math.abs(lambdaLimit(210000, 235) - 93.9) < 0.5); // steel ~94
+    assert.ok(Math.abs(lambdaLimit(70000, 240) - 53.6) < 0.5); // 6082-T6 ~54
+    assert.ok(Math.abs(lambdaLimit(3000, 50) - 24.3) < 0.5); // plastic ~24
+  });
+
+  it("H-6 stays fixed: cilinder and knik agree on the same rod", () => {
+    const rod = rodBucklingCheck(20, 100, 1870);
+    const s = sectionProps("rond", { D: 20 });
+    assert.ok(rod && s);
+    const viaKnik = columnCapacity({
+      L: 100,
+      k: kDesignFor("fc"),
+      E: 210000,
+      I: s.I,
+      A: s.A,
+      F: 1870,
+      rp02: 235,
+    });
+    assert.ok(viaKnik);
+    assert.equal(rod.Fcr, viaKnik.Fcr);
+    assert.equal(rod.governing, viaKnik.governing);
   });
 });
