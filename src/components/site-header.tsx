@@ -15,6 +15,7 @@ export function SiteHeader() {
   const nav = [
     { to: "/toolkit", label: "Toolkit", match: "/toolkit" },
     { to: "/project", label: tx(locale, "Project", "Project"), match: "/project" },
+    { to: "/lab", label: "Lab", match: "/lab" },
     { to: "/marathon", label: "Marathon", match: "/marathon" },
     { to: "/over-mij", label: tx(locale, "Over", "About"), match: "/over-mij" },
     { to: "/contact", label: "Contact", match: "/contact" },
@@ -23,6 +24,7 @@ export function SiteHeader() {
   function isActive(item: (typeof nav)[number]) {
     if (item.to === "/toolkit") return pathname.startsWith("/toolkit");
     if (item.to === "/project") return pathname === "/project" || pathname.startsWith("/project/");
+    if (item.to === "/lab") return pathname.startsWith("/lab");
     if (item.to === "/marathon") return pathname.startsWith("/marathon");
     return pathname === item.match || pathname.startsWith(item.match + "/");
   }

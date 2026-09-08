@@ -72,6 +72,18 @@ function Home() {
               link="Marathon"
               meta={tx(locale, "Logboek", "Log")}
             />
+            <Door
+              num="04"
+              title="Interactive Lab"
+              body={tx(
+                locale,
+                "Kleine interactieve builds. Om te beginnen: een zonnestelsel dat je zelf kunt draaien en zoomen.",
+                "Small interactive builds. To start: a solar system you can pan and zoom yourself.",
+              )}
+              href="/lab"
+              link="Lab"
+              meta={tx(locale, "Interactief", "Interactive")}
+            />
           </div>
         </section>
 

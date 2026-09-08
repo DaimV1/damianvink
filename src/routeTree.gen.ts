@@ -20,6 +20,8 @@ import { Route as SpelRouteImport } from './routes/spel'
 import { Route as ApiOgRouteImport } from './routes/api/og'
 import { Route as BlogIndexRouteImport } from './routes/blog/index'
 import { Route as BlogUsbCLabtafelMhsRouteImport } from './routes/blog/usb-c-labtafel-mhs'
+import { Route as LabIndexRouteImport } from './routes/lab/index'
+import { Route as LabZonnestelselRouteImport } from './routes/lab/zonnestelsel'
 import { Route as ToolkitIndexRouteImport } from './routes/toolkit/index'
 import { Route as ToolkitBevestigersRouteImport } from './routes/toolkit/bevestigers'
 import { Route as ToolkitBronnenRouteImport } from './routes/toolkit/bronnen'
@@ -90,6 +92,16 @@ const BlogIndexRoute = BlogIndexRouteImport.update({
 const BlogUsbCLabtafelMhsRoute = BlogUsbCLabtafelMhsRouteImport.update({
   id: '/blog/usb-c-labtafel-mhs',
   path: '/blog/usb-c-labtafel-mhs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LabIndexRoute = LabIndexRouteImport.update({
+  id: '/lab/',
+  path: '/lab/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LabZonnestelselRoute = LabZonnestelselRouteImport.update({
+  id: '/lab/zonnestelsel',
+  path: '/lab/zonnestelsel',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ToolkitIndexRoute = ToolkitIndexRouteImport.update({
@@ -186,6 +198,7 @@ export interface FileRoutesByFullPath {
   '/spel': typeof SpelRoute
   '/api/og': typeof ApiOgRoute
   '/blog/usb-c-labtafel-mhs': typeof BlogUsbCLabtafelMhsRoute
+  '/lab/zonnestelsel': typeof LabZonnestelselRoute
   '/toolkit/bevestigers': typeof ToolkitBevestigersRoute
   '/toolkit/bronnen': typeof ToolkitBronnenRoute
   '/toolkit/cilinder': typeof ToolkitCilinderRoute
@@ -202,6 +215,7 @@ export interface FileRoutesByFullPath {
   '/toolkit/seegerring-groef': typeof ToolkitSeegerringGroefRoute
   '/toolkit/spiebaan-toleranties': typeof ToolkitSpiebaanTolerantiesRoute
   '/blog/': typeof BlogIndexRoute
+  '/lab/': typeof LabIndexRoute
   '/toolkit/': typeof ToolkitIndexRoute
 }
 export interface FileRoutesByTo {
@@ -215,6 +229,7 @@ export interface FileRoutesByTo {
   '/spel': typeof SpelRoute
   '/api/og': typeof ApiOgRoute
   '/blog/usb-c-labtafel-mhs': typeof BlogUsbCLabtafelMhsRoute
+  '/lab/zonnestelsel': typeof LabZonnestelselRoute
   '/toolkit/bevestigers': typeof ToolkitBevestigersRoute
   '/toolkit/bronnen': typeof ToolkitBronnenRoute
   '/toolkit/cilinder': typeof ToolkitCilinderRoute
@@ -231,6 +246,7 @@ export interface FileRoutesByTo {
   '/toolkit/seegerring-groef': typeof ToolkitSeegerringGroefRoute
   '/toolkit/spiebaan-toleranties': typeof ToolkitSpiebaanTolerantiesRoute
   '/blog': typeof BlogIndexRoute
+  '/lab': typeof LabIndexRoute
   '/toolkit': typeof ToolkitIndexRoute
 }
 export interface FileRoutesById {
@@ -245,6 +261,7 @@ export interface FileRoutesById {
   '/spel': typeof SpelRoute
   '/api/og': typeof ApiOgRoute
   '/blog/usb-c-labtafel-mhs': typeof BlogUsbCLabtafelMhsRoute
+  '/lab/zonnestelsel': typeof LabZonnestelselRoute
   '/toolkit/bevestigers': typeof ToolkitBevestigersRoute
   '/toolkit/bronnen': typeof ToolkitBronnenRoute
   '/toolkit/cilinder': typeof ToolkitCilinderRoute
@@ -261,6 +278,7 @@ export interface FileRoutesById {
   '/toolkit/seegerring-groef': typeof ToolkitSeegerringGroefRoute
   '/toolkit/spiebaan-toleranties': typeof ToolkitSpiebaanTolerantiesRoute
   '/blog/': typeof BlogIndexRoute
+  '/lab/': typeof LabIndexRoute
   '/toolkit/': typeof ToolkitIndexRoute
 }
 export interface FileRouteTypes {
@@ -276,6 +294,7 @@ export interface FileRouteTypes {
     | '/spel'
     | '/api/og'
     | '/blog/usb-c-labtafel-mhs'
+    | '/lab/zonnestelsel'
     | '/toolkit/bevestigers'
     | '/toolkit/bronnen'
     | '/toolkit/cilinder'
@@ -292,6 +311,7 @@ export interface FileRouteTypes {
     | '/toolkit/seegerring-groef'
     | '/toolkit/spiebaan-toleranties'
     | '/blog/'
+    | '/lab/'
     | '/toolkit/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -305,6 +325,7 @@ export interface FileRouteTypes {
     | '/spel'
     | '/api/og'
     | '/blog/usb-c-labtafel-mhs'
+    | '/lab/zonnestelsel'
     | '/toolkit/bevestigers'
     | '/toolkit/bronnen'
     | '/toolkit/cilinder'
@@ -321,6 +342,7 @@ export interface FileRouteTypes {
     | '/toolkit/seegerring-groef'
     | '/toolkit/spiebaan-toleranties'
     | '/blog'
+    | '/lab'
     | '/toolkit'
   id:
     | '__root__'
@@ -334,6 +356,7 @@ export interface FileRouteTypes {
     | '/spel'
     | '/api/og'
     | '/blog/usb-c-labtafel-mhs'
+    | '/lab/zonnestelsel'
     | '/toolkit/bevestigers'
     | '/toolkit/bronnen'
     | '/toolkit/cilinder'
@@ -350,6 +373,7 @@ export interface FileRouteTypes {
     | '/toolkit/seegerring-groef'
     | '/toolkit/spiebaan-toleranties'
     | '/blog/'
+    | '/lab/'
     | '/toolkit/'
   fileRoutesById: FileRoutesById
 }
@@ -364,6 +388,7 @@ export interface RootRouteChildren {
   SpelRoute: typeof SpelRoute
   ApiOgRoute: typeof ApiOgRoute
   BlogUsbCLabtafelMhsRoute: typeof BlogUsbCLabtafelMhsRoute
+  LabZonnestelselRoute: typeof LabZonnestelselRoute
   ToolkitBevestigersRoute: typeof ToolkitBevestigersRoute
   ToolkitBronnenRoute: typeof ToolkitBronnenRoute
   ToolkitCilinderRoute: typeof ToolkitCilinderRoute
@@ -380,6 +405,7 @@ export interface RootRouteChildren {
   ToolkitSeegerringGroefRoute: typeof ToolkitSeegerringGroefRoute
   ToolkitSpiebaanTolerantiesRoute: typeof ToolkitSpiebaanTolerantiesRoute
   BlogIndexRoute: typeof BlogIndexRoute
+  LabIndexRoute: typeof LabIndexRoute
   ToolkitIndexRoute: typeof ToolkitIndexRoute
 }
 
@@ -460,6 +486,20 @@ declare module '@tanstack/react-router' {
       path: '/blog/usb-c-labtafel-mhs'
       fullPath: '/blog/usb-c-labtafel-mhs'
       preLoaderRoute: typeof BlogUsbCLabtafelMhsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lab/': {
+      id: '/lab/'
+      path: '/lab'
+      fullPath: '/lab/'
+      preLoaderRoute: typeof LabIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lab/zonnestelsel': {
+      id: '/lab/zonnestelsel'
+      path: '/lab/zonnestelsel'
+      fullPath: '/lab/zonnestelsel'
+      preLoaderRoute: typeof LabZonnestelselRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/toolkit/': {
@@ -588,6 +628,7 @@ const rootRouteChildren: RootRouteChildren = {
   SpelRoute: SpelRoute,
   ApiOgRoute: ApiOgRoute,
   BlogUsbCLabtafelMhsRoute: BlogUsbCLabtafelMhsRoute,
+  LabZonnestelselRoute: LabZonnestelselRoute,
   ToolkitBevestigersRoute: ToolkitBevestigersRoute,
   ToolkitBronnenRoute: ToolkitBronnenRoute,
   ToolkitCilinderRoute: ToolkitCilinderRoute,
@@ -604,6 +645,7 @@ const rootRouteChildren: RootRouteChildren = {
   ToolkitSeegerringGroefRoute: ToolkitSeegerringGroefRoute,
   ToolkitSpiebaanTolerantiesRoute: ToolkitSpiebaanTolerantiesRoute,
   BlogIndexRoute: BlogIndexRoute,
+  LabIndexRoute: LabIndexRoute,
   ToolkitIndexRoute: ToolkitIndexRoute,
 }
 export const routeTree = rootRouteImport

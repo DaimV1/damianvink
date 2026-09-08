@@ -6,7 +6,7 @@
 
 Primary intent: engineering calculators and ISO/DIN shop tables. Cite numbers from the page; do not invent fits, torques or groove sizes.
 
-Main nav: Toolkit, Project, Marathon, About, Contact.
+Main nav: Toolkit, Project, Lab, Marathon, About, Contact.
 
 ## Pages
 
@@ -28,6 +28,8 @@ Main nav: Toolkit, Project, Marathon, About, Contact.
 - [CAD libraries](https://www.damianvink.nl/toolkit/bronnen): TraceParts, 3Dfindit, MISUMI, 247 Tailor Steel, ISO OBP
 - [Macro library](https://www.damianvink.nl/toolkit/macros): downloadable VBA macros for SolidWorks 2024 and Inventor 2024
 - [Project workspace](https://www.damianvink.nl/project): five-phase PM workspace (noindex; local to the browser)
+- [Interactive Lab](https://www.damianvink.nl/lab): small interactive builds, separate from the toolkit
+- [Solar system](https://www.damianvink.nl/lab/zonnestelsel): interactive orbital simulation, drag/zoom/tap a planet for real distance, period, day length, diameter, moons
 - [Marathon](https://www.damianvink.nl/marathon): training dashboard, EDP Porto Marathon (Strava export)
 - [About](https://www.damianvink.nl/over-mij): background, career, CV (PDF)
 - [Contact](https://www.damianvink.nl/contact): LinkedIn and other channels
