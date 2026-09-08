@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Box, Globe2, Orbit, Pause, Play, RotateCcw } from "lucide-react";
+import { Box, Globe2, Orbit, Pause, Play, RotateCcw, Sparkles } from "lucide-react";
 import { PageWrap, SiteShell } from "@/components/site-shell";
 import { Button } from "@/components/ui/button";
 import { InteractiveScene } from "@/components/interactive-scene";
@@ -12,7 +12,7 @@ export const Route = createFileRoute("/ai-lab")({
     pageHead({
       title: "Interactive Lab — Damian Vink",
       description:
-        "Interactieve 3D-demo’s: ontdek een lagerassemblage in exploded view, bestuur een draaiende wereldbol en verken een zonnestelsel.",
+        "Interactieve 3D-demo’s: ontdek een lagerassemblage in exploded view, bestuur een draaiende wereldbol, verken een zonnestelsel en speel met een muisreactief deeltjesveld.",
       path: "/ai-lab",
     }),
   component: Lab,
@@ -20,7 +20,7 @@ export const Route = createFileRoute("/ai-lab")({
 function Lab() {
   const { locale } = useLocale();
   const t = (nl: string, en: string) => tx(locale, nl, en);
-  const [kind, setKind] = useState<"assembly" | "earth" | "solar">("assembly");
+  const [kind, setKind] = useState<"assembly" | "earth" | "solar" | "particles">("assembly");
   const [spread, setSpread] = useState(45);
   const [angle, setAngle] = useState(0);
   const [speed, setSpeed] = useState(1);
@@ -39,6 +39,7 @@ function Lab() {
   }
   const assembly = kind === "assembly";
   const solar = kind === "solar";
+  const particles = kind === "particles";
   return (
     <SiteShell>
       <PageWrap wide>
@@ -52,8 +53,8 @@ function Lab() {
             </h1>
             <p className="mt-4 max-w-xl text-base leading-relaxed text-muted">
               {t(
-                "Met AI gebouwd, door jou bestuurd. Drie interactieve 3D-experimenten, rechtstreeks in je browser.",
-                "Built with AI, controlled by you. Three interactive 3D experiments, right in your browser.",
+                "Met AI gebouwd, door jou bestuurd. Vier interactieve 3D-experimenten, rechtstreeks in je browser.",
+                "Built with AI, controlled by you. Four interactive 3D experiments, right in your browser.",
               )}
             </p>
           </div>
@@ -90,19 +91,35 @@ function Lab() {
             <Orbit className="size-4" aria-hidden="true" />
             03 / {t("Zonnestelsel", "Solar system")}
           </Button>
+          <Button
+            variant={particles ? "primary" : "secondary"}
+            aria-pressed={particles}
+            onClick={() => choose("particles")}
+          >
+            <Sparkles className="size-4" aria-hidden="true" />
+            04 / {t("Deeltjesveld", "Particle field")}
+          </Button>
         </div>
         <div className="overflow-hidden rounded-xl border border-line bg-elevated">
           <div className="relative bg-[#081321]">
             <div className="flex items-center justify-between gap-3 px-5 pt-5 text-sm text-slate-300">
               <span className="font-mono uppercase tracking-widest">
-                {assembly ? "Bearing assembly / 01" : solar ? "Solar system / 03" : "Earth / 02"}
+                {assembly
+                  ? "Bearing assembly / 01"
+                  : solar
+                    ? "Solar system / 03"
+                    : particles
+                      ? "Particle field / 04"
+                      : "Earth / 02"}
               </span>
               <span>
                 {assembly
                   ? `${spread}% ${t("uitgeschoven", "exploded")}`
                   : solar
                     ? t("Baansnelheid instelbaar", "Orbital speed adjustable")
-                    : t("Rotatie om de aardas", "Axial rotation")}
+                    : particles
+                      ? t("Reageert op je cursor", "Reacts to your cursor")
+                      : t("Rotatie om de aardas", "Axial rotation")}
               </span>
             </div>
             <InteractiveScene
@@ -120,10 +137,15 @@ function Lab() {
                         "Zonnestelsel met de zon en acht planeten in omloopbaan",
                         "Solar system with the sun and eight planets in orbit",
                       )
-                    : t(
-                        "Draaiende wereldbol met continenten en geografisch raster",
-                        "Rotating globe with continents and geographic grid",
-                      )
+                    : particles
+                      ? t(
+                          "Deeltjesveld van vierduizend punten dat om de cursor wervelt",
+                          "Particle field of four thousand points swirling around the cursor",
+                        )
+                      : t(
+                          "Draaiende wereldbol met continenten en geografisch raster",
+                          "Rotating globe with continents and geographic grid",
+                        )
               }
               unavailable={t(
                 "3D is niet beschikbaar in deze browser. Probeer een recente browser met WebGL ingeschakeld.",
@@ -143,6 +165,11 @@ function Lab() {
                 <>
                   <span>{t("Mercurius t/m Neptunus", "Mercury through Neptune")}</span>
                   <span>{t("Afstanden en periodes gecomprimeerd", "Distances and periods compressed")}</span>
+                </>
+              ) : particles ? (
+                <>
+                  <span>{t("~4.000 GPU-punten", "~4,000 GPU points")}</span>
+                  <span>{t("Beweeg de cursor over het veld", "Move your cursor over the field")}</span>
                 </>
               ) : (
                 <>
@@ -172,7 +199,9 @@ function Lab() {
                 title={
                   solar
                     ? t("Baansnelheid", "Orbital speed")
-                    : t("Rotatiesnelheid", "Rotation speed")
+                    : particles
+                      ? t("Stroomsnelheid", "Flow speed")
+                      : t("Rotatiesnelheid", "Rotation speed")
                 }
                 value={speed}
                 min={-2}
@@ -237,7 +266,9 @@ function Lab() {
               ? t("Een mechanisme, laag voor laag.", "A mechanism, layer by layer.")
               : solar
                 ? t("Acht planeten, één zon.", "Eight planets, one sun.")
-                : t("De wereld ligt aan je vingertoppen.", "The world at your fingertips.")}
+                : particles
+                  ? t("Duizenden punten, één cursor.", "Thousands of points, one cursor.")
+                  : t("De wereld ligt aan je vingertoppen.", "The world at your fingertips.")}
           </h2>
           <p className="text-base leading-relaxed text-muted">
             {assembly
@@ -250,10 +281,15 @@ function Lab() {
                     "Verander de baansnelheid en draairichting, of pauzeer en draai zelf de kijkhoek. Afstanden en omlooptijden zijn gecomprimeerd voor het beeld, niet op schaal.",
                     "Change the orbital speed and direction, or pause and turn the view yourself. Distances and orbital periods are compressed for the visual, not to scale.",
                   )
-                : t(
-                    "Verander de snelheid en draairichting, of pauzeer en kies zelf een positie. De continenten zijn gebaseerd op geografische data; de animatie toont geen actuele dag- en nachtgrens.",
-                    "Change speed and direction, or pause and choose a position. Continents use geographic data; the lighting does not show the current day–night boundary.",
-                  )}
+                : particles
+                  ? t(
+                      "Beweeg de cursor over het veld: elk punt draait mee in een werveling en zakt terug zodra je wegbeweegt. Geen vaste animatie — puur reactie op waar je bent.",
+                      "Move your cursor over the field: every point swirls with you and settles back once you move away. No fixed animation — pure reaction to where you are.",
+                    )
+                  : t(
+                      "Verander de snelheid en draairichting, of pauzeer en kies zelf een positie. De continenten zijn gebaseerd op geografische data; de animatie toont geen actuele dag- en nachtgrens.",
+                      "Change speed and direction, or pause and choose a position. Continents use geographic data; the lighting does not show the current day–night boundary.",
+                    )}
           </p>
         </div>
       </PageWrap>
