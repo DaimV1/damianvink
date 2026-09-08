@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { feature } from "topojson-client";
 import world from "world-atlas/land-110m.json";
 import type { Topology, GeometryCollection } from "topojson-specification";
+import { BRACKET_DEFAULTS, needsGusset, requiredThicknessMm, type BoltCount } from "./bracket";
 
 export type SceneControls = {
   spread: number;
@@ -9,9 +10,12 @@ export type SceneControls = {
   speed: number;
   playing: boolean;
   reset: number;
+  span?: number;
+  load?: number;
+  bolts?: BoltCount;
 };
 export function buildScene(
-  kind: "assembly" | "earth" | "solar" | "particles",
+  kind: "assembly" | "earth" | "solar" | "particles" | "bracket",
   scene: THREE.Scene,
 ) {
   const root = new THREE.Group();
@@ -91,6 +95,8 @@ export function buildScene(
   let points: THREE.Points | undefined;
   let homes: Float32Array | undefined;
   let phases: Float32Array | undefined;
+  let bracketGroup: THREE.Group | undefined;
+  let rebuildBracket: ((spanMm: number, loadN: number, bolts: BoltCount) => void) | undefined;
   if (kind === "assembly") {
     const group = (start: number, offset: number) => {
       const g = new THREE.Group();
@@ -300,7 +306,7 @@ export function buildScene(
       const start = (i / PLANET_DATA.length) * Math.PI * 2;
       planets.push({ group, orbit: p.orbit, angle: start, start, speedFactor: 1 / Math.sqrt(p.period) });
     });
-  } else {
+  } else if (kind === "particles") {
     const COUNT = 4000;
     const positions = new Float32Array(COUNT * 3);
     const colors = new Float32Array(COUNT * 3);
@@ -338,10 +344,123 @@ export function buildScene(
     materials.push(pointMaterial);
     points = new THREE.Points(geometry, pointMaterial);
     root.add(points);
+  } else {
+    bracketGroup = new THREE.Group();
+    root.add(bracketGroup);
+    const forceMaterial = new THREE.MeshBasicMaterial({ color: 0xe2564a });
+    materials.push(forceMaterial);
+    const gussetMaterial = new THREE.MeshStandardMaterial({
+      color: 0xefb15f,
+      metalness: 0.5,
+      roughness: 0.3,
+    });
+    materials.push(gussetMaterial);
+
+    const WALL_THICKNESS = 0.3;
+    const WALL_HEIGHT = 3;
+    const WALL_DEPTH = 1.3;
+    const SHELF_DEPTH = 1;
+    const MM_PER_UNIT = 40;
+    const THICKNESS_MM_PER_UNIT = 12;
+
+    function clearGroup(group: THREE.Group) {
+      while (group.children.length) {
+        const child = group.children[0];
+        group.remove(child);
+        child.traverse((object) => {
+          if (
+            object instanceof THREE.Mesh ||
+            object instanceof THREE.Line ||
+            object instanceof THREE.Points
+          ) {
+            object.geometry.dispose();
+          }
+        });
+      }
+    }
+
+    const BOLT_LAYOUTS: Record<BoltCount, [number, number][]> = {
+      2: [
+        [-0.8, 0],
+        [0.8, 0],
+      ],
+      4: [
+        [-0.8, -0.4],
+        [-0.8, 0.4],
+        [0.8, -0.4],
+        [0.8, 0.4],
+      ],
+      6: [
+        [-0.9, -0.4],
+        [-0.9, 0.4],
+        [0, -0.4],
+        [0, 0.4],
+        [0.9, -0.4],
+        [0.9, 0.4],
+      ],
+    };
+
+    rebuildBracket = (spanMm, loadN, bolts) => {
+      if (!bracketGroup) return;
+      clearGroup(bracketGroup);
+      const spanUnits = spanMm / MM_PER_UNIT;
+      const thicknessUnits = requiredThicknessMm(spanMm, loadN) / THICKNESS_MM_PER_UNIT;
+      const wallTopY = WALL_HEIGHT / 2;
+      const shelfCenterY = wallTopY - thicknessUnits / 2;
+      const shelfBottomY = shelfCenterY - thicknessUnits / 2;
+
+      const wall = new THREE.Mesh(
+        new THREE.BoxGeometry(WALL_THICKNESS, WALL_HEIGHT, WALL_DEPTH),
+        steel,
+      );
+      wall.position.set(-WALL_THICKNESS / 2, 0, 0);
+      bracketGroup.add(wall);
+
+      const shelf = new THREE.Mesh(
+        new THREE.BoxGeometry(spanUnits, thicknessUnits, SHELF_DEPTH),
+        blue,
+      );
+      shelf.position.set(spanUnits / 2, shelfCenterY, 0);
+      bracketGroup.add(shelf);
+
+      for (const [y, z] of BOLT_LAYOUTS[bolts]) {
+        const bolt = cylinder(0.09, WALL_THICKNESS * 1.4, dark, bracketGroup, -WALL_THICKNESS / 2);
+        bolt.position.y = y;
+        bolt.position.z = z;
+      }
+
+      if (needsGusset(loadN)) {
+        const fromX = 0;
+        const fromY = shelfBottomY - 0.9;
+        const toX = spanUnits * 0.55;
+        const toY = shelfBottomY;
+        const dx = toX - fromX;
+        const dy = toY - fromY;
+        const length = Math.hypot(dx, dy);
+        const brace = new THREE.Mesh(
+          new THREE.BoxGeometry(length, 0.14, SHELF_DEPTH * 0.7),
+          gussetMaterial,
+        );
+        brace.position.set((fromX + toX) / 2, (fromY + toY) / 2, 0);
+        brace.rotation.z = Math.atan2(dy, dx);
+        bracketGroup.add(brace);
+      }
+
+      const shaft = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.035, 0.7, 12), forceMaterial);
+      shaft.position.set(spanUnits, shelfBottomY - 0.35, 0);
+      bracketGroup.add(shaft);
+      const head = new THREE.Mesh(new THREE.ConeGeometry(0.11, 0.28, 16), forceMaterial);
+      head.position.set(spanUnits, shelfBottomY - 0.84, 0);
+      head.rotation.x = Math.PI;
+      bracketGroup.add(head);
+    };
   }
   let spin = 0;
   let lastReset = -1;
   let flowTime = 0;
+  let lastSpan = -1;
+  let lastLoad = -1;
+  let lastBolts: BoltCount | -1 = -1;
   const pointerLocal = new THREE.Vector3();
   return {
     update(c: SceneControls, delta: number, pointer?: THREE.Vector3 | null) {
@@ -402,6 +521,17 @@ export function buildScene(
           arr[i * 3 + 2] = pz;
         }
         posAttr.needsUpdate = true;
+      } else if (rebuildBracket) {
+        root.rotation.y = (c.angle * Math.PI) / 180;
+        const spanMm = c.span ?? BRACKET_DEFAULTS.span;
+        const loadN = c.load ?? BRACKET_DEFAULTS.load;
+        const bolts = c.bolts ?? BRACKET_DEFAULTS.bolts;
+        if (spanMm !== lastSpan || loadN !== lastLoad || bolts !== lastBolts) {
+          rebuildBracket(spanMm, loadN, bolts);
+          lastSpan = spanMm;
+          lastLoad = loadN;
+          lastBolts = bolts;
+        }
       }
     },
     dispose() {

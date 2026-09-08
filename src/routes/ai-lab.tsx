@@ -1,18 +1,26 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Box, Globe2, Orbit, Pause, Play, RotateCcw, Sparkles } from "lucide-react";
+import { Box, Globe2, Orbit, Pause, Play, RotateCcw, Ruler, Sparkles } from "lucide-react";
 import { PageWrap, SiteShell } from "@/components/site-shell";
 import { Button } from "@/components/ui/button";
 import { InteractiveScene } from "@/components/interactive-scene";
 import { tx, useLocale } from "@/lib/i18n/locale";
 import { pageHead } from "@/lib/seo";
+import {
+  BOLT_OPTIONS,
+  BRACKET_DEFAULTS,
+  LOAD_RANGE,
+  requiredThicknessMm,
+  SPAN_RANGE,
+  type BoltCount,
+} from "@/lib/lab/bracket";
 
 export const Route = createFileRoute("/ai-lab")({
   head: () =>
     pageHead({
       title: "Interactive Lab — Damian Vink",
       description:
-        "Interactieve 3D-demo’s: ontdek een lagerassemblage in exploded view, bestuur een draaiende wereldbol, verken een zonnestelsel en speel met een muisreactief deeltjesveld.",
+        "Interactieve 3D-demo’s: ontdek een lagerassemblage in exploded view, bestuur een draaiende wereldbol, verken een zonnestelsel, speel met een muisreactief deeltjesveld en genereer een parametrische beugel.",
       path: "/ai-lab",
     }),
   component: Lab,
@@ -20,12 +28,17 @@ export const Route = createFileRoute("/ai-lab")({
 function Lab() {
   const { locale } = useLocale();
   const t = (nl: string, en: string) => tx(locale, nl, en);
-  const [kind, setKind] = useState<"assembly" | "earth" | "solar" | "particles">("assembly");
+  const [kind, setKind] = useState<"assembly" | "earth" | "solar" | "particles" | "bracket">(
+    "assembly",
+  );
   const [spread, setSpread] = useState(45);
   const [angle, setAngle] = useState(0);
   const [speed, setSpeed] = useState(1);
   const [playing, setPlaying] = useState(false);
   const [reset, setReset] = useState(0);
+  const [span, setSpan] = useState(BRACKET_DEFAULTS.span);
+  const [load, setLoad] = useState(BRACKET_DEFAULTS.load);
+  const [bolts, setBolts] = useState<BoltCount>(BRACKET_DEFAULTS.bolts);
   useEffect(() => {
     const query = window.matchMedia("(prefers-reduced-motion: reduce)");
     setPlaying(!query.matches);
@@ -40,6 +53,7 @@ function Lab() {
   const assembly = kind === "assembly";
   const solar = kind === "solar";
   const particles = kind === "particles";
+  const bracket = kind === "bracket";
   return (
     <SiteShell>
       <PageWrap wide>
@@ -53,8 +67,8 @@ function Lab() {
             </h1>
             <p className="mt-4 max-w-xl text-base leading-relaxed text-muted">
               {t(
-                "Met AI gebouwd, door jou bestuurd. Vier interactieve 3D-experimenten, rechtstreeks in je browser.",
-                "Built with AI, controlled by you. Four interactive 3D experiments, right in your browser.",
+                "Met AI gebouwd, door jou bestuurd. Vijf interactieve 3D-experimenten, rechtstreeks in je browser.",
+                "Built with AI, controlled by you. Five interactive 3D experiments, right in your browser.",
               )}
             </p>
           </div>
@@ -99,6 +113,14 @@ function Lab() {
             <Sparkles className="size-4" aria-hidden="true" />
             04 / {t("Deeltjesveld", "Particle field")}
           </Button>
+          <Button
+            variant={bracket ? "primary" : "secondary"}
+            aria-pressed={bracket}
+            onClick={() => choose("bracket")}
+          >
+            <Ruler className="size-4" aria-hidden="true" />
+            05 / {t("Parametrische beugel", "Parametric bracket")}
+          </Button>
         </div>
         <div className="overflow-hidden rounded-xl border border-line bg-elevated">
           <div className="relative bg-[#081321]">
@@ -110,7 +132,9 @@ function Lab() {
                     ? "Solar system / 03"
                     : particles
                       ? "Particle field / 04"
-                      : "Earth / 02"}
+                      : bracket
+                        ? "Parametric bracket / 05"
+                        : "Earth / 02"}
               </span>
               <span>
                 {assembly
@@ -119,13 +143,15 @@ function Lab() {
                     ? t("Baansnelheid instelbaar", "Orbital speed adjustable")
                     : particles
                       ? t("Reageert op je cursor", "Reacts to your cursor")
-                      : t("Rotatie om de aardas", "Axial rotation")}
+                      : bracket
+                        ? `${requiredThicknessMm(span, load).toFixed(1)} mm ${t("plaatdikte", "plate thickness")}`
+                        : t("Rotatie om de aardas", "Axial rotation")}
               </span>
             </div>
             <InteractiveScene
               key={kind}
               kind={kind}
-              controls={{ spread, angle, speed, playing, reset }}
+              controls={{ spread, angle, speed, playing, reset, span, load, bolts }}
               label={
                 assembly
                   ? t(
@@ -142,10 +168,15 @@ function Lab() {
                           "Deeltjesveld van vierduizend punten dat om de cursor wervelt",
                           "Particle field of four thousand points swirling around the cursor",
                         )
-                      : t(
-                          "Draaiende wereldbol met continenten en geografisch raster",
-                          "Rotating globe with continents and geographic grid",
-                        )
+                      : bracket
+                        ? t(
+                            "Parametrische muurbeugel die live herbouwt op overspanning, belasting en aantal bouten",
+                            "Parametric wall bracket that rebuilds live from span, load and bolt count",
+                          )
+                        : t(
+                            "Draaiende wereldbol met continenten en geografisch raster",
+                            "Rotating globe with continents and geographic grid",
+                          )
               }
               unavailable={t(
                 "3D is niet beschikbaar in deze browser. Probeer een recente browser met WebGL ingeschakeld.",
@@ -171,6 +202,16 @@ function Lab() {
                   <span>{t("~4.000 GPU-punten", "~4,000 GPU points")}</span>
                   <span>{t("Beweeg de cursor over het veld", "Move your cursor over the field")}</span>
                 </>
+              ) : bracket ? (
+                <>
+                  <span>t = √(6·F·L / (b·σ))</span>
+                  <span>
+                    {t(
+                      "Schematisch — geen productieberekening",
+                      "Schematic — not a production calculation",
+                    )}
+                  </span>
+                </>
               ) : (
                 <>
                   <span>{t("Landcontouren: Natural Earth", "Land outlines: Natural Earth")}</span>
@@ -193,6 +234,19 @@ function Lab() {
                 left={t("Gemonteerd", "Assembled")}
                 right={t("Uit elkaar", "Exploded")}
               />
+            ) : bracket ? (
+              <Control
+                id="span"
+                title={t("Overspanning", "Span")}
+                value={span}
+                min={SPAN_RANGE.min}
+                max={SPAN_RANGE.max}
+                step={5}
+                unit=" mm"
+                onChange={setSpan}
+                left={`${SPAN_RANGE.min} mm`}
+                right={`${SPAN_RANGE.max} mm`}
+              />
             ) : (
               <Control
                 id="speed"
@@ -213,50 +267,88 @@ function Lab() {
                 right={t("Vooruit", "Forward")}
               />
             )}
-            <Control
-              id="angle"
-              title={
-                kind === "earth"
-                  ? t("Draai de wereldbol", "Turn the globe")
-                  : t("Kijkhoek", "View angle")
-              }
-              value={angle}
-              min={0}
-              max={360}
-              step={1}
-              unit="°"
-              onChange={setAngle}
-              left="0°"
-              right="360°"
-            />
-            <div className="flex gap-2 pb-5">
-              {!assembly && (
+            {bracket ? (
+              <Control
+                id="load"
+                title={t("Belasting", "Load")}
+                value={load}
+                min={LOAD_RANGE.min}
+                max={LOAD_RANGE.max}
+                step={25}
+                unit=" N"
+                onChange={setLoad}
+                left={`${LOAD_RANGE.min} N`}
+                right={`${LOAD_RANGE.max} N`}
+              />
+            ) : (
+              <Control
+                id="angle"
+                title={
+                  kind === "earth"
+                    ? t("Draai de wereldbol", "Turn the globe")
+                    : t("Kijkhoek", "View angle")
+                }
+                value={angle}
+                min={0}
+                max={360}
+                step={1}
+                unit="°"
+                onChange={setAngle}
+                left="0°"
+                right="360°"
+              />
+            )}
+            <div className="flex flex-col gap-3 pb-5">
+              {bracket && (
+                <div
+                  role="group"
+                  aria-label={t("Aantal bouten", "Bolt count")}
+                  className="flex items-center gap-1"
+                >
+                  {BOLT_OPTIONS.map((n) => (
+                    <Button
+                      key={n}
+                      variant={bolts === n ? "primary" : "secondary"}
+                      aria-pressed={bolts === n}
+                      onClick={() => setBolts(n)}
+                    >
+                      {n} {t("bouten", "bolts")}
+                    </Button>
+                  ))}
+                </div>
+              )}
+              <div className="flex gap-2">
+                {!assembly && !bracket && (
+                  <Button
+                    variant="secondary"
+                    aria-label={
+                      playing
+                        ? t("Pauzeer rotatie", "Pause rotation")
+                        : t("Start rotatie", "Start rotation")
+                    }
+                    onClick={() => setPlaying((v) => !v)}
+                  >
+                    {playing ? <Pause className="size-4" /> : <Play className="size-4" />}
+                    {playing ? t("Pauze", "Pause") : t("Draaien", "Rotate")}
+                  </Button>
+                )}
                 <Button
                   variant="secondary"
-                  aria-label={
-                    playing
-                      ? t("Pauzeer rotatie", "Pause rotation")
-                      : t("Start rotatie", "Start rotation")
-                  }
-                  onClick={() => setPlaying((v) => !v)}
+                  onClick={() => {
+                    setReset((v) => v + 1);
+                    setSpread(0);
+                    setAngle(0);
+                    setSpeed(1);
+                    setPlaying(false);
+                    setSpan(BRACKET_DEFAULTS.span);
+                    setLoad(BRACKET_DEFAULTS.load);
+                    setBolts(BRACKET_DEFAULTS.bolts);
+                  }}
                 >
-                  {playing ? <Pause className="size-4" /> : <Play className="size-4" />}
-                  {playing ? t("Pauze", "Pause") : t("Draaien", "Rotate")}
+                  <RotateCcw className="size-4" aria-hidden="true" />
+                  Reset
                 </Button>
-              )}
-              <Button
-                variant="secondary"
-                onClick={() => {
-                  setReset((v) => v + 1);
-                  setSpread(0);
-                  setAngle(0);
-                  setSpeed(1);
-                  setPlaying(false);
-                }}
-              >
-                <RotateCcw className="size-4" aria-hidden="true" />
-                Reset
-              </Button>
+              </div>
             </div>
           </div>
         </div>
@@ -268,7 +360,9 @@ function Lab() {
                 ? t("Acht planeten, één zon.", "Eight planets, one sun.")
                 : particles
                   ? t("Duizenden punten, één cursor.", "Thousands of points, one cursor.")
-                  : t("De wereld ligt aan je vingertoppen.", "The world at your fingertips.")}
+                  : bracket
+                    ? t("Vorm volgt belasting.", "Form follows load.")
+                    : t("De wereld ligt aan je vingertoppen.", "The world at your fingertips.")}
           </h2>
           <p className="text-base leading-relaxed text-muted">
             {assembly
@@ -286,10 +380,24 @@ function Lab() {
                       "Beweeg de cursor over het veld: elk punt draait mee in een werveling en zakt terug zodra je wegbeweegt. Geen vaste animatie — puur reactie op waar je bent.",
                       "Move your cursor over the field: every point swirls with you and settles back once you move away. No fixed animation — pure reaction to where you are.",
                     )
-                  : t(
-                      "Verander de snelheid en draairichting, of pauzeer en kies zelf een positie. De continenten zijn gebaseerd op geografische data; de animatie toont geen actuele dag- en nachtgrens.",
-                      "Change speed and direction, or pause and choose a position. Continents use geographic data; the lighting does not show the current day–night boundary.",
-                    )}
+                  : bracket
+                    ? t(
+                        "Verander overspanning, belasting en aantal bouten: de plaatdikte wordt live herberekend uit een vereenvoudigde buigberekening (cantilever), en vanaf 500 N verschijnt er een schoor. Schematisch, geen productieberekening — zie",
+                        "Change span, load and bolt count: the plate thickness is recalculated live from a simplified cantilever bending check, and a gusset appears from 500 N. Schematic, not a production calculation — see",
+                      )
+                    : t(
+                        "Verander de snelheid en draairichting, of pauzeer en kies zelf een positie. De continenten zijn gebaseerd op geografische data; de animatie toont geen actuele dag- en nachtgrens.",
+                        "Change speed and direction, or pause and choose a position. Continents use geographic data; the lighting does not show the current day–night boundary.",
+                      )}
+            {bracket ? (
+              <>
+                {" "}
+                <Link to="/toolkit/doorbuiging-balk" className="text-accent underline underline-offset-2">
+                  {t("Doorbuiging balk", "Beam deflection")}
+                </Link>{" "}
+                {t("in de Toolkit voor een gecontroleerde versie.", "in the Toolkit for a checked version.")}
+              </>
+            ) : null}
           </p>
         </div>
       </PageWrap>
