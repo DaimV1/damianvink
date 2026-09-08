@@ -10,7 +10,10 @@ export type SceneControls = {
   playing: boolean;
   reset: number;
 };
-export function buildScene(kind: "assembly" | "earth" | "solar", scene: THREE.Scene) {
+export function buildScene(
+  kind: "assembly" | "earth" | "solar" | "particles",
+  scene: THREE.Scene,
+) {
   const root = new THREE.Group();
   scene.add(root);
   const parts: { group: THREE.Group; start: number; offset: number }[] = [];
@@ -85,6 +88,9 @@ export function buildScene(kind: "assembly" | "earth" | "solar", scene: THREE.Sc
   let earth: THREE.Group | undefined;
   const planets: { group: THREE.Group; orbit: number; angle: number; start: number; speedFactor: number }[] =
     [];
+  let points: THREE.Points | undefined;
+  let homes: Float32Array | undefined;
+  let phases: Float32Array | undefined;
   if (kind === "assembly") {
     const group = (start: number, offset: number) => {
       const g = new THREE.Group();
@@ -225,7 +231,7 @@ export function buildScene(kind: "assembly" | "earth" | "solar", scene: THREE.Sc
       ),
     );
     earth.rotation.y = -Math.PI / 2;
-  } else {
+  } else if (kind === "solar") {
     const sunMaterial = new THREE.MeshBasicMaterial({ color: 0xf7b955 });
     materials.push(sunMaterial);
     mesh(new THREE.SphereGeometry(0.85, 48, 32), sunMaterial, root);
@@ -294,14 +300,55 @@ export function buildScene(kind: "assembly" | "earth" | "solar", scene: THREE.Sc
       const start = (i / PLANET_DATA.length) * Math.PI * 2;
       planets.push({ group, orbit: p.orbit, angle: start, start, speedFactor: 1 / Math.sqrt(p.period) });
     });
+  } else {
+    const COUNT = 4000;
+    const positions = new Float32Array(COUNT * 3);
+    const colors = new Float32Array(COUNT * 3);
+    homes = new Float32Array(COUNT * 3);
+    phases = new Float32Array(COUNT);
+    const inner = new THREE.Color(0xf7b955);
+    const outer = new THREE.Color(0x5b8cff);
+    for (let i = 0; i < COUNT; i++) {
+      const r = Math.sqrt(Math.random()) * 4.2;
+      const theta = Math.random() * Math.PI * 2;
+      const x = Math.cos(theta) * r;
+      const y = Math.sin(theta) * r;
+      const z = (Math.random() - 0.5) * 1.6 * (1 - (r / 4.2) * 0.5);
+      positions[i * 3] = homes[i * 3] = x;
+      positions[i * 3 + 1] = homes[i * 3 + 1] = y;
+      positions[i * 3 + 2] = homes[i * 3 + 2] = z;
+      phases[i] = Math.random() * Math.PI * 2;
+      const c = inner.clone().lerp(outer, r / 4.2);
+      colors[i * 3] = c.r;
+      colors[i * 3 + 1] = c.g;
+      colors[i * 3 + 2] = c.b;
+    }
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+    const pointMaterial = new THREE.PointsMaterial({
+      size: 0.055,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.9,
+      sizeAttenuation: true,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    });
+    materials.push(pointMaterial);
+    points = new THREE.Points(geometry, pointMaterial);
+    root.add(points);
   }
   let spin = 0;
   let lastReset = -1;
+  let flowTime = 0;
+  const pointerLocal = new THREE.Vector3();
   return {
-    update(c: SceneControls, delta: number) {
+    update(c: SceneControls, delta: number, pointer?: THREE.Vector3 | null) {
       if (c.reset !== lastReset) {
         spin = 0;
         lastReset = c.reset;
+        flowTime = 0;
         planets.forEach((p) => {
           p.angle = p.start;
         });
@@ -314,12 +361,47 @@ export function buildScene(kind: "assembly" | "earth" | "solar", scene: THREE.Sc
       } else if (earth) {
         if (c.playing) spin += delta * c.speed * 0.3;
         earth.rotation.y = -Math.PI / 2 + spin + (c.angle * Math.PI) / 180;
-      } else {
+      } else if (kind === "solar") {
         root.rotation.y = (c.angle * Math.PI) / 180;
         planets.forEach((p) => {
           if (c.playing) p.angle += delta * c.speed * p.speedFactor * 0.6;
           p.group.position.set(Math.cos(p.angle) * p.orbit, 0, Math.sin(p.angle) * p.orbit);
         });
+      } else if (points && homes && phases) {
+        root.rotation.y = (c.angle * Math.PI) / 180;
+        if (c.playing) flowTime += delta * c.speed;
+        let local: THREE.Vector3 | null = null;
+        if (pointer) {
+          pointerLocal.copy(pointer);
+          root.worldToLocal(pointerLocal);
+          local = pointerLocal;
+        }
+        const posAttr = points.geometry.attributes.position as THREE.BufferAttribute;
+        const arr = posAttr.array as Float32Array;
+        const radius = 2.6;
+        for (let i = 0; i < phases.length; i++) {
+          const ph = phases[i];
+          let px = homes[i * 3] + Math.sin(flowTime * 0.6 + ph) * 0.18;
+          let py = homes[i * 3 + 1] + Math.cos(flowTime * 0.5 + ph * 1.3) * 0.18;
+          const pz = homes[i * 3 + 2] + Math.sin(flowTime * 0.4 + ph * 0.7) * 0.12;
+          if (local) {
+            const dx = px - local.x;
+            const dy = py - local.y;
+            const dist = Math.hypot(dx, dy) + 0.0001;
+            if (dist < radius) {
+              const fall = 1 - dist / radius;
+              const influence = fall * fall;
+              const ux = dx / dist;
+              const uy = dy / dist;
+              px += -uy * influence * 2.1 + ux * influence * 1.1;
+              py += ux * influence * 2.1 + uy * influence * 1.1;
+            }
+          }
+          arr[i * 3] = px;
+          arr[i * 3 + 1] = py;
+          arr[i * 3 + 2] = pz;
+        }
+        posAttr.needsUpdate = true;
       }
     },
     dispose() {

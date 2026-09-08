@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { SceneControls } from "@/lib/lab/scenes";
+import type { Vector3 } from "three";
 
 export function InteractiveScene({
   kind,
@@ -7,7 +8,7 @@ export function InteractiveScene({
   label,
   unavailable,
 }: {
-  kind: "assembly" | "earth" | "solar";
+  kind: "assembly" | "earth" | "solar" | "particles";
   controls: SceneControls;
   label: string;
   unavailable: string;
@@ -56,10 +57,18 @@ export function InteractiveScene({
               ? Math.max(14, 10 / camera.aspect)
               : kind === "solar"
                 ? Math.max(16, 13 / camera.aspect)
-                : Math.max(9.3, 8.2 / camera.aspect);
+                : kind === "particles"
+                  ? Math.max(11, 9.5 / camera.aspect)
+                  : Math.max(9.3, 8.2 / camera.aspect);
           camera.position.set(
             kind === "assembly" ? distance * 0.3 : 0,
-            kind === "assembly" ? distance * 0.32 : kind === "solar" ? distance * 0.62 : 1,
+            kind === "assembly"
+              ? distance * 0.32
+              : kind === "solar"
+                ? distance * 0.62
+                : kind === "particles"
+                  ? distance * 0.22
+                  : 1,
             distance,
           );
           camera.lookAt(0, 0, 0);
@@ -71,12 +80,34 @@ export function InteractiveScene({
           setStatus("error");
         };
         renderer.domElement.addEventListener("webglcontextlost", lost);
+        const raycaster = new THREE.Raycaster();
+        const pointerPlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+        const pointerNDC = new THREE.Vector2();
+        const pointerWorld = new THREE.Vector3();
+        let pointerActive = false;
+        const onPointerMove = (event: PointerEvent) => {
+          const rect = renderer.domElement.getBoundingClientRect();
+          pointerNDC.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+          pointerNDC.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+          pointerActive = true;
+        };
+        const onPointerLeave = () => {
+          pointerActive = false;
+        };
+        renderer.domElement.addEventListener("pointermove", onPointerMove);
+        renderer.domElement.addEventListener("pointerleave", onPointerLeave);
         cleanup = () => {
           resize.disconnect();
           renderer.setAnimationLoop(null);
           renderer.domElement.removeEventListener("webglcontextlost", lost);
+          renderer.domElement.removeEventListener("pointermove", onPointerMove);
+          renderer.domElement.removeEventListener("pointerleave", onPointerLeave);
           scene.traverse((object) => {
-            if (object instanceof THREE.Mesh || object instanceof THREE.Line) {
+            if (
+              object instanceof THREE.Mesh ||
+              object instanceof THREE.Line ||
+              object instanceof THREE.Points
+            ) {
               object.geometry.dispose();
               const mats = Array.isArray(object.material) ? object.material : [object.material];
               mats.forEach((m) => m.dispose());
@@ -93,7 +124,12 @@ export function InteractiveScene({
           const delta = Math.min((time - last) / 1000, 0.05);
           last = time;
           if (document.hidden) return;
-          model?.update(current.current, delta);
+          let pointer: Vector3 | null = null;
+          if (kind === "particles" && pointerActive) {
+            raycaster.setFromCamera(pointerNDC, camera);
+            pointer = raycaster.ray.intersectPlane(pointerPlane, pointerWorld);
+          }
+          model?.update(current.current, delta, pointer);
           renderer.render(scene, camera);
         });
         setStatus("ready");
