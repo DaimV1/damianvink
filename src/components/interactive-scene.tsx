@@ -45,7 +45,6 @@ export function InteractiveScene({
         const rim = new THREE.DirectionalLight(0x518eff, 2.4);
         rim.position.set(-4, 2, -4);
         scene.add(rim);
-        let model: ReturnType<typeof buildScene> | undefined;
         const resize = new ResizeObserver(() => {
           const w = element.clientWidth,
             h = element.clientHeight;
@@ -85,7 +84,7 @@ export function InteractiveScene({
           renderer.dispose();
           renderer.domElement.remove();
         };
-        model = buildScene(kind, scene);
+        const model = buildScene(kind, scene);
         resize.observe(element);
         let last = performance.now();
         renderer.setAnimationLoop((time: number) => {
