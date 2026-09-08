@@ -40,10 +40,10 @@ const CAMERA_FRAMING: Record<
   },
   earth: { distance: (a) => Math.max(9.3, 8.2 / a), x: () => 0, y: () => 1, lookAt: [0, 0, 0] },
   vessels: {
-    distance: (a) => Math.max(11.5, 9.8 / a),
+    distance: (a) => Math.max(12.5, 10.8 / a),
     x: () => 0,
-    y: (d) => d * 0.18,
-    lookAt: [0, -0.3, 0],
+    y: (d) => d * 0.1,
+    lookAt: [0, 0, 0],
   },
 };
 

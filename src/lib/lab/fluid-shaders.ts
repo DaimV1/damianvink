@@ -16,7 +16,8 @@ export const RIPPLE_FRAGMENT = /* glsl */ `
   uniform vec2 uTexel;
   uniform float uDt;
   uniform float uDamping;
-  uniform vec3 uInject; // xy = uv position, z = strength (0 = none)
+  uniform vec3 uInject; // drain-pipe contact: xy = uv position, z = strength (0 = none)
+  uniform vec3 uInject2; // pump/return-pipe contact: same layout
   varying vec2 vUv;
 
   void main() {
@@ -36,6 +37,8 @@ export const RIPPLE_FRAGMENT = /* glsl */ `
     // continuous injection here settles into a bounded steady ripple instead.
     float d = distance(vUv, uInject.xy);
     vel += uInject.z * exp(-d * d * 360.0);
+    float d2 = distance(vUv, uInject2.xy);
+    vel += uInject2.z * exp(-d2 * d2 * 360.0);
 
     float height = h.r + vel * uDt;
 

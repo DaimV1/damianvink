@@ -14,7 +14,7 @@ import {
   SPAN_RANGE,
   type BoltCount,
 } from "@/lib/lab/bracket";
-import { TILT_RANGE, VALVE_RANGE, VESSEL_DEFAULTS } from "@/lib/lab/vessels";
+import { PUMP_RANGE, VALVE_RANGE, VESSEL_DEFAULTS } from "@/lib/lab/vessels";
 
 export const Route = createFileRoute("/ai-lab")({
   head: () =>
@@ -40,8 +40,8 @@ function Lab() {
   const [span, setSpan] = useState(BRACKET_DEFAULTS.span);
   const [load, setLoad] = useState(BRACKET_DEFAULTS.load);
   const [bolts, setBolts] = useState<BoltCount>(BRACKET_DEFAULTS.bolts);
-  const [tilt, setTilt] = useState(VESSEL_DEFAULTS.tilt);
   const [valvePct, setValvePct] = useState(100);
+  const [pumpPct, setPumpPct] = useState(0);
   useEffect(() => {
     const query = window.matchMedia("(prefers-reduced-motion: reduce)");
     setPlaying(!query.matches);
@@ -160,7 +160,7 @@ function Lab() {
                       : bracket
                         ? `${requiredThicknessMm(span, load).toFixed(1)} mm ${t("plaatdikte", "plate thickness")}`
                         : vessels
-                          ? t("Kantel om te laten stromen", "Tilt to make it flow")
+                          ? t("Klep en pomp regelen de stroom", "Valve and pump control the flow")
                           : t("Rotatie om de aardas", "Axial rotation")}
               </span>
             </div>
@@ -176,8 +176,8 @@ function Lab() {
                 span,
                 load,
                 bolts,
-                tilt,
                 valve: valvePct / 100,
+                pump: pumpPct / 100,
               }}
               label={
                 assembly
@@ -202,8 +202,8 @@ function Lab() {
                           )
                         : vessels
                           ? t(
-                              "Twee glazen vaten verbonden door een leiding, met een realtime golfsimulatie op het vloeistofoppervlak",
-                              "Two glass vessels connected by a pipe, with a real-time wave simulation on the liquid surface",
+                              "Een bovenste en onderste glazen vat verbonden door een leiding met klep en een pompretour, met een realtime golfsimulatie op het vloeistofoppervlak",
+                              "An upper and lower glass tank connected by a valved pipe and a pump return line, with a real-time wave simulation on the liquid surface",
                             )
                           : t(
                               "Draaiende wereldbol met continenten en geografisch raster",
@@ -286,16 +286,16 @@ function Lab() {
               />
             ) : vessels ? (
               <Control
-                id="tilt"
-                title={t("Kantelen", "Tilt")}
-                value={tilt}
-                min={TILT_RANGE.min}
-                max={TILT_RANGE.max}
-                step={1}
-                unit="°"
-                onChange={setTilt}
-                left={t("Naar links", "Left")}
-                right={t("Naar rechts", "Right")}
+                id="valve"
+                title={t("Klepopening", "Valve opening")}
+                value={valvePct}
+                min={VALVE_RANGE.min * 100}
+                max={VALVE_RANGE.max * 100}
+                step={5}
+                unit="%"
+                onChange={setValvePct}
+                left={t("Dicht", "Closed")}
+                right={t("Open", "Open")}
               />
             ) : (
               <Control
@@ -332,16 +332,16 @@ function Lab() {
               />
             ) : vessels ? (
               <Control
-                id="valve"
-                title={t("Klepopening", "Valve opening")}
-                value={valvePct}
-                min={VALVE_RANGE.min * 100}
-                max={VALVE_RANGE.max * 100}
+                id="pump"
+                title={t("Pompvermogen", "Pump power")}
+                value={pumpPct}
+                min={PUMP_RANGE.min * 100}
+                max={PUMP_RANGE.max * 100}
                 step={5}
                 unit="%"
-                onChange={setValvePct}
-                left={t("Dicht", "Closed")}
-                right={t("Open", "Open")}
+                onChange={setPumpPct}
+                left={t("Uit", "Off")}
+                right={t("Vol vermogen", "Full power")}
               />
             ) : (
               <Control
@@ -403,8 +403,8 @@ function Lab() {
                     setReset((v) => v + 1);
                     setSpread(0);
                     setAngle(0);
-                    setTilt(VESSEL_DEFAULTS.tilt);
-                    setValvePct(100);
+                    setValvePct(VESSEL_DEFAULTS.valve * 100);
+                    setPumpPct(VESSEL_DEFAULTS.pump * 100);
                     setSpeed(1);
                     setPlaying(false);
                     setSpan(BRACKET_DEFAULTS.span);
@@ -456,8 +456,8 @@ function Lab() {
                       )
                     : vessels
                       ? t(
-                          "Kantel de opstelling en vloeistof stroomt door de leiding naar het laagste vat, precies zoals in het echt — de klep bepaalt hoe snel. De golven op het oppervlak zijn een echte realtime simulatie, geen geanimeerde textuur.",
-                          "Tilt the rig and liquid flows through the pipe to the lower tank, exactly like the real thing — the valve sets how fast. The waves on the surface are a genuine real-time simulation, not an animated texture.",
+                          "Open de klep en zwaartekracht laat het water van het bovenste naar het onderste vat stromen. Zet de pomp aan om het weer omhoog te sturen — bij een half openstaande klep wint de pomp het van de zwaartekracht. De golven op het oppervlak zijn een echte realtime simulatie, geen geanimeerde textuur.",
+                          "Open the valve and gravity drains water from the top tank into the bottom one. Switch on the pump to send it back up — with the valve only partway open, the pump can out-power gravity. The waves on the surface are a genuine real-time simulation, not an animated texture.",
                         )
                       : t(
                           "Verander de snelheid en draairichting, of pauzeer en kies zelf een positie. De continenten zijn gebaseerd op geografische data; de animatie toont geen actuele dag- en nachtgrens.",

@@ -20,8 +20,8 @@ export type SceneControls = {
   span?: number;
   load?: number;
   bolts?: BoltCount;
-  tilt?: number;
   valve?: number;
+  pump?: number;
 };
 
 type VesselsRig = {
@@ -32,19 +32,26 @@ type VesselsRig = {
 const SIM_SIZE = 96;
 const TANK_HALF_WIDTH = 0.65;
 const TANK_DEPTH = 1.3;
-const TANK_HEIGHT = 3.2;
-const TANK_BASE_Y = -1.6;
-const TANK_FILLABLE = 2.9;
-const TANK_X = 2.05;
-const PIPE_RADIUS = 0.15;
-const PIPE_Y = TANK_BASE_Y + 0.32;
+const TANK_HEIGHT = 2.6;
+const TANK_FILLABLE = 2.3;
+/** Vertical clearance between the two tanks, spanned by the drain pipe and its valve. */
+const GAP = 1.2;
+const TANK_A_BASE_Y = GAP / 2;
+const TANK_B_BASE_Y = -GAP / 2 - TANK_HEIGHT;
+const DRAIN_PIPE_RADIUS = 0.13;
+/** Return line (pump loop) runs up the side, clear of the tanks and the drain pipe. */
+const RISER_X = TANK_HALF_WIDTH + 0.42;
+const RISER_RADIUS = 0.075;
+const RISER_BOTTOM_Y = TANK_B_BASE_Y + 0.35;
+const RISER_TOP_Y = TANK_A_BASE_Y + TANK_HEIGHT - 0.35;
 
 /**
- * Two glass tanks connected by a pipe. The liquid surface in each is a
- * real-time GPU wave simulation (ping-pong render targets running the
- * discrete wave equation, classic "water ripple" shader technique) driven
- * by how fast liquid is moving through the pipe; the bulk fill level itself
- * comes from stepVessels() in ./vessels (communicating-vessels physics).
+ * A top tank drains through a valved pipe into a bottom tank; a pump can
+ * push the water back up through a separate return line. The liquid surface
+ * in each tank is a real-time GPU wave simulation (ping-pong render
+ * targets running the discrete wave equation, classic "water ripple" shader
+ * technique) driven by how fast liquid is moving through each pipe; the
+ * bulk fill level itself comes from stepVessels() in ./vessels.
  */
 function buildVesselsRig(root: THREE.Group, materials: THREE.Material[]): VesselsRig {
   function makeRenderTarget() {
@@ -71,6 +78,7 @@ function buildVesselsRig(root: THREE.Group, materials: THREE.Material[]): Vessel
       uDt: { value: 0 },
       uDamping: { value: 0.6 },
       uInject: { value: new THREE.Vector3(0.5, 0.5, 0) },
+      uInject2: { value: new THREE.Vector3(0.82, 0.5, 0) },
     },
   });
   materials.push(simMaterial);
@@ -109,15 +117,35 @@ function buildVesselsRig(root: THREE.Group, materials: THREE.Material[]): Vessel
     depthWrite: false,
   });
   materials.push(bodyMaterial);
+  const valveClosedColor = new THREE.Color(0x8a5a4a);
+  const valveOpenColor = new THREE.Color(0x5b9bd6);
+  const valveMaterial = new THREE.MeshStandardMaterial({
+    color: valveClosedColor.clone(),
+    metalness: 0.4,
+    roughness: 0.35,
+    emissive: 0x1a2a3d,
+    emissiveIntensity: 0,
+  });
+  materials.push(valveMaterial);
+  const pumpOffColor = new THREE.Color(0x2c3b52);
+  const pumpOnColor = new THREE.Color(0x4fd48a);
+  const pumpMaterial = new THREE.MeshStandardMaterial({
+    color: 0x243144,
+    metalness: 0.5,
+    roughness: 0.3,
+    emissive: pumpOffColor.clone(),
+    emissiveIntensity: 0,
+  });
+  materials.push(pumpMaterial);
 
-  function makeTank(x: number) {
+  function makeTank(baseY: number) {
     const shellGeometry = new THREE.BoxGeometry(
       TANK_HALF_WIDTH * 2 + 0.15,
       TANK_HEIGHT,
       TANK_DEPTH + 0.15,
     );
     const shell = new THREE.Mesh(shellGeometry, glassMaterial);
-    shell.position.set(x, TANK_BASE_Y + TANK_HEIGHT / 2, 0);
+    shell.position.set(0, baseY + TANK_HEIGHT / 2, 0);
     shell.renderOrder = 0;
     root.add(shell);
     const edges = new THREE.LineSegments(new THREE.EdgesGeometry(shellGeometry), edgeMaterial);
@@ -128,7 +156,7 @@ function buildVesselsRig(root: THREE.Group, materials: THREE.Material[]): Vessel
       new THREE.BoxGeometry(TANK_HALF_WIDTH * 2 - 0.06, 1, TANK_DEPTH - 0.06),
       bodyMaterial,
     );
-    body.position.set(x, TANK_BASE_Y, 0);
+    body.position.set(0, baseY, 0);
     body.scale.y = 0.0001;
     body.renderOrder = 1;
     root.add(body);
@@ -154,24 +182,60 @@ function buildVesselsRig(root: THREE.Group, materials: THREE.Material[]): Vessel
       surfaceMaterial,
     );
     surface.rotation.x = -Math.PI / 2;
-    surface.position.set(x, TANK_BASE_Y, 0);
+    surface.position.set(0, baseY, 0);
     surface.renderOrder = 2;
     root.add(surface);
 
-    return { body, surface, surfaceMaterial };
+    return { baseY, body, surface, surfaceMaterial };
   }
 
-  const tankA = makeTank(-TANK_X);
-  const tankB = makeTank(TANK_X);
+  const tankA = makeTank(TANK_A_BASE_Y);
+  const tankB = makeTank(TANK_B_BASE_Y);
 
-  const pipe = new THREE.Mesh(
-    new THREE.CylinderGeometry(PIPE_RADIUS, PIPE_RADIUS, TANK_X * 2 - TANK_HALF_WIDTH * 2 + 0.3, 20),
+  // Drain pipe: straight down the middle from the top tank's outlet to the
+  // bottom tank's inlet, with a valve fixture at the midpoint.
+  const drainPipe = new THREE.Mesh(
+    new THREE.CylinderGeometry(DRAIN_PIPE_RADIUS, DRAIN_PIPE_RADIUS, GAP, 20),
     bodyMaterial,
   );
-  pipe.renderOrder = 1;
-  pipe.rotation.z = Math.PI / 2;
-  pipe.position.set(0, PIPE_Y, 0);
-  root.add(pipe);
+  drainPipe.renderOrder = 1;
+  root.add(drainPipe);
+
+  const valveBody = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.24, 0.36), valveMaterial);
+  valveBody.renderOrder = 1;
+  root.add(valveBody);
+
+  // Return line: a pump at the bottom tank pushes water back up a side
+  // riser into the top tank, via two short horizontal stubs.
+  function horizontalStub(y: number) {
+    const length = RISER_X - TANK_HALF_WIDTH + 0.1;
+    const stub = new THREE.Mesh(
+      new THREE.CylinderGeometry(RISER_RADIUS, RISER_RADIUS, length, 16),
+      bodyMaterial,
+    );
+    stub.rotation.z = Math.PI / 2;
+    stub.position.set(TANK_HALF_WIDTH + length / 2 - 0.05, y, 0);
+    stub.renderOrder = 1;
+    root.add(stub);
+  }
+  horizontalStub(RISER_BOTTOM_Y);
+  horizontalStub(RISER_TOP_Y);
+
+  const riser = new THREE.Mesh(
+    new THREE.CylinderGeometry(RISER_RADIUS, RISER_RADIUS, RISER_TOP_Y - RISER_BOTTOM_Y, 16),
+    bodyMaterial,
+  );
+  riser.position.set(RISER_X, (RISER_BOTTOM_Y + RISER_TOP_Y) / 2, 0);
+  riser.renderOrder = 1;
+  root.add(riser);
+
+  const pumpHousing = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.42, 0.42), pumpMaterial);
+  pumpHousing.position.set(RISER_X, RISER_BOTTOM_Y, 0);
+  pumpHousing.renderOrder = 1;
+  root.add(pumpHousing);
+  const impeller = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.05, 0.05), edgeMaterial);
+  impeller.renderOrder = 1;
+  pumpHousing.add(impeller);
 
   let levelA = VESSEL_DEFAULTS.levelA;
   let levelB = VESSEL_DEFAULTS.levelB;
@@ -185,14 +249,14 @@ function buildVesselsRig(root: THREE.Group, materials: THREE.Material[]): Vessel
     targets: THREE.WebGLRenderTarget[],
     readIndex: number,
     dt: number,
-    injectX: number,
-    injectZ: number,
-    injectStrength: number,
+    drainStrength: number,
+    pumpStrength: number,
   ) {
     const writeIndex = 1 - readIndex;
     simMaterial.uniforms.tPrev.value = targets[readIndex].texture;
     simMaterial.uniforms.uDt.value = dt;
-    (simMaterial.uniforms.uInject.value as THREE.Vector3).set(injectX, injectZ, injectStrength);
+    (simMaterial.uniforms.uInject.value as THREE.Vector3).set(0.5, 0.5, drainStrength);
+    (simMaterial.uniforms.uInject2.value as THREE.Vector3).set(0.82, 0.5, pumpStrength);
     renderer.setRenderTarget(targets[writeIndex]);
     renderer.render(simScene, simCamera);
     renderer.setRenderTarget(null);
@@ -210,8 +274,8 @@ function buildVesselsRig(root: THREE.Group, materials: THREE.Material[]): Vessel
         renderer.setRenderTarget(null);
         seeded = true;
       }
-      const tilt = c.tilt ?? VESSEL_DEFAULTS.tilt;
       const valve = c.valve ?? VESSEL_DEFAULTS.valve;
+      const pump = c.pump ?? VESSEL_DEFAULTS.pump;
 
       if (c.reset !== lastVesselReset) {
         lastVesselReset = c.reset;
@@ -219,30 +283,37 @@ function buildVesselsRig(root: THREE.Group, materials: THREE.Material[]): Vessel
         levelB = VESSEL_DEFAULTS.levelB;
       }
 
-      let flow = 0;
+      let drainFlow = 0;
+      let pumpFlow = 0;
       if (c.playing) {
-        const result = stepVessels({ levelA, levelB }, tilt, valve, Math.min(delta, 0.033));
+        const result = stepVessels({ levelA, levelB }, valve, pump, Math.min(delta, 0.033));
         levelA = result.state.levelA;
         levelB = result.state.levelB;
-        flow = result.flow;
+        drainFlow = result.drainFlow;
+        pumpFlow = result.pumpFlow;
       }
 
-      root.rotation.z = -(tilt * Math.PI) / 180;
+      (valveMaterial.color as THREE.Color).lerpColors(valveClosedColor, valveOpenColor, valve);
+      valveMaterial.emissiveIntensity = valve * 0.35;
+      (pumpMaterial.emissive as THREE.Color).lerpColors(pumpOffColor, pumpOnColor, pump);
+      pumpMaterial.emissiveIntensity = pump * 0.9;
+      if (c.playing) impeller.rotation.y += delta * (0.4 + pump * 9);
 
       const heightA = Math.max(0.02, levelA * TANK_FILLABLE);
       tankA.body.scale.y = heightA;
-      tankA.body.position.y = TANK_BASE_Y + heightA / 2;
-      tankA.surface.position.y = TANK_BASE_Y + heightA;
+      tankA.body.position.y = tankA.baseY + heightA / 2;
+      tankA.surface.position.y = tankA.baseY + heightA;
 
       const heightB = Math.max(0.02, levelB * TANK_FILLABLE);
       tankB.body.scale.y = heightB;
-      tankB.body.position.y = TANK_BASE_Y + heightB / 2;
-      tankB.surface.position.y = TANK_BASE_Y + heightB;
+      tankB.body.position.y = tankB.baseY + heightB / 2;
+      tankB.surface.position.y = tankB.baseY + heightB;
 
-      const injectStrength = Math.min(0.4, Math.abs(flow) * 6);
+      const drainStrength = Math.min(0.4, drainFlow * 6);
+      const pumpStrength = Math.min(0.4, pumpFlow * 6);
       const dt = Math.min(delta, 0.033);
-      readA = computeRipple(renderer, targetsA, readA, dt, 0.92, 0.5, injectStrength);
-      readB = computeRipple(renderer, targetsB, readB, dt, 0.08, 0.5, injectStrength);
+      readA = computeRipple(renderer, targetsA, readA, dt, drainStrength, pumpStrength);
+      readB = computeRipple(renderer, targetsB, readB, dt, drainStrength, pumpStrength);
 
       tankA.surfaceMaterial.uniforms.tHeight.value = targetsA[readA].texture;
       tankB.surfaceMaterial.uniforms.tHeight.value = targetsB[readB].texture;
