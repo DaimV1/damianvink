@@ -28,6 +28,15 @@ export const RIPPLE_FRAGMENT = /* glsl */ `
     float laplacian = (hl + hr + hd + hu) * 0.25 - h.r;
 
     float vel = h.g + laplacian * 2.4 - h.g * uDamping;
+
+    // Inject into velocity, not height directly: height has no damping term
+    // of its own, so a sustained per-frame height bump at a fixed point (the
+    // pipe junction, while liquid is actively flowing) never bleeds off and
+    // just piles up into a runaway spike. Velocity is damped every frame, so
+    // continuous injection here settles into a bounded steady ripple instead.
+    float d = distance(vUv, uInject.xy);
+    vel += uInject.z * exp(-d * d * 360.0);
+
     float height = h.r + vel * uDt;
 
     float edge = smoothstep(0.0, 0.05, vUv.x) * smoothstep(1.0, 0.95, vUv.x)
@@ -35,8 +44,9 @@ export const RIPPLE_FRAGMENT = /* glsl */ `
     height *= mix(0.8, 1.0, edge);
     vel *= mix(0.8, 1.0, edge);
 
-    float d = distance(vUv, uInject.xy);
-    height += uInject.z * exp(-d * d * 360.0);
+    // Belt-and-suspenders clamp: guarantees a bounded, stable surface even
+    // if some future parameter change pushes the simulation toward instability.
+    height = clamp(height, -1.4, 1.4);
 
     gl_FragColor = vec4(height, vel, 0.0, 1.0);
   }
