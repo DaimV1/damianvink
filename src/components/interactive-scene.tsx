@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import type { SceneControls } from "@/lib/lab/scenes";
 import type { Vector3 } from "three";
 
-export type SceneKind = "assembly" | "earth" | "solar" | "particles" | "bracket";
+export type SceneKind = "assembly" | "earth" | "solar" | "particles" | "bracket" | "vessels";
 
 /** Camera distance and position per demo, tuned by eye. x/y are functions of distance. */
 const CAMERA_FRAMING: Record<
@@ -39,6 +39,12 @@ const CAMERA_FRAMING: Record<
     lookAt: [1.4, 0, 0],
   },
   earth: { distance: (a) => Math.max(9.3, 8.2 / a), x: () => 0, y: () => 1, lookAt: [0, 0, 0] },
+  vessels: {
+    distance: (a) => Math.max(11.5, 9.8 / a),
+    x: () => 0,
+    y: (d) => d * 0.18,
+    lookAt: [0, -0.3, 0],
+  },
 };
 
 export function InteractiveScene({
@@ -152,7 +158,7 @@ export function InteractiveScene({
             raycaster.setFromCamera(pointerNDC, camera);
             pointer = raycaster.ray.intersectPlane(pointerPlane, pointerWorld);
           }
-          model?.update(current.current, delta, pointer);
+          model?.update(current.current, delta, pointer, renderer);
           renderer.render(scene, camera);
         });
         setStatus("ready");
