@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AiLabRouteImport } from './routes/ai-lab'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as MarathonRouteImport } from './routes/marathon'
 import { Route as OverMijRouteImport } from './routes/over-mij'
@@ -40,6 +41,11 @@ import { Route as ToolkitSpiebaanTolerantiesRouteImport } from './routes/toolkit
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AiLabRoute = AiLabRouteImport.update({
+  id: '/ai-lab',
+  path: '/ai-lab',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -177,6 +183,7 @@ const ToolkitSpiebaanTolerantiesRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/ai-lab': typeof AiLabRoute
   '/contact': typeof ContactRoute
   '/marathon': typeof MarathonRoute
   '/over-mij': typeof OverMijRoute
@@ -206,6 +213,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/ai-lab': typeof AiLabRoute
   '/contact': typeof ContactRoute
   '/marathon': typeof MarathonRoute
   '/over-mij': typeof OverMijRoute
@@ -236,6 +244,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/ai-lab': typeof AiLabRoute
   '/contact': typeof ContactRoute
   '/marathon': typeof MarathonRoute
   '/over-mij': typeof OverMijRoute
@@ -267,6 +276,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/ai-lab'
     | '/contact'
     | '/marathon'
     | '/over-mij'
@@ -296,6 +306,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/ai-lab'
     | '/contact'
     | '/marathon'
     | '/over-mij'
@@ -325,6 +336,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/ai-lab'
     | '/contact'
     | '/marathon'
     | '/over-mij'
@@ -355,6 +367,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AiLabRoute: typeof AiLabRoute
   ContactRoute: typeof ContactRoute
   MarathonRoute: typeof MarathonRoute
   OverMijRoute: typeof OverMijRoute
@@ -390,6 +403,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ai-lab': {
+      id: '/ai-lab'
+      path: '/ai-lab'
+      fullPath: '/ai-lab'
+      preLoaderRoute: typeof AiLabRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -579,6 +599,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AiLabRoute: AiLabRoute,
   ContactRoute: ContactRoute,
   MarathonRoute: MarathonRoute,
   OverMijRoute: OverMijRoute,

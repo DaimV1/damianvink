@@ -13,6 +13,7 @@ export function SiteHeader() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   const nav = [
+    { to: "/ai-lab", label: "Interactive Lab", match: "/ai-lab" },
     { to: "/toolkit", label: "Toolkit", match: "/toolkit" },
     { to: "/project", label: tx(locale, "Project", "Project"), match: "/project" },
     { to: "/marathon", label: "Marathon", match: "/marathon" },
@@ -32,13 +33,20 @@ export function SiteHeader() {
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
         <div className="flex min-w-0 items-center gap-3">
           <VinkMark />
-          <Link to="/" className="truncate font-sans text-sm text-ink" onClick={() => setOpen(false)}>
+          <Link
+            to="/"
+            className="truncate font-sans text-sm text-ink"
+            onClick={() => setOpen(false)}
+          >
             <strong className="font-medium">Damian Vink</strong>
             <span className="hidden text-muted sm:inline"> — damianvink.nl</span>
           </Link>
         </div>
 
-        <nav className="hidden items-center gap-0.5 whitespace-nowrap lg:flex" aria-label={tx(locale, "Hoofdmenu", "Main menu")}>
+        <nav
+          className="hidden items-center gap-0.5 whitespace-nowrap lg:flex"
+          aria-label={tx(locale, "Hoofdmenu", "Main menu")}
+        >
           {nav.map((item) => (
             <Link
               key={item.to}
@@ -77,13 +85,17 @@ export function SiteHeader() {
             <Sun
               className={cn(
                 "absolute size-4 transition-[opacity,transform,filter] duration-300 ease-[cubic-bezier(0.2,0,0,1)]",
-                theme === "dark" ? "scale-100 opacity-100 blur-none" : "scale-[0.25] opacity-0 blur-[4px]",
+                theme === "dark"
+                  ? "scale-100 opacity-100 blur-none"
+                  : "scale-[0.25] opacity-0 blur-[4px]",
               )}
             />
             <Moon
               className={cn(
                 "size-4 transition-[opacity,transform,filter] duration-300 ease-[cubic-bezier(0.2,0,0,1)]",
-                theme === "light" ? "scale-100 opacity-100 blur-none" : "scale-[0.25] opacity-0 blur-[4px]",
+                theme === "light"
+                  ? "scale-100 opacity-100 blur-none"
+                  : "scale-[0.25] opacity-0 blur-[4px]",
               )}
             />
           </button>
@@ -92,7 +104,9 @@ export function SiteHeader() {
             className="grid size-11 place-items-center rounded-md text-ink hover:bg-muted-bg lg:hidden"
             aria-expanded={open}
             aria-controls="mobile-nav"
-            aria-label={open ? tx(locale, "Menu sluiten", "Close menu") : tx(locale, "Menu", "Menu")}
+            aria-label={
+              open ? tx(locale, "Menu sluiten", "Close menu") : tx(locale, "Menu", "Menu")
+            }
             onClick={() => setOpen((v) => !v)}
           >
             {open ? <X className="size-5" /> : <Menu className="size-5" />}
@@ -101,7 +115,11 @@ export function SiteHeader() {
       </div>
 
       {open ? (
-        <nav id="mobile-nav" className="border-t border-line px-4 py-3 lg:hidden" aria-label={tx(locale, "Mobiel menu", "Mobile menu")}>
+        <nav
+          id="mobile-nav"
+          className="border-t border-line px-4 py-3 lg:hidden"
+          aria-label={tx(locale, "Mobiel menu", "Mobile menu")}
+        >
           <div className="flex flex-col">
             {nav.map((item) => (
               <Link
