@@ -3,6 +3,13 @@ import { feature } from "topojson-client";
 import world from "world-atlas/land-110m.json";
 import type { Topology, GeometryCollection } from "topojson-specification";
 import { BRACKET_DEFAULTS, needsGusset, requiredThicknessMm, type BoltCount } from "./bracket";
+import {
+  RIPPLE_FRAGMENT,
+  RIPPLE_VERTEX,
+  SURFACE_FRAGMENT,
+  SURFACE_VERTEX,
+} from "./fluid-shaders";
+import { stepVessels, VESSEL_DEFAULTS } from "./vessels";
 
 export type SceneControls = {
   spread: number;
@@ -13,9 +20,243 @@ export type SceneControls = {
   span?: number;
   load?: number;
   bolts?: BoltCount;
+  tilt?: number;
+  valve?: number;
 };
+
+type VesselsRig = {
+  update(c: SceneControls, delta: number, renderer: THREE.WebGLRenderer | undefined): void;
+  dispose(): void;
+};
+
+const SIM_SIZE = 96;
+const TANK_HALF_WIDTH = 0.65;
+const TANK_DEPTH = 1.3;
+const TANK_HEIGHT = 3.2;
+const TANK_BASE_Y = -1.6;
+const TANK_FILLABLE = 2.9;
+const TANK_X = 2.05;
+const PIPE_RADIUS = 0.15;
+const PIPE_Y = TANK_BASE_Y + 0.32;
+
+/**
+ * Two glass tanks connected by a pipe. The liquid surface in each is a
+ * real-time GPU wave simulation (ping-pong render targets running the
+ * discrete wave equation, classic "water ripple" shader technique) driven
+ * by how fast liquid is moving through the pipe; the bulk fill level itself
+ * comes from stepVessels() in ./vessels (communicating-vessels physics).
+ */
+function buildVesselsRig(root: THREE.Group, materials: THREE.Material[]): VesselsRig {
+  function makeRenderTarget() {
+    return new THREE.WebGLRenderTarget(SIM_SIZE, SIM_SIZE, {
+      type: THREE.HalfFloatType,
+      format: THREE.RGBAFormat,
+      minFilter: THREE.LinearFilter,
+      magFilter: THREE.LinearFilter,
+      depthBuffer: false,
+      stencilBuffer: false,
+    });
+  }
+  const targetsA = [makeRenderTarget(), makeRenderTarget()];
+  const targetsB = [makeRenderTarget(), makeRenderTarget()];
+
+  const simMaterial = new THREE.ShaderMaterial({
+    vertexShader: RIPPLE_VERTEX,
+    fragmentShader: RIPPLE_FRAGMENT,
+    depthTest: false,
+    depthWrite: false,
+    uniforms: {
+      tPrev: { value: null },
+      uTexel: { value: new THREE.Vector2(1 / SIM_SIZE, 1 / SIM_SIZE) },
+      uDt: { value: 0 },
+      uDamping: { value: 0.6 },
+      uInject: { value: new THREE.Vector3(0.5, 0.5, 0) },
+    },
+  });
+  materials.push(simMaterial);
+  const simQuadGeometry = new THREE.PlaneGeometry(2, 2);
+  const simScene = new THREE.Scene();
+  simScene.add(new THREE.Mesh(simQuadGeometry, simMaterial));
+  const simCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+
+  // Plain alpha-blended "glass" rather than MeshPhysicalMaterial transmission:
+  // transmission needs an unoccluded view of what's behind it to look right,
+  // and depthWrite:false + explicit renderOrder is what actually guarantees
+  // the liquid inside stays visible through the shell from every angle.
+  const glassMaterial = new THREE.MeshStandardMaterial({
+    color: 0xdfeeff,
+    transparent: true,
+    opacity: 0.14,
+    roughness: 0.08,
+    metalness: 0,
+    depthWrite: false,
+    side: THREE.DoubleSide,
+  });
+  materials.push(glassMaterial);
+  const edgeMaterial = new THREE.LineBasicMaterial({
+    color: 0x9fc4e8,
+    transparent: true,
+    opacity: 0.7,
+    depthWrite: false,
+  });
+  materials.push(edgeMaterial);
+  const bodyMaterial = new THREE.MeshStandardMaterial({
+    color: 0x2f6fb0,
+    transparent: true,
+    opacity: 0.55,
+    roughness: 0.25,
+    metalness: 0.05,
+    depthWrite: false,
+  });
+  materials.push(bodyMaterial);
+
+  function makeTank(x: number) {
+    const shellGeometry = new THREE.BoxGeometry(
+      TANK_HALF_WIDTH * 2 + 0.15,
+      TANK_HEIGHT,
+      TANK_DEPTH + 0.15,
+    );
+    const shell = new THREE.Mesh(shellGeometry, glassMaterial);
+    shell.position.set(x, TANK_BASE_Y + TANK_HEIGHT / 2, 0);
+    shell.renderOrder = 0;
+    root.add(shell);
+    const edges = new THREE.LineSegments(new THREE.EdgesGeometry(shellGeometry), edgeMaterial);
+    edges.renderOrder = 3;
+    shell.add(edges);
+
+    const body = new THREE.Mesh(
+      new THREE.BoxGeometry(TANK_HALF_WIDTH * 2 - 0.06, 1, TANK_DEPTH - 0.06),
+      bodyMaterial,
+    );
+    body.position.set(x, TANK_BASE_Y, 0);
+    body.scale.y = 0.0001;
+    body.renderOrder = 1;
+    root.add(body);
+
+    const surfaceMaterial = new THREE.ShaderMaterial({
+      vertexShader: SURFACE_VERTEX,
+      fragmentShader: SURFACE_FRAGMENT,
+      transparent: true,
+      depthWrite: false,
+      side: THREE.DoubleSide,
+      uniforms: {
+        tHeight: { value: null },
+        uHeightScale: { value: 0.22 },
+        uTexel: { value: new THREE.Vector2(1 / SIM_SIZE, 1 / SIM_SIZE) },
+        uColorDeep: { value: new THREE.Color(0x2c5f9e) },
+        uColorShallow: { value: new THREE.Color(0x79b3e8) },
+        uOpacity: { value: 0.88 },
+      },
+    });
+    materials.push(surfaceMaterial);
+    const surface = new THREE.Mesh(
+      new THREE.PlaneGeometry(TANK_HALF_WIDTH * 2 - 0.06, TANK_DEPTH - 0.06, 40, 40),
+      surfaceMaterial,
+    );
+    surface.rotation.x = -Math.PI / 2;
+    surface.position.set(x, TANK_BASE_Y, 0);
+    surface.renderOrder = 2;
+    root.add(surface);
+
+    return { body, surface, surfaceMaterial };
+  }
+
+  const tankA = makeTank(-TANK_X);
+  const tankB = makeTank(TANK_X);
+
+  const pipe = new THREE.Mesh(
+    new THREE.CylinderGeometry(PIPE_RADIUS, PIPE_RADIUS, TANK_X * 2 - TANK_HALF_WIDTH * 2 + 0.3, 20),
+    bodyMaterial,
+  );
+  pipe.renderOrder = 1;
+  pipe.rotation.z = Math.PI / 2;
+  pipe.position.set(0, PIPE_Y, 0);
+  root.add(pipe);
+
+  let levelA = VESSEL_DEFAULTS.levelA;
+  let levelB = VESSEL_DEFAULTS.levelB;
+  let lastVesselReset = -1;
+  let readA = 0;
+  let readB = 0;
+  let seeded = false;
+
+  function computeRipple(
+    renderer: THREE.WebGLRenderer,
+    targets: THREE.WebGLRenderTarget[],
+    readIndex: number,
+    dt: number,
+    injectX: number,
+    injectZ: number,
+    injectStrength: number,
+  ) {
+    const writeIndex = 1 - readIndex;
+    simMaterial.uniforms.tPrev.value = targets[readIndex].texture;
+    simMaterial.uniforms.uDt.value = dt;
+    (simMaterial.uniforms.uInject.value as THREE.Vector3).set(injectX, injectZ, injectStrength);
+    renderer.setRenderTarget(targets[writeIndex]);
+    renderer.render(simScene, simCamera);
+    renderer.setRenderTarget(null);
+    return writeIndex;
+  }
+
+  return {
+    update(c, delta, renderer) {
+      if (!renderer) return;
+      if (!seeded) {
+        for (const t of [...targetsA, ...targetsB]) {
+          renderer.setRenderTarget(t);
+          renderer.clear(true, true, true);
+        }
+        renderer.setRenderTarget(null);
+        seeded = true;
+      }
+      const tilt = c.tilt ?? VESSEL_DEFAULTS.tilt;
+      const valve = c.valve ?? VESSEL_DEFAULTS.valve;
+
+      if (c.reset !== lastVesselReset) {
+        lastVesselReset = c.reset;
+        levelA = VESSEL_DEFAULTS.levelA;
+        levelB = VESSEL_DEFAULTS.levelB;
+      }
+
+      let flow = 0;
+      if (c.playing) {
+        const result = stepVessels({ levelA, levelB }, tilt, valve, Math.min(delta, 0.033));
+        levelA = result.state.levelA;
+        levelB = result.state.levelB;
+        flow = result.flow;
+      }
+
+      root.rotation.z = -(tilt * Math.PI) / 180;
+
+      const heightA = Math.max(0.02, levelA * TANK_FILLABLE);
+      tankA.body.scale.y = heightA;
+      tankA.body.position.y = TANK_BASE_Y + heightA / 2;
+      tankA.surface.position.y = TANK_BASE_Y + heightA;
+
+      const heightB = Math.max(0.02, levelB * TANK_FILLABLE);
+      tankB.body.scale.y = heightB;
+      tankB.body.position.y = TANK_BASE_Y + heightB / 2;
+      tankB.surface.position.y = TANK_BASE_Y + heightB;
+
+      const injectStrength = Math.min(0.4, Math.abs(flow) * 6);
+      const dt = Math.min(delta, 0.033);
+      readA = computeRipple(renderer, targetsA, readA, dt, 0.92, 0.5, injectStrength);
+      readB = computeRipple(renderer, targetsB, readB, dt, 0.08, 0.5, injectStrength);
+
+      tankA.surfaceMaterial.uniforms.tHeight.value = targetsA[readA].texture;
+      tankB.surfaceMaterial.uniforms.tHeight.value = targetsB[readB].texture;
+    },
+    dispose() {
+      targetsA.forEach((t) => t.dispose());
+      targetsB.forEach((t) => t.dispose());
+      simQuadGeometry.dispose();
+    },
+  };
+}
+
 export function buildScene(
-  kind: "assembly" | "earth" | "solar" | "particles" | "bracket",
+  kind: "assembly" | "earth" | "solar" | "particles" | "bracket" | "vessels",
   scene: THREE.Scene,
 ) {
   const root = new THREE.Group();
@@ -97,6 +338,7 @@ export function buildScene(
   let phases: Float32Array | undefined;
   let bracketGroup: THREE.Group | undefined;
   let rebuildBracket: ((spanMm: number, loadN: number, bolts: BoltCount) => void) | undefined;
+  let vessels: VesselsRig | undefined;
   if (kind === "assembly") {
     const group = (start: number, offset: number) => {
       const g = new THREE.Group();
@@ -344,7 +586,7 @@ export function buildScene(
     materials.push(pointMaterial);
     points = new THREE.Points(geometry, pointMaterial);
     root.add(points);
-  } else {
+  } else if (kind === "bracket") {
     bracketGroup = new THREE.Group();
     root.add(bracketGroup);
     const forceMaterial = new THREE.MeshBasicMaterial({ color: 0xe2564a });
@@ -454,6 +696,8 @@ export function buildScene(
       head.rotation.x = Math.PI;
       bracketGroup.add(head);
     };
+  } else {
+    vessels = buildVesselsRig(root, materials);
   }
   let spin = 0;
   let lastReset = -1;
@@ -463,7 +707,12 @@ export function buildScene(
   let lastBolts: BoltCount | -1 = -1;
   const pointerLocal = new THREE.Vector3();
   return {
-    update(c: SceneControls, delta: number, pointer?: THREE.Vector3 | null) {
+    update(
+      c: SceneControls,
+      delta: number,
+      pointer?: THREE.Vector3 | null,
+      renderer?: THREE.WebGLRenderer,
+    ) {
       if (c.reset !== lastReset) {
         spin = 0;
         lastReset = c.reset;
@@ -532,11 +781,14 @@ export function buildScene(
           lastLoad = loadN;
           lastBolts = bolts;
         }
+      } else if (vessels) {
+        vessels.update(c, delta, renderer);
       }
     },
     dispose() {
       textures.forEach((t) => t.dispose());
       materials.forEach((m) => m.dispose());
+      vessels?.dispose();
     },
   };
 }
