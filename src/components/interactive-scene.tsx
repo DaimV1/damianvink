@@ -7,7 +7,7 @@ export function InteractiveScene({
   label,
   unavailable,
 }: {
-  kind: "assembly" | "earth";
+  kind: "assembly" | "earth" | "solar";
   controls: SceneControls;
   label: string;
   unavailable: string;
@@ -54,10 +54,12 @@ export function InteractiveScene({
           const distance =
             kind === "assembly"
               ? Math.max(14, 10 / camera.aspect)
-              : Math.max(9.3, 8.2 / camera.aspect);
+              : kind === "solar"
+                ? Math.max(16, 13 / camera.aspect)
+                : Math.max(9.3, 8.2 / camera.aspect);
           camera.position.set(
             kind === "assembly" ? distance * 0.3 : 0,
-            kind === "assembly" ? distance * 0.32 : 1,
+            kind === "assembly" ? distance * 0.32 : kind === "solar" ? distance * 0.62 : 1,
             distance,
           );
           camera.lookAt(0, 0, 0);

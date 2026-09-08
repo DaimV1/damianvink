@@ -10,7 +10,7 @@ export type SceneControls = {
   playing: boolean;
   reset: number;
 };
-export function buildScene(kind: "assembly" | "earth", scene: THREE.Scene) {
+export function buildScene(kind: "assembly" | "earth" | "solar", scene: THREE.Scene) {
   const root = new THREE.Group();
   scene.add(root);
   const parts: { group: THREE.Group; start: number; offset: number }[] = [];
@@ -83,6 +83,8 @@ export function buildScene(kind: "assembly" | "earth", scene: THREE.Scene) {
     return mesh(geo, material, parent, x);
   }
   let earth: THREE.Group | undefined;
+  const planets: { group: THREE.Group; orbit: number; angle: number; start: number; speedFactor: number }[] =
+    [];
   if (kind === "assembly") {
     const group = (start: number, offset: number) => {
       const g = new THREE.Group();
@@ -138,7 +140,7 @@ export function buildScene(kind: "assembly" | "earth", scene: THREE.Scene) {
     grid.position.y = -1.18;
     scene.add(grid);
     root.position.y = 0.3;
-  } else {
+  } else if (kind === "earth") {
     earth = new THREE.Group();
     root.add(earth);
     root.rotation.z = THREE.MathUtils.degToRad(-23.4);
@@ -223,6 +225,75 @@ export function buildScene(kind: "assembly" | "earth", scene: THREE.Scene) {
       ),
     );
     earth.rotation.y = -Math.PI / 2;
+  } else {
+    const sunMaterial = new THREE.MeshBasicMaterial({ color: 0xf7b955 });
+    materials.push(sunMaterial);
+    mesh(new THREE.SphereGeometry(0.85, 48, 32), sunMaterial, root);
+    const glowMaterial = new THREE.MeshBasicMaterial({
+      color: 0xffb057,
+      transparent: true,
+      opacity: 0.18,
+      side: THREE.BackSide,
+    });
+    materials.push(glowMaterial);
+    mesh(new THREE.SphereGeometry(1.15, 32, 24), glowMaterial, root);
+
+    const orbitMaterial = new THREE.LineBasicMaterial({
+      color: 0x2c4867,
+      transparent: true,
+      opacity: 0.55,
+    });
+    materials.push(orbitMaterial);
+
+    const PLANET_DATA = [
+      { name: "Mercurius", color: 0x9c9891, orbit: 1.7, size: 0.11, period: 0.24 },
+      { name: "Venus", color: 0xd9b382, orbit: 2.25, size: 0.17, period: 0.62 },
+      { name: "Aarde", color: 0x4d7ec2, orbit: 2.85, size: 0.18, period: 1 },
+      { name: "Mars", color: 0xc1592f, orbit: 3.5, size: 0.13, period: 1.88 },
+      { name: "Jupiter", color: 0xd8ae7e, orbit: 4.6, size: 0.42, period: 11.86 },
+      { name: "Saturnus", color: 0xe3c98f, orbit: 5.85, size: 0.36, period: 29.46, ring: true },
+      { name: "Uranus", color: 0x9fd4d4, orbit: 6.85, size: 0.26, period: 84 },
+      { name: "Neptunus", color: 0x3f5fc9, orbit: 7.75, size: 0.25, period: 164.8 },
+    ];
+
+    PLANET_DATA.forEach((p, i) => {
+      const orbitPoints: THREE.Vector3[] = [];
+      const segments = 96;
+      for (let s = 0; s <= segments; s++) {
+        const a = (s / segments) * Math.PI * 2;
+        orbitPoints.push(new THREE.Vector3(Math.cos(a) * p.orbit, 0, Math.sin(a) * p.orbit));
+      }
+      root.add(
+        new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(orbitPoints), orbitMaterial),
+      );
+
+      const planetMaterial = new THREE.MeshStandardMaterial({
+        color: p.color,
+        roughness: 0.75,
+        metalness: 0.08,
+      });
+      materials.push(planetMaterial);
+      const group = new THREE.Group();
+      root.add(group);
+      mesh(new THREE.SphereGeometry(p.size, 32, 24), planetMaterial, group);
+      if (p.ring) {
+        const ringMaterial = new THREE.MeshBasicMaterial({
+          color: 0xcbb178,
+          transparent: true,
+          opacity: 0.6,
+          side: THREE.DoubleSide,
+        });
+        materials.push(ringMaterial);
+        const ringMesh = new THREE.Mesh(
+          new THREE.RingGeometry(p.size * 1.4, p.size * 2.1, 48),
+          ringMaterial,
+        );
+        ringMesh.rotation.x = Math.PI / 2.3;
+        group.add(ringMesh);
+      }
+      const start = (i / PLANET_DATA.length) * Math.PI * 2;
+      planets.push({ group, orbit: p.orbit, angle: start, start, speedFactor: 1 / Math.sqrt(p.period) });
+    });
   }
   let spin = 0;
   let lastReset = -1;
@@ -231,6 +302,9 @@ export function buildScene(kind: "assembly" | "earth", scene: THREE.Scene) {
       if (c.reset !== lastReset) {
         spin = 0;
         lastReset = c.reset;
+        planets.forEach((p) => {
+          p.angle = p.start;
+        });
       }
       if (kind === "assembly") {
         root.rotation.y = (c.angle * Math.PI) / 180;
@@ -240,6 +314,12 @@ export function buildScene(kind: "assembly" | "earth", scene: THREE.Scene) {
       } else if (earth) {
         if (c.playing) spin += delta * c.speed * 0.3;
         earth.rotation.y = -Math.PI / 2 + spin + (c.angle * Math.PI) / 180;
+      } else {
+        root.rotation.y = (c.angle * Math.PI) / 180;
+        planets.forEach((p) => {
+          if (c.playing) p.angle += delta * c.speed * p.speedFactor * 0.6;
+          p.group.position.set(Math.cos(p.angle) * p.orbit, 0, Math.sin(p.angle) * p.orbit);
+        });
       }
     },
     dispose() {
