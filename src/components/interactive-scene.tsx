@@ -2,13 +2,52 @@ import { useEffect, useRef, useState } from "react";
 import type { SceneControls } from "@/lib/lab/scenes";
 import type { Vector3 } from "three";
 
+export type SceneKind = "assembly" | "earth" | "solar" | "particles" | "bracket";
+
+/** Camera distance and position per demo, tuned by eye. x/y are functions of distance. */
+const CAMERA_FRAMING: Record<
+  SceneKind,
+  {
+    distance: (aspect: number) => number;
+    x: (distance: number) => number;
+    y: (distance: number) => number;
+    lookAt: [number, number, number];
+  }
+> = {
+  assembly: {
+    distance: (a) => Math.max(14, 10 / a),
+    x: (d) => d * 0.3,
+    y: (d) => d * 0.32,
+    lookAt: [0, 0, 0],
+  },
+  solar: {
+    distance: (a) => Math.max(16, 13 / a),
+    x: () => 0,
+    y: (d) => d * 0.62,
+    lookAt: [0, 0, 0],
+  },
+  particles: {
+    distance: (a) => Math.max(11, 9.5 / a),
+    x: () => 0,
+    y: (d) => d * 0.22,
+    lookAt: [0, 0, 0],
+  },
+  bracket: {
+    distance: (a) => Math.max(10, 8.5 / a),
+    x: (d) => d * 0.4,
+    y: (d) => d * 0.3,
+    lookAt: [1.4, 0, 0],
+  },
+  earth: { distance: (a) => Math.max(9.3, 8.2 / a), x: () => 0, y: () => 1, lookAt: [0, 0, 0] },
+};
+
 export function InteractiveScene({
   kind,
   controls,
   label,
   unavailable,
 }: {
-  kind: "assembly" | "earth" | "solar" | "particles";
+  kind: SceneKind;
   controls: SceneControls;
   label: string;
   unavailable: string;
@@ -52,26 +91,10 @@ export function InteractiveScene({
           if (!w || !h) return;
           renderer.setSize(w, h);
           camera.aspect = w / h;
-          const distance =
-            kind === "assembly"
-              ? Math.max(14, 10 / camera.aspect)
-              : kind === "solar"
-                ? Math.max(16, 13 / camera.aspect)
-                : kind === "particles"
-                  ? Math.max(11, 9.5 / camera.aspect)
-                  : Math.max(9.3, 8.2 / camera.aspect);
-          camera.position.set(
-            kind === "assembly" ? distance * 0.3 : 0,
-            kind === "assembly"
-              ? distance * 0.32
-              : kind === "solar"
-                ? distance * 0.62
-                : kind === "particles"
-                  ? distance * 0.22
-                  : 1,
-            distance,
-          );
-          camera.lookAt(0, 0, 0);
+          const framing = CAMERA_FRAMING[kind];
+          const distance = framing.distance(camera.aspect);
+          camera.position.set(framing.x(distance), framing.y(distance), distance);
+          camera.lookAt(...framing.lookAt);
           camera.updateProjectionMatrix();
         });
         const lost = (event: Event) => {
