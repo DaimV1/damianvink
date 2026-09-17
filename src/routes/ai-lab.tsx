@@ -11,9 +11,11 @@ import {
   RotateCcw,
   Ruler,
   Sparkles,
+  Vibrate,
 } from "lucide-react";
 import { PageWrap, SiteShell } from "@/components/site-shell";
 import { Button } from "@/components/ui/button";
+import { ChladniPlate } from "@/components/lab/chladni-plate";
 import { EvolutionLab } from "@/components/lab/evolution-lab";
 import { InteractiveScene } from "@/components/interactive-scene";
 import { tx, useLocale } from "@/lib/i18n/locale";
@@ -33,7 +35,7 @@ export const Route = createFileRoute("/ai-lab")({
     pageHead({
       title: "Interactive Lab — Damian Vink",
       description:
-        "Interactieve 3D-demo’s: ontdek een lagerassemblage in exploded view, bestuur een draaiende wereldbol, verken een zonnestelsel, speel met een muisreactief deeltjesveld, genereer een parametrische beugel laat vloeistof stromen tussen twee vaten en ontdek genetische routeoptimalisatie.",
+        "Interactieve 3D-demo’s: ontdek een lagerassemblage in exploded view, bestuur een draaiende wereldbol, verken een zonnestelsel, speel met een muisreactief deeltjesveld, genereer een parametrische beugel, laat vloeistof stromen tussen twee vaten, ontdek genetische routeoptimalisatie en bekijk zand dat Chladni-figuren vormt op een trillende plaat.",
       path: "/ai-lab",
     }),
   component: Lab,
@@ -42,7 +44,14 @@ function Lab() {
   const { locale } = useLocale();
   const t = (nl: string, en: string) => tx(locale, nl, en);
   const [kind, setKind] = useState<
-    "assembly" | "earth" | "solar" | "particles" | "bracket" | "vessels" | "evolution"
+    | "assembly"
+    | "earth"
+    | "solar"
+    | "particles"
+    | "bracket"
+    | "vessels"
+    | "evolution"
+    | "chladni"
   >("assembly");
   const [spread, setSpread] = useState(45);
   const [angle, setAngle] = useState(0);
@@ -67,6 +76,7 @@ function Lab() {
   }
   useEffect(() => {
     if (window.location.hash === "#evolution") setKind("evolution");
+    if (window.location.hash === "#chladni") setKind("chladni");
   }, []);
   const assembly = kind === "assembly";
   const solar = kind === "solar";
@@ -86,8 +96,8 @@ function Lab() {
             </h1>
             <p className="mt-4 max-w-xl text-base leading-relaxed text-muted">
               {t(
-                "Met AI gebouwd, door jou bestuurd. Zeven interactieve experimenten, rechtstreeks in je browser.",
-                "Built with AI, controlled by you. Seven interactive experiments, right in your browser.",
+                "Met AI gebouwd, door jou bestuurd. Acht interactieve experimenten, rechtstreeks in je browser.",
+                "Built with AI, controlled by you. Eight interactive experiments, right in your browser.",
               )}
             </p>
           </div>
@@ -156,9 +166,19 @@ function Lab() {
             <Dna className="size-4" aria-hidden="true" />
             07 / Evolution Lab
           </Button>
+          <Button
+            variant={kind === "chladni" ? "primary" : "secondary"}
+            aria-pressed={kind === "chladni"}
+            onClick={() => choose("chladni")}
+          >
+            <Vibrate className="size-4" aria-hidden="true" />
+            08 / Chladni Plate
+          </Button>
         </div>
         {kind === "evolution" ? (
           <EvolutionLab />
+        ) : kind === "chladni" ? (
+          <ChladniPlate />
         ) : (
           <>
             <div className="overflow-hidden rounded-xl border border-line bg-elevated">
