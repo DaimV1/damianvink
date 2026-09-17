@@ -5,6 +5,7 @@ import {
   Dna,
   Droplets,
   Globe2,
+  Music2,
   Orbit,
   Pause,
   Play,
@@ -15,6 +16,7 @@ import {
 } from "lucide-react";
 import { PageWrap, SiteShell } from "@/components/site-shell";
 import { Button } from "@/components/ui/button";
+import { SonicPlayground } from "@/components/lab/sonic-playground";
 import { ChladniPlate } from "@/components/lab/chladni-plate";
 import { EvolutionLab } from "@/components/lab/evolution-lab";
 import { InteractiveScene } from "@/components/interactive-scene";
@@ -35,7 +37,7 @@ export const Route = createFileRoute("/ai-lab")({
     pageHead({
       title: "Interactive Lab — Damian Vink",
       description:
-        "Interactieve 3D-demo’s: ontdek een lagerassemblage in exploded view, bestuur een draaiende wereldbol, verken een zonnestelsel, speel met een muisreactief deeltjesveld, genereer een parametrische beugel, laat vloeistof stromen tussen twee vaten, ontdek genetische routeoptimalisatie en bekijk zand dat Chladni-figuren vormt op een trillende plaat.",
+        "Interactieve 3D-demo’s: ontdek een lagerassemblage in exploded view, bestuur een draaiende wereldbol, verken een zonnestelsel, speel met een muisreactief deeltjesveld, genereer een parametrische beugel, laat vloeistof stromen tussen twee vaten, ontdek genetische routeoptimalisatie en bekijk zand dat Chladni-figuren vormt op een trillende plaat en maak muziek met Sonic Playground.",
       path: "/ai-lab",
     }),
   component: Lab,
@@ -52,6 +54,7 @@ function Lab() {
     | "vessels"
     | "evolution"
     | "chladni"
+    | "sonic"
   >("assembly");
   const [spread, setSpread] = useState(45);
   const [angle, setAngle] = useState(0);
@@ -77,6 +80,7 @@ function Lab() {
   useEffect(() => {
     if (window.location.hash === "#evolution") setKind("evolution");
     if (window.location.hash === "#chladni") setKind("chladni");
+    if (window.location.hash === "#sonic") setKind("sonic");
   }, []);
   const assembly = kind === "assembly";
   const solar = kind === "solar";
@@ -96,8 +100,8 @@ function Lab() {
             </h1>
             <p className="mt-4 max-w-xl text-base leading-relaxed text-muted">
               {t(
-                "Met AI gebouwd, door jou bestuurd. Acht interactieve experimenten, rechtstreeks in je browser.",
-                "Built with AI, controlled by you. Eight interactive experiments, right in your browser.",
+                "Met AI gebouwd, door jou bestuurd. Negen interactieve experimenten, rechtstreeks in je browser.",
+                "Built with AI, controlled by you. Nine interactive experiments, right in your browser.",
               )}
             </p>
           </div>
@@ -174,8 +178,18 @@ function Lab() {
             <Vibrate className="size-4" aria-hidden="true" />
             08 / Chladni Plate
           </Button>
+          <Button
+            variant={kind === "sonic" ? "primary" : "secondary"}
+            aria-pressed={kind === "sonic"}
+            onClick={() => choose("sonic")}
+          >
+            <Music2 className="size-4" aria-hidden="true" />
+            09 / Sonic Playground
+          </Button>
         </div>
-        {kind === "evolution" ? (
+        {kind === "sonic" ? (
+          <SonicPlayground />
+        ) : kind === "evolution" ? (
           <EvolutionLab />
         ) : kind === "chladni" ? (
           <ChladniPlate />
