@@ -31,14 +31,19 @@ export function makeLayout(layout: Layout, seed = 42): Stop[] {
     }
     if (layout === "clusters") {
       const centers = [
-        [170, 150],
-        [620, 180],
-        [400, 390],
+        [185, 150],
+        [615, 150],
+        [400, 385],
       ];
       const [x, y] = centers[i % 3];
-      return { x: x + (random() - 0.5) * 170, y: y + (random() - 0.5) * 120 };
+      const angle = (Math.floor(i / 3) * Math.PI) / 3;
+      return { x: x + Math.cos(angle) * 120, y: y + Math.sin(angle) * 90 };
     }
-    return { x: 65 + random() * 670, y: 65 + random() * 390 };
+    // Stratified scatter keeps the initial targets separate on small screens.
+    return {
+      x: 80 + (i % 6) * 128 + (random() - 0.5) * 30,
+      y: 85 + Math.floor(i / 6) * 175 + (random() - 0.5) * 50,
+    };
   });
 }
 export function routeDistance(stops: Stop[], order: number[]): number {

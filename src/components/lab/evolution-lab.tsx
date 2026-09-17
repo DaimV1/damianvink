@@ -384,7 +384,7 @@ export function EvolutionLab() {
                 className="text-line"
               />
               <polyline
-                points={graph}
+                points={search.history.length === 1 ? "0,12 260,12" : graph}
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2"
