@@ -1,8 +1,20 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Box, Droplets, Globe2, Orbit, Pause, Play, RotateCcw, Ruler, Sparkles } from "lucide-react";
+import {
+  Box,
+  Dna,
+  Droplets,
+  Globe2,
+  Orbit,
+  Pause,
+  Play,
+  RotateCcw,
+  Ruler,
+  Sparkles,
+} from "lucide-react";
 import { PageWrap, SiteShell } from "@/components/site-shell";
 import { Button } from "@/components/ui/button";
+import { EvolutionLab } from "@/components/lab/evolution-lab";
 import { InteractiveScene } from "@/components/interactive-scene";
 import { tx, useLocale } from "@/lib/i18n/locale";
 import { pageHead } from "@/lib/seo";
@@ -21,7 +33,7 @@ export const Route = createFileRoute("/ai-lab")({
     pageHead({
       title: "Interactive Lab — Damian Vink",
       description:
-        "Interactieve 3D-demo’s: ontdek een lagerassemblage in exploded view, bestuur een draaiende wereldbol, verken een zonnestelsel, speel met een muisreactief deeltjesveld, genereer een parametrische beugel en laat vloeistof stromen tussen twee vaten.",
+        "Interactieve 3D-demo’s: ontdek een lagerassemblage in exploded view, bestuur een draaiende wereldbol, verken een zonnestelsel, speel met een muisreactief deeltjesveld, genereer een parametrische beugel laat vloeistof stromen tussen twee vaten en ontdek genetische routeoptimalisatie.",
       path: "/ai-lab",
     }),
   component: Lab,
@@ -30,7 +42,7 @@ function Lab() {
   const { locale } = useLocale();
   const t = (nl: string, en: string) => tx(locale, nl, en);
   const [kind, setKind] = useState<
-    "assembly" | "earth" | "solar" | "particles" | "bracket" | "vessels"
+    "assembly" | "earth" | "solar" | "particles" | "bracket" | "vessels" | "evolution"
   >("assembly");
   const [spread, setSpread] = useState(45);
   const [angle, setAngle] = useState(0);
@@ -53,6 +65,9 @@ function Lab() {
     setKind(next);
     setAngle(0);
   }
+  useEffect(() => {
+    if (window.location.hash === "#evolution") setKind("evolution");
+  }, []);
   const assembly = kind === "assembly";
   const solar = kind === "solar";
   const particles = kind === "particles";
@@ -71,8 +86,8 @@ function Lab() {
             </h1>
             <p className="mt-4 max-w-xl text-base leading-relaxed text-muted">
               {t(
-                "Met AI gebouwd, door jou bestuurd. Zes interactieve 3D-experimenten, rechtstreeks in je browser.",
-                "Built with AI, controlled by you. Six interactive 3D experiments, right in your browser.",
+                "Met AI gebouwd, door jou bestuurd. Zeven interactieve experimenten, rechtstreeks in je browser.",
+                "Built with AI, controlled by you. Seven interactive experiments, right in your browser.",
               )}
             </p>
           </div>
@@ -133,347 +148,388 @@ function Lab() {
             <Droplets className="size-4" aria-hidden="true" />
             06 / {t("Communicerende vaten", "Communicating vessels")}
           </Button>
+          <Button
+            variant={kind === "evolution" ? "primary" : "secondary"}
+            aria-pressed={kind === "evolution"}
+            onClick={() => choose("evolution")}
+          >
+            <Dna className="size-4" aria-hidden="true" />
+            07 / Evolution Lab
+          </Button>
         </div>
-        <div className="overflow-hidden rounded-xl border border-line bg-elevated">
-          <div className="relative bg-[#081321]">
-            <div className="flex items-center justify-between gap-3 px-5 pt-5 text-sm text-slate-300">
-              <span className="font-mono uppercase tracking-widest">
-                {assembly
-                  ? "Bearing assembly / 01"
-                  : solar
-                    ? "Solar system / 03"
-                    : particles
-                      ? "Particle field / 04"
-                      : bracket
-                        ? "Parametric bracket / 05"
-                        : vessels
-                          ? "Communicating vessels / 06"
-                          : "Earth / 02"}
-              </span>
-              <span>
-                {assembly
-                  ? `${spread}% ${t("uitgeschoven", "exploded")}`
-                  : solar
-                    ? t("Baansnelheid instelbaar", "Orbital speed adjustable")
-                    : particles
-                      ? t("Reageert op je cursor", "Reacts to your cursor")
-                      : bracket
-                        ? `${requiredThicknessMm(span, load).toFixed(1)} mm ${t("plaatdikte", "plate thickness")}`
-                        : vessels
-                          ? t("Klep en pomp regelen de stroom", "Valve and pump control the flow")
-                          : t("Rotatie om de aardas", "Axial rotation")}
-              </span>
+        {kind === "evolution" ? (
+          <EvolutionLab />
+        ) : (
+          <>
+            <div className="overflow-hidden rounded-xl border border-line bg-elevated">
+              <div className="relative bg-[#081321]">
+                <div className="flex items-center justify-between gap-3 px-5 pt-5 text-sm text-slate-300">
+                  <span className="font-mono uppercase tracking-widest">
+                    {assembly
+                      ? "Bearing assembly / 01"
+                      : solar
+                        ? "Solar system / 03"
+                        : particles
+                          ? "Particle field / 04"
+                          : bracket
+                            ? "Parametric bracket / 05"
+                            : vessels
+                              ? "Communicating vessels / 06"
+                              : "Earth / 02"}
+                  </span>
+                  <span>
+                    {assembly
+                      ? `${spread}% ${t("uitgeschoven", "exploded")}`
+                      : solar
+                        ? t("Baansnelheid instelbaar", "Orbital speed adjustable")
+                        : particles
+                          ? t("Reageert op je cursor", "Reacts to your cursor")
+                          : bracket
+                            ? `${requiredThicknessMm(span, load).toFixed(1)} mm ${t("plaatdikte", "plate thickness")}`
+                            : vessels
+                              ? t(
+                                  "Klep en pomp regelen de stroom",
+                                  "Valve and pump control the flow",
+                                )
+                              : t("Rotatie om de aardas", "Axial rotation")}
+                  </span>
+                </div>
+                <InteractiveScene
+                  key={kind}
+                  kind={kind}
+                  controls={{
+                    spread,
+                    angle,
+                    speed,
+                    playing,
+                    reset,
+                    span,
+                    load,
+                    bolts,
+                    valve: valvePct / 100,
+                    pump: pumpPct / 100,
+                  }}
+                  label={
+                    assembly
+                      ? t(
+                          "3D-lagerassemblage met as, huis, lager, deksel en borgring",
+                          "3D bearing assembly with shaft, housing, bearing, cover and retaining ring",
+                        )
+                      : solar
+                        ? t(
+                            "Zonnestelsel met de zon en acht planeten in omloopbaan",
+                            "Solar system with the sun and eight planets in orbit",
+                          )
+                        : particles
+                          ? t(
+                              "Deeltjesveld van vierduizend punten dat om de cursor wervelt",
+                              "Particle field of four thousand points swirling around the cursor",
+                            )
+                          : bracket
+                            ? t(
+                                "Parametrische muurbeugel die live herbouwt op overspanning, belasting en aantal bouten",
+                                "Parametric wall bracket that rebuilds live from span, load and bolt count",
+                              )
+                            : vessels
+                              ? t(
+                                  "Een bovenste en onderste glazen vat verbonden door een leiding met klep en een pompretour, met een realtime golfsimulatie op het vloeistofoppervlak",
+                                  "An upper and lower glass tank connected by a valved pipe and a pump return line, with a real-time wave simulation on the liquid surface",
+                                )
+                              : t(
+                                  "Draaiende wereldbol met continenten en geografisch raster",
+                                  "Rotating globe with continents and geographic grid",
+                                )
+                  }
+                  unavailable={t(
+                    "3D is niet beschikbaar in deze browser. Probeer een recente browser met WebGL ingeschakeld.",
+                    "3D is unavailable in this browser. Try a recent browser with WebGL enabled.",
+                  )}
+                />
+                <div className="flex flex-wrap gap-x-5 gap-y-2 border-t border-white/10 px-5 py-4 font-mono text-xs text-slate-400">
+                  {assembly ? (
+                    <>
+                      <span>01 {t("As", "Shaft")}</span>
+                      <span>02 {t("Lagerhuis", "Housing")}</span>
+                      <span>03 {t("Kogellager", "Bearing")}</span>
+                      <span>04 {t("Deksel", "Cover")}</span>
+                      <span>05 {t("Borgring", "Retaining ring")}</span>
+                    </>
+                  ) : solar ? (
+                    <>
+                      <span>{t("Mercurius t/m Neptunus", "Mercury through Neptune")}</span>
+                      <span>
+                        {t(
+                          "Afstanden en periodes gecomprimeerd",
+                          "Distances and periods compressed",
+                        )}
+                      </span>
+                    </>
+                  ) : particles ? (
+                    <>
+                      <span>{t("~4.000 GPU-punten", "~4,000 GPU points")}</span>
+                      <span>
+                        {t("Beweeg de cursor over het veld", "Move your cursor over the field")}
+                      </span>
+                    </>
+                  ) : bracket ? (
+                    <>
+                      <span>t = √(6·F·L / (b·σ))</span>
+                      <span>
+                        {t(
+                          "Schematisch — geen productieberekening",
+                          "Schematic — not a production calculation",
+                        )}
+                      </span>
+                    </>
+                  ) : vessels ? (
+                    <>
+                      <span>Q = Cd·A·√(2·g·Δh)</span>
+                      <span>
+                        {t("Realtime golfsimulatie (GPU)", "Real-time wave simulation (GPU)")}
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span>
+                        {t("Landcontouren: Natural Earth", "Land outlines: Natural Earth")}
+                      </span>
+                      <span>{t("Schematische belichting", "Illustrative lighting")}</span>
+                    </>
+                  )}
+                </div>
+              </div>
+              <div className="grid gap-8 p-5 sm:p-7 lg:grid-cols-[1fr_1fr_auto] lg:items-end">
+                {assembly ? (
+                  <Control
+                    id="spread"
+                    title={t("Explosieafstand", "Explosion distance")}
+                    value={spread}
+                    min={0}
+                    max={100}
+                    step={1}
+                    unit="%"
+                    onChange={setSpread}
+                    left={t("Gemonteerd", "Assembled")}
+                    right={t("Uit elkaar", "Exploded")}
+                  />
+                ) : bracket ? (
+                  <Control
+                    id="span"
+                    title={t("Overspanning", "Span")}
+                    value={span}
+                    min={SPAN_RANGE.min}
+                    max={SPAN_RANGE.max}
+                    step={5}
+                    unit=" mm"
+                    onChange={setSpan}
+                    left={`${SPAN_RANGE.min} mm`}
+                    right={`${SPAN_RANGE.max} mm`}
+                  />
+                ) : vessels ? (
+                  <Control
+                    id="valve"
+                    title={t("Klepopening", "Valve opening")}
+                    value={valvePct}
+                    min={VALVE_RANGE.min * 100}
+                    max={VALVE_RANGE.max * 100}
+                    step={5}
+                    unit="%"
+                    onChange={setValvePct}
+                    left={t("Dicht", "Closed")}
+                    right={t("Open", "Open")}
+                  />
+                ) : (
+                  <Control
+                    id="speed"
+                    title={
+                      solar
+                        ? t("Baansnelheid", "Orbital speed")
+                        : particles
+                          ? t("Stroomsnelheid", "Flow speed")
+                          : t("Rotatiesnelheid", "Rotation speed")
+                    }
+                    value={speed}
+                    min={-2}
+                    max={2}
+                    step={0.1}
+                    unit="×"
+                    onChange={setSpeed}
+                    left={t("Achteruit", "Reverse")}
+                    right={t("Vooruit", "Forward")}
+                  />
+                )}
+                {bracket ? (
+                  <Control
+                    id="load"
+                    title={t("Belasting", "Load")}
+                    value={load}
+                    min={LOAD_RANGE.min}
+                    max={LOAD_RANGE.max}
+                    step={25}
+                    unit=" N"
+                    onChange={setLoad}
+                    left={`${LOAD_RANGE.min} N`}
+                    right={`${LOAD_RANGE.max} N`}
+                  />
+                ) : vessels ? (
+                  <Control
+                    id="pump"
+                    title={t("Pompvermogen", "Pump power")}
+                    value={pumpPct}
+                    min={PUMP_RANGE.min * 100}
+                    max={PUMP_RANGE.max * 100}
+                    step={5}
+                    unit="%"
+                    onChange={setPumpPct}
+                    left={t("Uit", "Off")}
+                    right={t("Vol vermogen", "Full power")}
+                  />
+                ) : (
+                  <Control
+                    id="angle"
+                    title={
+                      kind === "earth"
+                        ? t("Draai de wereldbol", "Turn the globe")
+                        : t("Kijkhoek", "View angle")
+                    }
+                    value={angle}
+                    min={0}
+                    max={360}
+                    step={1}
+                    unit="°"
+                    onChange={setAngle}
+                    left="0°"
+                    right="360°"
+                  />
+                )}
+                <div className="flex flex-col gap-3 pb-5">
+                  {bracket && (
+                    <div
+                      role="group"
+                      aria-label={t("Aantal bouten", "Bolt count")}
+                      className="flex items-center gap-1"
+                    >
+                      {BOLT_OPTIONS.map((n) => (
+                        <Button
+                          key={n}
+                          variant={bolts === n ? "primary" : "secondary"}
+                          aria-pressed={bolts === n}
+                          onClick={() => setBolts(n)}
+                        >
+                          {n} {t("bouten", "bolts")}
+                        </Button>
+                      ))}
+                    </div>
+                  )}
+                  <div className="flex gap-2">
+                    {!assembly && !bracket && (
+                      <Button
+                        variant="secondary"
+                        aria-label={
+                          playing
+                            ? t("Pauzeer", "Pause")
+                            : vessels
+                              ? t("Laat stromen", "Let it flow")
+                              : t("Start rotatie", "Start rotation")
+                        }
+                        onClick={() => setPlaying((v) => !v)}
+                      >
+                        {playing ? <Pause className="size-4" /> : <Play className="size-4" />}
+                        {playing
+                          ? t("Pauze", "Pause")
+                          : vessels
+                            ? t("Stromen", "Flow")
+                            : t("Draaien", "Rotate")}
+                      </Button>
+                    )}
+                    <Button
+                      variant="secondary"
+                      onClick={() => {
+                        setReset((v) => v + 1);
+                        setSpread(0);
+                        setAngle(0);
+                        setValvePct(VESSEL_DEFAULTS.valve * 100);
+                        setPumpPct(VESSEL_DEFAULTS.pump * 100);
+                        setSpeed(1);
+                        setPlaying(false);
+                        setSpan(BRACKET_DEFAULTS.span);
+                        setLoad(BRACKET_DEFAULTS.load);
+                        setBolts(BRACKET_DEFAULTS.bolts);
+                      }}
+                    >
+                      <RotateCcw className="size-4" aria-hidden="true" />
+                      Reset
+                    </Button>
+                  </div>
+                </div>
+              </div>
             </div>
-            <InteractiveScene
-              key={kind}
-              kind={kind}
-              controls={{
-                spread,
-                angle,
-                speed,
-                playing,
-                reset,
-                span,
-                load,
-                bolts,
-                valve: valvePct / 100,
-                pump: pumpPct / 100,
-              }}
-              label={
-                assembly
+            <div className="mt-6 grid gap-4 sm:grid-cols-2">
+              <h2 className="text-xl font-medium">
+                {assembly
+                  ? t("Een mechanisme, laag voor laag.", "A mechanism, layer by layer.")
+                  : solar
+                    ? t("Acht planeten, één zon.", "Eight planets, one sun.")
+                    : particles
+                      ? t("Duizenden punten, één cursor.", "Thousands of points, one cursor.")
+                      : bracket
+                        ? t("Vorm volgt belasting.", "Form follows load.")
+                        : vessels
+                          ? t("Communicerende vaten.", "Communicating vessels.")
+                          : t(
+                              "De wereld ligt aan je vingertoppen.",
+                              "The world at your fingertips.",
+                            )}
+              </h2>
+              <p className="text-base leading-relaxed text-muted">
+                {assembly
                   ? t(
-                      "3D-lagerassemblage met as, huis, lager, deksel en borgring",
-                      "3D bearing assembly with shaft, housing, bearing, cover and retaining ring",
+                      "Schuif de onderdelen uit elkaar en draai de kijkhoek om de opbouw van een lagerassemblage te ontdekken. Een schematisch demonstratiemodel, geen productietekening.",
+                      "Separate the parts and turn the view to explore a bearing assembly. A schematic demonstration, not a production drawing.",
                     )
                   : solar
                     ? t(
-                        "Zonnestelsel met de zon en acht planeten in omloopbaan",
-                        "Solar system with the sun and eight planets in orbit",
+                        "Verander de baansnelheid en draairichting, of pauzeer en draai zelf de kijkhoek. Afstanden en omlooptijden zijn gecomprimeerd voor het beeld, niet op schaal.",
+                        "Change the orbital speed and direction, or pause and turn the view yourself. Distances and orbital periods are compressed for the visual, not to scale.",
                       )
                     : particles
                       ? t(
-                          "Deeltjesveld van vierduizend punten dat om de cursor wervelt",
-                          "Particle field of four thousand points swirling around the cursor",
+                          "Beweeg de cursor over het veld: elk punt draait mee in een werveling en zakt terug zodra je wegbeweegt. Geen vaste animatie — puur reactie op waar je bent.",
+                          "Move your cursor over the field: every point swirls with you and settles back once you move away. No fixed animation — pure reaction to where you are.",
                         )
                       : bracket
                         ? t(
-                            "Parametrische muurbeugel die live herbouwt op overspanning, belasting en aantal bouten",
-                            "Parametric wall bracket that rebuilds live from span, load and bolt count",
+                            "Verander overspanning, belasting en aantal bouten: de plaatdikte wordt live herberekend uit een vereenvoudigde buigberekening (cantilever), en vanaf 500 N verschijnt er een schoor. Schematisch, geen productieberekening — zie",
+                            "Change span, load and bolt count: the plate thickness is recalculated live from a simplified cantilever bending check, and a gusset appears from 500 N. Schematic, not a production calculation — see",
                           )
                         : vessels
                           ? t(
-                              "Een bovenste en onderste glazen vat verbonden door een leiding met klep en een pompretour, met een realtime golfsimulatie op het vloeistofoppervlak",
-                              "An upper and lower glass tank connected by a valved pipe and a pump return line, with a real-time wave simulation on the liquid surface",
+                              "Open de klep en zwaartekracht laat het water van het bovenste naar het onderste vat stromen. Zet de pomp aan om het weer omhoog te sturen — bij een half openstaande klep wint de pomp het van de zwaartekracht. De golven op het oppervlak zijn een echte realtime simulatie, geen geanimeerde textuur.",
+                              "Open the valve and gravity drains water from the top tank into the bottom one. Switch on the pump to send it back up — with the valve only partway open, the pump can out-power gravity. The waves on the surface are a genuine real-time simulation, not an animated texture.",
                             )
                           : t(
-                              "Draaiende wereldbol met continenten en geografisch raster",
-                              "Rotating globe with continents and geographic grid",
-                            )
-              }
-              unavailable={t(
-                "3D is niet beschikbaar in deze browser. Probeer een recente browser met WebGL ingeschakeld.",
-                "3D is unavailable in this browser. Try a recent browser with WebGL enabled.",
-              )}
-            />
-            <div className="flex flex-wrap gap-x-5 gap-y-2 border-t border-white/10 px-5 py-4 font-mono text-xs text-slate-400">
-              {assembly ? (
-                <>
-                  <span>01 {t("As", "Shaft")}</span>
-                  <span>02 {t("Lagerhuis", "Housing")}</span>
-                  <span>03 {t("Kogellager", "Bearing")}</span>
-                  <span>04 {t("Deksel", "Cover")}</span>
-                  <span>05 {t("Borgring", "Retaining ring")}</span>
-                </>
-              ) : solar ? (
-                <>
-                  <span>{t("Mercurius t/m Neptunus", "Mercury through Neptune")}</span>
-                  <span>{t("Afstanden en periodes gecomprimeerd", "Distances and periods compressed")}</span>
-                </>
-              ) : particles ? (
-                <>
-                  <span>{t("~4.000 GPU-punten", "~4,000 GPU points")}</span>
-                  <span>{t("Beweeg de cursor over het veld", "Move your cursor over the field")}</span>
-                </>
-              ) : bracket ? (
-                <>
-                  <span>t = √(6·F·L / (b·σ))</span>
-                  <span>
-                    {t(
-                      "Schematisch — geen productieberekening",
-                      "Schematic — not a production calculation",
-                    )}
-                  </span>
-                </>
-              ) : vessels ? (
-                <>
-                  <span>Q = Cd·A·√(2·g·Δh)</span>
-                  <span>{t("Realtime golfsimulatie (GPU)", "Real-time wave simulation (GPU)")}</span>
-                </>
-              ) : (
-                <>
-                  <span>{t("Landcontouren: Natural Earth", "Land outlines: Natural Earth")}</span>
-                  <span>{t("Schematische belichting", "Illustrative lighting")}</span>
-                </>
-              )}
-            </div>
-          </div>
-          <div className="grid gap-8 p-5 sm:p-7 lg:grid-cols-[1fr_1fr_auto] lg:items-end">
-            {assembly ? (
-              <Control
-                id="spread"
-                title={t("Explosieafstand", "Explosion distance")}
-                value={spread}
-                min={0}
-                max={100}
-                step={1}
-                unit="%"
-                onChange={setSpread}
-                left={t("Gemonteerd", "Assembled")}
-                right={t("Uit elkaar", "Exploded")}
-              />
-            ) : bracket ? (
-              <Control
-                id="span"
-                title={t("Overspanning", "Span")}
-                value={span}
-                min={SPAN_RANGE.min}
-                max={SPAN_RANGE.max}
-                step={5}
-                unit=" mm"
-                onChange={setSpan}
-                left={`${SPAN_RANGE.min} mm`}
-                right={`${SPAN_RANGE.max} mm`}
-              />
-            ) : vessels ? (
-              <Control
-                id="valve"
-                title={t("Klepopening", "Valve opening")}
-                value={valvePct}
-                min={VALVE_RANGE.min * 100}
-                max={VALVE_RANGE.max * 100}
-                step={5}
-                unit="%"
-                onChange={setValvePct}
-                left={t("Dicht", "Closed")}
-                right={t("Open", "Open")}
-              />
-            ) : (
-              <Control
-                id="speed"
-                title={
-                  solar
-                    ? t("Baansnelheid", "Orbital speed")
-                    : particles
-                      ? t("Stroomsnelheid", "Flow speed")
-                      : t("Rotatiesnelheid", "Rotation speed")
-                }
-                value={speed}
-                min={-2}
-                max={2}
-                step={0.1}
-                unit="×"
-                onChange={setSpeed}
-                left={t("Achteruit", "Reverse")}
-                right={t("Vooruit", "Forward")}
-              />
-            )}
-            {bracket ? (
-              <Control
-                id="load"
-                title={t("Belasting", "Load")}
-                value={load}
-                min={LOAD_RANGE.min}
-                max={LOAD_RANGE.max}
-                step={25}
-                unit=" N"
-                onChange={setLoad}
-                left={`${LOAD_RANGE.min} N`}
-                right={`${LOAD_RANGE.max} N`}
-              />
-            ) : vessels ? (
-              <Control
-                id="pump"
-                title={t("Pompvermogen", "Pump power")}
-                value={pumpPct}
-                min={PUMP_RANGE.min * 100}
-                max={PUMP_RANGE.max * 100}
-                step={5}
-                unit="%"
-                onChange={setPumpPct}
-                left={t("Uit", "Off")}
-                right={t("Vol vermogen", "Full power")}
-              />
-            ) : (
-              <Control
-                id="angle"
-                title={
-                  kind === "earth"
-                    ? t("Draai de wereldbol", "Turn the globe")
-                    : t("Kijkhoek", "View angle")
-                }
-                value={angle}
-                min={0}
-                max={360}
-                step={1}
-                unit="°"
-                onChange={setAngle}
-                left="0°"
-                right="360°"
-              />
-            )}
-            <div className="flex flex-col gap-3 pb-5">
-              {bracket && (
-                <div
-                  role="group"
-                  aria-label={t("Aantal bouten", "Bolt count")}
-                  className="flex items-center gap-1"
-                >
-                  {BOLT_OPTIONS.map((n) => (
-                    <Button
-                      key={n}
-                      variant={bolts === n ? "primary" : "secondary"}
-                      aria-pressed={bolts === n}
-                      onClick={() => setBolts(n)}
+                              "Verander de snelheid en draairichting, of pauzeer en kies zelf een positie. De continenten zijn gebaseerd op geografische data; de animatie toont geen actuele dag- en nachtgrens.",
+                              "Change speed and direction, or pause and choose a position. Continents use geographic data; the lighting does not show the current day–night boundary.",
+                            )}
+                {bracket ? (
+                  <>
+                    {" "}
+                    <Link
+                      to="/toolkit/doorbuiging-balk"
+                      className="text-accent underline underline-offset-2"
                     >
-                      {n} {t("bouten", "bolts")}
-                    </Button>
-                  ))}
-                </div>
-              )}
-              <div className="flex gap-2">
-                {!assembly && !bracket && (
-                  <Button
-                    variant="secondary"
-                    aria-label={
-                      playing
-                        ? t("Pauzeer", "Pause")
-                        : vessels
-                          ? t("Laat stromen", "Let it flow")
-                          : t("Start rotatie", "Start rotation")
-                    }
-                    onClick={() => setPlaying((v) => !v)}
-                  >
-                    {playing ? <Pause className="size-4" /> : <Play className="size-4" />}
-                    {playing ? t("Pauze", "Pause") : vessels ? t("Stromen", "Flow") : t("Draaien", "Rotate")}
-                  </Button>
-                )}
-                <Button
-                  variant="secondary"
-                  onClick={() => {
-                    setReset((v) => v + 1);
-                    setSpread(0);
-                    setAngle(0);
-                    setValvePct(VESSEL_DEFAULTS.valve * 100);
-                    setPumpPct(VESSEL_DEFAULTS.pump * 100);
-                    setSpeed(1);
-                    setPlaying(false);
-                    setSpan(BRACKET_DEFAULTS.span);
-                    setLoad(BRACKET_DEFAULTS.load);
-                    setBolts(BRACKET_DEFAULTS.bolts);
-                  }}
-                >
-                  <RotateCcw className="size-4" aria-hidden="true" />
-                  Reset
-                </Button>
-              </div>
+                      {t("Doorbuiging balk", "Beam deflection")}
+                    </Link>{" "}
+                    {t(
+                      "in de Toolkit voor een gecontroleerde versie.",
+                      "in the Toolkit for a checked version.",
+                    )}
+                  </>
+                ) : null}
+              </p>
             </div>
-          </div>
-        </div>
-        <div className="mt-6 grid gap-4 sm:grid-cols-2">
-          <h2 className="text-xl font-medium">
-            {assembly
-              ? t("Een mechanisme, laag voor laag.", "A mechanism, layer by layer.")
-              : solar
-                ? t("Acht planeten, één zon.", "Eight planets, one sun.")
-                : particles
-                  ? t("Duizenden punten, één cursor.", "Thousands of points, one cursor.")
-                  : bracket
-                    ? t("Vorm volgt belasting.", "Form follows load.")
-                    : vessels
-                      ? t("Communicerende vaten.", "Communicating vessels.")
-                      : t("De wereld ligt aan je vingertoppen.", "The world at your fingertips.")}
-          </h2>
-          <p className="text-base leading-relaxed text-muted">
-            {assembly
-              ? t(
-                  "Schuif de onderdelen uit elkaar en draai de kijkhoek om de opbouw van een lagerassemblage te ontdekken. Een schematisch demonstratiemodel, geen productietekening.",
-                  "Separate the parts and turn the view to explore a bearing assembly. A schematic demonstration, not a production drawing.",
-                )
-              : solar
-                ? t(
-                    "Verander de baansnelheid en draairichting, of pauzeer en draai zelf de kijkhoek. Afstanden en omlooptijden zijn gecomprimeerd voor het beeld, niet op schaal.",
-                    "Change the orbital speed and direction, or pause and turn the view yourself. Distances and orbital periods are compressed for the visual, not to scale.",
-                  )
-                : particles
-                  ? t(
-                      "Beweeg de cursor over het veld: elk punt draait mee in een werveling en zakt terug zodra je wegbeweegt. Geen vaste animatie — puur reactie op waar je bent.",
-                      "Move your cursor over the field: every point swirls with you and settles back once you move away. No fixed animation — pure reaction to where you are.",
-                    )
-                  : bracket
-                    ? t(
-                        "Verander overspanning, belasting en aantal bouten: de plaatdikte wordt live herberekend uit een vereenvoudigde buigberekening (cantilever), en vanaf 500 N verschijnt er een schoor. Schematisch, geen productieberekening — zie",
-                        "Change span, load and bolt count: the plate thickness is recalculated live from a simplified cantilever bending check, and a gusset appears from 500 N. Schematic, not a production calculation — see",
-                      )
-                    : vessels
-                      ? t(
-                          "Open de klep en zwaartekracht laat het water van het bovenste naar het onderste vat stromen. Zet de pomp aan om het weer omhoog te sturen — bij een half openstaande klep wint de pomp het van de zwaartekracht. De golven op het oppervlak zijn een echte realtime simulatie, geen geanimeerde textuur.",
-                          "Open the valve and gravity drains water from the top tank into the bottom one. Switch on the pump to send it back up — with the valve only partway open, the pump can out-power gravity. The waves on the surface are a genuine real-time simulation, not an animated texture.",
-                        )
-                      : t(
-                          "Verander de snelheid en draairichting, of pauzeer en kies zelf een positie. De continenten zijn gebaseerd op geografische data; de animatie toont geen actuele dag- en nachtgrens.",
-                          "Change speed and direction, or pause and choose a position. Continents use geographic data; the lighting does not show the current day–night boundary.",
-                        )}
-            {bracket ? (
-              <>
-                {" "}
-                <Link to="/toolkit/doorbuiging-balk" className="text-accent underline underline-offset-2">
-                  {t("Doorbuiging balk", "Beam deflection")}
-                </Link>{" "}
-                {t("in de Toolkit voor een gecontroleerde versie.", "in the Toolkit for a checked version.")}
-              </>
-            ) : null}
-          </p>
-        </div>
+          </>
+        )}
       </PageWrap>
     </SiteShell>
   );
