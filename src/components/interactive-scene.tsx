@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import type { SceneControls } from "@/lib/lab/scenes";
 import type { Vector3 } from "three";
 
-export type SceneKind = "assembly" | "earth" | "solar" | "particles" | "bracket" | "vessels";
+export type SceneKind = "assembly" | "earth" | "solar" | "particles" | "vessels";
 
 /** Camera distance and position per demo, tuned by eye. x/y are functions of distance. */
 const CAMERA_FRAMING: Record<
@@ -31,12 +31,6 @@ const CAMERA_FRAMING: Record<
     x: () => 0,
     y: (d) => d * 0.22,
     lookAt: [0, 0, 0],
-  },
-  bracket: {
-    distance: (a) => Math.max(10, 8.5 / a),
-    x: (d) => d * 0.4,
-    y: (d) => d * 0.3,
-    lookAt: [1.4, 0, 0],
   },
   earth: { distance: (a) => Math.max(9.3, 8.2 / a), x: () => 0, y: () => 1, lookAt: [0, 0, 0] },
   vessels: {

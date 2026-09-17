@@ -1,35 +1,32 @@
-export type BoltCount = 2 | 4 | 6;
-
-export const BRACKET_DEFAULTS = {
-  span: 120,
-  load: 400,
-  bolts: 4 as BoltCount,
-};
-
+export const BRACKET_DEFAULTS = { span: 120, thickness: 8, load: 400 };
 export const SPAN_RANGE = { min: 40, max: 200 };
-export const LOAD_RANGE = { min: 50, max: 2000 };
-export const BOLT_OPTIONS: BoltCount[] = [2, 4, 6];
+export const THICKNESS_RANGE = { min: 3, max: 20 };
+export const LOAD_RANGE = { min: 0, max: 2000 };
+export const WIDTH_MM = 40;
+export const ELASTIC_MODULUS_MPA = 210000;
+export const YIELD_MPA = 235;
 
-/** Fixed shelf width (mm) — the demo only varies span, load and bolt count. */
-const PLATE_WIDTH_MM = 40;
-/** Generic mild-steel allowable bending stress, illustrative only — not a material spec. */
-const ALLOWABLE_STRESS_MPA = 150;
-const MIN_THICKNESS_MM = 3;
-const MAX_THICKNESS_MM = 18;
-
-export const GUSSET_THRESHOLD_N = 500;
-
-/**
- * Cantilever bending, schematic sizing — not a certified calculation.
- * M = F·L; section modulus Z = b·t²/6 for a rectangular section;
- * solve t from σ_allow = M/Z.
+/** Rectangular Euler–Bernoulli cantilever with a point load at its free end.
+ * Units: N, mm, N/mm². No bolt, weld, shear or self-weight calculation.
+ * Beyond yield / small deflection, values are extrapolations, not predictions.
  */
-export function requiredThicknessMm(spanMm: number, loadN: number): number {
-  const momentNmm = loadN * spanMm;
-  const t = Math.sqrt((6 * momentNmm) / (PLATE_WIDTH_MM * ALLOWABLE_STRESS_MPA));
-  return Math.min(MAX_THICKNESS_MM, Math.max(MIN_THICKNESS_MM, t));
+export function calculateBracket(span: number, thickness: number, load: number) {
+  if (![span, thickness, load].every(Number.isFinite) || span <= 0 || thickness <= 0 || load < 0) {
+    throw new RangeError("Expected positive dimensions and a nonnegative finite load");
+  }
+  const inertia = (WIDTH_MM * thickness ** 3) / 12;
+  const stress = (6 * load * span) / (WIDTH_MM * thickness ** 2);
+  const deflection = (load * span ** 3) / (3 * ELASTIC_MODULUS_MPA * inertia);
+  return {
+    stress,
+    deflection,
+    beyondYield: stress >= YIELD_MPA,
+    largeDeflection: deflection / span > 0.05,
+    shortBeam: span / thickness < 10,
+  };
 }
 
-export function needsGusset(loadN: number): boolean {
-  return loadN >= GUSSET_THRESHOLD_N;
+/** Normalized elastic curve: fixed end at u=0, free end at u=1. */
+export function deflectionFraction(u: number) {
+  return (u * u * (3 - u)) / 2;
 }
