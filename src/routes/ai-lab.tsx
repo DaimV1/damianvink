@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import {
   Box,
@@ -16,20 +16,13 @@ import {
 } from "lucide-react";
 import { PageWrap, SiteShell } from "@/components/site-shell";
 import { Button } from "@/components/ui/button";
+import { BracketLab } from "@/components/lab/bracket-lab";
 import { SonicPlayground } from "@/components/lab/sonic-playground";
 import { ChladniPlate } from "@/components/lab/chladni-plate";
 import { EvolutionLab } from "@/components/lab/evolution-lab";
 import { InteractiveScene } from "@/components/interactive-scene";
 import { tx, useLocale } from "@/lib/i18n/locale";
 import { pageHead } from "@/lib/seo";
-import {
-  BOLT_OPTIONS,
-  BRACKET_DEFAULTS,
-  LOAD_RANGE,
-  requiredThicknessMm,
-  SPAN_RANGE,
-  type BoltCount,
-} from "@/lib/lab/bracket";
 import { PUMP_RANGE, VALVE_RANGE, VESSEL_DEFAULTS } from "@/lib/lab/vessels";
 
 export const Route = createFileRoute("/ai-lab")({
@@ -37,7 +30,7 @@ export const Route = createFileRoute("/ai-lab")({
     pageHead({
       title: "Interactive Lab — Damian Vink",
       description:
-        "Interactieve 3D-demo’s: ontdek een lagerassemblage in exploded view, bestuur een draaiende wereldbol, verken een zonnestelsel, speel met een muisreactief deeltjesveld, genereer een parametrische beugel, laat vloeistof stromen tussen twee vaten, ontdek genetische routeoptimalisatie en bekijk zand dat Chladni-figuren vormt op een trillende plaat en maak muziek met Sonic Playground.",
+        "Interactieve 3D-demo’s: ontdek een lagerassemblage in exploded view, bestuur een draaiende wereldbol, verken een zonnestelsel, speel met een muisreactief deeltjesveld, onderzoek hoe een beugel doorbuigt, laat vloeistof stromen tussen twee vaten, ontdek genetische routeoptimalisatie en bekijk zand dat Chladni-figuren vormt op een trillende plaat en maak muziek met Sonic Playground.",
       path: "/ai-lab",
     }),
   component: Lab,
@@ -61,9 +54,6 @@ function Lab() {
   const [speed, setSpeed] = useState(1);
   const [playing, setPlaying] = useState(false);
   const [reset, setReset] = useState(0);
-  const [span, setSpan] = useState(BRACKET_DEFAULTS.span);
-  const [load, setLoad] = useState(BRACKET_DEFAULTS.load);
-  const [bolts, setBolts] = useState<BoltCount>(BRACKET_DEFAULTS.bolts);
   const [valvePct, setValvePct] = useState(100);
   const [pumpPct, setPumpPct] = useState(0);
   useEffect(() => {
@@ -80,6 +70,7 @@ function Lab() {
   useEffect(() => {
     if (window.location.hash === "#evolution") setKind("evolution");
     if (window.location.hash === "#chladni") setKind("chladni");
+    if (window.location.hash === "#bracket") setKind("bracket");
     if (window.location.hash === "#sonic") setKind("sonic");
   }, []);
   const assembly = kind === "assembly";
@@ -152,7 +143,7 @@ function Lab() {
             onClick={() => choose("bracket")}
           >
             <Ruler className="size-4" aria-hidden="true" />
-            05 / {t("Parametrische beugel", "Parametric bracket")}
+            05 / {t("Beugeltest", "Bracket test")}
           </Button>
           <Button
             variant={vessels ? "primary" : "secondary"}
@@ -187,7 +178,9 @@ function Lab() {
             09 / Sonic Playground
           </Button>
         </div>
-        {kind === "sonic" ? (
+        {kind === "bracket" ? (
+          <BracketLab />
+        ) : kind === "sonic" ? (
           <SonicPlayground />
         ) : kind === "evolution" ? (
           <EvolutionLab />
@@ -205,11 +198,9 @@ function Lab() {
                         ? "Solar system / 03"
                         : particles
                           ? "Particle field / 04"
-                          : bracket
-                            ? "Parametric bracket / 05"
-                            : vessels
-                              ? "Communicating vessels / 06"
-                              : "Earth / 02"}
+                          : vessels
+                            ? "Communicating vessels / 06"
+                            : "Earth / 02"}
                   </span>
                   <span>
                     {assembly
@@ -218,14 +209,9 @@ function Lab() {
                         ? t("Baansnelheid instelbaar", "Orbital speed adjustable")
                         : particles
                           ? t("Reageert op je cursor", "Reacts to your cursor")
-                          : bracket
-                            ? `${requiredThicknessMm(span, load).toFixed(1)} mm ${t("plaatdikte", "plate thickness")}`
-                            : vessels
-                              ? t(
-                                  "Klep en pomp regelen de stroom",
-                                  "Valve and pump control the flow",
-                                )
-                              : t("Rotatie om de aardas", "Axial rotation")}
+                          : vessels
+                            ? t("Klep en pomp regelen de stroom", "Valve and pump control the flow")
+                            : t("Rotatie om de aardas", "Axial rotation")}
                   </span>
                 </div>
                 <InteractiveScene
@@ -237,9 +223,6 @@ function Lab() {
                     speed,
                     playing,
                     reset,
-                    span,
-                    load,
-                    bolts,
                     valve: valvePct / 100,
                     pump: pumpPct / 100,
                   }}
@@ -259,20 +242,15 @@ function Lab() {
                               "Deeltjesveld van vierduizend punten dat om de cursor wervelt",
                               "Particle field of four thousand points swirling around the cursor",
                             )
-                          : bracket
+                          : vessels
                             ? t(
-                                "Parametrische muurbeugel die live herbouwt op overspanning, belasting en aantal bouten",
-                                "Parametric wall bracket that rebuilds live from span, load and bolt count",
+                                "Een bovenste en onderste glazen vat verbonden door een leiding met klep en een pompretour, met een realtime golfsimulatie op het vloeistofoppervlak",
+                                "An upper and lower glass tank connected by a valved pipe and a pump return line, with a real-time wave simulation on the liquid surface",
                               )
-                            : vessels
-                              ? t(
-                                  "Een bovenste en onderste glazen vat verbonden door een leiding met klep en een pompretour, met een realtime golfsimulatie op het vloeistofoppervlak",
-                                  "An upper and lower glass tank connected by a valved pipe and a pump return line, with a real-time wave simulation on the liquid surface",
-                                )
-                              : t(
-                                  "Draaiende wereldbol met continenten en geografisch raster",
-                                  "Rotating globe with continents and geographic grid",
-                                )
+                            : t(
+                                "Draaiende wereldbol met continenten en geografisch raster",
+                                "Rotating globe with continents and geographic grid",
+                              )
                   }
                   unavailable={t(
                     "3D is niet beschikbaar in deze browser. Probeer een recente browser met WebGL ingeschakeld.",
@@ -305,16 +283,6 @@ function Lab() {
                         {t("Beweeg de cursor over het veld", "Move your cursor over the field")}
                       </span>
                     </>
-                  ) : bracket ? (
-                    <>
-                      <span>t = √(6·F·L / (b·σ))</span>
-                      <span>
-                        {t(
-                          "Schematisch — geen productieberekening",
-                          "Schematic — not a production calculation",
-                        )}
-                      </span>
-                    </>
                   ) : vessels ? (
                     <>
                       <span>Q = Cd·A·√(2·g·Δh)</span>
@@ -345,19 +313,6 @@ function Lab() {
                     onChange={setSpread}
                     left={t("Gemonteerd", "Assembled")}
                     right={t("Uit elkaar", "Exploded")}
-                  />
-                ) : bracket ? (
-                  <Control
-                    id="span"
-                    title={t("Overspanning", "Span")}
-                    value={span}
-                    min={SPAN_RANGE.min}
-                    max={SPAN_RANGE.max}
-                    step={5}
-                    unit=" mm"
-                    onChange={setSpan}
-                    left={`${SPAN_RANGE.min} mm`}
-                    right={`${SPAN_RANGE.max} mm`}
                   />
                 ) : vessels ? (
                   <Control
@@ -392,20 +347,7 @@ function Lab() {
                     right={t("Vooruit", "Forward")}
                   />
                 )}
-                {bracket ? (
-                  <Control
-                    id="load"
-                    title={t("Belasting", "Load")}
-                    value={load}
-                    min={LOAD_RANGE.min}
-                    max={LOAD_RANGE.max}
-                    step={25}
-                    unit=" N"
-                    onChange={setLoad}
-                    left={`${LOAD_RANGE.min} N`}
-                    right={`${LOAD_RANGE.max} N`}
-                  />
-                ) : vessels ? (
+                {vessels ? (
                   <Control
                     id="pump"
                     title={t("Pompvermogen", "Pump power")}
@@ -437,26 +379,8 @@ function Lab() {
                   />
                 )}
                 <div className="flex flex-col gap-3 pb-5">
-                  {bracket && (
-                    <div
-                      role="group"
-                      aria-label={t("Aantal bouten", "Bolt count")}
-                      className="flex items-center gap-1"
-                    >
-                      {BOLT_OPTIONS.map((n) => (
-                        <Button
-                          key={n}
-                          variant={bolts === n ? "primary" : "secondary"}
-                          aria-pressed={bolts === n}
-                          onClick={() => setBolts(n)}
-                        >
-                          {n} {t("bouten", "bolts")}
-                        </Button>
-                      ))}
-                    </div>
-                  )}
                   <div className="flex gap-2">
-                    {!assembly && !bracket && (
+                    {!assembly && (
                       <Button
                         variant="secondary"
                         aria-label={
@@ -486,9 +410,6 @@ function Lab() {
                         setPumpPct(VESSEL_DEFAULTS.pump * 100);
                         setSpeed(1);
                         setPlaying(false);
-                        setSpan(BRACKET_DEFAULTS.span);
-                        setLoad(BRACKET_DEFAULTS.load);
-                        setBolts(BRACKET_DEFAULTS.bolts);
                       }}
                     >
                       <RotateCcw className="size-4" aria-hidden="true" />
@@ -506,14 +427,9 @@ function Lab() {
                     ? t("Acht planeten, één zon.", "Eight planets, one sun.")
                     : particles
                       ? t("Duizenden punten, één cursor.", "Thousands of points, one cursor.")
-                      : bracket
-                        ? t("Vorm volgt belasting.", "Form follows load.")
-                        : vessels
-                          ? t("Communicerende vaten.", "Communicating vessels.")
-                          : t(
-                              "De wereld ligt aan je vingertoppen.",
-                              "The world at your fingertips.",
-                            )}
+                      : vessels
+                        ? t("Communicerende vaten.", "Communicating vessels.")
+                        : t("De wereld ligt aan je vingertoppen.", "The world at your fingertips.")}
               </h2>
               <p className="text-base leading-relaxed text-muted">
                 {assembly
@@ -531,35 +447,15 @@ function Lab() {
                           "Beweeg de cursor over het veld: elk punt draait mee in een werveling en zakt terug zodra je wegbeweegt. Geen vaste animatie — puur reactie op waar je bent.",
                           "Move your cursor over the field: every point swirls with you and settles back once you move away. No fixed animation — pure reaction to where you are.",
                         )
-                      : bracket
+                      : vessels
                         ? t(
-                            "Verander overspanning, belasting en aantal bouten: de plaatdikte wordt live herberekend uit een vereenvoudigde buigberekening (cantilever), en vanaf 500 N verschijnt er een schoor. Schematisch, geen productieberekening — zie",
-                            "Change span, load and bolt count: the plate thickness is recalculated live from a simplified cantilever bending check, and a gusset appears from 500 N. Schematic, not a production calculation — see",
+                            "Open de klep en zwaartekracht laat het water van het bovenste naar het onderste vat stromen. Zet de pomp aan om het weer omhoog te sturen — bij een half openstaande klep wint de pomp het van de zwaartekracht. De golven op het oppervlak zijn een echte realtime simulatie, geen geanimeerde textuur.",
+                            "Open the valve and gravity drains water from the top tank into the bottom one. Switch on the pump to send it back up — with the valve only partway open, the pump can out-power gravity. The waves on the surface are a genuine real-time simulation, not an animated texture.",
                           )
-                        : vessels
-                          ? t(
-                              "Open de klep en zwaartekracht laat het water van het bovenste naar het onderste vat stromen. Zet de pomp aan om het weer omhoog te sturen — bij een half openstaande klep wint de pomp het van de zwaartekracht. De golven op het oppervlak zijn een echte realtime simulatie, geen geanimeerde textuur.",
-                              "Open the valve and gravity drains water from the top tank into the bottom one. Switch on the pump to send it back up — with the valve only partway open, the pump can out-power gravity. The waves on the surface are a genuine real-time simulation, not an animated texture.",
-                            )
-                          : t(
-                              "Verander de snelheid en draairichting, of pauzeer en kies zelf een positie. De continenten zijn gebaseerd op geografische data; de animatie toont geen actuele dag- en nachtgrens.",
-                              "Change speed and direction, or pause and choose a position. Continents use geographic data; the lighting does not show the current day–night boundary.",
-                            )}
-                {bracket ? (
-                  <>
-                    {" "}
-                    <Link
-                      to="/toolkit/doorbuiging-balk"
-                      className="text-accent underline underline-offset-2"
-                    >
-                      {t("Doorbuiging balk", "Beam deflection")}
-                    </Link>{" "}
-                    {t(
-                      "in de Toolkit voor een gecontroleerde versie.",
-                      "in the Toolkit for a checked version.",
-                    )}
-                  </>
-                ) : null}
+                        : t(
+                            "Verander de snelheid en draairichting, of pauzeer en kies zelf een positie. De continenten zijn gebaseerd op geografische data; de animatie toont geen actuele dag- en nachtgrens.",
+                            "Change speed and direction, or pause and choose a position. Continents use geographic data; the lighting does not show the current day–night boundary.",
+                          )}
               </p>
             </div>
           </>
