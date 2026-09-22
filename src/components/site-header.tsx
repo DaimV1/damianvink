@@ -14,7 +14,7 @@ export function SiteHeader() {
 
   const nav = [
     { to: "/ai-lab", label: "Interactive Lab", match: "/ai-lab" },
-    { to: "/toolkit", label: "Toolkit", match: "/toolkit" },
+    { external: "https://www.mechify.nl/toolkit", label: "Toolkit" },
     { to: "/project", label: tx(locale, "Project", "Project"), match: "/project" },
     { to: "/marathon", label: "Marathon", match: "/marathon" },
     { to: "/over-mij", label: tx(locale, "Over", "About"), match: "/over-mij" },
@@ -22,7 +22,7 @@ export function SiteHeader() {
   ] as const;
 
   function isActive(item: (typeof nav)[number]) {
-    if (item.to === "/toolkit") return pathname.startsWith("/toolkit");
+    if ("external" in item) return false;
     if (item.to === "/project") return pathname === "/project" || pathname.startsWith("/project/");
     if (item.to === "/marathon") return pathname.startsWith("/marathon");
     return pathname === item.match || pathname.startsWith(item.match + "/");
@@ -47,20 +47,30 @@ export function SiteHeader() {
           className="hidden items-center gap-0.5 whitespace-nowrap lg:flex"
           aria-label={tx(locale, "Hoofdmenu", "Main menu")}
         >
-          {nav.map((item) => (
-            <Link
-              key={item.to}
-              to={item.to}
-              aria-current={isActive(item) ? "page" : undefined}
-              className={cn(
-                "rounded-md px-3 py-2 text-sm transition-colors duration-150",
-                isActive(item) ? "text-ink" : "text-muted hover:text-ink",
-              )}
-              onClick={() => setOpen(false)}
-            >
-              {item.label}
-            </Link>
-          ))}
+          {nav.map((item) =>
+            "external" in item ? (
+              <a
+                key={item.external}
+                href={item.external}
+                className="rounded-md px-3 py-2 text-sm text-muted transition-colors duration-150 hover:text-ink"
+              >
+                {item.label}
+              </a>
+            ) : (
+              <Link
+                key={item.to}
+                to={item.to}
+                aria-current={isActive(item) ? "page" : undefined}
+                className={cn(
+                  "rounded-md px-3 py-2 text-sm transition-colors duration-150",
+                  isActive(item) ? "text-ink" : "text-muted hover:text-ink",
+                )}
+                onClick={() => setOpen(false)}
+              >
+                {item.label}
+              </Link>
+            ),
+          )}
         </nav>
 
         <div className="flex items-center gap-1">
@@ -121,16 +131,26 @@ export function SiteHeader() {
           aria-label={tx(locale, "Mobiel menu", "Mobile menu")}
         >
           <div className="flex flex-col">
-            {nav.map((item) => (
-              <Link
-                key={item.to}
-                to={item.to}
-                className="flex min-h-11 items-center text-base text-ink"
-                onClick={() => setOpen(false)}
-              >
-                {item.label}
-              </Link>
-            ))}
+            {nav.map((item) =>
+              "external" in item ? (
+                <a
+                  key={item.external}
+                  href={item.external}
+                  className="flex min-h-11 items-center text-base text-ink"
+                >
+                  {item.label}
+                </a>
+              ) : (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  className="flex min-h-11 items-center text-base text-ink"
+                  onClick={() => setOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              ),
+            )}
           </div>
         </nav>
       ) : null}

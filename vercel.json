@@ -2,6 +2,25 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "tanstack-start",
   "trailingSlash": false,
+  "redirects": [
+    { "source": "/toolkit/passingen", "destination": "https://www.mechify.nl/tools/fit-tolerances", "permanent": true },
+    { "source": "/toolkit/iso-2768", "destination": "https://www.mechify.nl/tools/iso-2768", "permanent": true },
+    { "source": "/toolkit/spiebaan-toleranties", "destination": "https://www.mechify.nl/tools/keyways", "permanent": true },
+    { "source": "/toolkit/lagerpassingen", "destination": "https://www.mechify.nl/tools/bearing-fits", "permanent": true },
+    { "source": "/toolkit/seegerring-groef", "destination": "https://www.mechify.nl/tools/seeger-grooves", "permanent": true },
+    { "source": "/toolkit/bevestigers", "destination": "https://www.mechify.nl/tools/fasteners", "permanent": true },
+    { "source": "/toolkit/o-ringgroef", "destination": "https://www.mechify.nl/tools/o-ring-grooves", "permanent": true },
+    { "source": "/toolkit/kanten", "destination": "https://www.mechify.nl/tools/edges", "permanent": true },
+    { "source": "/toolkit/motorspecificatie", "destination": "https://www.mechify.nl/calculators/motor-specification", "permanent": true },
+    { "source": "/toolkit/cilinder", "destination": "https://www.mechify.nl/calculators/pneumatic-cylinder", "permanent": true },
+    { "source": "/toolkit/knikberekening", "destination": "https://www.mechify.nl/calculators/buckling", "permanent": true },
+    { "source": "/toolkit/doorbuiging-balk", "destination": "https://www.mechify.nl/calculators/beam-deflection", "permanent": true },
+    { "source": "/toolkit/eenheden", "destination": "https://www.mechify.nl/calculators/units", "permanent": true },
+    { "source": "/toolkit/bronnen", "destination": "https://www.mechify.nl/cad/resources", "permanent": true },
+    { "source": "/toolkit/macros", "destination": "https://www.mechify.nl/cad/macros", "permanent": true },
+    { "source": "/toolkit", "destination": "https://www.mechify.nl/toolkit", "permanent": true },
+    { "source": "/toolkit/:path*", "destination": "https://www.mechify.nl/toolkit", "permanent": true }
+  ],
   "rewrites": [{ "source": "/favicon.ico", "destination": "/favicon.svg" }],
   "headers": [
     {

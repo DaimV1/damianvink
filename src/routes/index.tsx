@@ -64,7 +64,7 @@ function Home() {
                 "Eenheden, passingen, spiebanen, lagerpassingen, seegerringgroef, bevestigingsmateriaal en CAD-bronnen.",
                 "Units, fits, keyways, bearing fits, circlip grooves, fasteners and CAD libraries.",
               )}
-              href="/toolkit"
+              href="https://www.mechify.nl/toolkit"
               link="Toolkit"
               meta={tx(
                 locale,
@@ -134,6 +134,19 @@ function Door({
   link: string;
   meta: string;
 }) {
+  const external = href.startsWith("http");
+  const linkClassName = "mt-4 flex items-center justify-between gap-3 border-t border-line pt-4 text-sm";
+  const linkContent = (
+    <>
+      <span>
+        <strong className="font-medium text-ink">{link}</strong>
+        <span className="ml-2 text-muted">{meta}</span>
+      </span>
+      <span aria-hidden="true" className="text-accent">
+        →
+      </span>
+    </>
+  );
   return (
     <article className="rounded-lg border border-line bg-elevated p-5">
       <div className="flex gap-4">
@@ -143,18 +156,15 @@ function Door({
           <p className="mt-1 text-sm leading-relaxed text-muted">{body}</p>
         </div>
       </div>
-      <Link
-        to={href}
-        className="mt-4 flex items-center justify-between gap-3 border-t border-line pt-4 text-sm"
-      >
-        <span>
-          <strong className="font-medium text-ink">{link}</strong>
-          <span className="ml-2 text-muted">{meta}</span>
-        </span>
-        <span aria-hidden="true" className="text-accent">
-          →
-        </span>
-      </Link>
+      {external ? (
+        <a href={href} className={linkClassName}>
+          {linkContent}
+        </a>
+      ) : (
+        <Link to={href} className={linkClassName}>
+          {linkContent}
+        </Link>
+      )}
     </article>
   );
 }

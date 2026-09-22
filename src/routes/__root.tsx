@@ -115,7 +115,7 @@ function NotFound() {
           <a href="/" className="text-sm text-accent hover:underline">
             Home
           </a>
-          <a href="/toolkit" className="text-sm text-accent hover:underline">
+          <a href="https://www.mechify.nl/toolkit" className="text-sm text-accent hover:underline">
             Toolkit
           </a>
           <a href="/spel" className="text-sm text-accent hover:underline">
