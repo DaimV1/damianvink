@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import {
   Box,
+  Heart,
   Dna,
   Droplets,
   Globe2,
@@ -16,6 +17,7 @@ import {
 } from "lucide-react";
 import { PageWrap, SiteShell } from "@/components/site-shell";
 import { Button } from "@/components/ui/button";
+import { PocketPet } from "@/components/lab/pocket-pet";
 import { BracketLab } from "@/components/lab/bracket-lab";
 import { SonicPlayground } from "@/components/lab/sonic-playground";
 import { ChladniPlate } from "@/components/lab/chladni-plate";
@@ -48,6 +50,7 @@ function Lab() {
     | "evolution"
     | "chladni"
     | "sonic"
+    | "dot"
   >("assembly");
   const [spread, setSpread] = useState(45);
   const [angle, setAngle] = useState(0);
@@ -71,6 +74,7 @@ function Lab() {
     if (window.location.hash === "#evolution") setKind("evolution");
     if (window.location.hash === "#chladni") setKind("chladni");
     if (window.location.hash === "#bracket") setKind("bracket");
+    if (window.location.hash === "#dot") setKind("dot");
     if (window.location.hash === "#sonic") setKind("sonic");
   }, []);
   const assembly = kind === "assembly";
@@ -91,8 +95,8 @@ function Lab() {
             </h1>
             <p className="mt-4 max-w-xl text-base leading-relaxed text-muted">
               {t(
-                "Met AI gebouwd, door jou bestuurd. Negen interactieve experimenten, rechtstreeks in je browser.",
-                "Built with AI, controlled by you. Nine interactive experiments, right in your browser.",
+                "Met AI gebouwd, door jou bestuurd. Tien interactieve experimenten, rechtstreeks in je browser.",
+                "Built with AI, controlled by you. Ten interactive experiments, right in your browser.",
               )}
             </p>
           </div>
@@ -177,8 +181,18 @@ function Lab() {
             <Music2 className="size-4" aria-hidden="true" />
             09 / Sonic Playground
           </Button>
+          <Button
+            variant={kind === "dot" ? "primary" : "secondary"}
+            aria-pressed={kind === "dot"}
+            onClick={() => choose("dot")}
+          >
+            <Heart className="size-4" aria-hidden="true" />
+            10 / DOT · Pocket Pet
+          </Button>
         </div>
-        {kind === "bracket" ? (
+        {kind === "dot" ? (
+          <PocketPet />
+        ) : kind === "bracket" ? (
           <BracketLab />
         ) : kind === "sonic" ? (
           <SonicPlayground />
