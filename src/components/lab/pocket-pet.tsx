@@ -4,7 +4,17 @@ import { Button } from "@/components/ui/button";
 import { tx, useLocale } from "@/lib/i18n/locale";
 
 const KEY = "damian-dot-pet-v1";
+const PETS = [
+  { id: "dot", name: "DOT", nl: "Het origineel", en: "The original", color: "#b9f785" },
+  { id: "cat", name: "MOCHI", nl: "Nieuwsgierige kat", en: "Curious cat", color: "#f7ba88" },
+  { id: "bunny", name: "PIP", nl: "Vrolijk konijntje", en: "Cheerful bunny", color: "#e6bcfa" },
+  { id: "robot", name: "BYTE", nl: "Kleine robot", en: "Little robot", color: "#8cd9f5" },
+  { id: "frog", name: "SPROUT", nl: "Relaxte kikker", en: "Chilled frog", color: "#7ee2b8" },
+] as const;
+type Species = (typeof PETS)[number]["id"];
+const validSpecies = (id: unknown): id is Species => PETS.some((p) => p.id === id);
 type Pet = {
+  species: Species;
   food: number;
   joy: number;
   energy: number;
@@ -13,7 +23,8 @@ type Pet = {
   updated: number;
   born: number;
 };
-const fresh = (): Pet => ({
+const fresh = (species: Species = "dot"): Pet => ({
+  species,
   food: 75,
   joy: 70,
   energy: 85,
@@ -36,7 +47,7 @@ function advance(p: Pet): Pet {
 export function PocketPet() {
   const { locale } = useLocale();
   const t = (nl: string, en: string) => tx(locale, nl, en);
-  const [pet, setPet] = useState<Pet>(fresh);
+  const [pet, setPet] = useState<Pet>(() => fresh());
   const [ready, setReady] = useState(false);
   const [saved, setSaved] = useState(true);
   const [message, setMessage] = useState("");
@@ -54,7 +65,7 @@ export function PocketPet() {
           typeof p.sleeping === "boolean" &&
           p.care >= 0
         )
-          setPet(advance(p));
+          setPet(advance({ ...p, species: validSpecies(p.species) ? p.species : "dot" }));
       }
     } catch {
       setSaved(false);
@@ -99,6 +110,7 @@ export function PocketPet() {
     setMessage(tx(locale, `Je ving ${game.score} sterren!`, `You caught ${game.score} stars!`));
     setGame(null);
   }, [game, locale]);
+  const creature = PETS.find((p) => p.id === pet.species) ?? PETS[0];
   const low = Math.min(pet.food, pet.joy, pet.energy) < 25;
   const stage =
     pet.care < 10
@@ -122,16 +134,18 @@ export function PocketPet() {
       action === "food"
         ? t("Mmm. Een hapje geluk.", "Mmm. A bite of happiness.")
         : action === "love"
-          ? t("DOT vindt je lief.", "DOT likes you.")
+          ? t(`${creature.name} vindt je lief.`, `${creature.name} likes you.`)
           : pet.sleeping
             ? t("Goedemorgen!", "Good morning!")
-            : t("Welterusten, DOT.", "Good night, DOT."),
+            : t(`Welterusten, ${creature.name}.`, `Good night, ${creature.name}.`),
     );
   }
   return (
     <section className="overflow-hidden rounded-xl border border-line bg-elevated">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line p-5">
-        <span className="font-mono text-sm uppercase tracking-widest">10 / DOT · Pocket Pet</span>
+        <span className="font-mono text-sm uppercase tracking-widest">
+          10 / {creature.name} · Pocket Pet
+        </span>
         <span className="rounded-full border border-line px-3 py-1 text-sm text-muted">
           {stage} · {pet.care} XP
         </span>
@@ -192,69 +206,24 @@ export function PocketPet() {
             <span className="absolute -right-5 -top-7 text-4xl text-[#b9f785]" aria-hidden="true">
               {reaction || (pet.sleeping ? "z z" : "")}
             </span>
-            <svg
-              viewBox="0 0 240 230"
-              className="w-60 sm:w-72"
-              role="img"
-              aria-label={t(
-                "DOT, een rond groen wezentje met expressieve ogen",
-                "DOT, a round green creature with expressive eyes",
+            <PetPortrait
+              species={pet.species}
+              sleeping={pet.sleeping}
+              low={low}
+              care={pet.care}
+              reaction={!!reaction}
+              label={t(
+                `${creature.name}, ${creature.nl.toLowerCase()}`,
+                `${creature.name}, ${creature.en.toLowerCase()}`,
               )}
-            >
-              <ellipse cx="120" cy="211" rx="68" ry="9" fill="#000" opacity=".25" />
-              <g className={pet.sleeping ? "" : "motion-safe:animate-[bounce_4s_infinite]"}>
-                {pet.care >= 10 && (
-                  <>
-                    <path d="M75 75 Q45 12 90 46" fill="#b9f785" />
-                    <path d="M165 75 Q195 12 150 46" fill="#b9f785" />
-                  </>
-                )}
-                <path
-                  d="M48 150 Q18 163 30 177 M192 150 Q222 163 210 177"
-                  stroke="#b9f785"
-                  strokeWidth="12"
-                  strokeLinecap="round"
-                  fill="none"
-                />
-                <rect
-                  x="45"
-                  y="55"
-                  width="150"
-                  height="143"
-                  rx={pet.care >= 30 ? 45 : 70}
-                  fill={low ? "#c9d49d" : "#b9f785"}
-                />
-                <ellipse cx="86" cy="195" rx="17" ry="10" fill="#a1da72" />
-                <ellipse cx="154" cy="195" rx="17" ry="10" fill="#a1da72" />
-                {pet.sleeping ? (
-                  <path
-                    d="M77 116 L97 116 M143 116 L163 116"
-                    stroke="#172a24"
-                    strokeWidth="7"
-                    strokeLinecap="round"
-                  />
-                ) : (
-                  <>
-                    <ellipse cx="88" cy="114" rx="9" ry={reaction ? 8 : 13} fill="#172a24" />
-                    <ellipse cx="152" cy="114" rx="9" ry={reaction ? 8 : 13} fill="#172a24" />
-                    <circle cx="91" cy="109" r="3" fill="white" />
-                    <circle cx="155" cy="109" r="3" fill="white" />
-                  </>
-                )}
-                <ellipse cx="69" cy="138" rx="12" ry="6" fill="#f29ca4" opacity=".7" />
-                <ellipse cx="171" cy="138" rx="12" ry="6" fill="#f29ca4" opacity=".7" />
-                <path
-                  d={low ? "M108 155 Q120 145 132 155" : "M108 148 Q120 162 132 148"}
-                  stroke="#172a24"
-                  strokeWidth="5"
-                  fill="none"
-                  strokeLinecap="round"
-                />
-              </g>
-            </svg>
+            />
           </div>
           <p className="mt-3 text-center text-sm text-[#aab8c0]" role="status">
-            {message || t("Hallo. Ik ben DOT. Blijf je even?", "Hi. I'm DOT. Stay a little?")}
+            {message ||
+              t(
+                `Hallo. Ik ben ${creature.name}. Blijf je even?`,
+                `Hi. I'm ${creature.name}. Stay a little?`,
+              )}
           </p>
         </div>
         <div className="flex flex-col gap-6 p-6 sm:p-8">
@@ -264,11 +233,42 @@ export function PocketPet() {
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-muted">
               {t(
-                "Voer DOT, geef aandacht en vang samen sterren. Met elke verzorging groeit je vriendje. Slaap herstelt energie; behoeften veranderen langzaam, ook als je weg bent.",
-                "Feed DOT, show affection and catch stars together. Each act of care helps your friend grow. Sleep restores energy; needs change slowly, even while you're away.",
+                "Voer je vriendje, geef aandacht en vang samen sterren. Met elke verzorging groeit je vriendje. Slaap herstelt energie; behoeften veranderen langzaam, ook als je weg bent.",
+                "Feed your pet, show affection and catch stars together. Each act of care helps your friend grow. Sleep restores energy; needs change slowly, even while you're away.",
               )}
             </p>
           </div>
+          <fieldset className="min-w-0">
+            <legend className="mb-3 text-sm font-medium">
+              {t("Kies je vriendje", "Choose your pet")}
+            </legend>
+            <div className="grid grid-cols-3 gap-2 sm:grid-cols-5 lg:grid-cols-3">
+              {PETS.map((option) => (
+                <button
+                  type="button"
+                  key={option.id}
+                  aria-pressed={pet.species === option.id}
+                  aria-label={`${option.name} · ${t(option.nl, option.en)}`}
+                  disabled={!ready || !!game}
+                  className={`flex min-w-0 flex-col items-center rounded-xl border p-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:opacity-50 ${pet.species === option.id ? "border-accent bg-accent/10" : "border-line hover:bg-line"}`}
+                  onClick={() => {
+                    setPet((p) => ({ ...p, species: option.id }));
+                    setMessage("");
+                    setReaction("");
+                  }}
+                >
+                  <PetPortrait species={option.id} thumbnail />
+                  <span className="font-mono text-xs">{option.name}</span>
+                </button>
+              ))}
+            </div>
+            <p className="mt-2 text-xs text-muted">
+              {t(
+                "Een andere look kiezen behoudt je verzorging en XP.",
+                "Changing your pet’s look keeps your care stats and XP.",
+              )}
+            </p>
+          </fieldset>
           <div className="space-y-4">
             {[
               [t("Verzadiging", "Fullness"), pet.food],
@@ -329,8 +329,8 @@ export function PocketPet() {
           <p className="text-xs leading-relaxed text-muted">
             {saved
               ? t(
-                  "Automatisch bewaard op dit apparaat. Geen account nodig. DOT gaat niet dood; na een lange pauze kun je gewoon verder zorgen.",
-                  "Automatically saved on this device. No account needed. DOT never dies; after a long break, simply keep caring.",
+                  "Automatisch bewaard op dit apparaat. Geen account nodig. Je vriendje gaat niet dood; na een lange pauze kun je gewoon verder zorgen.",
+                  "Automatically saved on this device. No account needed. Your pet never dies; after a long break, simply keep caring.",
                 )
               : t(
                   "Opslaan is niet beschikbaar. Je kunt wel spelen tijdens dit bezoek.",
@@ -344,10 +344,13 @@ export function PocketPet() {
             onClick={() => {
               if (
                 window.confirm(
-                  t("Opnieuw beginnen met een nieuwe DOT?", "Start over with a new DOT?"),
+                  t(
+                    `Opnieuw beginnen met een nieuwe ${creature.name}?`,
+                    `Start over with a new ${creature.name}?`,
+                  ),
                 )
               ) {
-                setPet(fresh());
+                setPet(fresh(pet.species));
                 setMessage("");
               }
             }}
@@ -358,5 +361,137 @@ export function PocketPet() {
         </div>
       </div>
     </section>
+  );
+}
+
+function PetPortrait({
+  species,
+  sleeping = false,
+  low = false,
+  care = 0,
+  reaction = false,
+  thumbnail = false,
+  label,
+}: {
+  species: Species;
+  sleeping?: boolean;
+  low?: boolean;
+  care?: number;
+  reaction?: boolean;
+  thumbnail?: boolean;
+  label?: string;
+}) {
+  const color = (PETS.find((p) => p.id === species) ?? PETS[0]).color;
+  return (
+    <svg
+      viewBox="0 0 240 230"
+      className={thumbnail ? "w-16 h-16" : "w-60 sm:w-72"}
+      role={thumbnail ? undefined : "img"}
+      aria-hidden={thumbnail || undefined}
+      aria-label={label}
+    >
+      <ellipse cx="120" cy="211" rx="68" ry="9" fill="#000" opacity=".25" />
+      <g className={!thumbnail && !sleeping ? "motion-safe:animate-[bounce_4s_infinite]" : ""}>
+        {species === "cat" && (
+          <>
+            <path d="M48 90 L48 24 L100 64 M140 64 L192 24 L192 90" fill={color} />
+            <path d="M58 65 L60 42 L83 65 M157 65 L180 42 L182 65" fill="#e78e98" />
+          </>
+        )}
+        {species === "bunny" && (
+          <>
+            <rect x="66" y="5" width="32" height="85" rx="16" fill={color} />
+            <rect x="142" y="5" width="32" height="85" rx="16" fill={color} />
+            <path
+              d="M82 22 V60 M158 22 V60"
+              stroke="#f299c3"
+              strokeWidth="12"
+              strokeLinecap="round"
+            />
+          </>
+        )}
+        {species === "robot" && (
+          <>
+            <path d="M120 55 V27" stroke={color} strokeWidth="8" />
+            <circle cx="120" cy="22" r="10" fill="#ffd984" />
+            <rect x="28" y="100" width="22" height="40" rx="6" fill={color} />
+            <rect x="190" y="100" width="22" height="40" rx="6" fill={color} />
+          </>
+        )}
+        {species === "dot" && care >= 10 && (
+          <path d="M75 75 Q45 12 90 46 M165 75 Q195 12 150 46" fill={color} />
+        )}
+        <path
+          d="M48 150 Q18 163 30 177 M192 150 Q222 163 210 177"
+          stroke={color}
+          strokeWidth="12"
+          strokeLinecap="round"
+          fill="none"
+        />
+        <rect
+          x="45"
+          y="55"
+          width="150"
+          height="143"
+          rx={species === "robot" ? 25 : care >= 30 ? 45 : 70}
+          fill={color}
+          opacity={low ? 0.75 : 1}
+        />
+        {species === "frog" && (
+          <>
+            <circle cx="80" cy="70" r="27" fill={color} />
+            <circle cx="160" cy="70" r="27" fill={color} />
+          </>
+        )}
+        <ellipse cx="86" cy="195" rx="17" ry="10" fill={color} />
+        <ellipse cx="154" cy="195" rx="17" ry="10" fill={color} />
+        <g transform={species === "frog" ? "translate(0 -38)" : undefined}>
+          {sleeping ? (
+            <path
+              d="M77 116 H97 M143 116 H163"
+              stroke="#172a24"
+              strokeWidth="7"
+              strokeLinecap="round"
+            />
+          ) : (
+            <>
+              <ellipse cx="88" cy="114" rx="9" ry={reaction ? 8 : 13} fill="#172a24" />
+              <ellipse cx="152" cy="114" rx="9" ry={reaction ? 8 : 13} fill="#172a24" />
+              <circle cx="91" cy="109" r="3" fill="white" />
+              <circle cx="155" cy="109" r="3" fill="white" />
+            </>
+          )}
+        </g>
+        <ellipse cx="69" cy="138" rx="12" ry="6" fill="#f29ca4" opacity=".7" />
+        <ellipse cx="171" cy="138" rx="12" ry="6" fill="#f29ca4" opacity=".7" />
+        {species === "cat" && (
+          <path
+            d="M48 130 L23 125 M48 143 L23 148 M192 130 L217 125 M192 143 L217 148"
+            stroke="#172a24"
+            strokeWidth="3"
+            strokeLinecap="round"
+          />
+        )}
+        {species === "robot" && (
+          <rect
+            x="78"
+            y="92"
+            width="84"
+            height="43"
+            rx="14"
+            fill="none"
+            stroke="#172a24"
+            strokeWidth="3"
+          />
+        )}
+        <path
+          d={low ? "M108 155 Q120 145 132 155" : "M108 148 Q120 162 132 148"}
+          stroke="#172a24"
+          strokeWidth="5"
+          fill="none"
+          strokeLinecap="round"
+        />
+      </g>
+    </svg>
   );
 }
