@@ -391,7 +391,7 @@ function PetPortrait({
       aria-label={label}
     >
       <ellipse cx="120" cy="211" rx="68" ry="9" fill="#000" opacity=".25" />
-      <g className={!thumbnail && !sleeping ? "motion-safe:animate-[bounce_4s_infinite]" : ""}>
+      <g className={!thumbnail && !sleeping ? "motion-safe:animate-[pulse_4s_infinite]" : ""}>
         {species === "cat" && (
           <>
             <path d="M48 90 L48 24 L100 64 M140 64 L192 24 L192 90" fill={color} />
